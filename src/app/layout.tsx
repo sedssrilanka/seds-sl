@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${barlow.variable} ${jetbrainsMono.variable} antialiased`}
+        className={`${barlow.variable} ${jetbrainsMono.variable} antialiased flex-col items-center justify-center`}
       >
         <ThemeProvider
           attribute="class"
