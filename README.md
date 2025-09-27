@@ -1,36 +1,105 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SEDS SL Website
+
+This is the official repository for the SEDS Sri Lanka website, built with Next.js, TypeScript, and Tailwind CSS.
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to set up the project on your local machine for development and testing purposes.
+
+### Prerequisites
+
+Make sure you have [pnpm](https://pnpm.io/installation) installed on your system.
+
+### Installation
+
+1. **Clone/Fork the repository:**
+
+    ```bash
+    git clone https://github.com/sedssrilanka/seds_sl.git
+    cd seds_sl
+    ```
+
+2. **Install dependencies:**
+
+    ```bash
+    pnpm install
+    ```
+
+### Running the Development Server
+
+To start the development server, run the following command:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Code Style and Formatting
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project uses [Biome](https://biomejs.dev/) for code formatting and linting to ensure code consistency.
 
-## Learn More
+### Formatting
 
-To learn more about Next.js, take a look at the following resources:
+Before committing your changes, make sure to format the code by running:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm format
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This command will format all the necessary files in the project.
 
-## Deploy on Vercel
+### Linting
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To check for any linting errors, run:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm lint
+```
+
+## Contributing
+
+Contributions are what make the open-source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+For more detailed information, please check out our [Contributing Guide](.github/CONTRIBUTING.md).
+
+### Contribution Workflow
+
+1. **Fork the Project:** Click the 'Fork' button at the top right of the main repository page.
+2. **Create your Feature Branch:**
+
+    ```bash
+    git checkout -b feature/AmazingFeature
+    ```
+
+3. **Commit your Changes:**
+
+    ```bash
+    git commit -m 'Add some AmazingFeature'
+    ```
+
+4. **Push to the Branch:**
+
+    ```bash
+    git push origin feature/AmazingFeature
+    ```
+
+5. **Open a Pull Request:** Go to the repository on GitHub and open a new pull request.
+
+### Pull Request Guidelines
+
+- Ensure your code adheres to the project's code style. Run `pnpm format` and `pnpm lint` before submitting.
+- Provide a clear and descriptive title for your pull request.
+- In the pull request description, explain the changes you have made and why.
+- If your pull request addresses an open issue, please link it in the description.
+
+### Requesting New Components or Features
+
+If you need a new component or want to request a new feature, please do so by creating an issue on GitHub.
+
+1. Go to the **Issues** tab of the repository.
+2. Click on **New Issue**.
+3. Choose the appropriate template (e.g., "Feature request" or "Component request").
+4. Fill out the template with as much detail as possible.
+
+This helps us track requests and allows for discussion before implementation.
