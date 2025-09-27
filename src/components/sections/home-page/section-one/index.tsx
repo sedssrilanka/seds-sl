@@ -8,7 +8,8 @@ type Props = {};
 const Index: React.FC<Props> = (props: Props) => {
   return (
     <section
-      data-slot="section"
+      data-slot="section-one"
+      data-testid="section-one"
       className="bg-background text-foreground relative w-full overflow-hidden h-screen"
     >
       <GradientBackground
