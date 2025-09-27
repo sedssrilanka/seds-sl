@@ -66,8 +66,8 @@ export default function Navbar({
   className,
 }: NavbarProps) {
   return (
-    <header className={cn("sticky top-0 z-50 -mb-4 px-4 pb-4", className)}>
-      <div className="fade-bottom bg-background/15 absolute left-0 h-24 w-full backdrop-blur-lg"></div>
+    <header className={cn("sticky top-0 z-50 -mb-4 px-4", className)}>
+      <div className="fade-bottom bg-background/15 absolute left-0 h-24 flex flex-col items-center justify-center w-full backdrop-blur-lg"></div>
       <div className=" relative mx-auto max-w-5xl">
         <NavbarComponent>
           <NavbarLeft>
@@ -104,7 +104,7 @@ export default function Navbar({
                 >
                   {action.text}
                 </a>
-              ),
+              )
             )}
             <Sheet>
               <SheetTrigger asChild>
