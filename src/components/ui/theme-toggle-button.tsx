@@ -141,7 +141,9 @@ export const ThemeToggleButton = ({
             animation: none;
           }
           ::view-transition-new(root) {
-            animation: ${theme === "light" ? "wipe-in-dark" : "wipe-in-light"} 0.4s ease-out;
+            animation: ${
+              theme === "light" ? "wipe-in-dark" : "wipe-in-light"
+            } 0.4s ease-out;
           }
           @keyframes wipe-in-dark {
             from {
@@ -204,11 +206,17 @@ export const ThemeToggleButton = ({
   );
 };
 
+interface Document {
+  startViewTransition(
+    updateCallback?: () => Promise<void> | void,
+  ): ViewTransition;
+}
+
 // Export a helper hook for using with View Transitions API
 export const useThemeTransition = () => {
   const startTransition = useCallback((updateFn: () => void) => {
     if ("startViewTransition" in document) {
-      (document as any).startViewTransition(updateFn);
+      (document as Document).startViewTransition(updateFn);
     } else {
       updateFn();
     }

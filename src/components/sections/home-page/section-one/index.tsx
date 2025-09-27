@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
+import { GradientBackground } from "@/components/ui/gradient-background";
 import Planet from "./planet";
 import Rocket from "./rockets";
-import { GradientBackground } from "@/components/ui/gradient-background";
 
-type Props = {};
+type Props = React.HTMLAttributes<HTMLDivElement>;
 
-const Index: React.FC<Props> = (props: Props) => {
+const Index: React.FC<Props> = () => {
   return (
     <section
       data-slot="section-one"
