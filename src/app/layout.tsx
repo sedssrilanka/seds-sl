@@ -15,7 +15,6 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
 });
 
-
 export const metadata: Metadata = {
   title: "SEDS SL",
   description:

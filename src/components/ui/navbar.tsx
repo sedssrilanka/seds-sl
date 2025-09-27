@@ -42,4 +42,4 @@ function NavbarCenter({ className, ...props }: React.ComponentProps<"nav">) {
   );
 }
 
-export { Navbar, NavbarCenter,NavbarLeft, NavbarRight };
+export { Navbar, NavbarCenter, NavbarLeft, NavbarRight };

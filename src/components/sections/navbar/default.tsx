@@ -104,7 +104,7 @@ export default function Navbar({
                 >
                   {action.text}
                 </a>
-              )
+              ),
             )}
             <Sheet>
               <SheetTrigger asChild>

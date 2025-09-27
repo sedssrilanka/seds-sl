@@ -1,19 +1,29 @@
-'use client';
+"use client";
 
-import * as React from 'react';
-import { HTMLMotionProps, motion } from 'motion/react';
-import { cn } from '@/lib/utils';
+import * as React from "react";
+import { HTMLMotionProps, motion } from "motion/react";
+import { cn } from "@/lib/utils";
 
-type GridSize = '4:4' | '5:5' | '6:6' | '6:8' | '8:8' | '8:12' | '10:10' | '12:12' | '12:16' | '16:16';
+type GridSize =
+  | "4:4"
+  | "5:5"
+  | "6:6"
+  | "6:8"
+  | "8:8"
+  | "8:12"
+  | "10:10"
+  | "12:12"
+  | "12:16"
+  | "16:16";
 
-type GridBackgroundProps = HTMLMotionProps<'div'> & {
+type GridBackgroundProps = HTMLMotionProps<"div"> & {
   children?: React.ReactNode;
   gridSize?: GridSize;
   colors?: {
     background?: string;
     borderColor?: string;
     borderSize?: string;
-    borderStyle?: 'solid' | 'dashed' | 'dotted';
+    borderStyle?: "solid" | "dashed" | "dotted";
   };
   beams?: {
     count?: number;
@@ -27,47 +37,47 @@ type GridBackgroundProps = HTMLMotionProps<'div'> & {
 function GridBackground({
   className,
   children,
-  gridSize = '8:8',
+  gridSize = "8:8",
   colors = {},
   beams = {},
   ...props
 }: GridBackgroundProps) {
   const {
-    background = 'bg-slate-900',
-    borderColor = 'border-slate-700/50',
-    borderSize = '1px',
-    borderStyle = 'solid',
+    background = "bg-slate-900",
+    borderColor = "border-slate-700/50",
+    borderSize = "1px",
+    borderStyle = "solid",
   } = colors;
 
   const {
     count = 12,
     colors: beamColors = [
-      'bg-cyan-400',
-      'bg-purple-400',
-      'bg-fuchsia-400',
-      'bg-violet-400',
-      'bg-blue-400',
-      'bg-indigo-400',
-      'bg-green-400',
-      'bg-yellow-400',
-      'bg-orange-400',
-      'bg-red-400',
-      'bg-pink-400',
-      'bg-rose-400',
+      "bg-cyan-400",
+      "bg-purple-400",
+      "bg-fuchsia-400",
+      "bg-violet-400",
+      "bg-blue-400",
+      "bg-indigo-400",
+      "bg-green-400",
+      "bg-yellow-400",
+      "bg-orange-400",
+      "bg-red-400",
+      "bg-pink-400",
+      "bg-rose-400",
     ],
-    shadow = 'shadow-lg shadow-cyan-400/50 rounded-full',
+    shadow = "shadow-lg shadow-cyan-400/50 rounded-full",
     speed = 4,
   } = beams;
 
   // Parse grid dimensions
-  const [cols, rows] = gridSize.split(':').map(Number);
+  const [cols, rows] = gridSize.split(":").map(Number);
 
   // Generate beam configurations
   const animatedBeams = React.useMemo(
     () =>
       Array.from({ length: Math.min(count, 12) }, (_, i) => {
-        const direction = Math.random() > 0.5 ? 'horizontal' : 'vertical';
-        const startPosition = Math.random() > 0.5 ? 'start' : 'end';
+        const direction = Math.random() > 0.5 ? "horizontal" : "vertical";
+        const startPosition = Math.random() > 0.5 ? "start" : "end";
 
         return {
           id: i,
@@ -77,7 +87,7 @@ function GridBackground({
           // For horizontal beams: choose a row index (1 to rows-1) - exclude edges
           // For vertical beams: choose a column index (1 to cols-1) - exclude edges
           gridLine:
-            direction === 'horizontal'
+            direction === "horizontal"
               ? Math.floor(Math.random() * (rows - 1)) + 1
               : Math.floor(Math.random() * (cols - 1)) + 1,
           delay: Math.random() * 2,
@@ -88,21 +98,25 @@ function GridBackground({
   );
 
   const gridStyle = {
-    '--border-style': borderStyle,
+    "--border-style": borderStyle,
   } as React.CSSProperties;
 
   return (
     <motion.div
       data-slot="grid-background"
-      className={cn('relative size-full overflow-hidden', background, className)}
+      className={cn(
+        "relative size-full overflow-hidden",
+        background,
+        className,
+      )}
       style={gridStyle}
       {...props}
     >
       {/* Grid Container */}
       <div
-        className={cn('absolute inset-0 size-full', borderColor)}
+        className={cn("absolute inset-0 size-full", borderColor)}
         style={{
-          display: 'grid',
+          display: "grid",
           gridTemplateColumns: `repeat(${cols}, 1fr)`,
           gridTemplateRows: `repeat(${rows}, 1fr)`,
           borderRightWidth: borderSize,
@@ -115,7 +129,7 @@ function GridBackground({
         {Array.from({ length: cols * rows }).map((_, index) => (
           <div
             key={index}
-            className={cn('relative', borderColor)}
+            className={cn("relative", borderColor)}
             style={{
               borderTopWidth: borderSize,
               borderLeftWidth: borderSize,
@@ -136,24 +150,30 @@ function GridBackground({
           <motion.div
             key={beam.id}
             className={cn(
-              'absolute rounded-full backdrop-blur-sm z-20',
+              "absolute rounded-full backdrop-blur-sm z-20",
               beam.color,
-              beam.direction === 'horizontal' ? 'w-6 h-0.5' : 'w-0.5 h-6',
+              beam.direction === "horizontal" ? "w-6 h-0.5" : "w-0.5 h-6",
               shadow,
             )}
             style={{
-              ...(beam.direction === 'horizontal'
+              ...(beam.direction === "horizontal"
                 ? {
                     // Position exactly on the horizontal grid line
                     top: `${horizontalPosition}%`,
-                    left: beam.startPosition === 'start' ? '-12px' : 'calc(100% + 12px)',
-                    transform: 'translateY(-50%)', // Center on the line
+                    left:
+                      beam.startPosition === "start"
+                        ? "-12px"
+                        : "calc(100% + 12px)",
+                    transform: "translateY(-50%)", // Center on the line
                   }
                 : {
                     // Position exactly on the vertical grid line
                     left: `${verticalPosition}%`,
-                    top: beam.startPosition === 'start' ? '-12px' : 'calc(100% + 12px)',
-                    transform: 'translateX(-50%)', // Center on the line
+                    top:
+                      beam.startPosition === "start"
+                        ? "-12px"
+                        : "calc(100% + 12px)",
+                    transform: "translateX(-50%)", // Center on the line
                   }),
             }}
             initial={{
@@ -161,14 +181,20 @@ function GridBackground({
             }}
             animate={{
               opacity: [0, 1, 1, 0],
-              ...(beam.direction === 'horizontal'
+              ...(beam.direction === "horizontal"
                 ? {
                     // Move across the full width of the container
-                    x: beam.startPosition === 'start' ? [0, 'calc(100vw + 24px)'] : [0, 'calc(-100vw - 24px)'],
+                    x:
+                      beam.startPosition === "start"
+                        ? [0, "calc(100vw + 24px)"]
+                        : [0, "calc(-100vw - 24px)"],
                   }
                 : {
                     // Move across the full height of the container
-                    y: beam.startPosition === 'start' ? [0, 'calc(100vh + 24px)'] : [0, 'calc(-100vh - 24px)'],
+                    y:
+                      beam.startPosition === "start"
+                        ? [0, "calc(100vh + 24px)"]
+                        : [0, "calc(-100vh - 24px)"],
                   }),
             }}
             transition={{
@@ -176,7 +202,7 @@ function GridBackground({
               delay: beam.delay,
               repeat: Infinity,
               repeatDelay: Math.random() * 3 + 2, // 2-5s pause between repeats
-              ease: 'linear',
+              ease: "linear",
               times: [0, 0.1, 0.9, 1], // Quick fade in, maintain, quick fade out
             }}
           />
