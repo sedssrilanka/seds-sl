@@ -36,10 +36,7 @@ export default function Component() {
       <CardContent className="p-6">
         <Marquee pauseOnHover fade={true}>
           {chapters.map((chapter) => (
-            <div
-              key={chapter.name}
-              className="group mx-4 flex items-center"
-            >
+            <div key={chapter.name} className="group mx-4 flex items-center">
               {mounted ? (
                 <Image
                   src={
