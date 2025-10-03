@@ -32,7 +32,7 @@ export default function Component() {
   }, []);
 
   return (
-    <Card className="w-full">
+    <Card className="w-full shadow-none hover:glass-1">
       <CardContent className="p-6">
         <Marquee pauseOnHover fade={true}>
           {chapters.map((chapter) => (
