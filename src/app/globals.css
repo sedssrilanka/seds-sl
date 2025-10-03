@@ -148,6 +148,10 @@
 @utility glass-2 {
   @apply border-border from-card/100 to-card/80 dark:border-border/10 dark:border-b-border/5 dark:border-t-border/20 dark:from-card/10 dark:to-card/5 border bg-linear-to-b;
 }
+
+@utility glass-2v {
+  @apply border-border border;
+}
 @utility glass-3 {
   @apply border-border from-card/30 to-card/20 dark:border-border/10 dark:border-t-border/20 dark:border-b-border/5 dark:from-primary/5 dark:to-primary/2 border bg-linear-to-b;
 }
