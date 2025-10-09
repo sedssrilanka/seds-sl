@@ -1,5 +1,4 @@
 import { Globe, Users, Flag, Network  } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
 import {
   Card,
@@ -7,14 +6,12 @@ import {
   CardTitle,
   CardVisual,
 } from "@/components/ui/card";
-
 interface WhoWeAre {
     id: number;
     icon: React.ReactNode;
     title: string;
     description: string;
 }
-
 const whoweare: WhoWeAre[] = [
     {
         id: 1,
@@ -41,8 +38,6 @@ const whoweare: WhoWeAre[] = [
         description: "We aim to inspire and empower students to contribute to space exploration and development, promoting innovation, education, and sustainable progress in the global space sector."
     },
 ];
-
-
 const Cardd = ({ whoweare }:{ whoweare : WhoWeAre }) =>(
     <Card className = "rounded-none border ">
         <CardVisual className="h-20 items-start justify-start">
@@ -54,8 +49,6 @@ const Cardd = ({ whoweare }:{ whoweare : WhoWeAre }) =>(
         </CardDescription>
     </Card>
 );
-
-
 const WhoWeAreSection = ()=>{
     return (
         <section className="bg-background relative w-full  p-6">
@@ -81,8 +74,4 @@ const WhoWeAreSection = ()=>{
             </section>
     )
 }
-
-
-
-
 export default WhoWeAreSection;
