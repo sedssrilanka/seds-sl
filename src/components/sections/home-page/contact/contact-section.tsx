@@ -21,6 +21,7 @@ import {
   type ContactFormData,
   reasonOptions,
 } from "@/lib/schemas/contact";
+import { SectionHeader } from "@/components/sections/section-header";
 
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -77,37 +78,31 @@ const ContactSection = () => {
 
   return (
     <section className="bg-background relative w-full min-h-screen flex flex-col">
-      <div className="relative flex flex-col items-center justify-center py-16 px-6 text-center">
-        <div
-          className="absolute inset-0 opacity-20"
-          style={{
-            backgroundImage: "url('/divisionimg/moon.jpeg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            filter: "brightness(0.3)",
-          }}
-        />
-
-        <div className="relative z-10 max-w-3xl">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
-            Get in Touch with SEDS Sri Lanka
-          </h1>
-          <p className="text-muted-foreground text-base md:text-lg mb-8 max-w-2xl mx-auto">
+      <SectionHeader
+        title="Get in Touch with SEDS Sri Lanka"
+        description={
+          <>
             Whether you're a student looking to join, a partner interested in
             working with us, or simply curious about our projects, reach out and
             our team will get back to you soon.
-          </p>
-          <Button
-            size="lg"
-            variant="default"
-            className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
-          >
-            Book an appointment
-          </Button>
-        </div>
-      </div>
+          </>
+        }
+        image="/divisionimg/moon.jpeg"
+      >
+        <Button
+          asChild
+          size="lg"
+          variant="default"
+          className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+        >
+          <a href="#contact-form">Book an appointment</a>
+        </Button>
+      </SectionHeader>
 
-      <div className="flex-1 flex items-center justify-center px-6 py-12">
+      <div
+        id="contact-form"
+        className="flex-1 flex items-center justify-center px-6 py-12"
+      >
         <div className="w-full max-w-3xl border border-border rounded-lg p-10 md:p-16">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
