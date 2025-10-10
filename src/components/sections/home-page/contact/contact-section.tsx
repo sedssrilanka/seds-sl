@@ -1,38 +1,46 @@
 "use client";
 
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 
-interface FormData {
-  fullName: string;
-  email: string;
-  reasons: string[];
-  message: string;
-}
+const formSchema = z.object({
+  fullName: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email address"),
+  reasons: z.array(z.string()).min(1, "Please select at least one reason"),
+  message: z.string().min(10, "Message must be at least 10 characters"),
+});
 
-interface FormErrors {
-  fullName?: string;
-  email?: string;
-  reasons?: string;
-  message?: string;
-}
+type FormData = z.infer<typeof formSchema>;
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState<FormData>({
-    fullName: "",
-    email: "",
-    reasons: [],
-    message: "",
-  });
-
-  const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<
     "idle" | "success" | "error"
   >("idle");
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      fullName: "",
+      email: "",
+      reasons: [],
+      message: "",
+    },
+  });
 
   const reasonOptions = [
     { id: "contribution", label: "Contribution" },
@@ -41,64 +49,7 @@ const ContactSection = () => {
     { id: "others", label: "Others" },
   ];
 
-  const validateForm = (): boolean => {
-    const newErrors: FormErrors = {};
-
-    if (!formData.fullName.trim()) {
-      newErrors.fullName = "Full name is required";
-    } else if (formData.fullName.trim().length < 2) {
-      newErrors.fullName = "Name must be at least 2 characters";
-    }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address";
-    }
-
-    if (formData.reasons.length === 0) {
-      newErrors.reasons = "Please select at least one reason";
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required";
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters";
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-    if (errors[name as keyof FormErrors]) {
-      setErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
-  };
-
-  const handleCheckboxChange = (reasonId: string) => {
-    setFormData((prev) => {
-      const newReasons = prev.reasons.includes(reasonId)
-        ? prev.reasons.filter((r) => r !== reasonId)
-        : [...prev.reasons, reasonId];
-      return { ...prev, reasons: newReasons };
-    });
-    if (errors.reasons) {
-      setErrors((prev) => ({ ...prev, reasons: undefined }));
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
+  const onSubmit = async (_data: FormData) => {
     setIsSubmitting(true);
     setSubmitStatus("idle");
 
@@ -106,7 +57,7 @@ const ContactSection = () => {
       await new Promise((resolve) => setTimeout(resolve, 1500));
 
       setSubmitStatus("success");
-      setFormData({ fullName: "", email: "", reasons: [], message: "" });
+      form.reset();
 
       setTimeout(() => setSubmitStatus("idle"), 5000);
     } catch (_error) {
@@ -150,129 +101,152 @@ const ContactSection = () => {
 
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-3xl border border-border rounded-lg p-10 md:p-16">
-          <form onSubmit={handleSubmit} className="space-y-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-3 border border-border rounded-md p-4">
-                <Label
-                  htmlFor="fullName"
-                  className="text-foreground mb-3 block"
-                >
-                  Full Name
-                </Label>
-                <Input
-                  id="fullName"
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
                   name="fullName"
-                  type="text"
-                  placeholder="Type here"
-                  value={formData.fullName}
-                  onChange={handleInputChange}
-                  className={`bg-background border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary ${
-                    errors.fullName
-                      ? "text-destructive border-b-destructive"
-                      : ""
-                  }`}
-                  disabled={isSubmitting}
+                  render={({ field }) => (
+                    <FormItem className="space-y-3 border border-border rounded-md p-4">
+                      <FormLabel className="text-foreground mb-3 block">
+                        Full Name
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Type here"
+                          className="bg-background border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+                          disabled={isSubmitting}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                {errors.fullName && (
-                  <p className="text-sm text-destructive">{errors.fullName}</p>
-                )}
-              </div>
 
-              <div className="space-y-3 border border-border rounded-md p-4">
-                <Label htmlFor="email" className="text-foreground mb-3 block">
-                  Email
-                </Label>
-                <Input
-                  id="email"
+                <FormField
+                  control={form.control}
                   name="email"
-                  type="email"
-                  placeholder="Type here"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  className={`bg-background border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary ${
-                    errors.email ? "text-destructive border-b-destructive" : ""
-                  }`}
-                  disabled={isSubmitting}
+                  render={({ field }) => (
+                    <FormItem className="space-y-3 border border-border rounded-md p-4">
+                      <FormLabel className="text-foreground mb-3 block">
+                        Email
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="email"
+                          placeholder="Type here"
+                          className="bg-background border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+                          disabled={isSubmitting}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                {errors.email && (
-                  <p className="text-sm text-destructive">{errors.email}</p>
+              </div>
+
+              <FormField
+                control={form.control}
+                name="reasons"
+                render={() => (
+                  <FormItem className="space-y-4 border border-border rounded-md p-5">
+                    <FormLabel className="text-foreground text-base block mb-6">
+                      Why are you contacting us?
+                    </FormLabel>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {reasonOptions.map((option) => (
+                        <FormField
+                          key={option.id}
+                          control={form.control}
+                          name="reasons"
+                          render={({ field }) => {
+                            return (
+                              <FormItem
+                                key={option.id}
+                                className="flex flex-row items-start space-x-3 space-y-0"
+                              >
+                                <FormControl>
+                                  <Checkbox
+                                    checked={field.value?.includes(option.id)}
+                                    onCheckedChange={(checked) => {
+                                      return checked
+                                        ? field.onChange([
+                                            ...field.value,
+                                            option.id,
+                                          ])
+                                        : field.onChange(
+                                            field.value?.filter(
+                                              (value) => value !== option.id,
+                                            ),
+                                          );
+                                    }}
+                                    disabled={isSubmitting}
+                                  />
+                                </FormControl>
+                                <FormLabel className="text-foreground group-hover:text-primary transition-colors cursor-pointer">
+                                  {option.label}
+                                </FormLabel>
+                              </FormItem>
+                            );
+                          }}
+                        />
+                      ))}
+                    </div>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-            </div>
-
-            <div className="space-y-4 border border-border rounded-md p-5">
-              <Label className="text-foreground text-base block mb-6">
-                Why are you contacting us?
-              </Label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {reasonOptions.map((option) => (
-                  <label
-                    key={option.id}
-                    className="flex items-center space-x-3 cursor-pointer group"
-                  >
-                    <input
-                      type="checkbox"
-                      checked={formData.reasons.includes(option.id)}
-                      onChange={() => handleCheckboxChange(option.id)}
-                      disabled={isSubmitting}
-                      className="w-5 h-5 rounded border-border bg-background text-primary focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background cursor-pointer"
-                    />
-                    <span className="text-foreground group-hover:text-primary transition-colors">
-                      {option.label}
-                    </span>
-                  </label>
-                ))}
-              </div>
-              {errors.reasons && (
-                <p className="text-sm text-destructive">{errors.reasons}</p>
-              )}
-            </div>
-
-            <div className="space-y-3 border border-border rounded-md p-4">
-              <Label htmlFor="message" className="text-foreground mb-3 block">
-                Your Message
-              </Label>
-              <Textarea
-                id="message"
-                name="message"
-                placeholder="Type here"
-                value={formData.message}
-                onChange={handleInputChange}
-                className={`bg-background border-0 px-0 rounded-none min-h-[150px] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary ${
-                  errors.message ? "text-destructive border-b-destructive" : ""
-                }`}
-                disabled={isSubmitting}
               />
-              {errors.message && (
-                <p className="text-sm text-destructive">{errors.message}</p>
+
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem className="space-y-3 border border-border rounded-md p-4">
+                    <FormLabel className="text-foreground mb-3 block">
+                      Your Message
+                    </FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Type here"
+                        className="bg-background border-0 px-0 rounded-none min-h-[150px] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+                        disabled={isSubmitting}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className="flex justify-center">
+                <Button
+                  type="submit"
+                  size="lg"
+                  variant="default"
+                  className="px-12 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Submitting..." : "Submit"}
+                </Button>
+              </div>
+
+              {submitStatus === "success" && (
+                <div className="glass-3 rounded-md p-4 text-center text-sm text-primary">
+                  Thank you! Your message has been sent successfully. We'll get
+                  back to you soon.
+                </div>
               )}
-            </div>
-
-            <div className="flex justify-center">
-              <Button
-                type="submit"
-                size="lg"
-                variant="default"
-                className="px-12 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                disabled={isSubmitting}
-              >
-                {isSubmitting ? "Submitting..." : "Submit"}
-              </Button>
-            </div>
-
-            {submitStatus === "success" && (
-              <div className="glass-3 rounded-md p-4 text-center text-sm text-primary">
-                Thank you! Your message has been sent successfully. We'll get
-                back to you soon.
-              </div>
-            )}
-            {submitStatus === "error" && (
-              <div className="glass-3 rounded-md p-4 text-center text-sm text-destructive">
-                Sorry, there was an error sending your message. Please try again
-                later.
-              </div>
-            )}
-          </form>
+              {submitStatus === "error" && (
+                <div className="glass-3 rounded-md p-4 text-center text-sm text-destructive">
+                  Sorry, there was an error sending your message. Please try
+                  again later.
+                </div>
+              )}
+            </form>
+          </Form>
         </div>
       </div>
     </section>
