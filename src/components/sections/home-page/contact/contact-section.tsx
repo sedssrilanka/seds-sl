@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,24 +16,17 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
-const formSchema = z.object({
-  fullName: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Please enter a valid email address"),
-  reasons: z.array(z.string()).min(1, "Please select at least one reason"),
-  message: z.string().min(10, "Message must be at least 10 characters"),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import {
+  contactFormSchema,
+  type ContactFormData,
+  reasonOptions,
+} from "@/lib/schemas/contact";
 
 const ContactSection = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<
-    "idle" | "success" | "error"
-  >("idle");
 
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<ContactFormData>({
+    resolver: zodResolver(contactFormSchema),
     defaultValues: {
       fullName: "",
       email: "",
@@ -42,26 +35,41 @@ const ContactSection = () => {
     },
   });
 
-  const reasonOptions = [
-    { id: "contribution", label: "Contribution" },
-    { id: "membership", label: "Membership" },
-    { id: "event", label: "Event participation" },
-    { id: "others", label: "Others" },
-  ];
-
-  const onSubmit = async (_data: FormData) => {
+  const onSubmit = async (data: ContactFormData) => {
     setIsSubmitting(true);
-    setSubmitStatus("idle");
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-      setSubmitStatus("success");
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || "Failed to send message");
+      }
+
+      // Show success toast
+      toast.success("Message sent successfully!", {
+        description: "Thank you for contacting us. We'll get back to you soon.",
+        duration: 5000,
+      });
+
+      // Reset form
       form.reset();
+    } catch (error) {
+      console.error("Form submission error:", error);
 
-      setTimeout(() => setSubmitStatus("idle"), 5000);
-    } catch (_error) {
-      setSubmitStatus("error");
+      // Show error toast
+      toast.error("Failed to send message", {
+        description:
+          error instanceof Error ? error.message : "Please try again later.",
+        duration: 5000,
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -115,7 +123,6 @@ const ContactSection = () => {
                       <FormControl>
                         <Input
                           placeholder="Type here"
-                          
                           className="!bg-transparent border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
                           disabled={isSubmitting}
                           {...field}
@@ -230,22 +237,37 @@ const ContactSection = () => {
                   className="px-12 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? "Submitting..." : "Submit"}
+                  {isSubmitting ? (
+                    <>
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        aria-label="Loading spinner"
+                      >
+                        <title>Loading spinner</title>
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                      Sending...
+                    </>
+                  ) : (
+                    "Submit"
+                  )}
                 </Button>
               </div>
-
-              {submitStatus === "success" && (
-                <div className="glass-3 rounded-md p-4 text-center text-sm text-primary">
-                  Thank you! Your message has been sent successfully. We'll get
-                  back to you soon.
-                </div>
-              )}
-              {submitStatus === "error" && (
-                <div className="glass-3 rounded-md p-4 text-center text-sm text-destructive">
-                  Sorry, there was an error sending your message. Please try
-                  again later.
-                </div>
-              )}
             </form>
           </Form>
         </div>
