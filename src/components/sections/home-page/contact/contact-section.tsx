@@ -115,7 +115,8 @@ const ContactSection = () => {
                       <FormControl>
                         <Input
                           placeholder="Type here"
-                          className="bg-background border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+                          
+                          className="!bg-transparent border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
                           disabled={isSubmitting}
                           {...field}
                         />
@@ -137,7 +138,7 @@ const ContactSection = () => {
                         <Input
                           type="email"
                           placeholder="Type here"
-                          className="bg-background border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+                          className="!bg-transparent border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
                           disabled={isSubmitting}
                           {...field}
                         />
@@ -211,7 +212,7 @@ const ContactSection = () => {
                     <FormControl>
                       <Textarea
                         placeholder="Type here"
-                        className="bg-background border-0 px-0 rounded-none min-h-[150px] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+                        className="!bg-transparent border-0 px-0 rounded-none min-h-[150px] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
                         disabled={isSubmitting}
                         {...field}
                       />
