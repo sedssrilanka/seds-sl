@@ -30,7 +30,9 @@ const ContactSection = () => {
 
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
+  const [submitStatus, setSubmitStatus] = useState<
+    "idle" | "success" | "error"
+  >("idle");
 
   const reasonOptions = [
     { id: "contribution", label: "Contribution" },
@@ -101,14 +103,13 @@ const ContactSection = () => {
     setSubmitStatus("idle");
 
     try {
-      
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      
+
       setSubmitStatus("success");
       setFormData({ fullName: "", email: "", reasons: [], message: "" });
-      
+
       setTimeout(() => setSubmitStatus("idle"), 5000);
-    } catch (error) {
+    } catch (_error) {
       setSubmitStatus("error");
     } finally {
       setIsSubmitting(false);
@@ -117,10 +118,8 @@ const ContactSection = () => {
 
   return (
     <section className="bg-background relative w-full min-h-screen flex flex-col">
-  
       <div className="relative flex flex-col items-center justify-center py-16 px-6 text-center">
-    
-        <div 
+        <div
           className="absolute inset-0 opacity-20"
           style={{
             backgroundImage: "url('/divisionimg/moon.jpeg')",
@@ -129,16 +128,18 @@ const ContactSection = () => {
             filter: "brightness(0.3)",
           }}
         />
-        
+
         <div className="relative z-10 max-w-3xl">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
             Get in Touch with SEDS Sri Lanka
           </h1>
           <p className="text-muted-foreground text-base md:text-lg mb-8 max-w-2xl mx-auto">
-            Whether you're a student looking to join, a partner interested in working with us, or simply curious about our projects, reach out and our team will get back to you soon.
+            Whether you're a student looking to join, a partner interested in
+            working with us, or simply curious about our projects, reach out and
+            our team will get back to you soon.
           </p>
-          <Button 
-            size="lg" 
+          <Button
+            size="lg"
             variant="default"
             className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
           >
@@ -147,15 +148,15 @@ const ContactSection = () => {
         </div>
       </div>
 
-  
       <div className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-3xl border border-border rounded-lg p-10 md:p-16">
           <form onSubmit={handleSubmit} className="space-y-10">
-            
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              
               <div className="space-y-3 border border-border rounded-md p-4">
-                <Label htmlFor="fullName" className="text-foreground mb-3 block">
+                <Label
+                  htmlFor="fullName"
+                  className="text-foreground mb-3 block"
+                >
                   Full Name
                 </Label>
                 <Input
@@ -166,7 +167,9 @@ const ContactSection = () => {
                   value={formData.fullName}
                   onChange={handleInputChange}
                   className={`bg-background border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary ${
-                    errors.fullName ? "text-destructive border-b-destructive" : ""
+                    errors.fullName
+                      ? "text-destructive border-b-destructive"
+                      : ""
                   }`}
                   disabled={isSubmitting}
                 />
@@ -197,7 +200,6 @@ const ContactSection = () => {
               </div>
             </div>
 
-        
             <div className="space-y-4 border border-border rounded-md p-5">
               <Label className="text-foreground text-base block mb-6">
                 Why are you contacting us?
@@ -226,7 +228,6 @@ const ContactSection = () => {
               )}
             </div>
 
-            
             <div className="space-y-3 border border-border rounded-md p-4">
               <Label htmlFor="message" className="text-foreground mb-3 block">
                 Your Message
@@ -247,7 +248,6 @@ const ContactSection = () => {
               )}
             </div>
 
-            
             <div className="flex justify-center">
               <Button
                 type="submit"
@@ -260,15 +260,16 @@ const ContactSection = () => {
               </Button>
             </div>
 
-      
             {submitStatus === "success" && (
               <div className="glass-3 rounded-md p-4 text-center text-sm text-primary">
-                Thank you! Your message has been sent successfully. We'll get back to you soon.
+                Thank you! Your message has been sent successfully. We'll get
+                back to you soon.
               </div>
             )}
             {submitStatus === "error" && (
               <div className="glass-3 rounded-md p-4 text-center text-sm text-destructive">
-                Sorry, there was an error sending your message. Please try again later.
+                Sorry, there was an error sending your message. Please try again
+                later.
               </div>
             )}
           </form>
