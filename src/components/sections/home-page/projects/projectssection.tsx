@@ -1,10 +1,6 @@
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardDescription,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 
 interface Project {
   id: number;
@@ -47,8 +43,12 @@ const projects: Project[] = [
 const ProjectCard = ({ project }: { project: Project }) => (
   <Card className="bg-background border-input rounded-lg px-8 py-8 min-h-[320px] flex flex-col justify-between h-full w-full">
     <div>
-      <CardTitle className="text-xl font-bold mb-4 text-foreground">{project.title}</CardTitle>
-      <CardDescription className="text-sm leading-relaxed mb-6 text-muted-foreground">{project.description}</CardDescription>
+      <CardTitle className="text-xl font-bold mb-4 text-foreground">
+        {project.title}
+      </CardTitle>
+      <CardDescription className="text-sm leading-relaxed mb-6 text-muted-foreground">
+        {project.description}
+      </CardDescription>
     </div>
     <div className="flex items-center justify-between bg-primary/10 border border-primary/20 rounded-2xl px-6 py-4 shadow-sm">
       <div className="flex items-center gap-2 text-primary">
@@ -83,7 +83,9 @@ const ProjectsSection = () => {
             Ongoing Local Projects
           </CardTitle>
           <CardDescription className="text-lg mt-4">
-            Here are four ongoing local projects by SEDS Sri Lanka that showcase the organization's commitment to advancing space <br />exploration and technology:
+            Here are four ongoing local projects by SEDS Sri Lanka that showcase
+            the organization's commitment to advancing space <br />
+            exploration and technology:
           </CardDescription>
         </Card>
 
