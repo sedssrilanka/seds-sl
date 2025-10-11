@@ -10,7 +10,7 @@ const Index: React.FC<Props> = () => {
     <section
       data-slot="section-one"
       data-testid="section-one"
-      className="bg-background text-foreground relative w-full overflow-hidden h-screen"
+      className="bg-black text-foreground relative w-full overflow-hidden h-screen"
     >
       <GradientBackground
         className="from-background via-primary/20 to-background"

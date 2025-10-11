@@ -297,3 +297,7 @@
 @utility fade-right-lg {
   mask-image: linear-gradient(to left, transparent 15%, black 100%);
 }
+
+.hover\:pause-marquee:hover {
+  animation-play-state: paused !important;
+}

@@ -32,23 +32,26 @@ export default function Component() {
   }, []);
 
   return (
-    <Card className="w-full shadow-none hover:glass-1">
-      <CardContent className="p-6">
-        <Marquee pauseOnHover fade={true}>
+    <section className="bg-black relative w-full p-6">
+      <Card className="w-full shadow-none bg-black border-border rounded-none">
+        <CardContent className="p-6">
+        <Marquee fade={true}>
           {chapters.map((chapter) => (
             <div key={chapter.name} className="group mx-4 flex items-center">
               {mounted ? (
-                <Image
-                  src={
-                    resolvedTheme === "dark"
-                      ? chapter.logo.dark
-                      : chapter.logo.light
-                  }
-                  alt={chapter.name}
-                  width={120}
-                  height={120}
-                  className="mr-4 invert transition-all duration-300 "
-                />
+                <div className="hover:pause-marquee">
+                  <Image
+                    src={
+                      resolvedTheme === "dark"
+                        ? chapter.logo.dark
+                        : chapter.logo.light
+                    }
+                    alt={chapter.name}
+                    width={120}
+                    height={120}
+                    className="mr-4 invert transition-all duration-300 hover:scale-105"
+                  />
+                </div>
               ) : (
                 <div
                   style={{ width: 120, height: 120 }}
@@ -58,7 +61,8 @@ export default function Component() {
             </div>
           ))}
         </Marquee>
-      </CardContent>
-    </Card>
+        </CardContent>
+      </Card>
+    </section>
   );
 }
