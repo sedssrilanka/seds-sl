@@ -1,23 +1,9 @@
 import type React from "react";
-import { Button } from "@/components/ui/button";
 
 interface SectionHeaderProps {
   title: string;
   description: React.ReactNode;
   image: string;
-  button?: {
-    text: string;
-    href?: string;
-    onClick?: () => void;
-    variant?:
-      | "default"
-      | "secondary"
-      | "outline"
-      | "ghost"
-      | "link"
-      | "destructive";
-    size?: "default" | "sm" | "lg" | "icon";
-  };
   children?: React.ReactNode;
 }
 
@@ -25,40 +11,20 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   title,
   description,
   image,
-  button,
   children,
 }) => {
   return (
     <div
-      className="flex flex-col items-center justify-center text-center p-8 h-65 w-full bg-center bg-cover bg-no-repeat text-foreground border"
+      className="flex flex-col items-center justify-center text-center p-4 md:p-6 lg:p-8 min-h-[200px] md:min-h-[250px] lg:min-h-[300px] w-full bg-center bg-cover bg-no-repeat text-foreground"
       style={{ backgroundImage: `url(${image})` }}
     >
-      <h2 className="text-4xl font-bold mb-4">{title}</h2>
-      <div className="text-lg mt-4">{description}</div>
-      {button && (
-        <div className="mt-6">
-          {button.href ? (
-            <Button
-              asChild
-              variant={button.variant || "default"}
-              size={button.size || "lg"}
-              className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
-            >
-              <a href={button.href}>{button.text}</a>
-            </Button>
-          ) : (
-            <Button
-              variant={button.variant || "default"}
-              size={button.size || "lg"}
-              onClick={button.onClick}
-              className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
-            >
-              {button.text}
-            </Button>
-          )}
-        </div>
-      )}
-      {children && <div className="mt-6">{children}</div>}
+      <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 px-4">
+        {title}
+      </h2>
+      <div className="text-sm md:text-base lg:text-lg mt-3 md:mt-4 px-4 max-w-4xl">
+        {description}
+      </div>
+      {children && <div className="mt-4 md:mt-6 px-4">{children}</div>}
     </div>
   );
 };

@@ -1,12 +1,15 @@
-import { Bot, Laptop, Plane, Rocket, Telescope, Users } from "lucide-react";
+import {
+  Bot,
+  Laptop,
+  Plane,
+  Rocket,
+  Telescope,
+  Users,
+  ArrowRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
-import {
-  Card,
-  CardDescription,
-  CardTitle,
-  CardVisual,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 
 interface Division {
   id: number;
@@ -61,41 +64,75 @@ const divisions: Division[] = [
 ];
 
 const DivisionCard = ({ division }: { division: Division }) => (
-  <Card className="rounded-none border ">
-    <CardVisual className="h-20 items-start justify-start">
-      <div className="glass-3 rounded-md p-4 ">{division.icon}</div>
-    </CardVisual>
-    <CardTitle className="text-xl">{division.title}</CardTitle>
-    <CardDescription className="text-sm leading-relaxed">
-      {division.description}
-    </CardDescription>
-    <Button variant="secondary" size="lg" className=" rounded-sm">
-      Learn More
-    </Button>
+  <Card className="rounded-none border p-6">
+    <div className="flex flex-col h-full">
+      <div className="flex items-start gap-4 mb-4">
+        <div className="flex-shrink-0 p-3 bg-primary/10 border border-primary/20">
+          {division.icon}
+        </div>
+        <div className="flex-1">
+          <CardTitle className="text-xl font-bold mb-3">
+            {division.title}
+          </CardTitle>
+        </div>
+      </div>
+
+      <CardDescription className="text-sm leading-relaxed mb-6 flex-1">
+        {division.description}
+      </CardDescription>
+
+      <div className="flex items-center justify-between">
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-sm border-primary/20 hover:bg-primary/10"
+        >
+          Learn More
+        </Button>
+      </div>
+    </div>
   </Card>
 );
 
 const DivisionsSection = () => {
   return (
-    <section className="bg-background relative w-full  p-6">
-      <div className="flex flex-col items-center mx-auto">
-        <SectionHeader
-          title="Our Divisions"
-          description={
-            <>
-              Our divisions bring together innovators, researchers, and
-              enthusiasts to collaborate on projects that span from
-              <br />
-              satellites and rovers to education and outreach.
-            </>
-          }
-          image="/divisionimg/header.png"
-        />
+    <section className="bg-black relative w-full">
+      <div className="section-background bg-black"></div>
+      <div className="grid-container section-content">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12">
+          <SectionHeader
+            title="Our Divisions"
+            description={
+              <>
+                Our divisions bring together innovators, researchers, and
+                enthusiasts to collaborate on projects that span from
+                <br />
+                satellites and rovers to education and outreach.
+              </>
+            }
+            image="/divisionimg/header.png"
+          />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-border dark:border-border/50">
-          {divisions.map((division) => (
-            <DivisionCard key={division.id} division={division} />
-          ))}
+          <div className="mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
+              {divisions.slice(0, 3).map((division) => (
+                <DivisionCard key={division.id} division={division} />
+              ))}
+
+              {/* View All Divisions Card */}
+              <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
+                <div className="flex flex-col items-end justify-start h-full text-right">
+                  <h3 className="text-xl font-bold mb-4 text-foreground">
+                    Discover All Divisions
+                  </h3>
+                  <div className="flex items-right gap-2 text-primary">
+                    <span className="font-medium">View All Divisions</span>
+                    <ArrowRight className="size-5" />
+                  </div>
+                </div>
+              </Card>
+            </div>
+          </div>
         </div>
       </div>
     </section>

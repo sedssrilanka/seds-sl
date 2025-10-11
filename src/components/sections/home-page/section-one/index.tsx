@@ -1,7 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { GradientBackground } from "@/components/ui/gradient-background";
-import Planet from "./planet";
-import Rocket from "./rockets";
 
 type Props = React.HTMLAttributes<HTMLDivElement>;
 
@@ -10,22 +7,11 @@ const Index: React.FC<Props> = () => {
     <section
       data-slot="section-one"
       data-testid="section-one"
-      className="bg-background text-foreground relative w-full overflow-hidden h-screen"
+      className="bg-black text-foreground w-full min-h-screen flex items-center justify-center"
     >
-      <GradientBackground
-        className="from-background via-primary/20 to-background"
-        transition={{ duration: 100, ease: "easeInOut", repeat: Infinity }}
-      >
-        <div className="container mx-auto relative flex items-center justify-center max-w-5xl min-h-[calc(100vh-80px)]">
-          <div className="absolute left-[-15%] w-1/3 transform-gpu">
-            <Rocket />
-          </div>
-
-          <div className="absolute right-[-10%] w-1/3 transform-gpu">
-            <Planet />
-          </div>
-
-          <div className="mx-auto text-center z-10 w-full px-4">
+      <div className="grid-container">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12">
+          <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-8">
               Be a Part of the Largest
               <br />
@@ -44,7 +30,7 @@ const Index: React.FC<Props> = () => {
             </div>
           </div>
         </div>
-      </GradientBackground>
+      </div>
     </section>
   );
 };
