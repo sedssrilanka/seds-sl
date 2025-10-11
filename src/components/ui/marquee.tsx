@@ -1,5 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 import { cn } from "@/lib/utils";
+import { useTheme } from "next-themes";
 
 export type MarqueeProps = HTMLAttributes<HTMLDivElement> & {
   children: ReactNode;
@@ -22,6 +23,8 @@ export function Marquee({
   numberOfCopies = 2,
   ...rest
 }: MarqueeProps) {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
   return (
     <div
       {...rest}
@@ -55,8 +58,12 @@ export function Marquee({
         ))}
       {fade && (
         <>
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-black/95 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-black/95 to-transparent" />
+          <div className={`pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r ${
+            isLight ? "from-white/95 to-transparent" : "from-black/95 to-transparent"
+          }`} />
+          <div className={`pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l ${
+            isLight ? "from-white/95 to-transparent" : "from-black/95 to-transparent"
+          }`} />
         </>
       )}
     </div>

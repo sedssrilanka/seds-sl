@@ -42,8 +42,8 @@ const projects: Project[] = [
 ];
 
 const ProjectCard = ({ project }: { project: Project }) => (
-  <Card className="rounded-none border">
-    <div className="p-6 flex flex-col h-full">
+  <Card className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none">
+    <div className=" flex flex-col h-full">
       {/* Project Image Placeholder - Standard 16:9 aspect ratio */}
       <div className="w-full aspect-video bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10 mb-4 flex items-center justify-center">
         <div className="text-primary/60 text-sm font-medium">Project Image</div>
@@ -76,8 +76,8 @@ const ProjectCard = ({ project }: { project: Project }) => (
 
 const ProjectsSection = () => {
   return (
-    <section className="bg-black relative w-full">
-      <div className="section-background bg-black"></div>
+    <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
+      <div className="section-background bg-background dark:bg-black"></div>
       <div className="grid-container section-content">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <SectionHeader
@@ -93,13 +93,13 @@ const ProjectsSection = () => {
           />
 
           <div className="mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
+            <div className="grid grid-cols-1 md:grid-cols-2 border-border/60 dark:border-border/50">
               {projects.slice(0, 3).map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
 
               {/* View All Projects Card */}
-              <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20 ">
+              <Card className="rounded-none light-mode-card p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
                 <div className="flex flex-col items-end justify-start h-full text-right">
                   <h3 className="text-xl font-bold mb-4 text-foreground">
                     Explore More Projects

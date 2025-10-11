@@ -13,6 +13,7 @@ import {
 } from "../../ui/navbar";
 import Navigation from "../../ui/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
+import { ThemeSwitcher } from "../../ui/theme-switcher";
 
 interface NavbarLink {
   text: string;
@@ -67,16 +68,18 @@ export default function Navbar({
 }: NavbarProps) {
   return (
     <header className={cn("sticky top-0 z-50 -mb-4", className)}>
-      <div className="fade-bottom bg-background/15 absolute left-0 h-24 flex flex-col items-center justify-center w-full backdrop-blur-lg"></div>
+      <div className="fade-bottom bg-background/80 dark:bg-background/15 absolute left-0 h-24 flex flex-col items-center justify-center w-full backdrop-blur-lg border-b border-border/20 dark:border-border/10"></div>
       <div className="grid-container section-content">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <NavbarComponent>
             <NavbarLeft>
               <a
                 href={homeUrl}
-                className="flex items-center gap-2 text-xl font-bold"
+                className="flex items-center gap-2 text-xl font-bold text-foreground"
               >
-                {logo}
+                <div className="invert dark:invert-0">
+                  {logo}
+                </div>
                 {name}
               </a>
             </NavbarLeft>
@@ -84,6 +87,9 @@ export default function Navbar({
               {showNavigation && (customNavigation || <Navigation />)}
             </NavbarCenter>
             <NavbarRight>
+              <div className="hidden md:block">
+                <ThemeSwitcher defaultValue="system" />
+              </div>
               {actions.map((action) =>
                 action.isButton ? (
                   <Button
@@ -101,7 +107,7 @@ export default function Navbar({
                   <a
                     key={action.href}
                     href={action.href}
-                    className="hidden text-sm md:block"
+                    className="hidden text-sm md:block text-foreground hover:text-primary transition-colors"
                   >
                     {action.text}
                   </a>
@@ -122,19 +128,28 @@ export default function Navbar({
                   <nav className="grid gap-6 text-lg font-medium">
                     <a
                       href={homeUrl}
-                      className="flex items-center gap-2 text-xl font-bold"
+                      className="flex items-center gap-2 text-xl font-bold text-foreground"
                     >
+                      <div className="invert dark:invert-0">
+                        {logo}
+                      </div>
                       <span>{name}</span>
                     </a>
                     {mobileLinks.map((link) => (
                       <a
                         key={link.href}
                         href={link.href}
-                        className="text-muted-foreground hover:text-foreground"
+                        className="text-muted-foreground hover:text-foreground transition-colors"
                       >
                         {link.text}
                       </a>
                     ))}
+                    <div className="pt-4 border-t border-border">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium text-foreground">Theme</span>
+                        <ThemeSwitcher defaultValue="system" />
+                      </div>
+                    </div>
                   </nav>
                 </SheetContent>
               </Sheet>
