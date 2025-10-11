@@ -38,32 +38,35 @@ export default function Component() {
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <Card className="w-full shadow-none bg-black border-border rounded-none">
             <CardContent className="p-6">
-            <Marquee fade={true}>
-              {chapters.map((chapter) => (
-                <div key={chapter.name} className="group mx-4 flex items-center">
-                  {mounted ? (
-                    <div className="hover:pause-marquee">
-                      <Image
-                        src={
-                          resolvedTheme === "dark"
-                            ? chapter.logo.dark
-                            : chapter.logo.light
-                        }
-                        alt={chapter.name}
-                        width={120}
-                        height={120}
-                        className="mr-4 invert transition-all duration-300 hover:scale-105"
+              <Marquee fade={true}>
+                {chapters.map((chapter) => (
+                  <div
+                    key={chapter.name}
+                    className="group mx-4 flex items-center"
+                  >
+                    {mounted ? (
+                      <div className="hover:pause-marquee">
+                        <Image
+                          src={
+                            resolvedTheme === "dark"
+                              ? chapter.logo.dark
+                              : chapter.logo.light
+                          }
+                          alt={chapter.name}
+                          width={120}
+                          height={120}
+                          className="mr-4 invert transition-all duration-300 hover:scale-105"
+                        />
+                      </div>
+                    ) : (
+                      <div
+                        style={{ width: 120, height: 120 }}
+                        className="mr-4 animate-pulse bg-gray-200 dark:bg-gray-700"
                       />
-                    </div>
-                  ) : (
-                    <div
-                      style={{ width: 120, height: 120 }}
-                      className="mr-4 animate-pulse bg-gray-200 dark:bg-gray-700"
-                    />
-                  )}
-                </div>
-              ))}
-            </Marquee>
+                    )}
+                  </div>
+                ))}
+              </Marquee>
             </CardContent>
           </Card>
         </div>

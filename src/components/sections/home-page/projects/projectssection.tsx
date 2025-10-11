@@ -48,30 +48,25 @@ const ProjectCard = ({ project }: { project: Project }) => (
       <div className="w-full aspect-video bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10 mb-4 flex items-center justify-center">
         <div className="text-primary/60 text-sm font-medium">Project Image</div>
       </div>
-      
+
       <CardTitle className="text-xl font-bold mb-3 text-foreground">
         {project.title}
       </CardTitle>
-      
+
       <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
-        {project.description.length > 120 
-          ? `${project.description.substring(0, 120)}...` 
-          : project.description
-        }
+        {project.description.length > 120
+          ? `${project.description.substring(0, 120)}...`
+          : project.description}
       </CardDescription>
-      
+
       {/* Bottom Section with Date and Button */}
       <div className="flex items-center justify-between mt-auto">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Calendar className="size-4" />
           <span className="text-sm font-medium">{project.date}</span>
         </div>
-        
-        <Button
-          variant="outline"
-          size="sm"
-          className="rounded-sm"
-        >
+
+        <Button variant="outline" size="sm" className="rounded-sm">
           Know More
         </Button>
       </div>
@@ -89,8 +84,8 @@ const ProjectsSection = () => {
             title="Ongoing Local Projects"
             description={
               <>
-                Here are four ongoing local projects by SEDS Sri Lanka that showcase
-                the organization's commitment to advancing space <br />
+                Here are four ongoing local projects by SEDS Sri Lanka that
+                showcase the organization's commitment to advancing space <br />
                 exploration and technology:
               </>
             }
@@ -102,7 +97,7 @@ const ProjectsSection = () => {
               {projects.slice(0, 3).map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
-              
+
               {/* View All Projects Card */}
               <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20 ">
                 <div className="flex flex-col items-end justify-start h-full text-right">

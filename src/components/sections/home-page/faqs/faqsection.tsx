@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
 import { ArrowRight } from "lucide-react";
 
@@ -82,7 +81,7 @@ const FAQItem = ({
   onToggle: () => void;
 }) => {
   return (
-    <Card 
+    <Card
       className="rounded-none border p-3 md:p-4 cursor-pointer transition-colors duration-300 hover:border-primary/20"
       onClick={onToggle}
     >
@@ -109,7 +108,9 @@ const FAQItem = ({
             </CardTitle>
             <div
               className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                isOpen ? "max-h-[300px] opacity-100 mt-2 md:mt-3" : "max-h-0 opacity-0 mt-0"
+                isOpen
+                  ? "max-h-[300px] opacity-100 mt-2 md:mt-3"
+                  : "max-h-0 opacity-0 mt-0"
               }`}
             >
               <CardDescription className="text-xs md:text-sm leading-relaxed text-muted-foreground">
@@ -147,8 +148,8 @@ const FAQSection = () => {
             title="Frequently Asked Questions"
             description={
               <>
-                We know you might have a lot of questions about SEDS Sri Lanka. Who
-                we are, what we do, and how you can be part <br />
+                We know you might have a lot of questions about SEDS Sri Lanka.
+                Who we are, what we do, and how you can be part <br />
                 of our journey.
               </>
             }
@@ -165,7 +166,7 @@ const FAQSection = () => {
                   onToggle={() => handleToggle(faq.id)}
                 />
               ))}
-              
+
               {/* View All FAQ Card */}
               <Card className="rounded-none border p-4 md:p-6 lg:p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
                 <div className="flex items-center justify-between">
@@ -174,11 +175,14 @@ const FAQSection = () => {
                       Have More Questions?
                     </h3>
                     <p className="text-sm md:text-base text-muted-foreground">
-                      Explore our complete FAQ section with detailed answers to all your questions.
+                      Explore our complete FAQ section with detailed answers to
+                      all your questions.
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-primary ml-4">
-                    <span className="font-medium text-sm md:text-base">View All FAQs</span>
+                    <span className="font-medium text-sm md:text-base">
+                      View All FAQs
+                    </span>
                     <ArrowRight className="size-4 md:size-5" />
                   </div>
                 </div>

@@ -77,7 +77,7 @@ const WhoWeAreSection = () => {
               {whoweare.slice(0, 3).map((w) => (
                 <Cardd key={w.id} whoweare={w} />
               ))}
-              
+
               {/* View All About Us Card */}
               <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
                 <div className="flex flex-col items-end justify-start h-full text-right">

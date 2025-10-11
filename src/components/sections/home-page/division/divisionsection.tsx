@@ -1,12 +1,15 @@
-import { Bot, Laptop, Plane, Rocket, Telescope, Users, ArrowRight } from "lucide-react";
+import {
+  Bot,
+  Laptop,
+  Plane,
+  Rocket,
+  Telescope,
+  Users,
+  ArrowRight,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
-import {
-  Card,
-  CardDescription,
-  CardTitle,
-  CardVisual,
-} from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 
 interface Division {
   id: number;
@@ -68,18 +71,20 @@ const DivisionCard = ({ division }: { division: Division }) => (
           {division.icon}
         </div>
         <div className="flex-1">
-          <CardTitle className="text-xl font-bold mb-3">{division.title}</CardTitle>
+          <CardTitle className="text-xl font-bold mb-3">
+            {division.title}
+          </CardTitle>
         </div>
       </div>
-      
+
       <CardDescription className="text-sm leading-relaxed mb-6 flex-1">
         {division.description}
       </CardDescription>
-      
+
       <div className="flex items-center justify-between">
-        <Button 
-          variant="outline" 
-          size="sm" 
+        <Button
+          variant="outline"
+          size="sm"
           className="rounded-sm border-primary/20 hover:bg-primary/10"
         >
           Learn More
@@ -113,7 +118,7 @@ const DivisionsSection = () => {
               {divisions.slice(0, 3).map((division) => (
                 <DivisionCard key={division.id} division={division} />
               ))}
-              
+
               {/* View All Divisions Card */}
               <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
                 <div className="flex flex-col items-end justify-start h-full text-right">
