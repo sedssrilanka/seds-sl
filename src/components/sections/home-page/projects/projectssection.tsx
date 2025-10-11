@@ -42,26 +42,39 @@ const projects: Project[] = [
 ];
 
 const ProjectCard = ({ project }: { project: Project }) => (
-  <Card className="bg-background border-input rounded-lg px-8 py-8 min-h-[320px] flex flex-col justify-between h-full w-full">
-    <div>
-      <CardTitle className="text-xl font-bold mb-4 text-foreground">
+  <Card className="rounded-none border">
+    <div className="p-6 flex flex-col h-full">
+      {/* Project Image Placeholder - Standard 16:9 aspect ratio */}
+      <div className="w-full aspect-video bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10 mb-4 flex items-center justify-center">
+        <div className="text-primary/60 text-sm font-medium">Project Image</div>
+      </div>
+      
+      <CardTitle className="text-xl font-bold mb-3 text-foreground">
         {project.title}
       </CardTitle>
-      <CardDescription className="text-sm leading-relaxed mb-6 text-muted-foreground">
-        {project.description}
+      
+      <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
+        {project.description.length > 120 
+          ? `${project.description.substring(0, 120)}...` 
+          : project.description
+        }
       </CardDescription>
-    </div>
-    <div className="flex items-center justify-between bg-primary/10 border border-primary/20 rounded-2xl px-6 py-4 shadow-sm">
-      <div className="flex items-center gap-2 text-primary">
-        <Calendar className="size-4" />
-        <span className="text-sm font-medium">{project.date}</span>
+      
+      {/* Bottom Section with Date and Button */}
+      <div className="flex items-center justify-between mt-auto">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <Calendar className="size-4" />
+          <span className="text-sm font-medium">{project.date}</span>
+        </div>
+        
+        <Button
+          variant="outline"
+          size="sm"
+          className="rounded-sm"
+        >
+          Know More
+        </Button>
       </div>
-      <Button
-        variant="outline"
-        className="bg-primary text-primary-foreground font-medium text-sm rounded-xl px-4 py-2 border-none hover:bg-primary/90 transition-colors shadow-sm"
-      >
-        Project details
-      </Button>
     </div>
   </Card>
 );
@@ -82,7 +95,7 @@ const ProjectsSection = () => {
           image="/projectsimg/space-projects-bg.jpeg"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
           {projects.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
