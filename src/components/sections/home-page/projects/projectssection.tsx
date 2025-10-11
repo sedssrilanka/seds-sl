@@ -81,8 +81,8 @@ const ProjectCard = ({ project }: { project: Project }) => (
 
 const ProjectsSection = () => {
   return (
-    <section className="bg-background relative w-full p-6">
-      <div className="flex flex-col items-center mx-auto">
+    <section className="bg-black relative w-full p-6">
+      <div className="flex flex-col items-center mx-auto max-w-7xl">
         <SectionHeader
           title="Ongoing Local Projects"
           description={
@@ -95,10 +95,12 @@ const ProjectsSection = () => {
           image="/projectsimg/space-projects-bg.jpeg"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
+        <div className="w-full max-w-5xl mx-auto mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
+            {projects.map((project) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

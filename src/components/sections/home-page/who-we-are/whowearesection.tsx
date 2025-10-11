@@ -55,8 +55,8 @@ const Cardd = ({ whoweare }: { whoweare: WhoWeAre }) => (
 );
 const WhoWeAreSection = () => {
   return (
-    <section className="bg-background relative w-full  p-6">
-      <div className="flex flex-col items-center mx-auto">
+    <section className="bg-black relative w-full p-6">
+      <div className="flex flex-col items-center mx-auto max-w-7xl">
         <SectionHeader
           title="Who We Are"
           description={
@@ -70,10 +70,12 @@ const WhoWeAreSection = () => {
           image="/divisionimg/header.png"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 border-border dark:border-border/50">
-          {whoweare.map((w) => (
-            <Cardd key={w.id} whoweare={w} />
-          ))}
+        <div className="w-full max-w-4xl mx-auto mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 border-border dark:border-border/50">
+            {whoweare.map((w) => (
+              <Cardd key={w.id} whoweare={w} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

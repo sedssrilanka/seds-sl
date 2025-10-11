@@ -81,7 +81,7 @@ const FAQItem = ({
 }) => {
   return (
     <Card 
-      className="bg-background border-input rounded-none p-4 cursor-pointer transition-colors duration-300 hover:border-primary/20"
+      className="rounded-none border p-4 cursor-pointer transition-colors duration-300 hover:border-primary/20"
       onClick={onToggle}
     >
       <div className="flex justify-between items-start">
@@ -137,8 +137,8 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-background relative w-full p-6">
-      <div className="flex flex-col items-center mx-auto">
+    <section className="bg-black relative w-full p-6">
+      <div className="flex flex-col items-center mx-auto max-w-7xl">
         <SectionHeader
           title="Frequently Asked Questions"
           description={
@@ -151,7 +151,7 @@ const FAQSection = () => {
           image="/faqimg/faq-bg.jpeg"
         />
 
-        <div className="w-full max-w-4xl mx-auto">
+        <div className="w-full max-w-4xl mx-auto mt-12">
           <div className="space-y-0">
             {faqItems.map((faq) => (
               <FAQItem

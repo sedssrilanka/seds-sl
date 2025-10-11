@@ -77,27 +77,29 @@ const ContactSection = () => {
   };
 
   return (
-    <section className="bg-background relative w-full min-h-screen flex flex-col">
-      <SectionHeader
-        title="Get in Touch with SEDS Sri Lanka"
-        description={
-          <>
-            Whether you're a student looking to join, a partner interested in
-            working with us, or simply curious about our projects, reach out and
-            our team will get back to you soon.
-          </>
-        }
-        image="/divisionimg/moon.jpeg"
-      >
-        <Button
-          asChild
-          size="lg"
-          variant="default"
-          className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+    <section className="bg-black relative w-full min-h-screen flex flex-col">
+      <div className="max-w-7xl mx-auto w-full">
+        <SectionHeader
+          title="Get in Touch with SEDS Sri Lanka"
+          description={
+            <>
+              Whether you're a student looking to join, a partner interested in
+              working with us, or simply curious about our projects, reach out and
+              our team will get back to you soon.
+            </>
+          }
+          image="/divisionimg/moon.jpeg"
         >
-          <a href="#contact-form">Book an appointment</a>
-        </Button>
-      </SectionHeader>
+          <Button
+            asChild
+            size="lg"
+            variant="default"
+            className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+          >
+            <a href="#contact-form">Book an appointment</a>
+          </Button>
+        </SectionHeader>
+      </div>
 
       <div
         id="contact-form"

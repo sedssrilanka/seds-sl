@@ -77,8 +77,8 @@ const DivisionCard = ({ division }: { division: Division }) => (
 
 const DivisionsSection = () => {
   return (
-    <section className="bg-background relative w-full  p-6">
-      <div className="flex flex-col items-center mx-auto">
+    <section className="bg-black relative w-full p-6">
+      <div className="flex flex-col items-center mx-auto max-w-7xl">
         <SectionHeader
           title="Our Divisions"
           description={
@@ -92,10 +92,12 @@ const DivisionsSection = () => {
           image="/divisionimg/header.png"
         />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-border dark:border-border/50">
-          {divisions.map((division) => (
-            <DivisionCard key={division.id} division={division} />
-          ))}
+        <div className="w-full max-w-6xl mx-auto mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-border dark:border-border/50">
+            {divisions.map((division) => (
+              <DivisionCard key={division.id} division={division} />
+            ))}
+          </div>
         </div>
       </div>
     </section>
