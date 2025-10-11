@@ -32,11 +32,11 @@ export default function Component() {
   }, []);
 
   return (
-    <section className="bg-black relative w-full">
-      <div className="section-background bg-black"></div>
+    <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
+      <div className="section-background bg-background dark:bg-black"></div>
       <div className="grid-container section-content">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
-          <Card className="w-full shadow-none bg-black border-border rounded-none">
+          <Card className="w-full shadow-sm dark:shadow-none light-mode-card rounded-none">
             <CardContent className="p-6">
               <Marquee fade={true}>
                 {chapters.map((chapter) => (
@@ -49,19 +49,19 @@ export default function Component() {
                         <Image
                           src={
                             resolvedTheme === "dark"
-                              ? chapter.logo.dark
-                              : chapter.logo.light
+                              ? chapter.logo.light
+                              : chapter.logo.dark
                           }
                           alt={chapter.name}
                           width={120}
                           height={120}
-                          className="mr-4 invert transition-all duration-300 hover:scale-105"
+                          className="mr-4 transition-all duration-300 hover:scale-105"
                         />
                       </div>
                     ) : (
                       <div
                         style={{ width: 120, height: 120 }}
-                        className="mr-4 animate-pulse bg-gray-200 dark:bg-gray-700"
+                        className="mr-4 animate-pulse bg-muted/30 dark:bg-muted/20"
                       />
                     )}
                   </div>

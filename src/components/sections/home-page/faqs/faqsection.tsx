@@ -82,7 +82,7 @@ const FAQItem = ({
 }) => {
   return (
     <Card
-      className="rounded-none border p-3 md:p-4 cursor-pointer transition-colors duration-300 hover:border-primary/20"
+      className="rounded-none border p-3 md:p-4 cursor-pointer transition-colors duration-300 hover:border-primary/20 shadow-sm dark:shadow-none"
       onClick={onToggle}
     >
       <div className="flex justify-between items-start">
@@ -140,8 +140,8 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-black relative w-full">
-      <div className="section-background bg-black"></div>
+    <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
+      <div className="section-background bg-background dark:bg-black"></div>
       <div className="grid-container section-content">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <SectionHeader
@@ -168,7 +168,7 @@ const FAQSection = () => {
               ))}
 
               {/* View All FAQ Card */}
-              <Card className="rounded-none border p-4 md:p-6 lg:p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
+              <Card className="rounded-none light-mode-card p-4 md:p-6 lg:p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
                     <h3 className="text-lg md:text-xl font-bold mb-2 text-foreground">

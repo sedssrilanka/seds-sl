@@ -78,8 +78,8 @@ const ContactSection = () => {
   };
 
   return (
-    <section className="bg-black relative w-full min-h-screen flex flex-col">
-      <div className="section-background bg-black"></div>
+    <section className="light-mode-section relative w-full min-h-screen flex flex-col pt-8 md:pt-12 lg:pt-16">
+      <div className="section-background bg-background dark:bg-black"></div>
       <div className="grid-container section-content flex-1">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <SectionHeader
@@ -111,7 +111,7 @@ const ContactSection = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Contact Form - Takes 2 columns on desktop */}
             <div className="lg:col-span-2">
-              <Card className="rounded-none border p-6 md:p-8">
+              <Card className="rounded-none light-mode-card p-6 md:p-8 shadow-sm dark:shadow-none">
                 <Form {...form}>
                   <form
                     onSubmit={form.handleSubmit(onSubmit)}
@@ -314,7 +314,7 @@ const ContactSection = () => {
             <div className="lg:col-span-1">
               <div className="space-y-6">
                 {/* Become a Member Card */}
-                <Card className="rounded-none border p-6 !glass-5">
+                <Card className="rounded-none border p-6 !glass-5 shadow-sm dark:shadow-none">
                   <div className="text-center">
                     <h3 className="text-xl font-bold mb-3 text-foreground">
                       Become a Member
@@ -334,7 +334,7 @@ const ContactSection = () => {
                 </Card>
 
                 {/* Benefits Card */}
-                <Card className="rounded-none border p-6 glass-5">
+                <Card className="rounded-none border p-6 glass-5 shadow-sm dark:shadow-none">
                   <h3 className="text-lg font-bold mb-4 text-foreground">
                     Member Benefits
                   </h3>

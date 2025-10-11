@@ -14,6 +14,7 @@
 import { useRef, useMemo, useEffect, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
+import { useTheme } from "next-themes";
 import * as THREE from "three";
 
 // Scroll-based animation hook
@@ -92,10 +93,13 @@ function IsometricCamera() {
 // Custom Star Field Component
 function CustomStarField() {
   const starsRef = useRef<THREE.Points>(null);
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
 
   const starGeometry = useMemo(() => {
-    const positions = new Float32Array(3000 * 3);
-    for (let i = 0; i < 3000; i++) {
+    const starCount = isLight ? 1500 : 3000; // Reduce stars in light mode
+    const positions = new Float32Array(starCount * 3);
+    for (let i = 0; i < starCount; i++) {
       positions[i * 3] = (Math.random() - 0.5) * 300;
       positions[i * 3 + 1] = (Math.random() - 0.5) * 300;
       positions[i * 3 + 2] = (Math.random() - 0.5) * 300;
@@ -104,44 +108,80 @@ function CustomStarField() {
       "position",
       new THREE.BufferAttribute(positions, 3),
     );
-  }, []);
+  }, [isLight]);
 
   return (
     <points ref={starsRef} geometry={starGeometry}>
       <pointsMaterial
-        color="#ffffff"
-        size={0.3}
+        color={isLight ? "#666666" : "#ffffff"}
+        size={isLight ? 0.2 : 0.3}
         transparent
-        opacity={0.8}
+        opacity={isLight ? 0.4 : 0.8}
         sizeAttenuation={false}
       />
     </points>
   );
 }
 
-// Wireframe Material Factory Function
-function createWireframeMaterial(color: string, opacity: number) {
+// Theme-aware Material Factory Function
+function createWireframeMaterial(
+  color: string,
+  opacity: number,
+  isLight: boolean = false,
+) {
   return new THREE.MeshBasicMaterial({
     color: color,
     wireframe: true,
     transparent: true,
-    opacity: opacity,
+    opacity: isLight ? opacity * 0.8 : opacity, // Reduce opacity in light mode
     side: THREE.DoubleSide,
     depthTest: true,
     depthWrite: false,
   });
 }
 
-// Orange Wireframe Materials with improved rendering
-const wireframeMaterial = createWireframeMaterial("#ff8c00", 0.6);
-const wireframeMaterialSecondary = createWireframeMaterial("#ff6b35", 0.5);
-const wireframeMaterialAccent = createWireframeMaterial("#ffa500", 0.4);
+// Theme-aware color palette
+function getThemeColors(isLight: boolean) {
+  if (isLight) {
+    return {
+      primary: "#d97706", // Darker orange for light mode
+      secondary: "#ea580c", // Darker red-orange
+      accent: "#f59e0b", // Darker amber
+      grid: "#d97706", // Darker grid color
+      orbital: "#d97706", // Darker orbital rings
+    };
+  } else {
+    return {
+      primary: "#ff8c00", // Original orange
+      secondary: "#ff6b35", // Original red-orange
+      accent: "#ffa500", // Original amber
+      grid: "#ff8c00", // Original grid color
+      orbital: "#ff8c00", // Original orbital rings
+    };
+  }
+}
 
 // Space Station Component with scroll effects
 function SpaceStation() {
   const stationRef = useRef<THREE.Group>(null);
   const solarPanelRef = useRef<THREE.Group>(null);
   const { scrollY, isVisible } = useScrollAnimation();
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  const colors = getThemeColors(isLight);
+
+  const wireframeMaterial = useMemo(
+    () => createWireframeMaterial(colors.primary, 0.6, isLight),
+    [colors.primary, isLight],
+  );
+  const wireframeMaterialSecondary = useMemo(
+    () => createWireframeMaterial(colors.secondary, 0.5, isLight),
+    [colors.secondary, isLight],
+  );
+  const wireframeMaterialAccent = useMemo(
+    () => createWireframeMaterial(colors.accent, 0.4, isLight),
+    [colors.accent, isLight],
+  );
 
   useFrame((state) => {
     if (stationRef.current && isVisible) {
@@ -243,6 +283,18 @@ function Satellite({
 }) {
   const satelliteRef = useRef<THREE.Group>(null);
   const { scrollY, isVisible } = useScrollAnimation();
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  const colors = getThemeColors(isLight);
+
+  const wireframeMaterial = useMemo(
+    () => createWireframeMaterial(colors.primary, 0.6, isLight),
+    [colors.primary, isLight],
+  );
+  const wireframeMaterialAccent = useMemo(
+    () => createWireframeMaterial(colors.accent, 0.4, isLight),
+    [colors.accent, isLight],
+  );
 
   useFrame((state) => {
     if (satelliteRef.current && isVisible) {
@@ -352,6 +404,14 @@ function Asteroid({
 }) {
   const asteroidRef = useRef<THREE.Mesh>(null);
   const { scrollY, isVisible } = useScrollAnimation();
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  const colors = getThemeColors(isLight);
+
+  const wireframeMaterialSecondary = useMemo(
+    () => createWireframeMaterial(colors.secondary, 0.5, isLight),
+    [colors.secondary, isLight],
+  );
 
   useFrame((state) => {
     if (asteroidRef.current && isVisible) {
@@ -405,6 +465,14 @@ function SpaceDebris({
 }) {
   const debrisRef = useRef<THREE.Group>(null);
   const { scrollY, isVisible } = useScrollAnimation();
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  const colors = getThemeColors(isLight);
+
+  const wireframeMaterialAccent = useMemo(
+    () => createWireframeMaterial(colors.accent, 0.4, isLight),
+    [colors.accent, isLight],
+  );
 
   useFrame((state) => {
     if (debrisRef.current && isVisible) {
@@ -443,7 +511,15 @@ function SpaceDebris({
 }
 
 // Orbital Ring Component
-function OrbitalRing({ radius, color }: { radius: number; color: string }) {
+function OrbitalRing({
+  radius,
+  color,
+  isLight = false,
+}: {
+  radius: number;
+  color: string;
+  isLight?: boolean;
+}) {
   const ringGeometry = useMemo(() => {
     const points = [];
     const segments = 64;
@@ -458,25 +534,24 @@ function OrbitalRing({ radius, color }: { radius: number; color: string }) {
     return new THREE.BufferGeometry().setFromPoints(points);
   }, [radius]);
 
-  return (
-    <primitive
-      object={
-        new THREE.Line(
-          ringGeometry,
-          new THREE.LineBasicMaterial({
-            color: color,
-            transparent: true,
-            opacity: 0.3,
-            linewidth: 1,
-          }),
-        )
-      }
-    />
-  );
+  const ringMaterial = useMemo(() => {
+    return new THREE.LineBasicMaterial({
+      color: color,
+      transparent: true,
+      opacity: isLight ? 0.2 : 0.3, // Reduce opacity in light mode
+      linewidth: 1,
+    });
+  }, [color, isLight]);
+
+  return <primitive object={new THREE.Line(ringGeometry, ringMaterial)} />;
 }
 
 // Static Isometric Grid Component
 function InfiniteGrid() {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  const colors = getThemeColors(isLight);
+
   const gridGeometry = useMemo(() => {
     const points = [];
     const size = 200; // Large grid size
@@ -505,12 +580,12 @@ function InfiniteGrid() {
 
   const gridMaterial = useMemo(() => {
     return new THREE.LineBasicMaterial({
-      color: "#ff8c00",
+      color: colors.grid,
       transparent: true,
-      opacity: 0.15,
+      opacity: isLight ? 0.1 : 0.15, // Reduce opacity in light mode
       linewidth: 1,
     });
-  }, []);
+  }, [colors.grid, isLight]);
 
   return (
     <group position={[0, -20, 0]}>
@@ -521,10 +596,20 @@ function InfiniteGrid() {
 
 // Main Space Scene Component
 export default function SpaceScene() {
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
+  const colors = getThemeColors(isLight);
+
   return (
     <div className="fixed inset-0 w-screen h-screen z-0">
-      {/* Dark Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black/60 via-black/30 to-black/40 pointer-events-none" />
+      {/* Theme-aware Gradient Background */}
+      <div
+        className={`absolute inset-0 pointer-events-none ${
+          isLight
+            ? "bg-gradient-to-br from-white/20 via-white/10 to-white/30"
+            : "bg-gradient-to-br from-black/60 via-black/30 to-black/40"
+        }`}
+      />
 
       <Canvas
         style={{
@@ -543,21 +628,29 @@ export default function SpaceScene() {
         {/* Isometric Camera Setup */}
         <IsometricCamera />
 
-        {/* Lighting Setup */}
-        <ambientLight intensity={0.2} />
-        <pointLight position={[10, 15, 10]} intensity={1.0} color="#ffffff" />
-        <pointLight position={[-8, 8, -8]} intensity={0.5} color="#ff8c00" />
+        {/* Theme-aware Lighting Setup */}
+        <ambientLight intensity={isLight ? 0.4 : 0.2} />
+        <pointLight
+          position={[10, 15, 10]}
+          intensity={isLight ? 0.8 : 1.0}
+          color="#ffffff"
+        />
+        <pointLight
+          position={[-8, 8, -8]}
+          intensity={isLight ? 0.3 : 0.5}
+          color={colors.primary}
+        />
         <directionalLight
           position={[5, 10, 5]}
-          intensity={0.6}
+          intensity={isLight ? 0.4 : 0.6}
           color="#ffffff"
         />
 
-        {/* Background stars */}
+        {/* Background stars - reduced in light mode */}
         <Stars
           radius={400}
           depth={80}
-          count={8000}
+          count={isLight ? 4000 : 8000}
           factor={6}
           saturation={0}
           fade={false}
@@ -570,10 +663,10 @@ export default function SpaceScene() {
         {/* Infinite Isometric Grid */}
         <InfiniteGrid />
 
-        {/* Orbital Rings */}
-        <OrbitalRing radius={8} color="#ff8c00" />
-        <OrbitalRing radius={12} color="#ff6b35" />
-        <OrbitalRing radius={16} color="#ffa500" />
+        {/* Theme-aware Orbital Rings */}
+        <OrbitalRing radius={8} color={colors.orbital} isLight={isLight} />
+        <OrbitalRing radius={12} color={colors.secondary} isLight={isLight} />
+        <OrbitalRing radius={16} color={colors.accent} isLight={isLight} />
 
         {/* Space Station */}
         <SpaceStation />

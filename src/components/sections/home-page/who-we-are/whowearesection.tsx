@@ -43,7 +43,7 @@ const whoweare: WhoWeAre[] = [
   },
 ];
 const Cardd = ({ whoweare }: { whoweare: WhoWeAre }) => (
-  <Card className="rounded-none border ">
+  <Card className="rounded-none border shadow-sm dark:shadow-none">
     <CardVisual className="h-20 items-start justify-start">
       <div className="glass-3 rounded-md p-4 ">{whoweare.icon}</div>
     </CardVisual>
@@ -55,8 +55,8 @@ const Cardd = ({ whoweare }: { whoweare: WhoWeAre }) => (
 );
 const WhoWeAreSection = () => {
   return (
-    <section className="bg-black relative w-full">
-      <div className="section-background bg-black"></div>
+    <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
+      <div className="section-background bg-background dark:bg-black"></div>
       <div className="grid-container section-content">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <SectionHeader
@@ -73,13 +73,13 @@ const WhoWeAreSection = () => {
           />
 
           <div className="mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 border-border dark:border-border/50">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 border-border/60 dark:border-border/50">
               {whoweare.slice(0, 3).map((w) => (
                 <Cardd key={w.id} whoweare={w} />
               ))}
 
               {/* View All About Us Card */}
-              <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
+              <Card className="rounded-none light-mode-card p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
                 <div className="flex flex-col items-end justify-start h-full text-right">
                   <h3 className="text-xl font-bold mb-4 text-foreground">
                     Learn More About Us
