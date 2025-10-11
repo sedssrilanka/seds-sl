@@ -1,6 +1,7 @@
 import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { SectionHeader } from "@/components/sections/section-header";
 
 interface Project {
   id: number;
@@ -67,27 +68,19 @@ const ProjectCard = ({ project }: { project: Project }) => (
 
 const ProjectsSection = () => {
   return (
-    <section className="relative w-full py-16 text-foreground">
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-      <div className="relative z-10 mx-auto w-full px-6 max-w-7xl">
-        <Card
-          className="text-center mb-12 p-8 w-full"
-          style={{
-            backgroundImage: `url(/projectsimg/space-projects-bg.jpeg)`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-          }}
-        >
-          <CardTitle className="text-4xl font-bold mb-4">
-            Ongoing Local Projects
-          </CardTitle>
-          <CardDescription className="text-lg mt-4">
-            Here are four ongoing local projects by SEDS Sri Lanka that showcase
-            the organization's commitment to advancing space <br />
-            exploration and technology:
-          </CardDescription>
-        </Card>
+    <section className="bg-background relative w-full p-6">
+      <div className="flex flex-col items-center mx-auto">
+        <SectionHeader
+          title="Ongoing Local Projects"
+          description={
+            <>
+              Here are four ongoing local projects by SEDS Sri Lanka that showcase
+              the organization's commitment to advancing space <br />
+              exploration and technology:
+            </>
+          }
+          image="/projectsimg/space-projects-bg.jpeg"
+        />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
           {projects.map((project) => (

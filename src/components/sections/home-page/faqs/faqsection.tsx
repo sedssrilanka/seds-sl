@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { SectionHeader } from "@/components/sections/section-header";
 
 interface FaqItem {
   id: number;
@@ -79,31 +80,34 @@ const FAQItem = ({
   onToggle: () => void;
 }) => {
   return (
-    <Card className="bg-background border-input p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
-      <div onClick={onToggle} className="flex justify-between items-start">
-        <div className="flex items-start gap-6 flex-1">
-          {/* Question Number - Light iPhone-style when open, transparent when closed */}
+    <Card 
+      className="bg-background border-input rounded-none p-4 cursor-pointer transition-colors duration-300 hover:border-primary/20"
+      onClick={onToggle}
+    >
+      <div className="flex justify-between items-start">
+        <div className="flex items-start gap-4 flex-1">
+          {/* Question Number - Clean rectangular design */}
           <div
             className={`flex-shrink-0 transition-all duration-300 ${
               isOpen
-                ? "bg-primary/10 text-primary border border-primary/20 rounded-2xl shadow-sm"
-                : "text-muted-foreground"
-            } px-4 py-3 min-w-[60px] text-center`}
+                ? "bg-primary/10 text-primary border border-primary/20"
+                : "text-muted-foreground border border-muted-foreground/20"
+            } px-3 py-2 min-w-[50px] text-center`}
           >
-            <span className="font-bold text-lg">{faq.number}</span>
+            <span className="font-bold text-base">{faq.number}</span>
           </div>
 
           <div className="flex-1">
             <CardTitle
-              className={`text-lg font-semibold mb-0 transition-colors duration-300 ${
+              className={`text-base font-semibold mb-0 transition-colors duration-300 ${
                 isOpen ? "text-primary" : "text-foreground"
               }`}
             >
               {faq.question}
             </CardTitle>
             <div
-              className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                isOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
+              className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                isOpen ? "max-h-[300px] opacity-100 mt-3" : "max-h-0 opacity-0 mt-0"
               }`}
             >
               <CardDescription className="text-sm leading-relaxed text-muted-foreground">
@@ -114,7 +118,7 @@ const FAQItem = ({
         </div>
 
         <span
-          className={`text-xl ml-4 transition-all duration-300 flex-shrink-0 ${
+          className={`text-lg ml-3 transition-all duration-300 flex-shrink-0 ${
             isOpen ? "text-primary rotate-90" : "text-muted-foreground rotate-0"
           }`}
         >
@@ -133,41 +137,23 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="relative w-full py-16 text-foreground">
-      <div className="absolute inset-0 bg-background/80 backdrop-blur-sm" />
-      <div className="relative z-10 mx-auto w-full px-6 max-w-7xl">
-        <Card
-          className="text-center mb-12 p-8 w-full"
-          style={{
-            backgroundImage: `url(/faqimg/faq-bg.jpeg)`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundAttachment: "fixed",
-          }}
-        >
-          <CardTitle className="text-4xl font-bold mb-4">
-            Frequently Asked Questions
-          </CardTitle>
-          <CardDescription className="text-lg max-w-2xl mx-auto">
-            We know you might have a lot of questions about SEDS Sri Lanka. Who
-            we are, what we do, and how you can be part <br />
-            of our journey.
-          </CardDescription>
-        </Card>
+    <section className="bg-background relative w-full p-6">
+      <div className="flex flex-col items-center mx-auto">
+        <SectionHeader
+          title="Frequently Asked Questions"
+          description={
+            <>
+              We know you might have a lot of questions about SEDS Sri Lanka. Who
+              we are, what we do, and how you can be part <br />
+              of our journey.
+            </>
+          }
+          image="/faqimg/faq-bg.jpeg"
+        />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-          <div className="space-y-6 w-full">
-            {faqItems.slice(0, 4).map((faq) => (
-              <FAQItem
-                key={faq.id}
-                faq={faq}
-                isOpen={openItemId === faq.id}
-                onToggle={() => handleToggle(faq.id)}
-              />
-            ))}
-          </div>
-          <div className="space-y-6 w-full">
-            {faqItems.slice(4, 8).map((faq) => (
+        <div className="w-full max-w-4xl mx-auto">
+          <div className="space-y-0">
+            {faqItems.map((faq) => (
               <FAQItem
                 key={faq.id}
                 faq={faq}
