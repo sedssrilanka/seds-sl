@@ -1,6 +1,98 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+/* Custom Toast Styles */
+.toaster {
+  --toast-bg: hsl(var(--background));
+  --toast-border: hsl(var(--border));
+  --toast-text: hsl(var(--foreground));
+  --toast-success: hsl(var(--primary));
+  --toast-error: hsl(var(--destructive));
+  --toast-warning: hsl(38 92% 50%);
+  --toast-info: hsl(221 83% 53%);
+}
+
+[data-sonner-toaster] {
+  --normal-bg: var(--toast-bg);
+  --normal-border: var(--toast-border);
+  --normal-text: var(--toast-text);
+  --success-bg: var(--toast-bg);
+  --success-border: var(--toast-success);
+  --success-text: var(--toast-text);
+  --error-bg: var(--toast-bg);
+  --error-border: var(--toast-error);
+  --error-text: var(--toast-text);
+  --warning-bg: var(--toast-bg);
+  --warning-border: var(--toast-warning);
+  --warning-text: var(--toast-text);
+  --info-bg: var(--toast-bg);
+  --info-border: var(--toast-info);
+  --info-text: var(--toast-text);
+}
+
+[data-sonner-toast] {
+  background: var(--normal-bg);
+  border: 1px solid var(--normal-border);
+  color: var(--normal-text);
+  border-radius: calc(var(--radius) - 2px);
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  backdrop-filter: blur(8px);
+}
+
+[data-sonner-toast][data-type="success"] {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+  color: var(--success-text);
+}
+
+[data-sonner-toast][data-type="error"] {
+  background: var(--error-bg);
+  border-color: var(--error-border);
+  color: var(--error-text);
+}
+
+[data-sonner-toast][data-type="warning"] {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+  color: var(--warning-text);
+}
+
+[data-sonner-toast][data-type="info"] {
+  background: var(--info-bg);
+  border-color: var(--info-border);
+  color: var(--info-text);
+}
+
+[data-sonner-toast] [data-title] {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+[data-sonner-toast] [data-description] {
+  font-size: 13px;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+[data-sonner-toast] [data-icon] {
+  margin-right: 8px;
+}
+
+[data-sonner-toast] [data-close-button] {
+  background: transparent;
+  border: none;
+  color: var(--toast-text);
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+[data-sonner-toast] [data-close-button]:hover {
+  opacity: 1;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
@@ -147,6 +239,10 @@
 }
 @utility glass-2 {
   @apply border-border from-card/100 to-card/80 dark:border-border/10 dark:border-b-border/5 dark:border-t-border/20 dark:from-card/10 dark:to-card/5 border bg-linear-to-b;
+}
+
+@utility glass-2v {
+  @apply border-border border;
 }
 @utility glass-3 {
   @apply border-border from-card/30 to-card/20 dark:border-border/10 dark:border-t-border/20 dark:border-b-border/5 dark:from-primary/5 dark:to-primary/2 border bg-linear-to-b;

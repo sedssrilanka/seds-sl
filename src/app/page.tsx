@@ -3,6 +3,8 @@ import Chapters from "@/components/sections/home-page/chapters";
 import DivisionsSection from "@/components/sections/home-page/division/divisionsection";
 import ProjectsSection from "@/components/sections/home-page/projects/projectssection";
 import FAQSection from "@/components/sections/home-page/faqs/faqsection";
+import WhoWeAreSection from "@/components/sections/home-page/who-we-are/whowearesection";
+import ContactSection from "@/components/sections/home-page/contact/contact-section";
 
 export default function Home() {
   return (
@@ -12,6 +14,8 @@ export default function Home() {
       <DivisionsSection />
       <ProjectsSection />
       <FAQSection/>
+      <WhoWeAreSection />
+      <ContactSection />
     </div>
   );
 }
