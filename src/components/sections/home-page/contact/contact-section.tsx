@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Card } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -105,18 +106,21 @@ const ContactSection = () => {
 
         <div
           id="contact-form"
-          className="col-span-4 md:col-span-8 lg:col-span-12 flex items-center justify-center py-12"
+          className="col-span-4 md:col-span-8 lg:col-span-12 py-8 md:py-12"
         >
-          <div className="w-full max-w-3xl border border-border rounded-lg p-10 md:p-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+            {/* Contact Form - Takes 2 columns on desktop */}
+            <div className="lg:col-span-2">
+              <Card className="rounded-none border p-6 md:p-8">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
                   name="fullName"
                   render={({ field }) => (
-                    <FormItem className="space-y-3 border border-border rounded-md p-4">
-                      <FormLabel className="text-foreground mb-3 block">
+                    <FormItem className="space-y-2">
+                      <FormLabel className="text-foreground text-sm font-medium">
                         Full Name
                       </FormLabel>
                       <FormControl>
@@ -136,8 +140,8 @@ const ContactSection = () => {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="space-y-3 border border-border rounded-md p-4">
-                      <FormLabel className="text-foreground mb-3 block">
+                    <FormItem className="space-y-2">
+                      <FormLabel className="text-foreground text-sm font-medium">
                         Email
                       </FormLabel>
                       <FormControl>
@@ -159,8 +163,8 @@ const ContactSection = () => {
                 control={form.control}
                 name="reasons"
                 render={() => (
-                  <FormItem className="space-y-4 border border-border rounded-md p-5">
-                    <FormLabel className="text-foreground text-base block mb-6">
+                  <FormItem className="space-y-4">
+                    <FormLabel className="text-foreground text-sm font-medium">
                       Why are you contacting us?
                     </FormLabel>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -193,7 +197,7 @@ const ContactSection = () => {
                                     disabled={isSubmitting}
                                   />
                                 </FormControl>
-                                <FormLabel className="text-foreground group-hover:text-primary transition-colors cursor-pointer">
+                                <FormLabel className="text-foreground hover:text-primary transition-colors cursor-pointer text-sm">
                                   {option.label}
                                 </FormLabel>
                               </FormItem>
@@ -211,8 +215,8 @@ const ContactSection = () => {
                 control={form.control}
                 name="message"
                 render={({ field }) => (
-                  <FormItem className="space-y-3 border border-border rounded-md p-4">
-                    <FormLabel className="text-foreground mb-3 block">
+                  <FormItem className="space-y-2">
+                    <FormLabel className="text-foreground text-sm font-medium">
                       Your Message
                     </FormLabel>
                     <FormControl>
@@ -228,18 +232,49 @@ const ContactSection = () => {
                 )}
               />
 
-              <div className="flex justify-center">
+              {/* Terms and Submit Section */}
+              <div className="flex items-center justify-between pt-4 border-t border-border">
+                <div className="flex items-center space-x-3">
+                  <Checkbox 
+                    id="terms" 
+                    disabled={isSubmitting}
+                  />
+                  <label 
+                    htmlFor="terms" 
+                    className="text-sm text-foreground cursor-pointer"
+                  >
+                    I accept the{" "}
+                    <a 
+                      href="#" 
+                      className="text-primary hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Terms
+                    </a>{" "}
+                    and{" "}
+                    <a 
+                      href="#" 
+                      className="text-primary hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Privacy Policy
+                    </a>
+                  </label>
+                </div>
+                
                 <Button
                   type="submit"
-                  size="lg"
+                  size="sm"
                   variant="default"
-                  className="px-12 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                  className="px-6 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
                     <>
                       <svg
-                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
@@ -269,6 +304,53 @@ const ContactSection = () => {
               </div>
             </form>
           </Form>
+              </Card>
+            </div>
+
+            {/* Right Sidebar - Takes 1 column on desktop */}
+            <div className="lg:col-span-1">
+              <div className="space-y-6">
+                {/* Become a Member Card */}
+                <Card className="rounded-none border p-6 !glass-5">
+                  <div className="text-center">
+                    <h3 className="text-xl font-bold mb-3 text-foreground">Become a Member</h3>
+                    <p className="text-sm text-muted-foreground mb-6">
+                      Join the largest international student-based space community and be part of exciting projects.
+                    </p>
+                    <Button 
+                      variant="default" 
+                      size="sm" 
+                      className="w-full rounded-sm"
+                    >
+                      Join SEDS Sri Lanka
+                    </Button>
+                  </div>
+                </Card>
+
+                {/* Benefits Card */}
+                <Card className="rounded-none border p-6 glass-5">
+                  <h3 className="text-lg font-bold mb-4 text-foreground">Member Benefits</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">Access to exclusive projects</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">Networking opportunities</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">Workshops & training</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-sm text-muted-foreground">International connections</span>
+                    </div>
+                  </div>
+                </Card>
+              </div>
+            </div>
           </div>
         </div>
       </div>

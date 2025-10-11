@@ -83,25 +83,25 @@ const FAQItem = ({
 }) => {
   return (
     <Card 
-      className="rounded-none border p-4 cursor-pointer transition-colors duration-300 hover:border-primary/20"
+      className="rounded-none border p-3 md:p-4 cursor-pointer transition-colors duration-300 hover:border-primary/20"
       onClick={onToggle}
     >
       <div className="flex justify-between items-start">
-        <div className="flex items-start gap-4 flex-1">
+        <div className="flex items-start gap-2 md:gap-4 flex-1">
           {/* Question Number - Clean rectangular design */}
           <div
             className={`flex-shrink-0 transition-all duration-300 ${
               isOpen
                 ? "bg-primary/10 text-primary border border-primary/20"
                 : "text-muted-foreground border border-muted-foreground/20"
-            } px-3 py-2 min-w-[50px] text-center`}
+            } px-2 md:px-3 py-1 md:py-2 min-w-[40px] md:min-w-[50px] text-center`}
           >
-            <span className="font-bold text-base">{faq.number}</span>
+            <span className="font-bold text-sm md:text-base">{faq.number}</span>
           </div>
 
           <div className="flex-1">
             <CardTitle
-              className={`text-base font-semibold mb-0 transition-colors duration-300 ${
+              className={`text-sm md:text-base font-semibold mb-0 transition-colors duration-300 ${
                 isOpen ? "text-primary" : "text-foreground"
               }`}
             >
@@ -109,10 +109,10 @@ const FAQItem = ({
             </CardTitle>
             <div
               className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                isOpen ? "max-h-[300px] opacity-100 mt-3" : "max-h-0 opacity-0 mt-0"
+                isOpen ? "max-h-[300px] opacity-100 mt-2 md:mt-3" : "max-h-0 opacity-0 mt-0"
               }`}
             >
-              <CardDescription className="text-sm leading-relaxed text-muted-foreground">
+              <CardDescription className="text-xs md:text-sm leading-relaxed text-muted-foreground">
                 {faq.answer}
               </CardDescription>
             </div>
@@ -120,7 +120,7 @@ const FAQItem = ({
         </div>
 
         <span
-          className={`text-lg ml-3 transition-all duration-300 flex-shrink-0 ${
+          className={`text-base md:text-lg ml-2 md:ml-3 transition-all duration-300 flex-shrink-0 ${
             isOpen ? "text-primary rotate-90" : "text-muted-foreground rotate-0"
           }`}
         >
@@ -167,19 +167,19 @@ const FAQSection = () => {
               ))}
               
               {/* View All FAQ Card */}
-              <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
+              <Card className="rounded-none border p-4 md:p-6 lg:p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
                 <div className="flex items-center justify-between">
                   <div className="flex-1">
-                    <h3 className="text-xl font-bold mb-2 text-foreground">
+                    <h3 className="text-lg md:text-xl font-bold mb-2 text-foreground">
                       Have More Questions?
                     </h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-sm md:text-base text-muted-foreground">
                       Explore our complete FAQ section with detailed answers to all your questions.
                     </p>
                   </div>
                   <div className="flex items-center gap-2 text-primary ml-4">
-                    <span className="font-medium">View All FAQs</span>
-                    <ArrowRight className="size-5" />
+                    <span className="font-medium text-sm md:text-base">View All FAQs</span>
+                    <ArrowRight className="size-4 md:size-5" />
                   </div>
                 </div>
               </Card>
