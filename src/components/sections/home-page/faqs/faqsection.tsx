@@ -139,48 +139,51 @@ const FAQSection = () => {
   };
 
   return (
-    <section className="bg-black relative w-full p-6">
-      <div className="flex flex-col items-center mx-auto max-w-7xl">
-        <SectionHeader
-          title="Frequently Asked Questions"
-          description={
-            <>
-              We know you might have a lot of questions about SEDS Sri Lanka. Who
-              we are, what we do, and how you can be part <br />
-              of our journey.
-            </>
-          }
-          image="/faqimg/faq-bg.jpeg"
-        />
+    <section className="bg-black relative w-full">
+      <div className="section-background bg-black"></div>
+      <div className="grid-container section-content">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12">
+          <SectionHeader
+            title="Frequently Asked Questions"
+            description={
+              <>
+                We know you might have a lot of questions about SEDS Sri Lanka. Who
+                we are, what we do, and how you can be part <br />
+                of our journey.
+              </>
+            }
+            image="/faqimg/faq-bg.jpeg"
+          />
 
-        <div className="w-full max-w-4xl mx-auto mt-12">
-          <div className="space-y-0">
-            {faqItems.slice(0, 4).map((faq) => (
-              <FAQItem
-                key={faq.id}
-                faq={faq}
-                isOpen={openItemId === faq.id}
-                onToggle={() => handleToggle(faq.id)}
-              />
-            ))}
-            
-            {/* View All FAQ Card */}
-            <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
-              <div className="flex items-center justify-between">
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold mb-2 text-foreground">
-                    Have More Questions?
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Explore our complete FAQ section with detailed answers to all your questions.
-                  </p>
+          <div className="mt-12">
+            <div className="space-y-0">
+              {faqItems.slice(0, 4).map((faq) => (
+                <FAQItem
+                  key={faq.id}
+                  faq={faq}
+                  isOpen={openItemId === faq.id}
+                  onToggle={() => handleToggle(faq.id)}
+                />
+              ))}
+              
+              {/* View All FAQ Card */}
+              <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
+                <div className="flex items-center justify-between">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold mb-2 text-foreground">
+                      Have More Questions?
+                    </h3>
+                    <p className="text-muted-foreground">
+                      Explore our complete FAQ section with detailed answers to all your questions.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 text-primary ml-4">
+                    <span className="font-medium">View All FAQs</span>
+                    <ArrowRight className="size-5" />
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 text-primary ml-4">
-                  <span className="font-medium">View All FAQs</span>
-                  <ArrowRight className="size-5" />
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

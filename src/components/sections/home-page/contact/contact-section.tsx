@@ -78,34 +78,36 @@ const ContactSection = () => {
 
   return (
     <section className="bg-black relative w-full min-h-screen flex flex-col">
-      <div className="max-w-7xl mx-auto w-full">
-        <SectionHeader
-          title="Get in Touch with SEDS Sri Lanka"
-          description={
-            <>
-              Whether you're a student looking to join, a partner interested in
-              working with us, or simply curious about our projects, reach out and
-              our team will get back to you soon.
-            </>
-          }
-          image="/divisionimg/moon.jpeg"
-        >
-          <Button
-            asChild
-            size="lg"
-            variant="default"
-            className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+      <div className="section-background bg-black"></div>
+      <div className="grid-container section-content flex-1">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12">
+          <SectionHeader
+            title="Get in Touch with SEDS Sri Lanka"
+            description={
+              <>
+                Whether you're a student looking to join, a partner interested in
+                working with us, or simply curious about our projects, reach out and
+                our team will get back to you soon.
+              </>
+            }
+            image="/divisionimg/moon.jpeg"
           >
-            <a href="#contact-form">Book an appointment</a>
-          </Button>
-        </SectionHeader>
-      </div>
+            <Button
+              asChild
+              size="lg"
+              variant="default"
+              className="px-8 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+            >
+              <a href="#contact-form">Book an appointment</a>
+            </Button>
+          </SectionHeader>
+        </div>
 
-      <div
-        id="contact-form"
-        className="flex-1 flex items-center justify-center px-6 py-12"
-      >
-        <div className="w-full max-w-3xl border border-border rounded-lg p-10 md:p-16">
+        <div
+          id="contact-form"
+          className="col-span-4 md:col-span-8 lg:col-span-12 flex items-center justify-center py-12"
+        >
+          <div className="w-full max-w-3xl border border-border rounded-lg p-10 md:p-16">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -267,6 +269,7 @@ const ContactSection = () => {
               </div>
             </form>
           </Form>
+          </div>
         </div>
       </div>
     </section>

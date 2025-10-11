@@ -81,38 +81,41 @@ const ProjectCard = ({ project }: { project: Project }) => (
 
 const ProjectsSection = () => {
   return (
-    <section className="bg-black relative w-full p-6">
-      <div className="flex flex-col items-center mx-auto max-w-7xl">
-        <SectionHeader
-          title="Ongoing Local Projects"
-          description={
-            <>
-              Here are four ongoing local projects by SEDS Sri Lanka that showcase
-              the organization's commitment to advancing space <br />
-              exploration and technology:
-            </>
-          }
-          image="/projectsimg/space-projects-bg.jpeg"
-        />
+    <section className="bg-black relative w-full">
+      <div className="section-background bg-black"></div>
+      <div className="grid-container section-content">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12">
+          <SectionHeader
+            title="Ongoing Local Projects"
+            description={
+              <>
+                Here are four ongoing local projects by SEDS Sri Lanka that showcase
+                the organization's commitment to advancing space <br />
+                exploration and technology:
+              </>
+            }
+            image="/projectsimg/space-projects-bg.jpeg"
+          />
 
-        <div className="w-full max-w-5xl mx-auto mt-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
-            {projects.slice(0, 3).map((project) => (
-              <ProjectCard key={project.id} project={project} />
-            ))}
-            
-            {/* View All Projects Card */}
-            <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20 ">
-              <div className="flex flex-col items-end justify-start h-full text-right">
-                <h3 className="text-xl font-bold mb-4 text-foreground">
-                  Explore More Projects
-                </h3>
-                <div className="flex items-right gap-2 text-primary">
-                  <span className="font-medium">View All Projects</span>
-                  <ArrowRight className="size-5" />
+          <div className="mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
+              {projects.slice(0, 3).map((project) => (
+                <ProjectCard key={project.id} project={project} />
+              ))}
+              
+              {/* View All Projects Card */}
+              <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20 ">
+                <div className="flex flex-col items-end justify-start h-full text-right">
+                  <h3 className="text-xl font-bold mb-4 text-foreground">
+                    Explore More Projects
+                  </h3>
+                  <div className="flex items-right gap-2 text-primary">
+                    <span className="font-medium">View All Projects</span>
+                    <ArrowRight className="size-5" />
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           </div>
         </div>
       </div>

@@ -91,39 +91,42 @@ const DivisionCard = ({ division }: { division: Division }) => (
 
 const DivisionsSection = () => {
   return (
-    <section className="bg-black relative w-full p-6">
-      <div className="flex flex-col items-center mx-auto max-w-7xl">
-        <SectionHeader
-          title="Our Divisions"
-          description={
-            <>
-              Our divisions bring together innovators, researchers, and
-              enthusiasts to collaborate on projects that span from
-              <br />
-              satellites and rovers to education and outreach.
-            </>
-          }
-          image="/divisionimg/header.png"
-        />
+    <section className="bg-black relative w-full">
+      <div className="section-background bg-black"></div>
+      <div className="grid-container section-content">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12">
+          <SectionHeader
+            title="Our Divisions"
+            description={
+              <>
+                Our divisions bring together innovators, researchers, and
+                enthusiasts to collaborate on projects that span from
+                <br />
+                satellites and rovers to education and outreach.
+              </>
+            }
+            image="/divisionimg/header.png"
+          />
 
-        <div className="w-full max-w-4xl mx-auto mt-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
-            {divisions.slice(0, 3).map((division) => (
-              <DivisionCard key={division.id} division={division} />
-            ))}
-            
-            {/* View All Divisions Card */}
-            <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
-              <div className="flex flex-col items-end justify-start h-full text-right">
-                <h3 className="text-xl font-bold mb-4 text-foreground">
-                  Discover All Divisions
-                </h3>
-                <div className="flex items-right gap-2 text-primary">
-                  <span className="font-medium">View All Divisions</span>
-                  <ArrowRight className="size-5" />
+          <div className="mt-12">
+            <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
+              {divisions.slice(0, 3).map((division) => (
+                <DivisionCard key={division.id} division={division} />
+              ))}
+              
+              {/* View All Divisions Card */}
+              <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
+                <div className="flex flex-col items-end justify-start h-full text-right">
+                  <h3 className="text-xl font-bold mb-4 text-foreground">
+                    Discover All Divisions
+                  </h3>
+                  <div className="flex items-right gap-2 text-primary">
+                    <span className="font-medium">View All Divisions</span>
+                    <ArrowRight className="size-5" />
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
