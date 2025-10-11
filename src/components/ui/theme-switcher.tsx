@@ -39,7 +39,7 @@ export const ThemeSwitcher = ({
   className,
 }: ThemeSwitcherProps) => {
   const { theme: currentTheme, setTheme: setNextTheme } = useTheme();
-  const [theme, setTheme] = useControllableState({
+  const [, setTheme] = useControllableState({
     defaultProp: defaultValue,
     prop: value,
     onChange,
@@ -51,7 +51,7 @@ export const ThemeSwitcher = ({
       setTheme(themeKey);
       setNextTheme(themeKey);
     },
-    [setTheme, setNextTheme]
+    [setTheme, setNextTheme],
   );
 
   // Prevent hydration mismatch
@@ -67,7 +67,7 @@ export const ThemeSwitcher = ({
     <div
       className={cn(
         "relative isolate flex h-8 rounded-full bg-background p-1 ring-1 ring-border",
-        className
+        className,
       )}
     >
       {themes.map(({ key, icon: Icon, label }) => {
@@ -91,7 +91,7 @@ export const ThemeSwitcher = ({
             <Icon
               className={cn(
                 "relative z-10 m-auto h-4 w-4",
-                isActive ? "text-foreground" : "text-muted-foreground"
+                isActive ? "text-foreground" : "text-muted-foreground",
               )}
             />
           </button>

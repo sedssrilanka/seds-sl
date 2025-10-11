@@ -77,9 +77,7 @@ export default function Navbar({
                 href={homeUrl}
                 className="flex items-center gap-2 text-xl font-bold text-foreground"
               >
-                <div className="invert dark:invert-0">
-                  {logo}
-                </div>
+                <div className="invert dark:invert-0">{logo}</div>
                 {name}
               </a>
             </NavbarLeft>
@@ -130,9 +128,7 @@ export default function Navbar({
                       href={homeUrl}
                       className="flex items-center gap-2 text-xl font-bold text-foreground"
                     >
-                      <div className="invert dark:invert-0">
-                        {logo}
-                      </div>
+                      <div className="invert dark:invert-0">{logo}</div>
                       <span>{name}</span>
                     </a>
                     {mobileLinks.map((link) => (
@@ -146,7 +142,9 @@ export default function Navbar({
                     ))}
                     <div className="pt-4 border-t border-border">
                       <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-foreground">Theme</span>
+                        <span className="text-sm font-medium text-foreground">
+                          Theme
+                        </span>
                         <ThemeSwitcher defaultValue="system" />
                       </div>
                     </div>

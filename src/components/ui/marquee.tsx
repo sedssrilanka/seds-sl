@@ -58,12 +58,20 @@ export function Marquee({
         ))}
       {fade && (
         <>
-          <div className={`pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r ${
-            isLight ? "from-white/95 to-transparent" : "from-black/95 to-transparent"
-          }`} />
-          <div className={`pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l ${
-            isLight ? "from-white/95 to-transparent" : "from-black/95 to-transparent"
-          }`} />
+          <div
+            className={`pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r ${
+              isLight
+                ? "from-white/95 to-transparent"
+                : "from-black/95 to-transparent"
+            }`}
+          />
+          <div
+            className={`pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l ${
+              isLight
+                ? "from-white/95 to-transparent"
+                : "from-black/95 to-transparent"
+            }`}
+          />
         </>
       )}
     </div>

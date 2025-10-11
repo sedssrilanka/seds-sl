@@ -124,7 +124,11 @@ function CustomStarField() {
 }
 
 // Theme-aware Material Factory Function
-function createWireframeMaterial(color: string, opacity: number, isLight: boolean = false) {
+function createWireframeMaterial(
+  color: string,
+  opacity: number,
+  isLight: boolean = false,
+) {
   return new THREE.MeshBasicMaterial({
     color: color,
     wireframe: true,
@@ -165,10 +169,19 @@ function SpaceStation() {
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
   const colors = getThemeColors(isLight);
-  
-  const wireframeMaterial = useMemo(() => createWireframeMaterial(colors.primary, 0.6, isLight), [colors.primary, isLight]);
-  const wireframeMaterialSecondary = useMemo(() => createWireframeMaterial(colors.secondary, 0.5, isLight), [colors.secondary, isLight]);
-  const wireframeMaterialAccent = useMemo(() => createWireframeMaterial(colors.accent, 0.4, isLight), [colors.accent, isLight]);
+
+  const wireframeMaterial = useMemo(
+    () => createWireframeMaterial(colors.primary, 0.6, isLight),
+    [colors.primary, isLight],
+  );
+  const wireframeMaterialSecondary = useMemo(
+    () => createWireframeMaterial(colors.secondary, 0.5, isLight),
+    [colors.secondary, isLight],
+  );
+  const wireframeMaterialAccent = useMemo(
+    () => createWireframeMaterial(colors.accent, 0.4, isLight),
+    [colors.accent, isLight],
+  );
 
   useFrame((state) => {
     if (stationRef.current && isVisible) {
@@ -273,9 +286,15 @@ function Satellite({
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
   const colors = getThemeColors(isLight);
-  
-  const wireframeMaterial = useMemo(() => createWireframeMaterial(colors.primary, 0.6, isLight), [colors.primary, isLight]);
-  const wireframeMaterialAccent = useMemo(() => createWireframeMaterial(colors.accent, 0.4, isLight), [colors.accent, isLight]);
+
+  const wireframeMaterial = useMemo(
+    () => createWireframeMaterial(colors.primary, 0.6, isLight),
+    [colors.primary, isLight],
+  );
+  const wireframeMaterialAccent = useMemo(
+    () => createWireframeMaterial(colors.accent, 0.4, isLight),
+    [colors.accent, isLight],
+  );
 
   useFrame((state) => {
     if (satelliteRef.current && isVisible) {
@@ -388,8 +407,11 @@ function Asteroid({
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
   const colors = getThemeColors(isLight);
-  
-  const wireframeMaterialSecondary = useMemo(() => createWireframeMaterial(colors.secondary, 0.5, isLight), [colors.secondary, isLight]);
+
+  const wireframeMaterialSecondary = useMemo(
+    () => createWireframeMaterial(colors.secondary, 0.5, isLight),
+    [colors.secondary, isLight],
+  );
 
   useFrame((state) => {
     if (asteroidRef.current && isVisible) {
@@ -446,8 +468,11 @@ function SpaceDebris({
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
   const colors = getThemeColors(isLight);
-  
-  const wireframeMaterialAccent = useMemo(() => createWireframeMaterial(colors.accent, 0.4, isLight), [colors.accent, isLight]);
+
+  const wireframeMaterialAccent = useMemo(
+    () => createWireframeMaterial(colors.accent, 0.4, isLight),
+    [colors.accent, isLight],
+  );
 
   useFrame((state) => {
     if (debrisRef.current && isVisible) {
@@ -486,7 +511,15 @@ function SpaceDebris({
 }
 
 // Orbital Ring Component
-function OrbitalRing({ radius, color, isLight = false }: { radius: number; color: string; isLight?: boolean }) {
+function OrbitalRing({
+  radius,
+  color,
+  isLight = false,
+}: {
+  radius: number;
+  color: string;
+  isLight?: boolean;
+}) {
   const ringGeometry = useMemo(() => {
     const points = [];
     const segments = 64;
@@ -510,13 +543,7 @@ function OrbitalRing({ radius, color, isLight = false }: { radius: number; color
     });
   }, [color, isLight]);
 
-  return (
-    <primitive
-      object={
-        new THREE.Line(ringGeometry, ringMaterial)
-      }
-    />
-  );
+  return <primitive object={new THREE.Line(ringGeometry, ringMaterial)} />;
 }
 
 // Static Isometric Grid Component
@@ -524,7 +551,7 @@ function InfiniteGrid() {
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
   const colors = getThemeColors(isLight);
-  
+
   const gridGeometry = useMemo(() => {
     const points = [];
     const size = 200; // Large grid size
@@ -576,11 +603,13 @@ export default function SpaceScene() {
   return (
     <div className="fixed inset-0 w-screen h-screen z-0">
       {/* Theme-aware Gradient Background */}
-      <div className={`absolute inset-0 pointer-events-none ${
-        isLight 
-          ? "bg-gradient-to-br from-white/20 via-white/10 to-white/30" 
-          : "bg-gradient-to-br from-black/60 via-black/30 to-black/40"
-      }`} />
+      <div
+        className={`absolute inset-0 pointer-events-none ${
+          isLight
+            ? "bg-gradient-to-br from-white/20 via-white/10 to-white/30"
+            : "bg-gradient-to-br from-black/60 via-black/30 to-black/40"
+        }`}
+      />
 
       <Canvas
         style={{
@@ -601,8 +630,16 @@ export default function SpaceScene() {
 
         {/* Theme-aware Lighting Setup */}
         <ambientLight intensity={isLight ? 0.4 : 0.2} />
-        <pointLight position={[10, 15, 10]} intensity={isLight ? 0.8 : 1.0} color="#ffffff" />
-        <pointLight position={[-8, 8, -8]} intensity={isLight ? 0.3 : 0.5} color={colors.primary} />
+        <pointLight
+          position={[10, 15, 10]}
+          intensity={isLight ? 0.8 : 1.0}
+          color="#ffffff"
+        />
+        <pointLight
+          position={[-8, 8, -8]}
+          intensity={isLight ? 0.3 : 0.5}
+          color={colors.primary}
+        />
         <directionalLight
           position={[5, 10, 5]}
           intensity={isLight ? 0.4 : 0.6}
