@@ -110,7 +110,7 @@ const DivisionsSection = () => {
                 satellites and rovers to education and outreach.
               </>
             }
-            image="/divisionimg/header.png"
+            image="/section-header/division.png"
           />
 
           <div className="mt-12">
