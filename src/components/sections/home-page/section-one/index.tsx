@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import SpaceScene from "./space-scene";
 
 type Props = React.HTMLAttributes<HTMLDivElement>;
 
@@ -7,12 +8,17 @@ const Index: React.FC<Props> = () => {
     <section
       data-slot="section-one"
       data-testid="section-one"
-      className="bg-black text-foreground w-full min-h-screen flex items-center justify-center"
+      className="bg-transparent text-foreground w-full min-h-screen flex items-center justify-center relative"
     >
-      <div className="grid-container">
-        <div className="col-span-4 md:col-span-8 lg:col-span-12">
-          <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-8">
+      {/* 3D Space Scene Background - Fixed */}
+      <SpaceScene />
+
+      {/* Content Overlay - Right Center */}
+      <div className="absolute bottom-20 right-4 md:right-8 transform  z-10 max-w-2xl">
+        {/* Design Frame with sharp corners and solid background */}
+        <div className="bg-black/20 p-4 md:p-8 shadow-2xl">
+          <div className="text-right">
+            <h1 className="text-2xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 md:mb-6 text-white drop-shadow-lg">
               Be a Part of the Largest
               <br />
               International Student-Based
@@ -20,7 +26,7 @@ const Index: React.FC<Props> = () => {
               Space Community
             </h1>
 
-            <div className="flex gap-4 justify-center">
+            <div className="flex gap-4 justify-end">
               <Button variant="default" size="lg">
                 Our Projects
               </Button>

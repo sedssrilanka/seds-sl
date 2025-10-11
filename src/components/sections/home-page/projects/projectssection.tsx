@@ -89,7 +89,7 @@ const ProjectsSection = () => {
                 exploration and technology:
               </>
             }
-            image="/projectsimg/space-projects-bg.jpeg"
+            image="/section-header/space-projects-bg.jpeg"
           />
 
           <div className="mt-12">

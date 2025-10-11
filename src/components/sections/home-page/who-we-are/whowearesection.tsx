@@ -69,7 +69,7 @@ const WhoWeAreSection = () => {
                 learn, and shape the future of space science.
               </>
             }
-            image="/divisionimg/header.png"
+            image="/section-header/who-we-are-bg.jpg"
           />
 
           <div className="mt-12">

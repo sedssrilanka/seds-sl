@@ -153,7 +153,7 @@ const FAQSection = () => {
                 of our journey.
               </>
             }
-            image="/faqimg/faq-bg.jpeg"
+            image="/section-header/faq-bg.jpg"
           />
 
           <div className="mt-12">

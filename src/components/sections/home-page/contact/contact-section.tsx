@@ -91,7 +91,7 @@ const ContactSection = () => {
                 out and our team will get back to you soon.
               </>
             }
-            image="/divisionimg/moon.jpeg"
+            image="/section-header/contact-bg.jpg"
           >
             <Button
               asChild
