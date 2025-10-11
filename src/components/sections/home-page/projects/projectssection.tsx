@@ -1,4 +1,4 @@
-import { Calendar } from "lucide-react";
+import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { SectionHeader } from "@/components/sections/section-header";
@@ -97,9 +97,22 @@ const ProjectsSection = () => {
 
         <div className="w-full max-w-5xl mx-auto mt-12">
           <div className="grid grid-cols-1 md:grid-cols-2 border-border dark:border-border/50">
-            {projects.map((project) => (
+            {projects.slice(0, 3).map((project) => (
               <ProjectCard key={project.id} project={project} />
             ))}
+            
+            {/* View All Projects Card */}
+            <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20 ">
+              <div className="flex flex-col items-end justify-start h-full text-right">
+                <h3 className="text-xl font-bold mb-4 text-foreground">
+                  Explore More Projects
+                </h3>
+                <div className="flex items-right gap-2 text-primary">
+                  <span className="font-medium">View All Projects</span>
+                  <ArrowRight className="size-5" />
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </div>

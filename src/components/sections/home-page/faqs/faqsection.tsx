@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
+import { ArrowRight } from "lucide-react";
 
 interface FaqItem {
   id: number;
@@ -153,7 +155,7 @@ const FAQSection = () => {
 
         <div className="w-full max-w-4xl mx-auto mt-12">
           <div className="space-y-0">
-            {faqItems.map((faq) => (
+            {faqItems.slice(0, 4).map((faq) => (
               <FAQItem
                 key={faq.id}
                 faq={faq}
@@ -161,6 +163,24 @@ const FAQSection = () => {
                 onToggle={() => handleToggle(faq.id)}
               />
             ))}
+            
+            {/* View All FAQ Card */}
+            <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold mb-2 text-foreground">
+                    Have More Questions?
+                  </h3>
+                  <p className="text-muted-foreground">
+                    Explore our complete FAQ section with detailed answers to all your questions.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-primary ml-4">
+                  <span className="font-medium">View All FAQs</span>
+                  <ArrowRight className="size-5" />
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </div>

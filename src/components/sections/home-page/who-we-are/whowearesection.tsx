@@ -1,4 +1,4 @@
-import { Globe, Users, Flag, Network } from "lucide-react";
+import { Globe, Users, Flag, Network, ArrowRight } from "lucide-react";
 import { SectionHeader } from "@/components/sections/section-header";
 import {
   Card,
@@ -72,9 +72,22 @@ const WhoWeAreSection = () => {
 
         <div className="w-full max-w-4xl mx-auto mt-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 border-border dark:border-border/50">
-            {whoweare.map((w) => (
+            {whoweare.slice(0, 3).map((w) => (
               <Cardd key={w.id} whoweare={w} />
             ))}
+            
+            {/* View All About Us Card */}
+            <Card className="rounded-none border p-8 cursor-pointer transition-colors duration-300 hover:border-primary/20">
+              <div className="flex flex-col items-end justify-start h-full text-right">
+                <h3 className="text-xl font-bold mb-4 text-foreground">
+                  Learn More About Us
+                </h3>
+                <div className="flex items-right gap-2 text-primary">
+                  <span className="font-medium">View All About Us</span>
+                  <ArrowRight className="size-5" />
+                </div>
+              </div>
+            </Card>
           </div>
         </div>
       </div>
