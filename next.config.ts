@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   turbopack: {
     resolveExtensions: [".mdx", ".tsx", ".ts", ".jsx", ".js", ".mjs", ".json"],
   },
+  output: "standalone",
 };
 
 export default withPayload(nextConfig);
