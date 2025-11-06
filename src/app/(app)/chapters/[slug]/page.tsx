@@ -107,6 +107,25 @@ export default async function Page({ params }: { params: { slug: string } }) {
     }
   };
 
+  // Fetch projects belonging to this chapter
+  let chapterProjects: any[] = [];
+  try {
+    const projectsRes = await payload.find({
+      collection: 'projects',
+      where: {
+        chapter: {
+          equals: chapter.id,
+        },
+      },
+      depth: 1,
+      sort: '-createdAt',
+      limit: 50,
+    });
+    chapterProjects = projectsRes.docs as any[];
+  } catch (err) {
+    console.error('Error fetching chapter projects', err);
+  }
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-12">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -171,6 +190,30 @@ export default async function Page({ params }: { params: { slug: string } }) {
                           </div>
                         </div>
                       )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Projects in this Chapter */}
+            {chapterProjects && chapterProjects.length > 0 && (
+              <div className="mt-16">
+                <h2 className="text-3xl font-bold mb-6">Projects in this Chapter</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {chapterProjects.map((proj) => (
+                    <div key={proj.id} className="flex gap-4 items-start bg-muted/10 p-4 rounded-lg border border-border/30">
+                      <div className="w-28 h-20 relative rounded-md overflow-hidden bg-slate-100">
+                        {proj.image ? (
+                          <Image src={getMediaUrl(proj.image)} alt={proj.name} fill className="object-cover" />
+                        ) : (
+                          <div className="flex items-center justify-center text-sm text-muted-foreground">No Image</div>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="text-lg font-semibold"><a href={`/projects/${proj.slug}`} className="hover:underline">{proj.name}</a></h3>
+                        <p className="text-sm text-muted-foreground mt-1">{proj.description?.substring?.(0, 120) ?? ''}{proj.description && proj.description.length > 120 ? '...' : ''}</p>
+                      </div>
                     </div>
                   ))}
                 </div>

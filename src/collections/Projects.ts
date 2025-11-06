@@ -20,10 +20,37 @@ export const Projects: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [
-      ({ data, req }) => {
+      async ({ data, req }) => {
         const typedData = data as ProjectData;
         if (typedData?.name) {
-          typedData.slug = generateSlug(typedData.name);
+          const base = generateSlug(typedData.name);
+          let slug = base;
+
+          // Try to avoid duplicate slugs on create/duplicate by checking existing records
+          try {
+            if (req?.payload) {
+              const existing = await req.payload.find({
+                collection: 'projects',
+                where: {
+                  slug: {
+                    equals: slug,
+                  },
+                },
+                limit: 1,
+              });
+
+              // Payload's response contains `docs` array; check length instead of `total`
+              if (existing && Array.isArray(existing.docs) && existing.docs.length > 0) {
+                // append timestamp to make unique (simple and reliable)
+                slug = `${base}-${Date.now()}`;
+              }
+            }
+          } catch (err) {
+            // if anything goes wrong, fall back to base slug
+            console.error('Error checking existing slug for projects:', err);
+          }
+
+          typedData.slug = slug;
         }
         return typedData;
       }
@@ -53,6 +80,17 @@ export const Projects: CollectionConfig = {
       type: 'upload',
       relationTo: 'media',
       label: "Image"
+    },
+    {
+      name: 'chapter',
+      type: 'relationship',
+      relationTo: 'chapters',
+      label: 'Chapter',
+      required: false,
+      hasMany: false,
+      admin: {
+        description: 'Optional: associate this project with a Chapter',
+      },
     },
     {
       name: "description",

@@ -11,12 +11,28 @@ const payload = new PayloadSDK({
 });
 
 async function getProjects(): Promise<Project[]> {
-  console.log("Fetching projects...");
+  console.log("Fetching unassigned projects for homepage...");
   try {
+    // Fetch projects that are NOT assigned to a chapter (using Payload's OR operator)
     const result = await payload.find({
       collection: "projects",
       limit: 3,
       sort: "-createdAt",
+      where: {
+        or: [
+          {
+            chapter: {
+              equals: null,
+            },
+          },
+          {
+            chapter: {
+              exists: false,
+            },
+          },
+        ],
+      },
+      depth: 1,
     });
     return result.docs as Project[];
   } catch (error) {
@@ -36,6 +52,10 @@ const ProjectCard = ({ project }: { project: Project }) => (
       <CardTitle className="text-xl font-bold mb-3 text-foreground">
         {project.name}
       </CardTitle>
+
+      {project.chapter && (
+        <div className="text-sm text-muted-foreground mb-2">Chapter: {typeof project.chapter === 'object' ? project.chapter.name : project.chapter}</div>
+      )}
 
       <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
         {project.description.length > 120

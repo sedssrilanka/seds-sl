@@ -175,6 +175,10 @@ export interface Project {
    */
   slug: string;
   image?: (number | null) | Media;
+  /**
+   * Optional: associate this project with a Chapter
+   */
+  chapter?: (number | null) | Chapter;
   description: string;
   content: {
     root: {
@@ -371,6 +375,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
   image?: T;
+  chapter?: T;
   description?: T;
   content?: T;
   updatedAt?: T;

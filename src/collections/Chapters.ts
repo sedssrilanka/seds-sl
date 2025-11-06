@@ -15,6 +15,9 @@ const generateSlug = (name: string): string => {
 
 export const Chapters: CollectionConfig = {
   slug: "chapters",
+  admin: {
+    useAsTitle: 'name',
+  },
   access: {
     read: () => true,
   },
