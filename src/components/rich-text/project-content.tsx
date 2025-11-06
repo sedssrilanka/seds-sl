@@ -2,7 +2,6 @@
 
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
 import { RichText } from '@payloadcms/richtext-lexical/react'
-import './rich-text.css'
 
 interface ProjectContentProps {
   content: SerializedEditorState

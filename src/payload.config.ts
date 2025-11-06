@@ -11,6 +11,7 @@ import { resendAdapter } from "@payloadcms/email-resend";
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Projects } from "./collections/Projects";
+import { Chapters } from "./collections/Chapters";
 
 import { s3Storage } from "@payloadcms/storage-s3";
 
@@ -24,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Projects],
+  collections: [Users, Media, Projects, Chapters],
   editor: lexicalEditor(),
   email: resendAdapter({
     defaultFromAddress: process.env.FROM_EMAIL || "",
