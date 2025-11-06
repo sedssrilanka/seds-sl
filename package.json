@@ -68,7 +68,7 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
   },
-  "overrides": {
-    "sharp": "^0.34.4"
+  "optionalDependencies": {
+    "sharp": "^0.34.5"
   }
 }
