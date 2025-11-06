@@ -8,15 +8,15 @@ interface ChapterData {
 const generateSlug = (name: string): string => {
   return name
     .toLowerCase()
-    .replace(/[^a-z0-9]/g, '-') // Replace non-alphanumeric characters with hyphens
-    .replace(/-+/g, '-')        // Replace multiple hyphens with single hyphen
-    .replace(/^-|-$/g, '');     // Remove hyphens from start and end
+    .replace(/[^a-z0-9]/g, "-") // Replace non-alphanumeric characters with hyphens
+    .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
+    .replace(/^-|-$/g, ""); // Remove hyphens from start and end
 };
 
 export const Chapters: CollectionConfig = {
   slug: "chapters",
   admin: {
-    useAsTitle: 'name',
+    useAsTitle: "name",
   },
   access: {
     read: () => true,
@@ -29,8 +29,8 @@ export const Chapters: CollectionConfig = {
           typedData.slug = generateSlug(typedData.name);
         }
         return typedData;
-      }
-    ]
+      },
+    ],
   },
   fields: [
     {
@@ -47,35 +47,35 @@ export const Chapters: CollectionConfig = {
       unique: true,
       admin: {
         readOnly: true,
-        description: 'Auto-generated from the Name field',
-        position: 'sidebar',
+        description: "Auto-generated from the Name field",
+        position: "sidebar",
       },
     },
 
     {
       name: "mainImage",
-      type: 'upload',
-      relationTo: 'media',
+      type: "upload",
+      relationTo: "media",
       label: "Main Image",
       required: true,
     },
     {
       name: "gallery",
-      type: 'array',
+      type: "array",
       label: "Image Gallery",
       fields: [
         {
           name: "image",
-          type: 'upload',
-          relationTo: 'media',
+          type: "upload",
+          relationTo: "media",
           required: true,
         },
         {
           name: "caption",
           type: "text",
           label: "Image Caption",
-        }
-      ]
+        },
+      ],
     },
     {
       name: "description",
@@ -114,8 +114,8 @@ export const Chapters: CollectionConfig = {
           name: "url",
           type: "text",
           required: true,
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
 };

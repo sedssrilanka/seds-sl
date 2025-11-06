@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-import { RichText } from '@payloadcms/richtext-lexical/react'
+import type { SerializedEditorState } from "@payloadcms/richtext-lexical/lexical";
+import { RichText } from "@payloadcms/richtext-lexical/react";
 
 interface ProjectContentProps {
-  content: SerializedEditorState
+  content: SerializedEditorState;
 }
 
 export function ProjectContent({ content }: ProjectContentProps) {
@@ -21,10 +21,14 @@ export function ProjectContent({ content }: ProjectContentProps) {
         <aside className="hidden md:block w-80 flex-shrink-0">
           <div className="sticky top-24 bg-neutral-50 dark:bg-neutral-900 rounded-xl shadow p-6 border border-neutral-200 dark:border-neutral-800">
             {/* Sidebar content placeholder */}
-            <div className="text-neutral-500 text-sm">Sidebar<br/>Add widgets, author info, or related links here.</div>
+            <div className="text-neutral-500 text-sm">
+              Sidebar
+              <br />
+              Add widgets, author info, or related links here.
+            </div>
           </div>
         </aside>
       </div>
     </section>
-  )
+  );
 }

@@ -54,7 +54,12 @@ const ProjectCard = ({ project }: { project: Project }) => (
       </CardTitle>
 
       {project.chapter && (
-        <div className="text-sm text-muted-foreground mb-2">Chapter: {typeof project.chapter === 'object' ? project.chapter.name : project.chapter}</div>
+        <div className="text-sm text-muted-foreground mb-2">
+          Chapter:{" "}
+          {typeof project.chapter === "object"
+            ? project.chapter.name
+            : project.chapter}
+        </div>
       )}
 
       <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
