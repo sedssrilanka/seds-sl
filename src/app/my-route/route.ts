@@ -1,7 +1,9 @@
+/** biome-ignore-all lint/correctness/noUnusedFunctionParameters: Will use un future */
+/** biome-ignore-all lint/correctness/noUnusedVariables: Will use un future */
 import configPromise from "../../payload.config";
 import { getPayload } from "payload";
 
-export const GET = async (request: Request) => {
+export const GET = async (_request: Request) => {
   const payload = await getPayload({
     config: configPromise,
   });

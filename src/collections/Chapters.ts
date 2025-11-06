@@ -23,7 +23,7 @@ export const Chapters: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [
-      ({ data, req }) => {
+      ({ data }) => {
         const typedData = data as ChapterData;
         if (typedData?.name) {
           typedData.slug = generateSlug(typedData.name);

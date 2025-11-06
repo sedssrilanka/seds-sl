@@ -1,4 +1,4 @@
-import type { Chapter, Media } from "@/payload-types";
+import type { Chapter, Media, Project } from "@/payload-types";
 import type { Metadata } from "next";
 import { PayloadSDK } from "@payloadcms/sdk";
 import { notFound } from "next/navigation";
@@ -108,7 +108,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   };
 
   // Fetch projects belonging to this chapter
-  let chapterProjects: any[] = [];
+  let chapterProjects: Project[] = [];
   try {
     const projectsRes = await payload.find({
       collection: "projects",
@@ -121,7 +121,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       sort: "-createdAt",
       limit: 50,
     });
-    chapterProjects = projectsRes.docs as any[];
+    chapterProjects = projectsRes.docs as Project[];
   } catch (err) {
     console.error("Error fetching chapter projects", err);
   }

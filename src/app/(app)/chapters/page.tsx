@@ -1,12 +1,10 @@
 "use client";
 
-import { Chapter } from "@/payload-types";
+import type { Chapter } from "@/payload-types";
 import Image from "next/image";
 import Link from "next/link";
-import { getPayloadClient } from "@/lib/payload";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { SearchChapters } from "./search";
 import { useEffect, useState } from "react";
 import { PayloadSDK } from "@payloadcms/sdk";
 
@@ -19,9 +17,9 @@ export default function ChaptersPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const getMediaUrl = (media: any) => {
+  const getMediaUrl = (media: Chapter["mainImage"]): string => {
     if (typeof media === "object" && media !== null && "url" in media) {
-      return media.url;
+      if (media.url) return media.url;
     }
     return "";
   };
