@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "next build --turbopack",
-    "start": "next start",
+    "build": "cross-env NODE_OPTIONS=--no-deprecation next build --turbopack",
+    "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "biome check",
     "format": "biome format --write",
     "test": "vitest",
@@ -52,7 +52,7 @@
     "tailwind-merge": "^3.3.1",
     "three": "^0.180.0",
     "zod": "^4.1.12",
-    "sharp": "0.30.4"
+    "sharp": "0.30.2"
   },
   "devDependencies": {
     "@biomejs/biome": "2.2.0",
@@ -70,16 +70,13 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4"
   },
+  "packageManager": "pnpm@10.20.0",
+  "engines": {
+    "node": "^18.20.2 || >=20.9.0"
+  },
   "pnpm": {
-    "supportedArchitectures": {
-      "os": [
-        "linux",
-        "current"
-      ],
-      "cpu": [
-        "x64",
-        "arm64"
-      ]
-    }
+    "onlyBuiltDependencies": [
+      "sharp"
+    ]
   }
 }
