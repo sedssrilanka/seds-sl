@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { PayloadSDK } from "@payloadcms/sdk";
 
 const payload = new PayloadSDK({
-  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://localhost:3000/api",
+  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://127.0.0.1:3000/api",
 });
 
 export default function ChaptersPage() {

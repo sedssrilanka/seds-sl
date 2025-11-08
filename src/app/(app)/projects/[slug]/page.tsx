@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { ProjectContent } from "@/components/rich-text/project-content";
 
 const payload = new PayloadSDK({
-  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://localhost:3000/api",
+  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://127.0.0.1:3000/api",
 });
 
 async function getProject(slug: string): Promise<Project | null> {
