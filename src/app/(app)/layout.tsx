@@ -4,6 +4,9 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/sections/navbar/default";
 import { Toaster } from "@/components/ui/sonner";
+import { Providers } from "@/providers";
+import { AdminBar } from "@/components/AdminBar";
+import { LivePreviewListener } from "@/components/LivePreviewListener";
 
 const barlow = Barlow({
   variable: "--font-sans",
@@ -32,16 +35,20 @@ export default function RootLayout({
       <body
         className={`${barlow.variable} ${jetbrainsMono.variable} antialiased `}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Navbar />
-          {children}
-          <Toaster />
-        </ThemeProvider>
+        <Providers>
+          <AdminBar />
+          <LivePreviewListener />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar />
+            {children}
+            <Toaster />
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
