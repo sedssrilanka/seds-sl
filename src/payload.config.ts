@@ -5,7 +5,6 @@ import { lexicalEditor } from "@payloadcms/richtext-lexical";
 import path from "node:path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "node:url";
-import sharp from "sharp";
 import { resendAdapter } from "@payloadcms/email-resend";
 
 import { Users } from "./collections/Users";
@@ -41,8 +40,6 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || "",
     },
   }),
-
-  sharp,
   plugins: [
     payloadCloudPlugin(),
     s3Storage({
