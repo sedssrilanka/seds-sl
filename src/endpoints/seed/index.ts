@@ -1,6 +1,5 @@
 import type {
   CollectionSlug,
-  GlobalSlug,
   Payload,
   PayloadRequest,
   File,
@@ -47,8 +46,6 @@ const colorVariantOptions = [
   { label: "White", value: "white" },
 ];
 
-// const globals: GlobalSlug[] = ["header", "footer"];
-
 const baseAddressUSData: Transaction["billingAddress"] = {
   title: "Dr.",
   firstName: "Otto",
@@ -92,24 +89,6 @@ export const seed = async ({
   // this is because while `yarn seed` drops the database
   // the custom `/api/seed` endpoint does not
   payload.logger.info(`— Clearing collections and globals...`);
-
-  // clear the database
-  /*
-  await Promise.all(
-    globals.map((global) =>
-      payload.updateGlobal({
-        slug: global,
-        data: {
-          navItems: [],
-        },
-        depth: 0,
-        context: {
-          disableRevalidate: true,
-        },
-      }),
-    ),
-  );
-  */
 
   for (const collection of collections) {
     await payload.db.deleteMany({ collection, req, where: {} });
@@ -370,11 +349,6 @@ export const seed = async ({
     data: {
       currency: "USD",
       customer: customer.id,
-      // paymentMethod: "stripe",
-      // stripe: {
-      //   customerID: "cus_123",
-      //   paymentIntentID: "pi_123",
-      // },
       status: "pending",
       billingAddress: baseAddressUSData,
     },
@@ -385,11 +359,6 @@ export const seed = async ({
     data: {
       currency: "USD",
       customer: customer.id,
-      // paymentMethod: "stripe",
-      // stripe: {
-      //   customerID: "cus_123",
-      //   paymentIntentID: "pi_123",
-      // },
       status: "succeeded",
       billingAddress: baseAddressUSData,
     },
@@ -514,78 +483,6 @@ export const seed = async ({
       transactions: [succeededTransaction.id],
     },
   });
-
-  payload.logger.info(`— Seeding globals...`);
-
-  /*
-  await Promise.all([
-    payload.updateGlobal({
-      slug: "header",
-      data: {
-        navItems: [
-          {
-            link: {
-              type: "custom",
-              label: "Home",
-              url: "/",
-            },
-          },
-          {
-            link: {
-              type: "custom",
-              label: "Shop",
-              url: "/shop",
-            },
-          },
-          {
-            link: {
-              type: "custom",
-              label: "Account",
-              url: "/account",
-            },
-          },
-        ],
-      },
-    }),
-    payload.updateGlobal({
-      slug: "footer",
-      data: {
-        navItems: [
-          {
-            link: {
-              type: "custom",
-              label: "Admin",
-              url: "/admin",
-            },
-          },
-          {
-            link: {
-              type: "custom",
-              label: "Find my order",
-              url: "/find-order",
-            },
-          },
-          {
-            link: {
-              type: "custom",
-              label: "Source Code",
-              newTab: true,
-              url: "https://github.com/payloadcms/payload/tree/main/templates/website",
-            },
-          },
-          {
-            link: {
-              type: "custom",
-              label: "Payload",
-              newTab: true,
-              url: "https://payloadcms.com/",
-            },
-          },
-        ],
-      },
-    }),
-  ]);
-  */
 
   payload.logger.info("Seeded database successfully!");
 };

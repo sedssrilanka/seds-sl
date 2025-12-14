@@ -12,6 +12,8 @@ import { cssVariables } from "@/cssVariables";
 
 const { breakpoints } = cssVariables;
 
+import { getClientSideURL } from "@/utilities/getURL";
+
 export const Image: React.FC<MediaProps> = (props) => {
   const {
     alt: altFromProps,
@@ -49,15 +51,15 @@ export const Image: React.FC<MediaProps> = (props) => {
 
     const filename = fullFilename;
 
-    src = `${process.env.NEXT_PUBLIC_SERVER_URL}${url}`;
+    src = `${process.env.NEXT_PUBLIC_SERVER_URL || getClientSideURL()}${url}`;
   }
 
   // NOTE: this is used by the browser to determine which image to download at different screen sizes
   const sizes = sizeFromProps
     ? sizeFromProps
     : Object.entries(breakpoints)
-        .map(([, value]) => `(max-width: ${value}px) ${value}px`)
-        .join(", ");
+      .map(([, value]) => `(max-width: ${value}px) ${value}px`)
+      .join(", ");
 
   return (
     <NextImage
