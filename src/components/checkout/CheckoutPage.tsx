@@ -43,9 +43,9 @@ export const CheckoutPage: React.FC = () => {
 
   const canGoToPayment = Boolean(
     (email || user) &&
-    billingAddress &&
-    (billingAddressSameAsShipping || shippingAddress) &&
-    !cartIsEmpty
+      billingAddress &&
+      (billingAddressSameAsShipping || shippingAddress) &&
+      !cartIsEmpty,
   );
 
   // On initial load wait for addresses to be loaded and check to see if we can prefill a default one
@@ -195,7 +195,8 @@ export const CheckoutPage: React.FC = () => {
             id="shippingTheSameAsBilling"
             checked={billingAddressSameAsShipping}
             disabled={
-              (!user && (!email || Boolean(emailEditable))) || isProcessingPayment
+              (!user && (!email || Boolean(emailEditable))) ||
+              isProcessingPayment
             }
             onCheckedChange={(state) => {
               setBillingAddressSameAsShipping(state as boolean);
@@ -255,7 +256,6 @@ export const CheckoutPage: React.FC = () => {
             setProcessingPayment={setProcessingPayment}
           />
         )}
-
       </div>
 
       {!cartIsEmpty && (

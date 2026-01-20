@@ -58,8 +58,8 @@ export const Image: React.FC<MediaProps> = (props) => {
   const sizes = sizeFromProps
     ? sizeFromProps
     : Object.entries(breakpoints)
-      .map(([, value]) => `(max-width: ${value}px) ${value}px`)
-      .join(", ");
+        .map(([, value]) => `(max-width: ${value}px) ${value}px`)
+        .join(", ");
 
   return (
     <NextImage

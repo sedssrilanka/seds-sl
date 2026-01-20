@@ -32,7 +32,9 @@ export const CheckoutForm: React.FC<Props> = ({
 }) => {
   const [error, setError] = useState<null | string>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "cod">("bank_transfer");
+  const [paymentMethod, setPaymentMethod] = useState<"bank_transfer" | "cod">(
+    "bank_transfer",
+  );
   const router = useRouter();
 
   const handleSubmit = useCallback(
@@ -47,7 +49,9 @@ export const CheckoutForm: React.FC<Props> = ({
           cart,
           user,
           email: customerEmail || user?.email,
-          shippingAddress: billingAddressSameAsShipping ? billingAddress : shippingAddress,
+          shippingAddress: billingAddressSameAsShipping
+            ? billingAddress
+            : shippingAddress,
           paymentMethod,
           total: cart.subtotal || 0,
         });
@@ -59,7 +63,8 @@ export const CheckoutForm: React.FC<Props> = ({
           throw new Error("Failed to create order");
         }
       } catch (err) {
-        const errorMessage = err instanceof Error ? err.message : "Something went wrong.";
+        const errorMessage =
+          err instanceof Error ? err.message : "Something went wrong.";
         setError(errorMessage);
         toast.error(errorMessage);
         setIsLoading(false);
@@ -76,14 +81,17 @@ export const CheckoutForm: React.FC<Props> = ({
       paymentMethod,
       setProcessingPayment,
       router,
-    ]
+    ],
   );
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <div>
         <h2 className="font-medium text-3xl mb-4">Payment Method</h2>
-        <RadioGroup value={paymentMethod} onValueChange={(v: "bank_transfer" | "cod") => setPaymentMethod(v)}>
+        <RadioGroup
+          value={paymentMethod}
+          onValueChange={(v: "bank_transfer" | "cod") => setPaymentMethod(v)}
+        >
           <div className="flex items-center space-x-2">
             <RadioGroupItem value="bank_transfer" id="bank_transfer" />
             <Label htmlFor="bank_transfer">Bank Transfer</Label>

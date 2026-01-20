@@ -1,9 +1,4 @@
-import type {
-  CollectionSlug,
-  Payload,
-  PayloadRequest,
-  File,
-} from "payload";
+import type { CollectionSlug, Payload, PayloadRequest, File } from "payload";
 
 import { contactFormData } from "./contact-form";
 import { contactPageData } from "./contact-page";
