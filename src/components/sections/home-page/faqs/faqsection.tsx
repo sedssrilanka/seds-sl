@@ -1,11 +1,8 @@
 "use client";
 
-import Link from "next/link";
-
 import { useState } from "react";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { SectionHeader } from "@/components/sections/section-header";
-import { ArrowRight } from "lucide-react";
 
 interface FaqItem {
   id: number;
@@ -168,29 +165,6 @@ const FAQSection = () => {
                   onToggle={() => handleToggle(faq.id)}
                 />
               ))}
-
-              {/* View All FAQ Card */}
-              <Link href="/faqs" className="block w-full group">
-                <Card className="rounded-none light-mode-card p-4 md:p-6 lg:p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <h3 className="text-lg md:text-xl font-bold mb-2 text-foreground">
-                        Have More Questions?
-                      </h3>
-                      <p className="text-sm md:text-base text-muted-foreground">
-                        Explore our complete FAQ section with detailed answers
-                        to all your questions.
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-2 text-primary ml-4">
-                      <span className="font-medium text-sm md:text-base">
-                        View All FAQs
-                      </span>
-                      <ArrowRight className="size-4 md:size-5 transition-transform group-hover:translate-x-1" />
-                    </div>
-                  </div>
-                </Card>
-              </Link>
             </div>
           </div>
         </div>
