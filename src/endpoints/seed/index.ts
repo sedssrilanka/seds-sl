@@ -602,37 +602,49 @@ export const seed = async ({
       slug: "mars-rover",
       chapter: sedsMora.id,
       image: imageHero.id,
+      _status: "published",
+      hero: { type: "none" },
       description: "A prototype Mars Rover built by SEDS Mora students.",
-      content: {
-        root: {
-          type: "root",
-          children: [
+      layout: [
+        {
+          blockType: "content",
+          columns: [
             {
-              type: "paragraph",
-              children: [
-                {
-                  type: "text",
-                  detail: 0,
-                  format: 0,
-                  mode: "normal",
-                  style: "",
-                  text: "This project aims to design and build a functional rover for simulated Martian terrain.",
+              size: "full",
+              richText: {
+                root: {
+                  type: "root",
+                  children: [
+                    {
+                      type: "paragraph",
+                      children: [
+                        {
+                          type: "text",
+                          detail: 0,
+                          format: 0,
+                          mode: "normal",
+                          style: "",
+                          text: "This project aims to design and build a functional rover for simulated Martian terrain.",
+                          version: 1,
+                        },
+                      ],
+                      direction: "ltr",
+                      format: "",
+                      indent: 0,
+                      textFormat: 0,
+                      version: 1,
+                    },
+                  ],
+                  direction: "ltr",
+                  format: "",
+                  indent: 0,
                   version: 1,
                 },
-              ],
-              direction: "ltr",
-              format: "",
-              indent: 0,
-              textFormat: 0,
-              version: 1,
+              },
             },
           ],
-          direction: "ltr",
-          format: "",
-          indent: 0,
-          version: 1,
         },
-      },
+      ],
     },
   });
 
@@ -643,37 +655,49 @@ export const seed = async ({
       slug: "hab-uoc",
       chapter: sedsUOC.id,
       image: imageTshirtBlack.id, // Using existing image as placeholder
+      _status: "published",
+      hero: { type: "none" },
       description: "Weather balloon project to capture atmospheric data.",
-      content: {
-        root: {
-          type: "root",
-          children: [
+      layout: [
+        {
+          blockType: "content",
+          columns: [
             {
-              type: "paragraph",
-              children: [
-                {
-                  type: "text",
-                  detail: 0,
-                  format: 0,
-                  mode: "normal",
-                  style: "",
-                  text: "Our High Altitude Balloon reached 30km and captured stunning images of the curvature of the Earth.",
+              size: "full",
+              richText: {
+                root: {
+                  type: "root",
+                  children: [
+                    {
+                      type: "paragraph",
+                      children: [
+                        {
+                          type: "text",
+                          detail: 0,
+                          format: 0,
+                          mode: "normal",
+                          style: "",
+                          text: "Our High Altitude Balloon reached 30km and captured stunning images of the curvature of the Earth.",
+                          version: 1,
+                        },
+                      ],
+                      direction: "ltr",
+                      format: "",
+                      indent: 0,
+                      textFormat: 0,
+                      version: 1,
+                    },
+                  ],
+                  direction: "ltr",
+                  format: "",
+                  indent: 0,
                   version: 1,
                 },
-              ],
-              direction: "ltr",
-              format: "",
-              indent: 0,
-              textFormat: 0,
-              version: 1,
+              },
             },
           ],
-          direction: "ltr",
-          format: "",
-          indent: 0,
-          version: 1,
         },
-      },
+      ],
     },
   });
 

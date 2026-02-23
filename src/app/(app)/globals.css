@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@plugin "@tailwindcss/typography";
 /* Custom Toast Styles */
 .toaster {
   --toast-bg: hsl(var(--background));

@@ -7,11 +7,13 @@ import { Search, X, SearchX } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { useDebounce } from "use-debounce";
 import { fetchProjects } from "@/actions/projects";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [debouncedSearchQuery] = useDebounce(searchQuery, 300);
   const [loading, setLoading] = useState(true);
 
   const getMediaUrl = (media: Project["image"]): string => {
@@ -32,7 +34,7 @@ export default function ProjectsPage() {
     const getProjects = async () => {
       setLoading(true);
       try {
-        const result = await fetchProjects(searchQuery);
+        const result = await fetchProjects(debouncedSearchQuery);
         setProjects(result);
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -42,7 +44,7 @@ export default function ProjectsPage() {
     };
 
     getProjects();
-  }, [searchQuery]);
+  }, [debouncedSearchQuery]);
 
   return (
     <div className="grid-container section-content">
@@ -89,7 +91,7 @@ export default function ProjectsPage() {
                 className="rounded-2xl border border-border/50 overflow-hidden bg-card/40 animate-pulse h-full flex flex-col"
               >
                 <div className="w-full h-48 bg-muted/50" />
-                <div className="p-4 flex-grow space-y-3">
+                <div className="p-4 grow space-y-3">
                   <div className="h-6 bg-muted/50 rounded w-2/3" />
                   <div className="h-4 bg-muted/50 rounded w-full" />
                   <div className="h-4 bg-muted/50 rounded w-4/5" />
@@ -104,37 +106,70 @@ export default function ProjectsPage() {
               <Link
                 key={project.id}
                 href={`/projects/${project.slug}`}
-                className="group block"
+                className="group flex flex-col h-full bg-card rounded-2xl border border-border/50 overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/50 hover:-translate-y-1"
               >
-                <div className="bg-card/40 backdrop-blur-md border border-border/50 rounded-2xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:border-primary/30 group-hover:bg-card/60 h-full flex flex-col">
-                  {/* Image Container */}
-                  <div className="relative w-full h-48">
-                    {project.image && (
+                {/* Image Container */}
+                <div className="relative w-full aspect-4/3 overflow-hidden bg-muted/20">
+                  {project.image ? (
+                    <Image
+                      src={getMediaUrl(project.image)}
+                      alt={project.name}
+                      fill
+                      className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/50">
                       <Image
-                        src={getMediaUrl(project.image)}
-                        alt={project.name}
+                        src="/placeholder.svg"
+                        alt="Placeholder"
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover opacity-50"
                       />
-                    )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-0 left-0 right-0 p-4">
-                      <h2 className="text-xl font-bold text-white mb-1">
-                        {project.name}
-                      </h2>
-                      {project.chapter && (
-                        <p className="text-xs text-white/80 font-medium">
-                          {getChapterName(project.chapter)}
-                        </p>
-                      )}
                     </div>
-                  </div>
+                  )}
+                  {/* Subtle overlay gradient */}
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/0 to-transparent opacity-80" />
 
-                  {/* Content */}
-                  <div className="p-4 flex-grow">
-                    <p className="text-sm text-muted-foreground line-clamp-3">
-                      {project.description}
-                    </p>
+                  {/* Chapter badge overlay */}
+                  {project.chapter && (
+                    <div className="absolute top-4 left-4">
+                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white backdrop-blur-md border border-white/20 shadow-sm">
+                        {getChapterName(project.chapter)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Content */}
+                <div className="p-6 flex flex-col grow">
+                  <h2 className="text-xl font-bold mb-3 text-foreground line-clamp-2 group-hover:text-primary transition-colors">
+                    {project.name}
+                  </h2>
+                  <p className="text-sm text-muted-foreground line-clamp-3 mb-6 grow">
+                    {project.description}
+                  </p>
+
+                  {/* Footer area inside card */}
+                  <div className="mt-auto pt-4 border-t border-border/50 flex items-center justify-between text-sm">
+                    <span className="text-primary font-medium flex items-center gap-1">
+                      Read more
+                      <svg
+                        className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        role="img"
+                        aria-label="Arrow Right"
+                      >
+                        <title>Arrow Right</title>
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </span>
                   </div>
                 </div>
               </Link>
