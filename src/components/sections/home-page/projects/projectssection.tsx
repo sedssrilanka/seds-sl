@@ -135,17 +135,19 @@ const ProjectsSection = async () => {
               ))}
 
               {/* View All Projects Card */}
-              <Card className="rounded-none light-mode-card p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
-                <div className="flex flex-col items-end justify-start h-full text-right">
-                  <h3 className="text-xl font-bold mb-4 text-foreground">
-                    Explore More Projects
-                  </h3>
-                  <div className="flex items-right gap-2 text-primary">
-                    <span className="font-medium">View All Projects</span>
-                    <ArrowRight className="size-5" />
+              <Link href="/projects" className="block h-full group">
+                <Card className="rounded-none h-full light-mode-card p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
+                  <div className="flex flex-col items-end justify-start h-full text-right">
+                    <h3 className="text-xl font-bold mb-4 text-foreground">
+                      Explore More Projects
+                    </h3>
+                    <div className="flex items-right gap-2 text-primary">
+                      <span className="font-medium">View All Projects</span>
+                      <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </div>
           </div>
         </div>

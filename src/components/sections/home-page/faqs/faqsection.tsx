@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { useState } from "react";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { SectionHeader } from "@/components/sections/section-header";
@@ -89,7 +91,7 @@ const FAQItem = ({
         <div className="flex items-start gap-2 md:gap-4 flex-1">
           {/* Question Number - Clean rectangular design */}
           <div
-            className={`flex-shrink-0 transition-all duration-300 ${
+            className={`shrink-0 transition-all duration-300 ${
               isOpen
                 ? "bg-primary/10 text-primary border border-primary/20"
                 : "text-muted-foreground border border-muted-foreground/20"
@@ -121,7 +123,7 @@ const FAQItem = ({
         </div>
 
         <span
-          className={`text-base md:text-lg ml-2 md:ml-3 transition-all duration-300 flex-shrink-0 ${
+          className={`text-base md:text-lg ml-2 md:ml-3 transition-all duration-300 shrink-0 ${
             isOpen ? "text-primary rotate-90" : "text-muted-foreground rotate-0"
           }`}
         >
@@ -168,25 +170,27 @@ const FAQSection = () => {
               ))}
 
               {/* View All FAQ Card */}
-              <Card className="rounded-none light-mode-card p-4 md:p-6 lg:p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
-                <div className="flex items-center justify-between">
-                  <div className="flex-1">
-                    <h3 className="text-lg md:text-xl font-bold mb-2 text-foreground">
-                      Have More Questions?
-                    </h3>
-                    <p className="text-sm md:text-base text-muted-foreground">
-                      Explore our complete FAQ section with detailed answers to
-                      all your questions.
-                    </p>
+              <Link href="/faqs" className="block w-full group">
+                <Card className="rounded-none light-mode-card p-4 md:p-6 lg:p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
+                  <div className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <h3 className="text-lg md:text-xl font-bold mb-2 text-foreground">
+                        Have More Questions?
+                      </h3>
+                      <p className="text-sm md:text-base text-muted-foreground">
+                        Explore our complete FAQ section with detailed answers
+                        to all your questions.
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 text-primary ml-4">
+                      <span className="font-medium text-sm md:text-base">
+                        View All FAQs
+                      </span>
+                      <ArrowRight className="size-4 md:size-5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
-                  <div className="flex items-center gap-2 text-primary ml-4">
-                    <span className="font-medium text-sm md:text-base">
-                      View All FAQs
-                    </span>
-                    <ArrowRight className="size-4 md:size-5" />
-                  </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </div>
           </div>
         </div>

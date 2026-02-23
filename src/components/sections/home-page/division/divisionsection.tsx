@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   Bot,
   Laptop,
@@ -67,7 +68,7 @@ const DivisionCard = ({ division }: { division: Division }) => (
   <Card className="rounded-none border p-6 shadow-sm dark:shadow-none">
     <div className="flex flex-col h-full">
       <div className="flex items-start gap-4 mb-4">
-        <div className="flex-shrink-0 p-3 bg-primary/10 border border-primary/20">
+        <div className="shrink-0 p-3 bg-primary/10 border border-primary/20">
           {division.icon}
         </div>
         <div className="flex-1">
@@ -81,13 +82,14 @@ const DivisionCard = ({ division }: { division: Division }) => (
         {division.description}
       </CardDescription>
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between mt-auto">
         <Button
           variant="outline"
           size="sm"
           className="rounded-sm border-primary/20 hover:bg-primary/10"
+          asChild
         >
-          Learn More
+          <Link href="/divisions">Learn More</Link>
         </Button>
       </div>
     </div>
@@ -120,17 +122,19 @@ const DivisionsSection = () => {
               ))}
 
               {/* View All Divisions Card */}
-              <Card className="rounded-none light-mode-card p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
-                <div className="flex flex-col items-end justify-start h-full text-right">
-                  <h3 className="text-xl font-bold mb-4 text-foreground">
-                    Discover All Divisions
-                  </h3>
-                  <div className="flex items-right gap-2 text-primary">
-                    <span className="font-medium">View All Divisions</span>
-                    <ArrowRight className="size-5" />
+              <Link href="/divisions" className="block h-full group">
+                <Card className="rounded-none h-full light-mode-card p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
+                  <div className="flex flex-col items-end justify-start h-full text-right">
+                    <h3 className="text-xl font-bold mb-4 text-foreground">
+                      Discover All Divisions
+                    </h3>
+                    <div className="flex items-right gap-2 text-primary">
+                      <span className="font-medium">View All Divisions</span>
+                      <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </div>
           </div>
         </div>
