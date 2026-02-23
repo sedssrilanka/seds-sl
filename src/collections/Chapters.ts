@@ -57,7 +57,7 @@ export const Chapters: CollectionConfig = {
       type: "upload",
       relationTo: "media",
       label: "Main Image",
-      required: true,
+      validate: (value: any) => (value ? true : "This field is required"),
     },
     {
       name: "gallery",
@@ -68,7 +68,7 @@ export const Chapters: CollectionConfig = {
           name: "image",
           type: "upload",
           relationTo: "media",
-          required: true,
+          validate: (value: any) => (value ? true : "This field is required"),
         },
         {
           name: "caption",

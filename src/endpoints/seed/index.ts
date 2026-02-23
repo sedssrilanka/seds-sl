@@ -27,6 +27,7 @@ const collections: CollectionSlug[] = [
   "orders",
   "chapters",
   "projects",
+  "divisions",
 ];
 
 const categories = ["Accessories", "T-Shirts", "Hats"];
@@ -675,6 +676,94 @@ export const seed = async ({
       },
     },
   });
+
+  payload.logger.info(`— Seeding divisions...`);
+
+  const divisionsToCreate = [
+    { name: "Robotic & Rover Division", icon: "Bot" },
+    { name: "Rocketry Division", icon: "Rocket" },
+    { name: "Satellite & IT Division", icon: "Laptop" },
+    { name: "Aeronautical Division", icon: "Plane" },
+    { name: "Biomedical & Earth Science Division", icon: "Microscope" },
+    { name: "Observation & Camping Division", icon: "Telescope" },
+    { name: "Finance Division", icon: "Briefcase" },
+    { name: "Media Division", icon: "Camera" },
+  ];
+
+  for (const divsi of divisionsToCreate) {
+    await payload.create({
+      collection: "divisions",
+      data: {
+        name: divsi.name,
+        icon: divsi.icon,
+        description: `This is the ${divsi.name} of SEDS Sri Lanka.`,
+        hero: {
+          type: "highImpact",
+          media: imageHero.id,
+          richText: {
+            root: {
+              type: "root",
+              children: [
+                {
+                  type: "heading",
+                  children: [
+                    {
+                      type: "text",
+                      detail: 0,
+                      format: 0,
+                      mode: "normal",
+                      style: "",
+                      text: divsi.name,
+                      version: 1,
+                    },
+                  ],
+                  direction: "ltr",
+                  format: "",
+                  indent: 0,
+                  tag: "h1",
+                  version: 1,
+                },
+              ],
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              version: 1,
+            },
+          },
+        },
+        content: {
+          root: {
+            type: "root",
+            children: [
+              {
+                type: "paragraph",
+                children: [
+                  {
+                    type: "text",
+                    detail: 0,
+                    format: 0,
+                    mode: "normal",
+                    style: "",
+                    text: `Welcome to the ${divsi.name} page. We will update this section with more detailed information soon.`,
+                    version: 1,
+                  },
+                ],
+                direction: "ltr",
+                format: "",
+                indent: 0,
+                textFormat: 0,
+                version: 1,
+              },
+            ],
+            direction: "ltr",
+            format: "",
+            indent: 0,
+            version: 1,
+          },
+        },
+      },
+    } as any);
+  }
 
   payload.logger.info("Seeded database successfully!");
 };

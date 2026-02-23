@@ -78,6 +78,7 @@ export interface Config {
     chapters: Chapter;
     categories: Category;
     pages: Page;
+    divisions: Division;
     addresses: Address;
     variants: Variant;
     variantTypes: VariantType;
@@ -113,6 +114,7 @@ export interface Config {
     chapters: ChaptersSelect<false> | ChaptersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    divisions: DivisionsSelect<false> | DivisionsSelect<true>;
     addresses: AddressesSelect<false> | AddressesSelect<true>;
     variants: VariantsSelect<false> | VariantsSelect<true>;
     variantTypes: VariantTypesSelect<false> | VariantTypesSelect<true>;
@@ -278,7 +280,7 @@ export interface Product {
   } | null;
   gallery?:
     | {
-        image: number | Media;
+        image?: (number | null) | Media;
         variantOption?: (number | null) | VariantOption;
         id?: string | null;
       }[]
@@ -549,7 +551,7 @@ export interface ContentBlock {
  * via the `definition` "MediaBlock".
  */
 export interface MediaBlock {
-  media: number | Media;
+  media?: (number | null) | Media;
   id?: string | null;
   blockName?: string | null;
   blockType: 'mediaBlock';
@@ -1057,10 +1059,10 @@ export interface Chapter {
    * Auto-generated from the Name field
    */
   slug: string;
-  mainImage: number | Media;
+  mainImage?: (number | null) | Media;
   gallery?:
     | {
-        image: number | Media;
+        image?: (number | null) | Media;
         caption?: string | null;
         id?: string | null;
       }[]
@@ -1089,6 +1091,84 @@ export interface Chapter {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "divisions".
+ */
+export interface Division {
+  id: number;
+  name: string;
+  /**
+   * Auto-generated from the Name field
+   */
+  slug: string;
+  /**
+   * The Lucide React icon name (e.g., 'Rocket', 'Bot', 'Plane')
+   */
+  icon: string;
+  hero: {
+    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    richText?: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    } | null;
+    links?:
+      | {
+          link: {
+            type?: ('reference' | 'custom') | null;
+            newTab?: boolean | null;
+            reference?: {
+              relationTo: 'pages';
+              value: number | Page;
+            } | null;
+            url?: string | null;
+            label: string;
+            /**
+             * Choose how the link should be rendered.
+             */
+            appearance?: ('default' | 'outline') | null;
+          };
+          id?: string | null;
+        }[]
+      | null;
+    media?: (number | null) | Media;
+  };
+  /**
+   * This will be displayed on the division listing cards.
+   */
+  description: string;
+  /**
+   * This will be displayed on the division's dedicated page.
+   */
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -1156,6 +1236,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'divisions';
+        value: number | Division;
       } | null)
     | ({
         relationTo: 'addresses';
@@ -1510,6 +1594,41 @@ export interface FormBlockSelect<T extends boolean = true> {
   introContent?: T;
   id?: T;
   blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "divisions_select".
+ */
+export interface DivisionsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  icon?: T;
+  hero?:
+    | T
+    | {
+        type?: T;
+        richText?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                    appearance?: T;
+                  };
+              id?: T;
+            };
+        media?: T;
+      };
+  description?: T;
+  content?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -176,28 +176,31 @@ export default async function Page({
               <div className="mt-16">
                 <h2 className="text-3xl font-bold mb-8">Gallery</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {chapter.gallery.map((item, index) => (
-                    <div
-                      key={index}
-                      className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl"
-                    >
-                      <Image
-                        src={getMediaUrl(item.image)}
-                        alt={item.caption || `Gallery image ${index + 1}`}
-                        fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                      {item.caption && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                          <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                            <p className="text-lg font-medium">
-                              {item.caption}
-                            </p>
+                  {chapter.gallery.map((item, index) => {
+                    if (!item.image) return null;
+                    return (
+                      <div
+                        key={index}
+                        className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl"
+                      >
+                        <Image
+                          src={getMediaUrl(item.image)}
+                          alt={item.caption || `Gallery image ${index + 1}`}
+                          fill
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                        {item.caption && (
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+                              <p className="text-lg font-medium">
+                                {item.caption}
+                              </p>
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
