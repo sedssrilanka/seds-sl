@@ -66,7 +66,7 @@ export default async function SubPage({ params }: Args) {
   const { hero, layout } = page;
 
   return (
-    <article className="pt-16 pb-24">
+    <article className="container mx-auto px-4 py-12">
       <RenderHero {...hero} />
       <RenderBlocks blocks={layout} />
     </article>
