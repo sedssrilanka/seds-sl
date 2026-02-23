@@ -60,6 +60,11 @@ export default function Navigation({
       isLink: true,
       href: "/projects",
     },
+    {
+      title: "Shop",
+      isLink: true,
+      href: "/shop",
+    },
   ],
 }: NavigationProps) {
   return (

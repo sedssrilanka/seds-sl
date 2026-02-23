@@ -51,6 +51,7 @@ export default function Navbar({
     { text: "About", href: "/about" },
     { text: "Chapters", href: "/chapters" },
     { text: "Projects", href: "/projects" },
+    { text: "Shop", href: "/shop" },
   ],
   actions = [
     {
@@ -60,7 +61,7 @@ export default function Navbar({
     },
     {
       text: "Join Us",
-      href: "/joisn-us",
+      href: "/join-us",
       isButton: true,
       variant: "default",
     },
@@ -88,9 +89,9 @@ export default function Navbar({
               {showNavigation && (customNavigation || <Navigation />)}
             </NavbarCenter>
             <NavbarRight>
-              <div className="hidden md:block">
-                <ThemeSwitcher defaultValue="system" />
-              </div>
+              {/* <div className="hidden md:block">
+                <ThemeSwitcher defaultValue="dark" />
+              </div> */}
               {actions.map((action) =>
                 action.isButton ? (
                   <Button
@@ -152,7 +153,7 @@ export default function Navbar({
                         <span className="text-sm font-medium text-foreground">
                           Theme
                         </span>
-                        <ThemeSwitcher defaultValue="system" />
+                        {/* <ThemeSwitcher defaultValue="system" /> */}
                       </div>
                     </div>
                   </nav>
