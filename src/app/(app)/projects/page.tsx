@@ -1,51 +1,56 @@
 "use client";
 
-import type { Chapter } from "@/payload-types";
+import type { Project, Chapter } from "@/payload-types";
 import Image from "next/image";
 import Link from "next/link";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
+import { fetchProjects } from "@/actions/projects";
 
-import { fetchChapters } from "@/actions/chapters";
-
-export default function ChaptersPage() {
-  const [chapters, setChapters] = useState<Chapter[]>([]);
+export default function ProjectsPage() {
+  const [projects, setProjects] = useState<Project[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
 
-  const getMediaUrl = (media: Chapter["mainImage"]): string => {
+  const getMediaUrl = (media: Project["image"]): string => {
     if (typeof media === "object" && media !== null && "url" in media) {
       if (media.url) return media.url;
     }
     return "";
   };
 
+  const getChapterName = (chapter: Project["chapter"]): string => {
+    if (typeof chapter === "object" && chapter !== null && "name" in chapter) {
+      return chapter.name || "";
+    }
+    return "";
+  };
+
   useEffect(() => {
-    const getChapters = async () => {
+    const getProjects = async () => {
       setLoading(true);
       try {
-        const result = await fetchChapters(searchQuery);
-        setChapters(result);
+        const result = await fetchProjects(searchQuery);
+        setProjects(result);
       } catch (error) {
-        console.error("Error fetching chapters:", error);
+        console.error("Error fetching projects:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    getChapters();
+    getProjects();
   }, [searchQuery]);
 
   return (
     <div className="container mx-auto px-4 py-12">
       {/* Header */}
       <div className="mb-12 text-center">
-        <h1 className="text-4xl font-bold mb-4">SEDS Chapters</h1>
+        <h1 className="text-4xl font-bold mb-4">Our Projects</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto">
-          Explore our various SEDS chapters across Sri Lanka. Each chapter
-          brings unique perspectives and initiatives to advance space
-          exploration and technology.
+          Discover the innovative projects developed by our student chapters,
+          ranging from rocketry to rovers and satellite technology.
         </p>
       </div>
 
@@ -55,7 +60,7 @@ export default function ChaptersPage() {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
           <Input
             type="text"
-            placeholder="Search chapters..."
+            placeholder="Search projects..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10 pr-4 py-2 w-full"
@@ -63,51 +68,48 @@ export default function ChaptersPage() {
         </div>
       </div>
 
-      {/* Chapters Grid */}
+      {/* Projects Grid */}
       {loading ? (
         <div className="text-center text-muted-foreground">
-          Loading chapters...
+          Loading projects...
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {chapters.map((chapter) => (
+          {projects.map((project) => (
             <Link
-              key={chapter.id}
-              href={`/chapters/${chapter.slug}`}
+              key={project.id}
+              href={`/projects/${project.slug}`}
               className="group block"
             >
-              <div className="bg-muted/30 backdrop-blur-sm border border-border/50 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div className="bg-muted/30 backdrop-blur-sm border border-border/50 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 h-full flex flex-col">
                 {/* Image Container */}
                 <div className="relative w-full h-48">
-                  {chapter.mainImage && (
+                  {project.image && (
                     <Image
-                      src={getMediaUrl(chapter.mainImage)}
-                      alt={chapter.name}
+                      src={getMediaUrl(project.image)}
+                      alt={project.name}
                       fill
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-4">
-                    <h2 className="text-xl font-bold text-white mb-2">
-                      {chapter.name}
+                    <h2 className="text-xl font-bold text-white mb-1">
+                      {project.name}
                     </h2>
+                    {project.chapter && (
+                      <p className="text-xs text-white/80 font-medium">
+                        {getChapterName(project.chapter)}
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-4">
+                <div className="p-4 flex-grow">
                   <p className="text-sm text-muted-foreground line-clamp-3">
-                    {chapter.description}
+                    {project.description}
                   </p>
-
-                  {/* Contact & Social Links Preview */}
-                  <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
-                    {chapter.socialLinks && chapter.socialLinks.length > 0 && (
-                      <span>{chapter.socialLinks.length} social links</span>
-                    )}
-                    {chapter.contactEmail && <span>Contact available</span>}
-                  </div>
                 </div>
               </div>
             </Link>
@@ -116,9 +118,9 @@ export default function ChaptersPage() {
       )}
 
       {/* No Results */}
-      {!loading && chapters.length === 0 && (
+      {!loading && projects.length === 0 && (
         <div className="text-center text-muted-foreground mt-8">
-          No chapters found{searchQuery ? ` for "${searchQuery}"` : ""}
+          No projects found{searchQuery ? ` for "${searchQuery}"` : ""}
         </div>
       )}
     </div>

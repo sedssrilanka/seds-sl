@@ -25,6 +25,8 @@ const collections: CollectionSlug[] = [
   "transactions",
   "addresses",
   "orders",
+  "chapters",
+  "projects",
 ];
 
 const categories = ["Accessories", "T-Shirts", "Hats"];
@@ -476,6 +478,201 @@ export const seed = async ({
       ],
       status: "processing",
       transactions: [succeededTransaction.id],
+    },
+  });
+
+  payload.logger.info(`— Seeding chapters...`);
+
+  const sedsUOC = await payload.create({
+    collection: "chapters",
+    data: {
+      name: "SEDS UOC",
+      slug: "seds-uoc",
+      mainImage: imageHero.id,
+      gallery: [
+        {
+          image: imageHero.id,
+          caption: "SEDS UOC Team",
+        },
+      ],
+      description:
+        "Students for the Exploration and Development of Space at University of Colombo.",
+      content: {
+        root: {
+          type: "root",
+          children: [
+            {
+              type: "paragraph",
+              children: [
+                {
+                  type: "text",
+                  detail: 0,
+                  format: 0,
+                  mode: "normal",
+                  style: "",
+                  text: "Welcome to SEDS UOC. We are dedicated to space exploration.",
+                  version: 1,
+                },
+              ],
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              textFormat: 0,
+              version: 1,
+            },
+          ],
+          direction: "ltr",
+          format: "",
+          indent: 0,
+          version: 1,
+        },
+      },
+      socialLinks: [
+        {
+          platform: "facebook",
+          url: "https://facebook.com/sedsuoc",
+        },
+        {
+          platform: "linkedin",
+          url: "https://linkedin.com/company/sedsuoc",
+        },
+      ],
+    },
+  });
+
+  const sedsMora = await payload.create({
+    collection: "chapters",
+    data: {
+      name: "SEDS Mora",
+      slug: "seds-mora",
+      mainImage: imageHat.id,
+      gallery: [
+        {
+          image: imageHat.id,
+          caption: "SEDS Mora Logo",
+        },
+      ],
+      description: "SEDS Chapter at the University of Moratuwa.",
+      content: {
+        root: {
+          type: "root",
+          children: [
+            {
+              type: "paragraph",
+              children: [
+                {
+                  type: "text",
+                  detail: 0,
+                  format: 0,
+                  mode: "normal",
+                  style: "",
+                  text: "SEDS Mora is one of the leading student space chapters in Sri Lanka.",
+                  version: 1,
+                },
+              ],
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              textFormat: 0,
+              version: 1,
+            },
+          ],
+          direction: "ltr",
+          format: "",
+          indent: 0,
+          version: 1,
+        },
+      },
+      socialLinks: [
+        {
+          platform: "instagram",
+          url: "https://instagram.com/sedsmora",
+        },
+      ],
+    },
+  });
+
+  payload.logger.info(`— Seeding projects...`);
+
+  await payload.create({
+    collection: "projects",
+    data: {
+      name: "Mars Rover",
+      slug: "mars-rover",
+      chapter: sedsMora.id,
+      image: imageHero.id,
+      description: "A prototype Mars Rover built by SEDS Mora students.",
+      content: {
+        root: {
+          type: "root",
+          children: [
+            {
+              type: "paragraph",
+              children: [
+                {
+                  type: "text",
+                  detail: 0,
+                  format: 0,
+                  mode: "normal",
+                  style: "",
+                  text: "This project aims to design and build a functional rover for simulated Martian terrain.",
+                  version: 1,
+                },
+              ],
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              textFormat: 0,
+              version: 1,
+            },
+          ],
+          direction: "ltr",
+          format: "",
+          indent: 0,
+          version: 1,
+        },
+      },
+    },
+  });
+
+  await payload.create({
+    collection: "projects",
+    data: {
+      name: "High Altitude Balloon",
+      slug: "hab-uoc",
+      chapter: sedsUOC.id,
+      image: imageTshirtBlack.id, // Using existing image as placeholder
+      description: "Weather balloon project to capture atmospheric data.",
+      content: {
+        root: {
+          type: "root",
+          children: [
+            {
+              type: "paragraph",
+              children: [
+                {
+                  type: "text",
+                  detail: 0,
+                  format: 0,
+                  mode: "normal",
+                  style: "",
+                  text: "Our High Altitude Balloon reached 30km and captured stunning images of the curvature of the Earth.",
+                  version: 1,
+                },
+              ],
+              direction: "ltr",
+              format: "",
+              indent: 0,
+              textFormat: 0,
+              version: 1,
+            },
+          ],
+          direction: "ltr",
+          format: "",
+          indent: 0,
+          version: 1,
+        },
+      },
     },
   });
 
