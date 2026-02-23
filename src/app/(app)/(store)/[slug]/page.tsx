@@ -43,7 +43,7 @@ type Args = {
 
 export default async function SubPage({ params }: Args) {
   const { slug = "home" } = await params;
-  const url = `/${slug}`;
+  const _url = `/${slug}`;
 
   let page = await queryPageBySlug({
     slug,

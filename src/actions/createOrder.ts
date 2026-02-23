@@ -15,6 +15,8 @@ export async function createOrder(data: {
   const payload = await getPayload({ config: configPromise });
   const { cart, user, email, shippingAddress, paymentMethod, total } = data;
 
+  const _paymentMethod = paymentMethod;
+
   if (!cart || !cart.items || cart.items.length === 0) {
     throw new Error("Cart is empty");
   }

@@ -32,43 +32,43 @@ export default async function ShopPage({ searchParams }: Props) {
     ...(sort ? { sort } : { sort: "title" }),
     ...(searchValue || category
       ? {
-        where: {
-          and: [
-            {
-              _status: {
-                equals: "published",
+          where: {
+            and: [
+              {
+                _status: {
+                  equals: "published",
+                },
               },
-            },
-            ...(searchValue
-              ? [
-                {
-                  or: [
+              ...(searchValue
+                ? [
                     {
-                      title: {
-                        like: searchValue,
+                      or: [
+                        {
+                          title: {
+                            like: searchValue,
+                          },
+                        },
+                        {
+                          description: {
+                            like: searchValue,
+                          },
+                        },
+                      ],
+                    },
+                  ]
+                : []),
+              ...(category
+                ? [
+                    {
+                      categories: {
+                        contains: category,
                       },
                     },
-                    {
-                      description: {
-                        like: searchValue,
-                      },
-                    },
-                  ],
-                },
-              ]
-              : []),
-            ...(category
-              ? [
-                {
-                  categories: {
-                    contains: category,
-                  },
-                },
-              ]
-              : []),
-          ],
-        },
-      }
+                  ]
+                : []),
+            ],
+          },
+        }
       : {}),
   });
 

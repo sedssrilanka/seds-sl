@@ -7,7 +7,7 @@
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation \" next build --webpack",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
-    "lint": "biome check",
+    "lint": "biome check --diagnostic-level=error",
     "format": "biome format --write",
     "test": "vitest",
     "type-check": "tsc --noEmit",

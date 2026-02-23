@@ -155,19 +155,13 @@ export default async function ProductPage({ params }: Args) {
         </div>
       </div>
 
-      {product.layout?.length ? (
-        <RenderBlocks blocks={product.layout} />
-      ) : (
-        <></>
-      )}
+      {product.layout?.length ? <RenderBlocks blocks={product.layout} /> : null}
 
       {relatedProducts.length ? (
         <div className="container">
           <RelatedProducts products={relatedProducts as Product[]} />
         </div>
-      ) : (
-        <></>
-      )}
+      ) : null}
     </React.Fragment>
   );
 }

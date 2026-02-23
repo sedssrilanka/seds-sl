@@ -10,7 +10,7 @@ export default async function ConfirmOrderPage({
 }: {
   searchParams: SearchParams;
 }) {
-  const searchParams = await searchParamsPromise;
+  const _searchParams = await searchParamsPromise;
 
   //const paymentIntent = searchParams.paymentId;
 
