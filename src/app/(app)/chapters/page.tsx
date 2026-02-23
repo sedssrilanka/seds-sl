@@ -6,11 +6,8 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { PayloadSDK } from "@payloadcms/sdk";
 
-const payload = new PayloadSDK({
-  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://127.0.0.1:3000/api",
-});
+import { fetchChapters } from "@/actions/chapters";
 
 export default function ChaptersPage() {
   const [chapters, setChapters] = useState<Chapter[]>([]);
@@ -25,21 +22,11 @@ export default function ChaptersPage() {
   };
 
   useEffect(() => {
-    const fetchChapters = async () => {
+    const getChapters = async () => {
+      setLoading(true);
       try {
-        const result = await payload.find({
-          collection: "chapters",
-          sort: "-createdAt",
-          where: searchQuery
-            ? {
-                name: {
-                  like: searchQuery,
-                },
-              }
-            : {},
-          depth: 1,
-        });
-        setChapters(result.docs as Chapter[]);
+        const result = await fetchChapters(searchQuery);
+        setChapters(result);
       } catch (error) {
         console.error("Error fetching chapters:", error);
       } finally {
@@ -47,7 +34,7 @@ export default function ChaptersPage() {
       }
     };
 
-    fetchChapters();
+    getChapters();
   }, [searchQuery]);
 
   return (
@@ -89,7 +76,7 @@ export default function ChaptersPage() {
               href={`/chapters/${chapter.slug}`}
               className="group block"
             >
-              <div className="bg-muted/30 backdrop-blur-sm rounded-xl border border-border/50 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <div className="bg-muted/30 backdrop-blur-sm border border-border/50 overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
                 {/* Image Container */}
                 <div className="relative w-full h-48">
                   {chapter.mainImage && (
