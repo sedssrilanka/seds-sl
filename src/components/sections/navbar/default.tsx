@@ -50,6 +50,7 @@ export default function Navbar({
     { text: "Home", href: "/" },
     { text: "About", href: "/about" },
     { text: "Chapters", href: "/chapters" },
+    { text: "Projects", href: "/projects" },
   ],
   actions = [
     {

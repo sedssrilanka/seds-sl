@@ -55,6 +55,11 @@ export default function Navigation({
       isLink: true,
       href: "/chapters",
     },
+    {
+      title: "Projects",
+      isLink: true,
+      href: "/projects",
+    },
   ],
 }: NavigationProps) {
   return (
