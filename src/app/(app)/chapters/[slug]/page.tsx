@@ -16,9 +16,10 @@ import {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const chapter = await getChapter(params.slug);
+  const resolvedParams = await params;
+  const chapter = await getChapter(resolvedParams.slug);
   if (!chapter) return { title: "Chapter Not Found" };
 
   const getMediaUrl = (media: Media | number | null): string => {
@@ -73,8 +74,13 @@ async function getChapter(slug: string): Promise<Chapter | null> {
   }
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
   const chapter = await getChapter(slug);
 
   if (!chapter) {

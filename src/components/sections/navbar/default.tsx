@@ -1,5 +1,5 @@
 import { Menu } from "lucide-react";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,8 @@ import {
 import Navigation from "../../ui/navigation";
 import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
 import { ThemeSwitcher } from "../../ui/theme-switcher";
+import { Cart } from "@/components/Cart";
+import { OpenCartButton } from "@/components/Cart/OpenCart";
 
 interface NavbarLink {
   text: string;
@@ -111,6 +113,10 @@ export default function Navbar({
                   </a>
                 ),
               )}
+
+              <Suspense fallback={<OpenCartButton />}>
+                <Cart />
+              </Suspense>
               <Sheet>
                 <SheetTrigger asChild>
                   <Button

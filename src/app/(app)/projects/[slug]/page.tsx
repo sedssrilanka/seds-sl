@@ -26,7 +26,11 @@ async function getProject(slug: string): Promise<Project | null> {
   }
 }
 
-export default async function Page({ params }: { params: { slug: string } }) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
   const project = await getProject(slug);
   if (!project) {

@@ -1,0 +1,12 @@
+import React from "react";
+
+export const Logo = () => {
+  return (
+    /* eslint-disable @next/next/no-img-element */
+    <img
+      alt="Seds SL Logo"
+      className="max-w-[9.375rem] invert dark:invert-0"
+      src="/logo/main-white.png"
+    />
+  );
+};
