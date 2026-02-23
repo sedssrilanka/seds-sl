@@ -48,14 +48,20 @@ export default async function AddressesPage() {
   } catch (_error) {}
 
   return (
-    <div className="border p-8 rounded-lg bg-primary-foreground">
-      <h1 className="text-3xl font-medium mb-8">Addresses</h1>
-
-      <div className="mb-8">
-        <AddressListing />
+    <div className="bg-card border rounded-2xl shadow-sm overflow-hidden min-h-[500px]">
+      <div className="p-6 md:p-8 border-b bg-muted/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Addresses</h1>
+          <p className="text-sm text-muted-foreground mt-2">
+            Manage your shipping and billing addresses.
+          </p>
+        </div>
+        <CreateAddressModal />
       </div>
 
-      <CreateAddressModal />
+      <div className="p-6 md:p-8 bg-muted/5 min-h-[400px]">
+        <AddressListing />
+      </div>
     </div>
   );
 }

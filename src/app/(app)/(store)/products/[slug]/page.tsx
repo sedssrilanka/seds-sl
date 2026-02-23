@@ -131,37 +131,45 @@ export default async function ProductPage({ params }: Args) {
         }}
         type="application/ld+json"
       />
-      <div className="container pt-8 pb-8">
-        <Button asChild variant="ghost" className="mb-4">
-          <Link href="/shop">
-            <ChevronLeftIcon />
-            All products
-          </Link>
-        </Button>
-        <div className="flex flex-col gap-12 rounded-lg border p-8 md:py-12 lg:flex-row lg:gap-8 bg-primary-foreground">
-          <div className="h-full w-full basis-full lg:basis-1/2">
-            <Suspense
-              fallback={
-                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
-              }
-            >
-              {Boolean(gallery?.length) && <Gallery gallery={gallery} />}
-            </Suspense>
-          </div>
+      <div className="container mx-auto px-4 py-12">
+        <div className="container pt-8 pb-16">
+          <Button
+            asChild
+            variant="ghost"
+            className="mb-6 -ml-4 hover:bg-muted/50 rounded-full"
+          >
+            <Link href="/shop" className="flex items-center gap-2">
+              <ChevronLeftIcon className="w-4 h-4" />
+              <span>Back to Shop</span>
+            </Link>
+          </Button>
+          <div className="flex flex-col gap-8 md:gap-12 rounded-3xl border p-6 md:p-10 lg:flex-row lg:gap-16 bg-card shadow-sm overflow-hidden">
+            <div className="h-full w-full basis-full lg:basis-1/2">
+              <Suspense
+                fallback={
+                  <div className="relative aspect-square h-full min-h-[400px] max-h-[600px] w-full bg-muted/20 animate-pulse rounded-2xl" />
+                }
+              >
+                {Boolean(gallery?.length) && <Gallery gallery={gallery} />}
+              </Suspense>
+            </div>
 
-          <div className="basis-full lg:basis-1/2">
-            <ProductDescription product={product} />
+            <div className="basis-full lg:basis-1/2">
+              <ProductDescription product={product} />
+            </div>
           </div>
         </div>
+
+        {product.layout?.length ? (
+          <RenderBlocks blocks={product.layout} />
+        ) : null}
+
+        {relatedProducts.length ? (
+          <div className="container pb-20">
+            <RelatedProducts products={relatedProducts as Product[]} />
+          </div>
+        ) : null}
       </div>
-
-      {product.layout?.length ? <RenderBlocks blocks={product.layout} /> : null}
-
-      {relatedProducts.length ? (
-        <div className="container">
-          <RelatedProducts products={relatedProducts as Product[]} />
-        </div>
-      ) : null}
     </React.Fragment>
   );
 }
@@ -170,12 +178,14 @@ function RelatedProducts({ products }: { products: Product[] }) {
   if (!products.length) return null;
 
   return (
-    <div className="py-8">
-      <h2 className="mb-4 text-2xl font-bold">Related Products</h2>
-      <ul className="flex w-full gap-4 overflow-x-auto pt-1">
+    <div className="py-12 border-t mt-8">
+      <h2 className="mb-8 text-2xl font-bold tracking-tight">
+        You might also like
+      </h2>
+      <ul className="flex w-full gap-6 overflow-x-auto pb-4 px-2 -mx-2 snap-x">
         {products.map((product) => (
           <li
-            className="aspect-square w-full flex-none min-[475px]:w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5"
+            className="aspect-[4/5] w-[260px] flex-none snap-start transition-all duration-300 hover:-translate-y-1 hover:shadow-lg rounded-2xl overflow-hidden group border bg-card"
             key={product.id}
           >
             <Link

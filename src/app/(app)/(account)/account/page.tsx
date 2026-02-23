@@ -55,42 +55,61 @@ export default async function AccountPage() {
   }
 
   return (
-    <>
-      <div className="border p-8 rounded-lg bg-primary-foreground">
-        <h1 className="text-3xl font-medium mb-8">Account settings</h1>
-        <AccountForm />
-      </div>
-
-      <div className=" border p-8 rounded-lg bg-primary-foreground">
-        <h2 className="text-3xl font-medium mb-8">Recent Orders</h2>
-
-        <div className="prose dark:prose-invert mb-8">
-          <p>
-            These are the most recent orders you have placed. Each order is
-            associated with an payment. As you place more orders, they will
-            appear in your orders list.
+    <div className="space-y-8">
+      <div className="bg-card border rounded-2xl shadow-sm overflow-hidden">
+        <div className="p-6 md:p-8 border-b bg-muted/20">
+          <h1 className="text-2xl font-bold tracking-tight">
+            Account settings
+          </h1>
+          <p className="text-sm text-muted-foreground mt-2">
+            Manage your personal information and login details.
           </p>
         </div>
-
-        {(!orders || !Array.isArray(orders) || orders?.length === 0) && (
-          <p className="mb-8">You have no orders.</p>
-        )}
-
-        {orders && orders.length > 0 && (
-          <ul className="flex flex-col gap-6 mb-8">
-            {orders?.map((order, _index) => (
-              <li key={order.id}>
-                <OrderItem order={order} />
-              </li>
-            ))}
-          </ul>
-        )}
-
-        <Button asChild variant="default">
-          <Link href="/orders">View all orders</Link>
-        </Button>
+        <div className="p-6 md:p-8">
+          <AccountForm />
+        </div>
       </div>
-    </>
+
+      <div className="bg-card border rounded-2xl shadow-sm overflow-hidden">
+        <div className="p-6 md:p-8 border-b bg-muted/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight">Recent Orders</h2>
+            <p className="text-sm text-muted-foreground mt-2">
+              View your most recent transactions and payment details.
+            </p>
+          </div>
+          <Button
+            asChild
+            variant="outline"
+            size="sm"
+            className="w-full sm:w-auto h-9"
+          >
+            <Link href="/orders">View all orders</Link>
+          </Button>
+        </div>
+
+        <div className="p-6 md:p-8">
+          {!orders || !Array.isArray(orders) || orders?.length === 0 ? (
+            <div className="text-center py-12 flex flex-col items-center justify-center border-2 border-dashed rounded-xl border-muted bg-muted/5">
+              <p className="text-muted-foreground mb-4">
+                You have no orders yet.
+              </p>
+            </div>
+          ) : (
+            <ul className="flex flex-col gap-6">
+              {orders?.map((order, _index) => (
+                <li
+                  key={order.id}
+                  className="transition-all hover:bg-muted/30 -mx-4 px-4 py-4 rounded-xl"
+                >
+                  <OrderItem order={order} />
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 

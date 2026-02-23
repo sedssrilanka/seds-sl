@@ -27,12 +27,13 @@ export default async function RootLayout({
         <RenderParams className="" />
       </div>
 
-      <div className="container mt-16 pb-8 flex gap-8">
+      <div className="container mt-16 pb-16 flex flex-col md:flex-row gap-12 mx-auto px-4 py-8">
         {user && (
-          <AccountNav className="max-w-[15.5rem] grow flex-col items-start gap-4 hidden md:flex" />
+          <aside className="w-full md:w-[260px] shrink-0 mt-8 md:mt-0">
+            <AccountNav className="sticky top-24" />
+          </aside>
         )}
-
-        <div className="flex flex-col gap-12 grow">{children}</div>
+        <main className="flex flex-col gap-8 grow min-w-0">{children}</main>
       </div>
     </div>
   );
