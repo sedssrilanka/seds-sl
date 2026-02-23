@@ -56,6 +56,7 @@
     "optional": "^0.1.4",
     "payload": "^3.68.5",
     "prism-react-renderer": "^2.4.1",
+    "radix-ui": "^1.4.3",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-hook-form": "^7.68.0",
@@ -64,6 +65,7 @@
     "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "three": "^0.180.0",
+    "use-debounce": "^10.1.0",
     "zod": "^4.2.1"
   },
   "devDependencies": {

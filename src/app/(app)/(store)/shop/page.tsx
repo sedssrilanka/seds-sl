@@ -50,11 +50,6 @@ export default async function ShopPage({ searchParams }: Props) {
                               like: searchValue,
                             },
                           },
-                          {
-                            description: {
-                              like: searchValue,
-                            },
-                          },
                         ],
                       },
                     ]
@@ -74,6 +69,7 @@ export default async function ShopPage({ searchParams }: Props) {
         : {}),
     });
   } catch (error) {
+    console.error("Payload find error in shop:", error);
     console.warn("DB connection failed, continuing with empty products list.");
   }
 

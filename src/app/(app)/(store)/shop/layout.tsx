@@ -12,23 +12,35 @@ export default function ShopLayout({
 }) {
   return (
     <Suspense fallback={null}>
-      <div className="grid-container section-content my-12 md:my-16 pb-8 md:pb-12 px-4">
-        <div className="col-span-4 md:col-span-8 lg:col-span-12 flex flex-col gap-8">
-          <div className="w-full max-w-2xl mx-auto mb-8">
-            <Search className="rounded-full shadow-sm" />
+      <div className="grid-container section-content">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12 flex flex-col gap-6 py-12">
+          {/* Top Header Section */}
+          <div className="flex flex-col mb-4">
+            <h1 className="text-4xl font-bold tracking-tight">Shop</h1>
+            <p className="text-muted-foreground mt-2">
+              Browse the latest space exploration gear from our community.
+            </p>
           </div>
 
-          <div className="flex flex-col lg:flex-row items-start justify-between gap-12 lg:gap-8">
-            <aside className="w-full lg:w-64 flex-none space-y-8 bg-card border rounded-2xl p-6 shadow-sm sticky top-24">
-              <Categories />
-              <div className="pt-6 border-t">
-                <FilterList list={sorting} title="Sort by" />
+          {/* Inline Control Bar */}
+          <div className="flex flex-col lg:flex-row items-center justify-between gap-4 w-full bg-card/40 backdrop-blur border border-border/50 rounded-2xl p-4 shadow-sm relative z-10 transition-all">
+            {/* Left Box: Search & Filters */}
+            <div className="flex flex-col md:flex-row items-center gap-4 w-full lg:w-auto flex-1">
+              <div className="w-full md:max-w-xs shrink-0">
+                <Search />
               </div>
-            </aside>
-            <main className="min-h-screen w-full lg:max-w-[calc(100%-18rem)]">
-              {children}
-            </main>
+              <div className="flex-1 w-full min-w-0">
+                <Categories borderless={true} />
+              </div>
+            </div>
+
+            {/* Right Box: Sort */}
+            <div className="w-full lg:w-auto shrink-0 md:max-w-[180px]">
+              <FilterList list={sorting} />
+            </div>
           </div>
+
+          <main className="min-h-screen w-full mt-4">{children}</main>
         </div>
       </div>
     </Suspense>
