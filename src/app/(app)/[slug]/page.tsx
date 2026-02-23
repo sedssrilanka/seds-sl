@@ -66,10 +66,12 @@ export default async function SubPage({ params }: Args) {
   const { hero, layout } = page;
 
   return (
-    <article className="container mx-auto px-4 py-12">
-      <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
-    </article>
+    <div className="grid-container section-content">
+      <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
+        <RenderHero {...hero} />
+        <RenderBlocks blocks={layout} />
+      </article>
+    </div>
   );
 }
 

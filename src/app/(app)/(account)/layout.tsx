@@ -23,17 +23,21 @@ export default async function RootLayout({
 
   return (
     <div>
-      <div className="container">
-        <RenderParams className="" />
+      <div className="grid-container section-content">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12">
+          <RenderParams className="" />
+        </div>
       </div>
 
-      <div className="container mt-16 pb-16 flex flex-col md:flex-row gap-12 mx-auto px-4 py-8">
-        {user && (
-          <aside className="w-full md:w-[260px] shrink-0 mt-8 md:mt-0">
-            <AccountNav className="sticky top-24" />
-          </aside>
-        )}
-        <main className="flex flex-col gap-8 grow min-w-0">{children}</main>
+      <div className="grid-container section-content mt-16 pb-16">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12 flex flex-col md:flex-row gap-12 py-8">
+          {user && (
+            <aside className="w-full md:w-[260px] shrink-0 mt-8 md:mt-0">
+              <AccountNav className="sticky top-24" />
+            </aside>
+          )}
+          <main className="flex flex-col gap-8 grow min-w-0">{children}</main>
+        </div>
       </div>
     </div>
   );
