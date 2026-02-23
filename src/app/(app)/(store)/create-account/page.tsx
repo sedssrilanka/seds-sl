@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 
 import { RenderParams } from "@/components/RenderParams";
@@ -11,8 +12,14 @@ import { redirect } from "next/navigation";
 
 export default async function CreateAccount() {
   const headers = await getHeaders();
-  const payload = await getPayload({ config: configPromise });
-  const { user } = await payload.auth({ headers });
+  let user = null;
+  try {
+    const payload = await getPayload({ config: configPromise });
+    const authResult = await payload.auth({ headers });
+    user = authResult.user;
+  } catch (err) {
+    console.warn("DB connection failed, proceeding without user.");
+  }
 
   if (user) {
     redirect(

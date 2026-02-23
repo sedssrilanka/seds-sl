@@ -91,6 +91,9 @@ export default buildConfig({
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || "",
+      // Fail fast during build if DB is offline.
+      connectionTimeoutMillis:
+        process.env.npm_lifecycle_event === "build" ? 2000 : 10000,
     },
   }),
   plugins: plugins,

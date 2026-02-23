@@ -24,8 +24,15 @@ type PageProps = {
 
 export default async function OrderPage({ params, searchParams }: PageProps) {
   const headers = await getHeaders();
-  const payload = await getPayload({ config: configPromise });
-  const { user } = await payload.auth({ headers });
+  let payload: any = null;
+  let user = null;
+  try {
+    payload = await getPayload({ config: configPromise });
+    const authResult = await payload?.auth({ headers });
+    user = authResult.user;
+  } catch (err) {
+    console.warn("DB connection failed, proceeding without user.");
+  }
 
   const { id } = await params;
   const { email = "" } = await searchParams;

@@ -1,8 +1,9 @@
+export const dynamic = "force-dynamic";
 import { Grid } from "@/components/Grid";
 import { ProductGridItem } from "@/components/ProductGridItem";
 import configPromise from "@payload-config";
 import { getPayload } from "payload";
-
+import type { Product } from "@/payload-types";
 export const metadata = {
   description: "Search for products in the store.",
   title: "Shop",
@@ -16,61 +17,65 @@ type Props = {
 
 export default async function ShopPage({ searchParams }: Props) {
   const { q: searchValue, sort, category } = await searchParams;
-  const payload = await getPayload({ config: configPromise });
-
-  const products = await payload.find({
-    collection: "products",
-    draft: false,
-    overrideAccess: false,
-    select: {
-      title: true,
-      slug: true,
-      gallery: true,
-      categories: true,
-      priceInUSD: true,
-    },
-    ...(sort ? { sort } : { sort: "title" }),
-    ...(searchValue || category
-      ? {
-          where: {
-            and: [
-              {
-                _status: {
-                  equals: "published",
+  let products: { docs: Partial<Product>[] | any[] } = { docs: [] };
+  try {
+    const payload = await getPayload({ config: configPromise });
+    products = await payload.find({
+      collection: "products",
+      draft: false,
+      overrideAccess: false,
+      select: {
+        title: true,
+        slug: true,
+        gallery: true,
+        categories: true,
+        priceInUSD: true,
+      },
+      ...(sort ? { sort } : { sort: "title" }),
+      ...(searchValue || category
+        ? {
+            where: {
+              and: [
+                {
+                  _status: {
+                    equals: "published",
+                  },
                 },
-              },
-              ...(searchValue
-                ? [
-                    {
-                      or: [
-                        {
-                          title: {
-                            like: searchValue,
+                ...(searchValue
+                  ? [
+                      {
+                        or: [
+                          {
+                            title: {
+                              like: searchValue,
+                            },
                           },
-                        },
-                        {
-                          description: {
-                            like: searchValue,
+                          {
+                            description: {
+                              like: searchValue,
+                            },
                           },
-                        },
-                      ],
-                    },
-                  ]
-                : []),
-              ...(category
-                ? [
-                    {
-                      categories: {
-                        contains: category,
+                        ],
                       },
-                    },
-                  ]
-                : []),
-            ],
-          },
-        }
-      : {}),
-  });
+                    ]
+                  : []),
+                ...(category
+                  ? [
+                      {
+                        categories: {
+                          contains: category,
+                        },
+                      },
+                    ]
+                  : []),
+              ],
+            },
+          }
+        : {}),
+    });
+  } catch (error) {
+    console.warn("DB connection failed, continuing with empty products list.");
+  }
 
   const resultsText = products.docs.length > 1 ? "results" : "result";
 

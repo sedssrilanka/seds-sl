@@ -200,34 +200,38 @@ function RelatedProducts({ products }: { products: Product[] }) {
 const queryProductBySlug = async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode();
 
-  const payload = await getPayload({ config: configPromise });
-
-  const result = await payload.find({
-    collection: "products",
-    depth: 3,
-    draft,
-    limit: 1,
-    overrideAccess: draft,
-    pagination: false,
-    where: {
-      and: [
-        {
-          slug: {
-            equals: slug,
+  try {
+    const payload = await getPayload({ config: configPromise });
+    const result = await payload.find({
+      collection: "products",
+      depth: 3,
+      draft,
+      limit: 1,
+      overrideAccess: draft,
+      pagination: false,
+      where: {
+        and: [
+          {
+            slug: {
+              equals: slug,
+            },
           },
-        },
-        ...(draft ? [] : [{ _status: { equals: "published" } }]),
-      ],
-    },
-    populate: {
-      variants: {
-        title: true,
-        priceInUSD: true,
-        inventory: true,
-        options: true,
+          ...(draft ? [] : [{ _status: { equals: "published" } }]),
+        ],
       },
-    },
-  });
+      populate: {
+        variants: {
+          title: true,
+          priceInUSD: true,
+          inventory: true,
+          options: true,
+        },
+      },
+    });
 
-  return result.docs?.[0] || null;
+    return result.docs?.[0] || null;
+  } catch (err) {
+    console.warn("DB connection failed, proceeding with null product queries.");
+    return null;
+  }
 };

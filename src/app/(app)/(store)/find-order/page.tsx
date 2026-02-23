@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
@@ -8,8 +9,14 @@ import configPromise from "@payload-config";
 
 export default async function FindOrderPage() {
   const headers = await getHeaders();
-  const payload = await getPayload({ config: configPromise });
-  const { user } = await payload.auth({ headers });
+  let user = null;
+  try {
+    const payload = await getPayload({ config: configPromise });
+    const authResult = await payload.auth({ headers });
+    user = authResult.user;
+  } catch (err) {
+    console.warn("DB connection failed, proceeding without user.");
+  }
 
   return (
     <div className="container py-16">

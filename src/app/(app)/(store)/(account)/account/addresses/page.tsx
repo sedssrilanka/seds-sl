@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Metadata } from "next";
 
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
@@ -11,8 +12,15 @@ import { CreateAddressModal } from "@/components/addresses/CreateAddressModal";
 
 export default async function AddressesPage() {
   const headers = await getHeaders();
-  const payload = await getPayload({ config: configPromise });
-  const { user } = await payload.auth({ headers });
+  let payload: any = null;
+  let user = null;
+  try {
+    payload = await getPayload({ config: configPromise });
+    const authResult = await payload?.auth({ headers });
+    user = authResult.user;
+  } catch (err) {
+    console.warn("DB connection failed, proceeding without user.");
+  }
 
   let _orders: Order[] | null = null;
 

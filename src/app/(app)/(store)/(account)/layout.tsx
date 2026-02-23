@@ -12,8 +12,14 @@ export default async function RootLayout({
   children: ReactNode;
 }) {
   const headers = await getHeaders();
-  const payload = await getPayload({ config: configPromise });
-  const { user } = await payload.auth({ headers });
+  let user = null;
+  try {
+    const payload = await getPayload({ config: configPromise });
+    const authResult = await payload.auth({ headers });
+    user = authResult.user;
+  } catch (err) {
+    console.warn("DB connection failed, proceeding without user.");
+  }
 
   return (
     <div>

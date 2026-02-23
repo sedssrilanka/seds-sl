@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import type { Order } from "@/payload-types";
 import type { Metadata } from "next";
 
@@ -11,8 +12,15 @@ import { redirect } from "next/navigation";
 
 export default async function Orders() {
   const headers = await getHeaders();
-  const payload = await getPayload({ config: configPromise });
-  const { user } = await payload.auth({ headers });
+  let payload: any = null;
+  let user = null;
+  try {
+    payload = await getPayload({ config: configPromise });
+    const authResult = await payload?.auth({ headers });
+    user = authResult.user;
+  } catch (err) {
+    console.warn("DB connection failed, proceeding without user.");
+  }
 
   let orders: Order[] | null = null;
 
