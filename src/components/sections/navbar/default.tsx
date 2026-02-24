@@ -149,14 +149,14 @@ export default function Navbar({
                         {link.text}
                       </a>
                     ))}
-                    <div className="pt-4 border-t border-border">
+                    {/* <div className="pt-4 border-t border-border">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-foreground">
                           Theme
                         </span>
-                        {/* <ThemeSwitcher defaultValue="system" /> */}
+                        <ThemeSwitcher defaultValue="system" />
                       </div>
-                    </div>
+                    </div> */}
                   </nav>
                 </SheetContent>
               </Sheet>

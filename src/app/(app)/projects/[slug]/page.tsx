@@ -1,15 +1,13 @@
 import type { Project } from "@/payload-types";
-import { PayloadSDK } from "@payloadcms/sdk";
+import { getPayload } from "payload";
+import configPromise from "@payload-config";
 import { notFound } from "next/navigation";
 import { RenderBlocks } from "@/blocks/RenderBlocks";
 import { RenderHero } from "@/heros/RenderHero";
 
-const payload = new PayloadSDK({
-  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://127.0.0.1:3000/api",
-});
-
 async function getProject(slug: string): Promise<Project | null> {
   try {
+    const payload = await getPayload({ config: configPromise });
     const result = await payload.find({
       collection: "projects",
       where: {

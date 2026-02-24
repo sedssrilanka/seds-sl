@@ -1,6 +1,7 @@
 import type { Chapter, Media, Project } from "@/payload-types";
 import type { Metadata } from "next";
-import { PayloadSDK } from "@payloadcms/sdk";
+import { getPayload } from "payload";
+import configPromise from "@payload-config";
 import { notFound } from "next/navigation";
 import { ChapterContent } from "@/components/rich-text/chapter-content";
 import Image from "next/image";
@@ -51,12 +52,9 @@ export async function generateMetadata({
   };
 }
 
-const payload = new PayloadSDK({
-  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://localhost:3000/api",
-});
-
 async function getChapter(slug: string): Promise<Chapter | null> {
   try {
+    const payload = await getPayload({ config: configPromise });
     const result = await payload.find({
       collection: "chapters",
       where: {
@@ -116,6 +114,7 @@ export default async function Page({
   // Fetch projects belonging to this chapter
   let chapterProjects: Project[] = [];
   try {
+    const payload = await getPayload({ config: configPromise });
     const projectsRes = await payload.find({
       collection: "projects",
       where: {
