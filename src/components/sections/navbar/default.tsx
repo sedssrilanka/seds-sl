@@ -52,6 +52,7 @@ export default function Navbar({
     { text: "Chapters", href: "/chapters" },
     { text: "Projects", href: "/projects" },
     { text: "Shop", href: "/shop" },
+    { text: "Contact Us", href: "/contact-us" },
   ],
   actions = [
     {

@@ -45,7 +45,7 @@ export const Checkbox: React.FC<
 
   return (
     <Width width={width}>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-3">
         <CheckboxUi
           defaultChecked={defaultValue}
           id={name}
@@ -54,7 +54,12 @@ export const Checkbox: React.FC<
             setValue(props.name, checked);
           }}
         />
-        <Label htmlFor={name}>{label}</Label>
+        <Label
+          className="text-foreground hover:text-primary transition-colors cursor-pointer text-sm"
+          htmlFor={name}
+        >
+          {label}
+        </Label>
       </div>
       {errors?.[name]?.message &&
         typeof errors?.[name]?.message === "string" && (
