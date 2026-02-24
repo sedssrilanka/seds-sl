@@ -29,7 +29,7 @@ export default async function ShopPage({ searchParams }: Props) {
         slug: true,
         gallery: true,
         categories: true,
-        priceInUSD: true,
+        priceInLKR: true,
       },
       ...(sort ? { sort } : { sort: "title" }),
       ...(searchValue || category
@@ -99,16 +99,9 @@ export default async function ShopPage({ searchParams }: Props) {
       )}
 
       {products?.docs.length > 0 ? (
-        <Grid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:gap-8">
+        <Grid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-border/60 dark:border-border/50">
           {products.docs.map((product) => {
-            return (
-              <div
-                key={product.id}
-                className="transition-all duration-300 hover:-translate-y-1 hover:shadow-lg rounded-xl overflow-hidden group"
-              >
-                <ProductGridItem product={product} />
-              </div>
-            );
+            return <ProductGridItem key={product.id} product={product} />;
           })}
         </Grid>
       ) : null}

@@ -1,19 +1,19 @@
-import type { Product, Variant } from "@/payload-types";
-
+import type { Product } from "@/payload-types";
 import Link from "next/link";
 import type React from "react";
-import clsx from "clsx";
 import { Media } from "@/components/Media";
 import { Price } from "@/components/Price";
+import { Card, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   product: Partial<Product>;
 };
 
 export const ProductGridItem: React.FC<Props> = ({ product }) => {
-  const { gallery, priceInUSD, title } = product;
+  const { gallery, priceInLKR, title } = product;
 
-  let price = priceInUSD;
+  let price = priceInLKR;
 
   const variants = product.variants?.docs;
 
@@ -22,10 +22,10 @@ export const ProductGridItem: React.FC<Props> = ({ product }) => {
     if (
       variant &&
       typeof variant === "object" &&
-      variant?.priceInUSD &&
-      typeof variant.priceInUSD === "number"
+      variant?.priceInLKR &&
+      typeof variant.priceInLKR === "number"
     ) {
-      price = variant.priceInUSD;
+      price = variant.priceInLKR;
     }
   }
 
@@ -35,33 +35,47 @@ export const ProductGridItem: React.FC<Props> = ({ product }) => {
       : false;
 
   return (
-    <Link
-      className="relative inline-block h-full w-full group"
-      href={`/products/${product.slug}`}
-    >
-      {image ? (
-        <Media
-          className={clsx(
-            "relative aspect-square object-cover border rounded-2xl p-8 bg-primary-foreground",
-          )}
-          height={80}
-          imgClassName={clsx("h-full w-full object-cover rounded-2xl", {
-            "transition duration-300 ease-in-out group-hover:scale-102": true,
-          })}
-          resource={image}
-          width={80}
-        />
-      ) : null}
-
-      <div className="font-mono text-primary/50 group-hover:text-primary/100 flex justify-between items-center mt-4">
-        <div>{title}</div>
-
-        {typeof price === "number" && (
-          <div className="">
-            <Price amount={price} />
+    <Card className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none group overflow-hidden flex flex-col h-full">
+      {/* Image Container */}
+      <div className="w-full aspect-video bg-muted border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center">
+        {image ? (
+          <Media
+            className="absolute inset-0 w-full h-full"
+            imgClassName="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            resource={image}
+            fill
+          />
+        ) : (
+          <div className="text-muted-foreground text-sm font-medium">
+            No Image
           </div>
         )}
       </div>
-    </Link>
+
+      {/* Title */}
+      <CardTitle className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary line-clamp-2">
+        {title}
+      </CardTitle>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
+        {typeof price === "number" && (
+          <Price
+            amount={price}
+            className="text-sm font-semibold text-muted-foreground"
+          />
+        )}
+
+        <Link href={`/products/${product.slug}`} className="ml-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            className="rounded-sm group-hover:border-primary/50 transition-colors"
+          >
+            View Product
+          </Button>
+        </Link>
+      </div>
+    </Card>
   );
 };

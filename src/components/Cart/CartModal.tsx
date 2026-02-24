@@ -92,13 +92,13 @@ export function CartModal() {
                       : undefined;
 
                   let image = firstGalleryImage || metaImage;
-                  let price = product.priceInUSD;
+                  let price = product.priceInLKR;
 
                   const isVariant =
                     Boolean(variant) && typeof variant === "object";
 
                   if (isVariant) {
-                    price = variant?.priceInUSD;
+                    price = variant?.priceInLKR;
 
                     const imageVariant = product.gallery?.find((item) => {
                       if (!item.variantOption) return false;
