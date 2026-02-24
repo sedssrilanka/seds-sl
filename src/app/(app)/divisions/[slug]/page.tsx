@@ -39,15 +39,17 @@ export default async function DivisionDetailPage({ params }: PageParams) {
   const division = divisions[0];
 
   return (
-    <div className="grid-container section-content">
-      <div className="col-span-4 md:col-span-8 lg:col-span-12 pt-24 pb-24">
-        {/* Dynamic Hero Section */}
-        {division.hero && <RenderHero {...division.hero} />}
+    <div className="flex flex-col w-full">
+      {/* Dynamic Hero Section */}
+      {division.hero && <RenderHero {...division.hero} />}
 
-        {/* Main Content */}
-        <div className="container mt-12 md:max-w-4xl">
-          <div className="prose dark:prose-invert max-w-none">
-            {division.content && <RichText data={division.content} />}
+      <div className="grid-container section-content">
+        <div className="col-span-4 md:col-span-8 lg:col-span-12 pt-12 pb-24">
+          {/* Main Content */}
+          <div className="container mt-12 md:max-w-4xl">
+            <div className="prose dark:prose-invert max-w-none">
+              {division.content && <RichText data={division.content} />}
+            </div>
           </div>
         </div>
       </div>

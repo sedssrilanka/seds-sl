@@ -41,14 +41,16 @@ export default async function Page({
   const { hero, layout } = project;
 
   return (
-    <div className="grid-container section-content">
-      <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
-        {/* Render the Hero block if one exists */}
-        {hero && <RenderHero {...hero} />}
+    <div className="flex flex-col w-full">
+      {/* Render the Hero block if one exists */}
+      {hero && <RenderHero {...hero} />}
 
-        {/* Render the layout blocks if they exist */}
-        {layout && <RenderBlocks blocks={layout} />}
-      </article>
+      <div className="grid-container section-content">
+        <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
+          {/* Render the layout blocks if they exist */}
+          {layout && <RenderBlocks blocks={layout} />}
+        </article>
+      </div>
     </div>
   );
 }
