@@ -3,6 +3,7 @@ import { Barlow, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navbar from "@/components/sections/navbar/default";
+import Footer from "@/components/sections/footer/default";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/providers";
 import { AdminBar } from "@/components/AdminBar";
@@ -41,11 +42,12 @@ export default function RootLayout({
           <ThemeProvider
             attribute="class"
             defaultTheme="dark"
-            enableSystem
+            forcedTheme="dark"
             disableTransitionOnChange
           >
             <Navbar />
-            {children}
+            <main className="min-h-screen">{children}</main>
+            <Footer />
             <Toaster />
           </ThemeProvider>
         </Providers>

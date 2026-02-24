@@ -120,7 +120,7 @@ export function CartModal() {
                       imageVariant &&
                       typeof imageVariant.image === "object"
                     ) {
-                      image = imageVariant.image;
+                      image = imageVariant.image || undefined;
                     }
                   }
 

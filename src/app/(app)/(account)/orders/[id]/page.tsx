@@ -113,33 +113,33 @@ export default async function OrderPage({ params, searchParams }: PageProps) {
   }
 
   return (
-    <div className="">
-      <div className="flex gap-8 justify-between items-center mb-6">
+    <div className="w-full">
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 justify-between items-start sm:items-center mb-8">
         {user ? (
-          <div className="flex gap-4">
-            <Button asChild variant="ghost">
-              <Link href="/orders">
-                <ChevronLeftIcon />
-                All orders
-              </Link>
-            </Button>
-          </div>
+          <Button asChild variant="ghost" className="-ml-4 hover:bg-muted/50">
+            <Link href="/orders" className="flex items-center gap-2">
+              <ChevronLeftIcon className="w-4 h-4" />
+              <span>Back to all orders</span>
+            </Link>
+          </Button>
         ) : (
           <div></div>
         )}
 
-        <h1 className="text-sm uppercase font-mono px-2 bg-primary/10 rounded tracking-[0.07em]">
-          <span className="">{`Order #${order.id}`}</span>
-        </h1>
+        <div className="flex flex-col text-right">
+          <h1 className="text-xl font-bold tracking-tight">
+            Order #{order.id}
+          </h1>
+        </div>
       </div>
 
-      <div className="bg-card border rounded-lg px-6 py-4 flex flex-col gap-12">
-        <div className="flex flex-col gap-6 lg:flex-row lg:justify-between">
+      <div className="bg-card border shadow-sm rounded-2xl overflow-hidden flex flex-col">
+        <div className="p-6 md:p-8 bg-muted/20 border-b flex flex-col gap-6 lg:flex-row lg:justify-between">
           <div className="">
-            <p className="font-mono uppercase text-primary/50 mb-1 text-sm">
+            <p className="text-sm font-medium text-muted-foreground mb-1 uppercase tracking-wider">
               Order Date
             </p>
-            <p className="text-lg">
+            <p className="text-lg font-medium">
               <time dateTime={order.createdAt}>
                 {formatDateTime({
                   date: order.createdAt,
@@ -150,17 +150,20 @@ export default async function OrderPage({ params, searchParams }: PageProps) {
           </div>
 
           <div className="">
-            <p className="font-mono uppercase text-primary/50 mb-1 text-sm">
+            <p className="text-sm font-medium text-muted-foreground mb-1 uppercase tracking-wider">
               Total
             </p>
             {order.amount && (
-              <Price className="text-lg" amount={order.amount} />
+              <Price
+                className="text-lg font-bold text-primary"
+                amount={order.amount}
+              />
             )}
           </div>
 
           {order.status && (
-            <div className="grow max-w-1/3">
-              <p className="font-mono uppercase text-primary/50 mb-1 text-sm">
+            <div className="grow max-w-[33%]">
+              <p className="text-sm font-medium text-muted-foreground mb-1 uppercase tracking-wider">
                 Status
               </p>
               <OrderStatus className="text-sm" status={order.status} />
@@ -168,52 +171,54 @@ export default async function OrderPage({ params, searchParams }: PageProps) {
           )}
         </div>
 
-        {order.items && (
-          <div>
-            <h2 className="font-mono text-primary/50 mb-4 uppercase text-sm">
-              Items
-            </h2>
-            <ul className="flex flex-col gap-6">
-              {order.items?.map((item, index) => {
-                if (typeof item.product === "string") {
-                  return null;
-                }
+        <div className="p-6 md:p-8 flex flex-col gap-12">
+          {order.items && (
+            <div>
+              <h2 className="text-lg font-semibold mb-6 pb-2 border-b">
+                Items
+              </h2>
+              <ul className="flex flex-col gap-6">
+                {order.items?.map((item, index) => {
+                  if (typeof item.product === "string") {
+                    return null;
+                  }
 
-                if (!item.product || typeof item.product !== "object") {
+                  if (!item.product || typeof item.product !== "object") {
+                    return (
+                      <div key={index}>This item is no longer available.</div>
+                    );
+                  }
+
+                  const variant =
+                    item.variant && typeof item.variant === "object"
+                      ? item.variant
+                      : undefined;
+
                   return (
-                    <div key={index}>This item is no longer available.</div>
+                    <li key={item.id}>
+                      <ProductItem
+                        product={item.product}
+                        quantity={item.quantity}
+                        variant={variant}
+                      />
+                    </li>
                   );
-                }
+                })}
+              </ul>
+            </div>
+          )}
 
-                const variant =
-                  item.variant && typeof item.variant === "object"
-                    ? item.variant
-                    : undefined;
+          {order.shippingAddress && (
+            <div>
+              <h2 className="text-lg font-semibold mb-6 pb-2 border-b">
+                Shipping Address
+              </h2>
 
-                return (
-                  <li key={item.id}>
-                    <ProductItem
-                      product={item.product}
-                      quantity={item.quantity}
-                      variant={variant}
-                    />
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        )}
-
-        {order.shippingAddress && (
-          <div>
-            <h2 className="font-mono text-primary/50 mb-4 uppercase text-sm">
-              Shipping Address
-            </h2>
-
-            {/* @ts-expect-error - some kind of type hell */}
-            <AddressItem address={order.shippingAddress} hideActions />
-          </div>
-        )}
+              {/* @ts-expect-error - some kind of type hell */}
+              <AddressItem address={order.shippingAddress} hideActions />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

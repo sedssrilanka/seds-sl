@@ -56,7 +56,7 @@ export const Gallery: React.FC<Props> = ({ gallery }) => {
     <div>
       <div className="relative w-full overflow-hidden mb-8">
         <Media
-          resource={gallery[current].image}
+          resource={gallery[current]?.image || undefined}
           className="w-full"
           imgClassName="w-full rounded-lg"
         />
@@ -69,7 +69,7 @@ export const Gallery: React.FC<Props> = ({ gallery }) => {
       >
         <CarouselContent>
           {gallery.map((item, i) => {
-            if (typeof item.image !== "object") return null;
+            if (typeof item.image !== "object" || !item.image) return null;
 
             return (
               <CarouselItem

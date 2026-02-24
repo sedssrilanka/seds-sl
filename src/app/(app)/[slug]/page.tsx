@@ -66,10 +66,12 @@ export default async function SubPage({ params }: Args) {
   const { hero, layout } = page;
 
   return (
-    <article className="pt-16 pb-24">
-      <RenderHero {...hero} />
-      <RenderBlocks blocks={layout} />
-    </article>
+    <div className="grid-container section-content">
+      <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
+        <RenderHero {...hero} />
+        <RenderBlocks blocks={layout} />
+      </article>
+    </div>
   );
 }
 
@@ -86,25 +88,30 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 const queryPageBySlug = async ({ slug }: { slug: string }) => {
   const { isEnabled: draft } = await draftMode();
 
-  const payload = await getPayload({ config: configPromise });
+  try {
+    const payload = await getPayload({ config: configPromise });
 
-  const result = await payload.find({
-    collection: "pages",
-    draft,
-    limit: 1,
-    overrideAccess: draft,
-    pagination: false,
-    where: {
-      and: [
-        {
-          slug: {
-            equals: slug,
+    const result = await payload.find({
+      collection: "pages",
+      draft,
+      limit: 1,
+      overrideAccess: draft,
+      pagination: false,
+      where: {
+        and: [
+          {
+            slug: {
+              equals: slug,
+            },
           },
-        },
-        ...(draft ? [] : [{ _status: { equals: "published" } }]),
-      ],
-    },
-  });
+          ...(draft ? [] : [{ _status: { equals: "published" } }]),
+        ],
+      },
+    });
 
-  return result.docs?.[0] || null;
+    return result.docs?.[0] || null;
+  } catch (error) {
+    console.error("Error fetching page by slug:", error);
+    return null;
+  }
 };

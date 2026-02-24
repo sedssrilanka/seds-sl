@@ -62,7 +62,7 @@ export const ProductItem: React.FC<Props> = ({
     });
 
     if (imageVariant && typeof imageVariant.image !== "string") {
-      image = imageVariant.image;
+      image = imageVariant.image || undefined;
     }
   }
 

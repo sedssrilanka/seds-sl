@@ -90,7 +90,8 @@ export const ProductsCollection: CollectionOverride = ({
                   name: "image",
                   type: "upload",
                   relationTo: "media",
-                  required: true,
+                  validate: (value: any) =>
+                    value ? true : "This field is required",
                 },
                 {
                   name: "variantOption",

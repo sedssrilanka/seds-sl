@@ -19,8 +19,19 @@ export default async function FindOrderPage() {
   }
 
   return (
-    <div className="container py-16">
-      <FindOrderForm initialEmail={user?.email} />
+    <div className="container py-16 md:py-24 max-w-3xl mx-auto">
+      <div className="text-center mb-10">
+        <h1 className="text-3xl font-bold tracking-tight mb-4">
+          Track Your Order
+        </h1>
+        <p className="text-muted-foreground text-lg">
+          Enter your email address and we'll send you a link to your order
+          history.
+        </p>
+      </div>
+      <div className="bg-card border shadow-sm rounded-2xl p-6 md:p-10">
+        <FindOrderForm initialEmail={user?.email} />
+      </div>
     </div>
   );
 }

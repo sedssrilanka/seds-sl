@@ -1,4 +1,5 @@
 import { Globe, Users, Flag, Network, ArrowRight } from "lucide-react";
+import Link from "next/link";
 import { SectionHeader } from "@/components/sections/section-header";
 import {
   Card,
@@ -77,19 +78,20 @@ const WhoWeAreSection = () => {
               {whoweare.slice(0, 3).map((w) => (
                 <Cardd key={w.id} whoweare={w} />
               ))}
-
               {/* View All About Us Card */}
-              <Card className="rounded-none light-mode-card p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
-                <div className="flex flex-col items-end justify-start h-full text-right">
-                  <h3 className="text-xl font-bold mb-4 text-foreground">
-                    Learn More About Us
-                  </h3>
-                  <div className="flex items-right gap-2 text-primary">
-                    <span className="font-medium">View All About Us</span>
-                    <ArrowRight className="size-5" />
+              <Link href="/about" className="block h-full group">
+                <Card className="rounded-none h-full light-mode-card p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
+                  <div className="flex flex-col items-end justify-start h-full text-right">
+                    <h3 className="text-xl font-bold mb-4 text-foreground">
+                      Learn More About Us
+                    </h3>
+                    <div className="flex items-right gap-2 text-primary">
+                      <span className="font-medium">View All About Us</span>
+                      <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </div>
           </div>
         </div>

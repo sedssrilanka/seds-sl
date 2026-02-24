@@ -1,7 +1,8 @@
 import type { Project } from "@/payload-types";
 import { PayloadSDK } from "@payloadcms/sdk";
 import { notFound } from "next/navigation";
-import { ProjectContent } from "@/components/rich-text/project-content";
+import { RenderBlocks } from "@/blocks/RenderBlocks";
+import { RenderHero } from "@/heros/RenderHero";
 
 const payload = new PayloadSDK({
   baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://127.0.0.1:3000/api",
@@ -36,15 +37,18 @@ export default async function Page({
   if (!project) {
     notFound();
   }
+
+  const { hero, layout } = project;
+
   return (
-    <div className="grid-container section-content py-8">
-      <div className="col-span-4 md:col-span-8 lg:col-span-12">
-        <h1 className="text-4xl font-bold mb-4">{project.name}</h1>
-        <div className="text-muted-foreground mb-8">
-          Published on {new Date(project.createdAt).toLocaleDateString()}
-        </div>
-        <ProjectContent content={project.content} />
-      </div>
+    <div className="grid-container section-content">
+      <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
+        {/* Render the Hero block if one exists */}
+        {hero && <RenderHero {...hero} />}
+
+        {/* Render the layout blocks if they exist */}
+        {layout && <RenderBlocks blocks={layout} />}
+      </article>
     </div>
   );
 }

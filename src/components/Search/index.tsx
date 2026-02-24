@@ -2,9 +2,10 @@
 
 import { cn } from "@/utilities/cn";
 import { createUrl } from "@/utilities/createUrl";
-import { SearchIcon } from "lucide-react";
+import { SearchIcon, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import type React from "react";
+import { useDebouncedCallback } from "use-debounce";
+import { useState, useRef } from "react";
 
 type Props = {
   className?: string;
@@ -13,37 +14,53 @@ type Props = {
 export const Search: React.FC<Props> = ({ className }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const initialValue = searchParams?.get("q") || "";
+  const [value, setValue] = useState(initialValue);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  function onSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const val = e.target as HTMLFormElement;
-    const search = val.search as HTMLInputElement;
+  const handleSearch = useDebouncedCallback((term: string) => {
     const newParams = new URLSearchParams(searchParams.toString());
 
-    if (search.value) {
-      newParams.set("q", search.value);
+    if (term) {
+      newParams.set("q", term);
     } else {
       newParams.delete("q");
     }
 
     router.push(createUrl("/shop", newParams));
-  }
+  }, 300);
+
+  const clearSearch = () => {
+    setValue("");
+    handleSearch("");
+    inputRef.current?.focus();
+  };
 
   return (
-    <form className={cn("relative w-full", className)} onSubmit={onSubmit}>
+    <div className={cn("relative group w-full", className)}>
+      <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground transition-colors group-focus-within:text-primary z-10" />
       <input
+        ref={inputRef}
         autoComplete="off"
-        className="w-full rounded-lg border bg-white px-4 py-2 text-sm text-black placeholder:text-neutral-500 dark:border-neutral-800 dark:bg-black dark:text-white dark:placeholder:text-neutral-400"
-        defaultValue={searchParams?.get("q") || ""}
-        key={searchParams?.get("q")}
+        className="w-full rounded-full border border-border/50 bg-background/50 backdrop-blur-md pl-11 pr-10 py-2.5 text-sm text-foreground shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary/50"
+        value={value}
+        onChange={(e) => {
+          setValue(e.target.value);
+          handleSearch(e.target.value);
+        }}
         name="search"
-        placeholder="Search for products..."
+        placeholder="Search projects, rovers, rockets..."
         type="text"
       />
-      <div className="absolute right-0 top-0 mr-3 flex h-full items-center">
-        <SearchIcon className="h-4" />
-      </div>
-    </form>
+      {value && (
+        <button
+          type="button"
+          onClick={clearSearch}
+          className="absolute right-3 top-1/2 -translate-y-1/2 p-1 rounded-full text-muted-foreground hover:bg-muted/80 hover:text-foreground transition-colors z-10"
+        >
+          <X className="w-3.5 h-3.5" />
+        </button>
+      )}
+    </div>
   );
 };

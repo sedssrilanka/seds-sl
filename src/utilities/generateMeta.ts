@@ -5,7 +5,7 @@ import type { Page, Product } from "../payload-types";
 import { mergeOpenGraph } from "./mergeOpenGraph";
 
 export const generateMeta = async (args: {
-  doc: Page | Product;
+  doc: Page | Product | null;
 }): Promise<Metadata> => {
   const { doc } = args || {};
 
