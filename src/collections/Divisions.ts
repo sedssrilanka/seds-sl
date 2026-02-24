@@ -1,33 +1,81 @@
 import type { CollectionConfig } from "payload";
 import { hero } from "@/fields/hero";
+import {
+  lexicalEditor,
+  HeadingFeature,
+  BoldFeature,
+  ItalicFeature,
+  UnderlineFeature,
+  StrikethroughFeature,
+  LinkFeature,
+  UnorderedListFeature,
+  OrderedListFeature,
+  BlockquoteFeature,
+  HorizontalRuleFeature,
+  UploadFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+} from "@payloadcms/richtext-lexical";
+import {
+  MetaDescriptionField,
+  MetaImageField,
+  MetaTitleField,
+  OverviewField,
+  PreviewField,
+} from "@payloadcms/plugin-seo/fields";
+import { generatePreviewPath } from "@/utilities/generatePreviewPath";
+import type { CollectionSlug } from "payload";
 
 interface DivisionData {
   name?: string;
   slug?: string;
 }
 
-const generateSlug = (name: string): string => {
-  return name
+const generateSlug = (name: string): string =>
+  name
     .toLowerCase()
-    .replace(/[^a-z0-9]/g, "-") // Replace non-alphanumeric characters with hyphens
-    .replace(/-+/g, "-") // Replace multiple hyphens with single hyphen
-    .replace(/^-|-$/g, ""); // Remove hyphens from start and end
-};
+    .replace(/[^a-z0-9]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 
 export const Divisions: CollectionConfig = {
   slug: "divisions",
   admin: {
     useAsTitle: "name",
+    preview: (data, { req }) =>
+      generatePreviewPath({
+        slug: data?.slug as string,
+        collection: "divisions" as CollectionSlug,
+        req,
+      }),
   },
   access: {
-    read: () => true, // Publicly readable for the frontend
+    read: () => true,
   },
   hooks: {
     beforeValidate: [
-      ({ data }) => {
+      async ({ data, req }) => {
         const typedData = data as DivisionData;
         if (typedData?.name) {
-          typedData.slug = generateSlug(typedData.name);
+          const base = generateSlug(typedData.name);
+          let slug = base;
+
+          try {
+            if (req?.payload) {
+              const existing = await req.payload.find({
+                collection: "divisions",
+                where: { slug: { equals: slug } },
+                limit: 1,
+              });
+              if (existing?.docs?.length > 0) {
+                slug = `${base}-${Date.now()}`;
+              }
+            }
+          } catch (err) {
+            console.error("Error checking existing slug for divisions:", err);
+          }
+
+          typedData.slug = slug;
         }
         return typedData;
       },
@@ -58,8 +106,7 @@ export const Divisions: CollectionConfig = {
       label: "Icon Name",
       required: true,
       admin: {
-        description:
-          "The Lucide React icon name (e.g., 'Rocket', 'Bot', 'Plane')",
+        description: "A Lucide React icon name (e.g. 'Rocket', 'Bot', 'Plane')",
       },
     },
     {
@@ -70,6 +117,7 @@ export const Divisions: CollectionConfig = {
           label: "Hero",
         },
         {
+          label: "Content",
           fields: [
             {
               name: "description",
@@ -77,8 +125,7 @@ export const Divisions: CollectionConfig = {
               label: "Short Description",
               required: true,
               admin: {
-                description:
-                  "This will be displayed on the division listing cards.",
+                description: "Shown on listing cards.",
               },
             },
             {
@@ -87,12 +134,61 @@ export const Divisions: CollectionConfig = {
               label: "Detailed Content",
               required: true,
               admin: {
-                description:
-                  "This will be displayed on the division's dedicated page.",
+                description: "Shown on the division's dedicated page.",
               },
+              editor: lexicalEditor({
+                features: ({ rootFeatures }) => [
+                  ...rootFeatures,
+                  FixedToolbarFeature(),
+                  InlineToolbarFeature(),
+                  HeadingFeature({
+                    enabledHeadingSizes: ["h1", "h2", "h3", "h4"],
+                  }),
+                  BoldFeature(),
+                  ItalicFeature(),
+                  UnderlineFeature(),
+                  StrikethroughFeature(),
+                  LinkFeature(),
+                  UnorderedListFeature(),
+                  OrderedListFeature(),
+                  BlockquoteFeature(),
+                  HorizontalRuleFeature(),
+                  UploadFeature({
+                    collections: {
+                      media: {
+                        fields: [
+                          {
+                            name: "caption",
+                            type: "richText",
+                            label: "Caption",
+                          },
+                        ],
+                      },
+                    },
+                  }),
+                ],
+              }),
             },
           ],
-          label: "Content",
+        },
+        {
+          name: "meta",
+          label: "SEO",
+          fields: [
+            OverviewField({
+              titlePath: "meta.title",
+              descriptionPath: "meta.description",
+              imagePath: "meta.image",
+            }),
+            MetaTitleField({ hasGenerateFn: true }),
+            MetaImageField({ relationTo: "media" }),
+            MetaDescriptionField({}),
+            PreviewField({
+              hasGenerateFn: true,
+              titlePath: "meta.title",
+              descriptionPath: "meta.description",
+            }),
+          ],
         },
       ],
     },

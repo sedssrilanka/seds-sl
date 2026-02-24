@@ -83,7 +83,7 @@ const ProjectCard = ({ project }: { project: Project }) => {
         )}
 
         <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
-          {project.description.length > 120
+          {project?.description?.length > 120
             ? `${project.description.substring(0, 120)}...`
             : project.description}
         </CardDescription>

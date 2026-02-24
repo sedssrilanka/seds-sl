@@ -6,14 +6,16 @@ export const Width: React.FC<{
   width?: number | string;
 }> = ({ children, className, width }) => {
   const parsedWidth = typeof width === "string" ? parseFloat(width) : width;
+  const desktopWidth = parsedWidth && parsedWidth < 100 ? parsedWidth : 100;
 
   return (
     <div
-      className={["px-2 w-full", className].filter(Boolean).join(" ")}
-      style={{
-        maxWidth: parsedWidth && parsedWidth < 100 ? `${parsedWidth}%` : "100%",
-        flex: `0 0 ${parsedWidth && parsedWidth < 100 ? parsedWidth : 100}%`,
-      }}
+      className={["px-2 form-field-width", className].filter(Boolean).join(" ")}
+      style={
+        {
+          "--field-width": `${desktopWidth}%`,
+        } as React.CSSProperties
+      }
     >
       {children}
     </div>
