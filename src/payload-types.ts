@@ -1101,6 +1101,8 @@ export interface Chapter {
    * Auto-generated from the Name field
    */
   slug: string;
+  logoDark: number | Media;
+  logoLight?: (number | null) | Media;
   mainImage?: (number | null) | Media;
   gallery?:
     | {
@@ -1592,6 +1594,8 @@ export interface FormBlockSelect<T extends boolean = true> {
 export interface ChaptersSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  logoDark?: T;
+  logoLight?: T;
   mainImage?: T;
   gallery?:
     | T

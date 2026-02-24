@@ -53,6 +53,20 @@ export const Chapters: CollectionConfig = {
     },
 
     {
+      name: "logoDark",
+      type: "upload",
+      relationTo: "media",
+      label: "Dark Logo (Required, Default)",
+      required: true,
+      validate: (value: any) => (value ? true : "This field is required"),
+    },
+    {
+      name: "logoLight",
+      type: "upload",
+      relationTo: "media",
+      label: "Light Logo (Optional)",
+    },
+    {
       name: "mainImage",
       type: "upload",
       relationTo: "media",
