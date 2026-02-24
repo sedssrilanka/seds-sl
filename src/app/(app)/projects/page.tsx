@@ -3,9 +3,10 @@
 import type { Project } from "@/payload-types";
 import Image from "next/image";
 import Link from "next/link";
-import { Search, X, SearchX } from "lucide-react";
+import { Search, X, SearchX, Calendar } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Card, CardTitle, CardDescription } from "@/components/ui/card";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { fetchProjects } from "@/actions/projects";
@@ -82,95 +83,80 @@ export default function ProjectsPage() {
 
           {/* Projects Grid */}
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-border/60 dark:border-border/50">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div
+                <Card
                   key={i}
-                  className="rounded-2xl border border-border/50 overflow-hidden bg-card/40 animate-pulse h-full flex flex-col"
+                  className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none animate-pulse overflow-hidden flex flex-col h-full"
                 >
-                  <div className="w-full h-48 bg-muted/50" />
-                  <div className="p-4 grow space-y-3">
+                  <div className="w-full aspect-video bg-muted/50 border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center" />
+                  <div className="space-y-3 flex-1 w-full">
                     <div className="h-6 bg-muted/50 rounded w-2/3" />
-                    <div className="h-4 bg-muted/50 rounded w-full" />
+                    <div className="h-4 bg-muted/50 rounded w-1/4" />
+                    <div className="h-4 bg-muted/50 rounded w-full mt-4" />
                     <div className="h-4 bg-muted/50 rounded w-4/5" />
-                    <div className="h-4 bg-muted/50 rounded w-5/6" />
                   </div>
-                </div>
+                </Card>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-border/60 dark:border-border/50">
               {projects.map((project) => (
-                <Link
+                <Card
                   key={project.id}
-                  href={`/projects/${project.slug}`}
-                  className="group flex flex-col h-full bg-card rounded-2xl border border-border/50 overflow-hidden transition-all duration-300 hover:shadow-xl hover:border-primary/50 hover:-translate-y-1"
+                  className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none group overflow-hidden flex flex-col h-full"
                 >
                   {/* Image Container */}
-                  <div className="relative w-full aspect-4/3 overflow-hidden bg-muted/20">
+                  <div className="w-full aspect-video bg-muted border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center">
                     {project.image ? (
                       <Image
                         src={getMediaUrl(project.image)}
                         alt={project.name}
                         fill
-                        className="object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center text-muted-foreground/50">
-                        <Image
-                          src="/placeholder.svg"
-                          alt="Placeholder"
-                          fill
-                          className="object-cover opacity-50"
-                        />
-                      </div>
-                    )}
-                    {/* Subtle overlay gradient */}
-                    <div className="absolute inset-0 bg-linear-to-t from-black/60 via-black/0 to-transparent opacity-80" />
-
-                    {/* Chapter badge overlay */}
-                    {project.chapter && (
-                      <div className="absolute top-4 left-4">
-                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white backdrop-blur-md border border-white/20 shadow-sm">
-                          {getChapterName(project.chapter)}
-                        </span>
+                      <div className="text-muted-foreground text-sm font-medium">
+                        No Image
                       </div>
                     )}
                   </div>
 
                   {/* Content */}
-                  <div className="p-6 flex flex-col grow">
-                    <h2 className="text-xl font-bold mb-3 text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                      {project.name}
-                    </h2>
-                    <p className="text-sm text-muted-foreground line-clamp-3 mb-6 grow">
-                      {project.description}
-                    </p>
+                  <CardTitle className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary line-clamp-2">
+                    {project.name}
+                  </CardTitle>
 
-                    {/* Footer area inside card */}
-                    <div className="mt-auto pt-4 border-t border-border/50 flex items-center justify-between text-sm">
-                      <span className="text-primary font-medium flex items-center gap-1">
-                        Read more
-                        <svg
-                          className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          role="img"
-                          aria-label="Arrow Right"
-                        >
-                          <title>Arrow Right</title>
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 5l7 7-7 7"
-                          />
-                        </svg>
+                  {project.chapter && (
+                    <div className="text-sm text-muted-foreground mb-2">
+                      Chapter: {getChapterName(project.chapter)}
+                    </div>
+                  )}
+
+                  <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1 line-clamp-3">
+                    {project.description}
+                  </CardDescription>
+
+                  {/* Footer area inside card */}
+                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
+                    <div className="flex items-center gap-2 text-muted-foreground">
+                      <Calendar className="size-4" />
+                      <span className="text-sm font-medium">
+                        {new Date(project.createdAt).toLocaleDateString()}
                       </span>
                     </div>
+
+                    <Link href={`/projects/${project.slug}`}>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="rounded-sm group-hover:border-primary/50 transition-colors"
+                      >
+                        Know More
+                      </Button>
+                    </Link>
                   </div>
-                </Link>
+                </Card>
               ))}
             </div>
           )}
