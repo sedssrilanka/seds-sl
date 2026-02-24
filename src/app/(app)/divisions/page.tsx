@@ -1,8 +1,8 @@
-import React from "react";
 import { getPayload } from "payload";
 import configPromise from "@payload-config";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
+import type { Division } from "@/payload-types";
 import {
   ArrowRight,
   Bot,
@@ -31,13 +31,19 @@ const IconMap: Record<string, LucideIcon> = {
 };
 
 export default async function DivisionsPage() {
-  const payload = await getPayload({ config: configPromise });
+  let divisions: Division[] = [];
+  try {
+    const payload = await getPayload({ config: configPromise });
 
-  const { docs: divisions } = await payload.find({
-    collection: "divisions",
-    depth: 1,
-    limit: 100,
-  });
+    const { docs } = await payload.find({
+      collection: "divisions",
+      depth: 1,
+      limit: 100,
+    });
+    divisions = docs;
+  } catch (error) {
+    console.error("Error fetching divisions:", error);
+  }
 
   return (
     <div className="grid-container section-content">

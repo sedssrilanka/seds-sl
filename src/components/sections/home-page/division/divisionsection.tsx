@@ -17,6 +17,7 @@ import { SectionHeader } from "@/components/sections/section-header";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { getPayload } from "payload";
 import configPromise from "@payload-config";
+import type { Division } from "@/payload-types";
 
 // Map string icon names to actual Lucide components
 const IconMap: Record<string, LucideIcon> = {
@@ -32,13 +33,19 @@ const IconMap: Record<string, LucideIcon> = {
 };
 
 const DivisionsSection = async () => {
-  const payload = await getPayload({ config: configPromise });
+  let divisions: Division[] = [];
+  try {
+    const payload = await getPayload({ config: configPromise });
 
-  const { docs: divisions } = await payload.find({
-    collection: "divisions",
-    depth: 1,
-    limit: 3, // We'll show 5 + the "Discover All" card to make a nice 6-grid
-  });
+    const { docs } = await payload.find({
+      collection: "divisions",
+      depth: 1,
+      limit: 3, // We'll show 5 + the "Discover All" card to make a nice 6-grid
+    });
+    divisions = docs;
+  } catch (error) {
+    console.error("Error fetching divisions:", error);
+  }
 
   return (
     <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
