@@ -52,9 +52,9 @@ export default function ChaptersPage() {
       <div className="grid-container section-content mt-12">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           {/* Search Bar */}
-          <div className="max-w-lg mx-auto mb-12">
+          <div className="max-w-lg mx-auto my-12">
             <div className="relative group">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5 transition-colors group-focus-within:text-primary" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5 transition-colors group-focus-within:text-primary z-10" />
               <Input
                 type="text"
                 placeholder="Search chapters..."
