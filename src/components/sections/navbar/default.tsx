@@ -51,6 +51,7 @@ export default function Navbar({
     { text: "About", href: "/about" },
     { text: "Chapters", href: "/chapters" },
     { text: "Projects", href: "/projects" },
+    { text: "Docs", href: "/docs/introduction" },
     { text: "Shop", href: "/shop" },
     { text: "Contact Us", href: "/contact-us" },
   ],
