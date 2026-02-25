@@ -50,10 +50,10 @@ describe("SectionOne", () => {
   it("renders the two buttons", () => {
     render(<SectionOne />);
     const section = screen.getAllByTestId("section-one")[0];
-    const projectsButton = within(section).getByRole("button", {
+    const projectsButton = within(section).getByRole("link", {
       name: /Our Projects/i,
     });
-    const joinButton = within(section).getByRole("button", {
+    const joinButton = within(section).getByRole("link", {
       name: /Join Us/i,
     });
     expect(projectsButton).toBeDefined();
