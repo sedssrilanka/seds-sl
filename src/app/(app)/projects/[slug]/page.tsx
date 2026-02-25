@@ -1,14 +1,13 @@
 import type { Project } from "@/payload-types";
-import { PayloadSDK } from "@payloadcms/sdk";
+import { getPayload } from "payload";
+import configPromise from "@payload-config";
 import { notFound } from "next/navigation";
-import { ProjectContent } from "@/components/rich-text/project-content";
-
-const payload = new PayloadSDK({
-  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://127.0.0.1:3000/api",
-});
+import { RenderBlocks } from "@/blocks/RenderBlocks";
+import { RenderHero } from "@/heros/RenderHero";
 
 async function getProject(slug: string): Promise<Project | null> {
   try {
+    const payload = await getPayload({ config: configPromise });
     const result = await payload.find({
       collection: "projects",
       where: {
@@ -36,14 +35,19 @@ export default async function Page({
   if (!project) {
     notFound();
   }
+
+  const { hero, layout } = project;
+
   return (
-    <div className="grid-container section-content py-8">
-      <div className="col-span-4 md:col-span-8 lg:col-span-12">
-        <h1 className="text-4xl font-bold mb-4">{project.name}</h1>
-        <div className="text-muted-foreground mb-8">
-          Published on {new Date(project.createdAt).toLocaleDateString()}
-        </div>
-        <ProjectContent content={project.content} />
+    <div className="flex flex-col w-full">
+      {/* Render the Hero block if one exists */}
+      {hero && <RenderHero {...hero} />}
+
+      <div className="grid-container section-content">
+        <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
+          {/* Render the layout blocks if they exist */}
+          {layout && <RenderBlocks blocks={layout} />}
+        </article>
       </div>
     </div>
   );

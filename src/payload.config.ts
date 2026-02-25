@@ -19,6 +19,7 @@ import { Users } from "@/collections/Users";
 import { Media } from "@/collections/Media";
 import { Projects } from "@/collections/Projects";
 import { Chapters } from "@/collections/Chapters";
+import { Divisions } from "@/collections/Divisions";
 
 import { plugins } from "@/plugins";
 import { Pages } from "@/collections/Pages";
@@ -43,7 +44,7 @@ export default buildConfig({
     },
   },
 
-  collections: [Users, Media, Projects, Chapters, Categories, Pages],
+  collections: [Users, Media, Projects, Chapters, Categories, Pages, Divisions],
   editor: lexicalEditor({
     features: () => {
       return [
@@ -89,6 +90,7 @@ export default buildConfig({
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
   db: postgresAdapter({
+    push: true,
     pool: {
       connectionString: process.env.DATABASE_URI || "",
       // Fail fast during build if DB is offline.

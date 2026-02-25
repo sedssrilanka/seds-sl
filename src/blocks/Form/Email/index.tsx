@@ -40,6 +40,8 @@ export const Email: React.FC<
           defaultValue={defaultValue}
           id={name}
           type="text"
+          className="!bg-transparent border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+          placeholder="Type here"
           {...register(name, {
             pattern: /^\S[^\s@]*@\S+$/,
             required: requiredFromProps

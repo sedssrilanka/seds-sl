@@ -13,7 +13,7 @@ export function ProjectContent({ content }: ProjectContentProps) {
       <div className="w-full max-w-5xl flex flex-col md:flex-row gap-8">
         {/* Main Content */}
         <article className="flex-1 min-w-0">
-          <div className="payload-richtext bg-white dark:bg-neutral-900 rounded-xl shadow-md p-6 md:p-10 border border-neutral-200 dark:border-neutral-800">
+          <div className="prose dark:prose-invert max-w-none bg-white dark:bg-neutral-900 rounded-xl shadow-md p-6 md:p-10 border border-neutral-200 dark:border-neutral-800">
             <RichText data={content} />
           </div>
         </article>

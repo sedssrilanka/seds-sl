@@ -8,7 +8,7 @@ export const MediaBlock: Block = {
       name: "media",
       type: "upload",
       relationTo: "media",
-      required: true,
+      validate: (value: any) => (value ? true : "This field is required"),
     },
   ],
 };

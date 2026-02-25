@@ -2,17 +2,16 @@ import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { SectionHeader } from "@/components/sections/section-header";
-import { PayloadSDK } from "@payloadcms/sdk";
 import Link from "next/link";
+import Image from "next/image";
 import type { Project } from "@/payload-types";
-
-const payload = new PayloadSDK({
-  baseURL: process.env.NEXT_PUBLIC_PAYLOAD_URL || "http://localhost:3000/api",
-});
+import config from "@payload-config";
+import { getPayload } from "payload";
 
 async function getProjects(): Promise<Project[]> {
   console.log("Fetching unassigned projects for homepage...");
   try {
+    const payload = await getPayload({ config });
     // Fetch projects that are NOT assigned to a chapter (using Payload's OR operator)
     const result = await payload.find({
       collection: "projects",
@@ -41,51 +40,73 @@ async function getProjects(): Promise<Project[]> {
   }
 }
 
-const ProjectCard = ({ project }: { project: Project }) => (
-  <Card className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none">
-    <div className=" flex flex-col h-full">
-      {/* Project Image Placeholder - Standard 16:9 aspect ratio */}
-      <div className="w-full aspect-video bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/10 mb-4 flex items-center justify-center">
-        <div className="text-primary/60 text-sm font-medium">Project Image</div>
-      </div>
+const getMediaUrl = (media: Project["image"]): string => {
+  if (typeof media === "object" && media !== null && "url" in media) {
+    if (media.url) return media.url;
+  }
+  return "";
+};
 
-      <CardTitle className="text-xl font-bold mb-3 text-foreground">
-        {project.name}
-      </CardTitle>
+const ProjectCard = ({ project }: { project: Project }) => {
+  const imageUrl = getMediaUrl(project.image);
 
-      {project.chapter && (
-        <div className="text-sm text-muted-foreground mb-2">
-          Chapter:{" "}
-          {typeof project.chapter === "object"
-            ? project.chapter.name
-            : project.chapter}
-        </div>
-      )}
-
-      <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
-        {project.description.length > 120
-          ? `${project.description.substring(0, 120)}...`
-          : project.description}
-      </CardDescription>
-
-      {/* Bottom Section with Date and Button */}
-      <div className="flex items-center justify-between mt-auto">
-        <div className="flex items-center gap-2 text-muted-foreground">
-          <Calendar className="size-4" />
-          <span className="text-sm font-medium">
-            {new Date(project.createdAt).toLocaleDateString()}
-          </span>
+  return (
+    <Card className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none group overflow-hidden">
+      <div className=" flex flex-col h-full">
+        {/* Project Image */}
+        <div className="w-full aspect-video bg-muted border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={project.name}
+              fill
+              className="object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          ) : (
+            <div className="text-muted-foreground text-sm font-medium">
+              No Image
+            </div>
+          )}
         </div>
 
-        <Link href={`/projects/${project.slug}`}>
-          <Button variant="outline" size="sm" className="rounded-sm">
-            Know More
-          </Button>
-        </Link>
+        <CardTitle className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary">
+          {project.name}
+        </CardTitle>
+
+        {project.chapter && (
+          <div className="text-sm text-muted-foreground mb-2">
+            Chapter:{" "}
+            {typeof project.chapter === "object"
+              ? project.chapter.name
+              : project.chapter}
+          </div>
+        )}
+
+        <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
+          {project?.description?.length > 120
+            ? `${project.description.substring(0, 120)}...`
+            : project.description}
+        </CardDescription>
+
+        {/* Bottom Section with Date and Button */}
+        <div className="flex items-center justify-between mt-auto">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Calendar className="size-4" />
+            <span className="text-sm font-medium">
+              {new Date(project.createdAt).toLocaleDateString()}
+            </span>
+          </div>
+
+          <Link href={`/projects/${project.slug}`}>
+            <Button variant="outline" size="sm" className="rounded-sm">
+              Know More
+            </Button>
+          </Link>
+        </div>
       </div>
-    </div>
-  </Card>
-);
+    </Card>
+  );
+};
 
 const ProjectsSection = async () => {
   const projects = await getProjects();
@@ -114,17 +135,19 @@ const ProjectsSection = async () => {
               ))}
 
               {/* View All Projects Card */}
-              <Card className="rounded-none light-mode-card p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
-                <div className="flex flex-col items-end justify-start h-full text-right">
-                  <h3 className="text-xl font-bold mb-4 text-foreground">
-                    Explore More Projects
-                  </h3>
-                  <div className="flex items-right gap-2 text-primary">
-                    <span className="font-medium">View All Projects</span>
-                    <ArrowRight className="size-5" />
+              <Link href="/projects" className="block h-full group">
+                <Card className="rounded-none h-full light-mode-card p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
+                  <div className="flex flex-col items-end justify-start h-full text-right">
+                    <h3 className="text-xl font-bold mb-4 text-foreground">
+                      Explore More Projects
+                    </h3>
+                    <div className="flex items-right gap-2 text-primary">
+                      <span className="font-medium">View All Projects</span>
+                      <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </div>
           </div>
         </div>

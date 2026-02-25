@@ -50,6 +50,10 @@ export default function Navbar({
     { text: "Home", href: "/" },
     { text: "About", href: "/about" },
     { text: "Chapters", href: "/chapters" },
+    { text: "Projects", href: "/projects" },
+    { text: "Docs", href: "/docs/introduction" },
+    { text: "Shop", href: "/shop" },
+    { text: "Contact Us", href: "/contact-us" },
   ],
   actions = [
     {
@@ -59,7 +63,7 @@ export default function Navbar({
     },
     {
       text: "Join Us",
-      href: "/joisn-us",
+      href: "/join-us",
       isButton: true,
       variant: "default",
     },
@@ -87,9 +91,9 @@ export default function Navbar({
               {showNavigation && (customNavigation || <Navigation />)}
             </NavbarCenter>
             <NavbarRight>
-              <div className="hidden md:block">
-                <ThemeSwitcher defaultValue="system" />
-              </div>
+              {/* <div className="hidden md:block">
+                <ThemeSwitcher defaultValue="dark" />
+              </div> */}
               {actions.map((action) =>
                 action.isButton ? (
                   <Button
@@ -146,14 +150,14 @@ export default function Navbar({
                         {link.text}
                       </a>
                     ))}
-                    <div className="pt-4 border-t border-border">
+                    {/* <div className="pt-4 border-t border-border">
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-foreground">
                           Theme
                         </span>
                         <ThemeSwitcher defaultValue="system" />
                       </div>
-                    </div>
+                    </div> */}
                   </nav>
                 </SheetContent>
               </Sheet>

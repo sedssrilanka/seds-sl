@@ -50,50 +50,94 @@ export const ForgotPasswordForm: React.FC = () => {
     <Fragment>
       {!success && (
         <React.Fragment>
-          <h1 className="text-xl mb-4">Forgot Password</h1>
-          <div className="prose dark:prose-invert mb-8">
-            <p>
-              {`Please enter your email below. You will receive an email message with instructions on
-              how to reset your password. To manage your all users, `}
-              <Link href="/admin/collections/users">
-                login to the admin dashboard
-              </Link>
-              .
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold tracking-tight mb-3">
+              Forgot Password
+            </h1>
+            <p className="text-muted-foreground text-sm">
+              Enter your email address to receive a secure password reset link.
             </p>
           </div>
-          <form className="max-w-lg" onSubmit={handleSubmit(onSubmit)}>
-            <Message className="mb-8" error={error} />
 
-            <FormItem className="mb-8">
-              <Label htmlFor="email" className="mb-2">
-                Email address
-              </Label>
-              <Input
-                id="email"
-                {...register("email", {
-                  required: "Please provide your email.",
-                })}
-                type="email"
-              />
-              {errors.email && <FormError message={errors.email.message} />}
-            </FormItem>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
+            <Message className="mb-4" error={error} />
 
-            <Button type="submit" variant="default">
-              Forgot Password
-            </Button>
+            <div className="space-y-4">
+              <FormItem>
+                <Label htmlFor="email" className="font-medium">
+                  Email Address
+                </Label>
+                <Input
+                  id="email"
+                  placeholder="name@example.com"
+                  className="rounded-xl h-12 px-4 shadow-sm"
+                  {...register("email", {
+                    required: "Please provide your email.",
+                  })}
+                  type="email"
+                />
+                {errors.email && <FormError message={errors.email.message} />}
+              </FormItem>
+            </div>
+
+            <div className="pt-2 space-y-4">
+              <Button
+                type="submit"
+                variant="default"
+                className="w-full rounded-xl h-12 font-medium text-base shadow-sm"
+              >
+                Send Reset Link
+              </Button>
+
+              <div className="text-center">
+                <Link
+                  href="/login"
+                  className="text-sm text-primary hover:underline font-medium"
+                >
+                  Back to login
+                </Link>
+              </div>
+            </div>
           </form>
         </React.Fragment>
       )}
+
       {success && (
-        <React.Fragment>
-          <h1 className="text-xl mb-4">Request submitted</h1>
-          <div className="prose dark:prose-invert">
-            <p>
-              Check your email for a link that will allow you to securely reset
-              your password.
-            </p>
+        <div className="text-center py-6">
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-6 text-primary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              role="img"
+              aria-label="Success Icon"
+            >
+              <title>Success Icon</title>
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
           </div>
-        </React.Fragment>
+          <h1 className="text-2xl font-bold tracking-tight mb-3">
+            Check your email
+          </h1>
+          <p className="text-muted-foreground mb-8">
+            We've sent a secure link to reset your password. Please check your
+            inbox and spam folder.
+          </p>
+          <Button
+            asChild
+            variant="outline"
+            className="w-full rounded-xl h-12 font-medium text-base"
+          >
+            <Link href="/login">Return to login</Link>
+          </Button>
+        </div>
       )}
     </Fragment>
   );

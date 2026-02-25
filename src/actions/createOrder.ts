@@ -34,7 +34,7 @@ export async function createOrder(data: {
       data: {
         items,
         amount: total,
-        currency: "USD",
+        currency: "LKR",
         status: "processing", // Default status
         customer: user?.id || null,
         customerEmail: email || user?.email,

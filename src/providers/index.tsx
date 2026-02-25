@@ -9,6 +9,17 @@ export const Providers: React.FC<{
     <AuthProvider>
       <EcommerceProvider
         enableVariants={true}
+        currenciesConfig={{
+          defaultCurrency: "LKR",
+          supportedCurrencies: [
+            {
+              code: "LKR",
+              label: "Sri Lankan Rupee",
+              symbol: "Rs ",
+              decimals: 2,
+            },
+          ],
+        }}
         api={{
           cartsFetchQuery: {
             depth: 2,

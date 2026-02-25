@@ -1,0 +1,35 @@
+---
+title: Media Library
+description: How to upload, manage, and attach media resources in Payload CMS.
+---
+
+# Managing Media
+
+Payload CMS centralizes all files, images, PDFs, and documents inside the **Media** collection. It includes automatic optimizations for Next.js and, optionally, cloud storage using AWS S3.
+
+![Media Admin Panel](https://placehold.co/800x400/0f172a/ffffff?text=Payload+CMS:+Media)
+
+## 1. Uploading New Media
+
+1. From the `/admin` menu, click on **Media**.
+2. Click **"Create New"**:
+   - You can drag-and-drop a file or click to browse.
+   - For images, the system automatically checks size constraints. Provide a concise `Alt Text` (Alternative Text) for SEO and accessibility (e.g., "A student working on a robotics project").
+
+## 2. Best Practices for Images
+
+- **Resize before upload:** Even though Next.js optimizes images, avoid uploading raw 10MB+ files. Keep images under `1MB` and generally `1920x1080` or smaller to save server processing costs.
+- **WebP format:** We highly recommend using `.webp` images over `.png` or `.jpg` because of significantly smaller file sizes.
+- **Naming Conventions:** Use lowercase dashed names (e.g., `seds-uoc-logo.png`). Avoid spaces or special characters.
+
+## 3. Reusing Media
+
+- Media is a "global" collection. Once it is uploaded into the Media panel, it can be reused across Chapters, Projects, and Products without re-uploading the file.
+- Click "Upload" from any rich-text editor or Relation block to browse the Media library directly.
+
+## 4. Deletion Warnings
+
+If you attempt to delete an image:
+
+- The system will prevent you from deleting an image if it is currently tied to a product, chapter, or project.
+- This represents a database constraint designed to prevent "Missing Image" errors across the website. You must first remove the image from the relational document before deleting it entirely.

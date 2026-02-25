@@ -1,4 +1,20 @@
 import type { CollectionConfig } from "payload";
+import {
+  lexicalEditor,
+  HeadingFeature,
+  BoldFeature,
+  ItalicFeature,
+  UnderlineFeature,
+  StrikethroughFeature,
+  LinkFeature,
+  UnorderedListFeature,
+  OrderedListFeature,
+  BlockquoteFeature,
+  HorizontalRuleFeature,
+  UploadFeature,
+  FixedToolbarFeature,
+  InlineToolbarFeature,
+} from "@payloadcms/richtext-lexical";
 
 interface ChapterData {
   name?: string;
@@ -23,10 +39,39 @@ export const Chapters: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [
-      ({ data }) => {
+      async ({ data, req }) => {
         const typedData = data as ChapterData;
         if (typedData?.name) {
-          typedData.slug = generateSlug(typedData.name);
+          const base = generateSlug(typedData.name);
+          let slug = base;
+
+          // Check for duplicate slugs (handles duplication in admin)
+          try {
+            if (req?.payload) {
+              const existing = await req.payload.find({
+                collection: "chapters",
+                where: {
+                  slug: {
+                    equals: slug,
+                  },
+                },
+                limit: 1,
+              });
+
+              if (
+                existing &&
+                Array.isArray(existing.docs) &&
+                existing.docs.length > 0
+              ) {
+                // Append timestamp to make unique
+                slug = `${base}-${Date.now()}`;
+              }
+            }
+          } catch (err) {
+            console.error("Error checking existing slug for chapters:", err);
+          }
+
+          typedData.slug = slug;
         }
         return typedData;
       },
@@ -53,11 +98,25 @@ export const Chapters: CollectionConfig = {
     },
 
     {
+      name: "logoDark",
+      type: "upload",
+      relationTo: "media",
+      label: "Dark Logo (Required, Default)",
+      required: true,
+      validate: (value: any) => (value ? true : "This field is required"),
+    },
+    {
+      name: "logoLight",
+      type: "upload",
+      relationTo: "media",
+      label: "Light Logo (Optional)",
+    },
+    {
       name: "mainImage",
       type: "upload",
       relationTo: "media",
       label: "Main Image",
-      required: true,
+      validate: (value: any) => (value ? true : "This field is required"),
     },
     {
       name: "gallery",
@@ -68,7 +127,7 @@ export const Chapters: CollectionConfig = {
           name: "image",
           type: "upload",
           relationTo: "media",
-          required: true,
+          validate: (value: any) => (value ? true : "This field is required"),
         },
         {
           name: "caption",
@@ -88,6 +147,36 @@ export const Chapters: CollectionConfig = {
       type: "richText",
       label: "Content",
       required: true,
+      editor: lexicalEditor({
+        features: ({ rootFeatures }) => [
+          ...rootFeatures,
+          FixedToolbarFeature(),
+          InlineToolbarFeature(),
+          HeadingFeature({ enabledHeadingSizes: ["h1", "h2", "h3", "h4"] }),
+          BoldFeature(),
+          ItalicFeature(),
+          UnderlineFeature(),
+          StrikethroughFeature(),
+          LinkFeature(),
+          UnorderedListFeature(),
+          OrderedListFeature(),
+          BlockquoteFeature(),
+          HorizontalRuleFeature(),
+          UploadFeature({
+            collections: {
+              media: {
+                fields: [
+                  {
+                    name: "caption",
+                    type: "richText",
+                    label: "Caption",
+                  },
+                ],
+              },
+            },
+          }),
+        ],
+      }),
     },
     {
       name: "contactEmail",

@@ -15,12 +15,12 @@ export function ProductDescription({ product }: { product: Product }) {
   let amount = 0,
     lowestAmount = 0,
     highestAmount = 0;
-  const priceField = `priceIn${currency.code}` as keyof Product;
+  const priceField = `priceInLKR` as keyof Product;
   const hasVariants =
     product.enableVariants && Boolean(product.variants?.docs?.length);
 
   if (hasVariants) {
-    const priceField = `priceIn${currency.code}` as keyof Variant;
+    const priceField = `priceInLKR` as keyof Variant;
     const variantsOrderedByPrice = product.variants?.docs
       ?.filter((variant) => variant && typeof variant === "object")
       .sort((a, b) => {

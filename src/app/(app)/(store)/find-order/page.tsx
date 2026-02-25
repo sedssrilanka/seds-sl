@@ -6,6 +6,7 @@ import { FindOrderForm } from "@/components/forms/FindOrderForm";
 import { getPayload } from "payload";
 import { headers as getHeaders } from "next/headers.js";
 import configPromise from "@payload-config";
+import { SectionHeader } from "@/components/sections/section-header";
 
 export default async function FindOrderPage() {
   const headers = await getHeaders();
@@ -19,8 +20,17 @@ export default async function FindOrderPage() {
   }
 
   return (
-    <div className="container py-16">
-      <FindOrderForm initialEmail={user?.email} />
+    <div className="flex flex-col w-full">
+      <SectionHeader
+        title="Track Your Order"
+        description="Enter your email address and we'll send you a link to your order history."
+        image="/section-header/space-projects-bg.jpeg"
+      />
+      <div className="container py-16 md:py-24 max-w-3xl mx-auto mt-12">
+        <div className="bg-card border shadow-sm rounded-2xl p-6 md:p-10">
+          <FindOrderForm initialEmail={user?.email} />
+        </div>
+      </div>
     </div>
   );
 }

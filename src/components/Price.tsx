@@ -38,12 +38,8 @@ export const Price = ({
   const Element = as;
 
   const currencyToUse = useMemo(() => {
-    if (currencyCodeFromProps) {
-      return supportedCurrencies.find(
-        (currency) => currency.code === currencyCodeFromProps,
-      );
-    }
-    return undefined;
+    const code = currencyCodeFromProps ?? "LKR";
+    return supportedCurrencies.find((currency) => currency.code === code);
   }, [currencyCodeFromProps, supportedCurrencies]);
 
   if (typeof amount === "number") {

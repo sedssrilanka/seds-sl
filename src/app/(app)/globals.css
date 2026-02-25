@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+@plugin "@tailwindcss/typography";
 /* Custom Toast Styles */
 .toaster {
   --toast-bg: hsl(var(--background));
@@ -174,7 +175,7 @@
 }
 
 .dark {
-  --background: oklch(0.141 0.005 285.823);
+  --background: oklch(0 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.21 0.006 285.885);
   --card-foreground: oklch(0.985 0 0);
@@ -823,4 +824,19 @@
 
 @utility light-mode-muted {
   @apply text-muted-foreground dark:text-muted-foreground;
+}
+
+/* ===== FORM FIELD WIDTH (responsive) ===== */
+/* Mobile: always full width */
+.form-field-width {
+  width: 100%;
+  max-width: 100%;
+  flex: 0 0 100%;
+}
+/* md+: respect the width configured in the CMS */
+@media (min-width: 768px) {
+  .form-field-width {
+    max-width: var(--field-width, 100%);
+    flex: 0 0 var(--field-width, 100%);
+  }
 }

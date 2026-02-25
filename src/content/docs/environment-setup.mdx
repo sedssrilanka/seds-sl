@@ -1,0 +1,99 @@
+---
+title: Environment Variables Setup
+description: How to set up the appropriate environment variables for the SEDS SL website.
+---
+
+# Environment Variables Setup
+
+This document explains how to set up the environment variables for the SEDS Sri Lanka contact form functionality.
+
+## Required Environment Variables
+
+Create a `.env.local` file in the root directory of your project with the following variables:
+
+### 1. Resend API Configuration
+
+```bash
+# Resend API Key for email sending
+# Get your API key from https://resend.com/api-keys
+RESEND_API_KEY=re_your_api_key_here
+```
+
+**How to get your Resend API key:**
+
+1. Sign up at [resend.com](https://resend.com)
+2. Go to API Keys section in your dashboard
+3. Create a new API key
+4. Copy the key (starts with `re_`)
+
+### 2. Email Configuration
+
+```bash
+# The email address that will receive contact form submissions
+CONTACT_EMAIL=contact@seds-sl.org
+
+# The email address that will appear as the sender
+# This must be a verified domain in Resend
+FROM_EMAIL=noreply@seds-sl.org
+
+# Organization name for email templates
+ORG_NAME=SEDS Sri Lanka
+
+# Website URL for email templates
+WEBSITE_URL=https://seds-sl.org
+```
+
+## Domain Verification
+
+To send emails from your domain, you need to verify it in Resend:
+
+1. Go to your Resend dashboard
+2. Navigate to "Domains" section
+3. Add your domain (e.g., `seds-sl.org`)
+4. Follow the DNS verification steps
+5. Once verified, you can use emails from that domain
+
+## Example .env.local File
+
+```bash
+# Resend API Key
+RESEND_API_KEY=re_1234567890abcdef
+
+# Email Configuration
+CONTACT_EMAIL=contact@seds-sl.org
+FROM_EMAIL=noreply@seds-sl.org
+ORG_NAME=SEDS Sri Lanka
+WEBSITE_URL=https://seds-sl.org
+```
+
+## Testing
+
+After setting up the environment variables:
+
+1. Restart your development server: `bun run dev`
+2. Test the contact form
+3. Check your email inbox for the form submission
+
+## Troubleshooting
+
+### Common Issues:
+
+1. **"Email service not configured" error:**
+   - Make sure `RESEND_API_KEY` is set correctly
+   - Restart your development server after adding the environment variable
+
+2. **"Failed to send email" error:**
+   - Check if your domain is verified in Resend
+   - Ensure the `FROM_EMAIL` uses a verified domain
+   - Verify your API key has the correct permissions
+
+3. **Build errors:**
+   - The build will work without environment variables (uses dummy values)
+   - For production, make sure all environment variables are set
+
+## Security Notes
+
+- Never commit your `.env.local` file to version control
+- Use different API keys for development and production
+- Regularly rotate your API keys
+- Monitor your Resend usage to avoid unexpected charges

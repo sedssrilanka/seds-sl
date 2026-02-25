@@ -15,10 +15,20 @@ const SuccessMessage: React.FC = () => (
   </div>
 );
 
+const collections = [
+  "media",
+  "forms",
+  "pages",
+  "divisions",
+  "chapters",
+  "projects",
+];
+
 export const SeedButton: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [seeded, setSeeded] = useState(false);
   const [error, setError] = useState<unknown>(null);
+  const [currentStep, setCurrentStep] = useState<string>("");
 
   const handleClick = useCallback(
     async (e: MouseEvent<HTMLButtonElement>) => {
@@ -33,53 +43,60 @@ export const SeedButton: React.FC = () => {
         return;
       }
       if (error) {
-        toast.error(`An error occurred, please refresh and try again.`);
+        toast.error("An error occurred, please refresh and try again.");
         return;
       }
 
       setLoading(true);
+      setError(null);
 
-      try {
-        toast.promise(
-          new Promise((resolve, reject) => {
-            try {
-              fetch("/next/seed", { method: "POST", credentials: "include" })
-                .then((res) => {
-                  if (res.ok) {
-                    resolve(true);
-                    setSeeded(true);
-                  } else {
-                    reject("An error occurred while seeding.");
-                  }
-                })
-                .catch((error) => {
-                  reject(error);
-                });
-            } catch (error) {
-              reject(error);
+      toast.promise(
+        (async () => {
+          try {
+            for (let i = 0; i < collections.length; i++) {
+              const coll = collections[i];
+              setCurrentStep(
+                `${i + 1}/${collections.length}: Seeding ${coll}...`,
+              );
+              const res = await fetch(`/next/seed?collection=${coll}`, {
+                method: "POST",
+                credentials: "include",
+              });
+              if (!res.ok) {
+                throw new Error(`Failed to seed ${coll}`);
+              }
             }
-          }),
-          {
-            loading: "Seeding with data....",
-            success: <SuccessMessage />,
-            error: "An error occurred while seeding.",
-          },
-        );
-      } catch (err) {
-        setError(err);
-      }
+            setSeeded(true);
+            setCurrentStep("Done!");
+          } catch (err) {
+            setError(err);
+            setLoading(false);
+            throw err;
+          }
+        })(),
+        {
+          loading: "Starting sequential seeding process...",
+          success: <SuccessMessage />,
+          error: "An error occurred while seeding.",
+        },
+      );
     },
     [loading, seeded, error],
   );
 
   let message = "";
-  if (loading) message = " (seeding...)";
-  if (seeded) message = " (done!)";
-  if (error) message = ` (error: ${error})`;
+  if (loading && !seeded && !error) message = ` (${currentStep})`;
+  else if (seeded) message = " (done!)";
+  else if (error) message = ` (error: ${error})`;
 
   return (
     <Fragment>
-      <button className="seedButton" type="button" onClick={handleClick}>
+      <button
+        className="seedButton"
+        type="button"
+        onClick={handleClick}
+        disabled={loading || seeded}
+      >
         Seed your database
       </button>
       {message}

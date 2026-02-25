@@ -43,6 +43,8 @@ export const Textarea: React.FC<
           defaultValue={defaultValue}
           id={name}
           rows={rows}
+          className="!bg-transparent border-0 px-0 rounded-none min-h-[150px] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+          placeholder="Type here"
           {...register(name, {
             required: requiredFromProps
               ? `${capitaliseFirstLetter(label || name)} is required.`

@@ -29,7 +29,7 @@ export default async function ShopPage({ searchParams }: Props) {
         slug: true,
         gallery: true,
         categories: true,
-        priceInUSD: true,
+        priceInLKR: true,
       },
       ...(sort ? { sort } : { sort: "title" }),
       ...(searchValue || category
@@ -47,11 +47,6 @@ export default async function ShopPage({ searchParams }: Props) {
                         or: [
                           {
                             title: {
-                              like: searchValue,
-                            },
-                          },
-                          {
-                            description: {
                               like: searchValue,
                             },
                           },
@@ -74,28 +69,37 @@ export default async function ShopPage({ searchParams }: Props) {
         : {}),
     });
   } catch (error) {
+    console.error("Payload find error in shop:", error);
     console.warn("DB connection failed, continuing with empty products list.");
   }
 
   const resultsText = products.docs.length > 1 ? "results" : "result";
 
   return (
-    <div>
-      {searchValue ? (
-        <p className="mb-4">
-          {products.docs?.length === 0
-            ? "There are no products that match "
-            : `Showing ${products.docs.length} ${resultsText} for `}
-          <span className="font-bold">&quot;{searchValue}&quot;</span>
-        </p>
-      ) : null}
+    <div className="w-full">
+      {searchValue && (
+        <div className="mb-8 border-b pb-4">
+          <h2 className="text-xl font-medium tracking-tight">
+            {products.docs?.length === 0
+              ? "0 results for "
+              : `Showing ${products.docs.length} ${resultsText} for `}
+            <span className="font-bold">&quot;{searchValue}&quot;</span>
+          </h2>
+        </div>
+      )}
 
       {!searchValue && products.docs?.length === 0 && (
-        <p className="mb-4">No products found. Please try different filters.</p>
+        <div className="flex py-20 flex-col items-center justify-center text-center bg-muted/10 border-2 border-dashed rounded-2xl">
+          <h3 className="text-xl font-semibold mb-2">No products found</h3>
+          <p className="text-muted-foreground max-w-sm">
+            Try adjusting your filters or search query to find what you're
+            looking for.
+          </p>
+        </div>
       )}
 
       {products?.docs.length > 0 ? (
-        <Grid className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <Grid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-border/60 dark:border-border/50">
           {products.docs.map((product) => {
             return <ProductGridItem key={product.id} product={product} />;
           })}

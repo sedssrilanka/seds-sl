@@ -44,6 +44,25 @@ export const plugins: Plugin[] = [
       isAdmin,
       isDocumentOwner,
     },
+
+    currencies: {
+      defaultCurrency: "LKR",
+      supportedCurrencies: [
+        {
+          code: "LKR",
+          label: "Sri Lankan Rupee",
+          symbol: "Rs",
+          decimals: 2,
+        },
+        {
+          code: "USD",
+          label: "US Dollar",
+          symbol: "$",
+          decimals: 2,
+        },
+      ],
+    },
+
     customers: {
       slug: "users",
     },
