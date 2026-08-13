@@ -21,11 +21,13 @@ export const RenderParamsComponent: React.FC<Props> = ({
   const searchParams = useSearchParams();
   const paramValues = params.map((param) => searchParams?.get(param));
 
+  const paramValuesSerialized = JSON.stringify(paramValues);
+
   useEffect(() => {
-    if (paramValues.length && onParams) {
+    if (paramValues.some(Boolean) && onParams) {
       onParams(paramValues);
     }
-  }, [paramValues, onParams]);
+  }, [paramValuesSerialized, onParams]);
 
   if (paramValues.length) {
     return (
