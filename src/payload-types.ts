@@ -285,7 +285,18 @@ export interface Product {
         id?: string | null;
       }[]
     | null;
-  layout?: (CallToActionBlock | ContentBlock | MediaBlock)[] | null;
+  layout?:
+    | (
+        | CallToActionBlock
+        | ContentBlock
+        | MediaBlock
+        | ArchiveBlock
+        | CarouselBlock
+        | ThreeItemGridBlock
+        | BannerBlock
+        | FormBlock
+      )[]
+    | null;
   inventory?: number | null;
   enableVariants?: boolean | null;
   variantTypes?: (number | VariantType)[] | null;
@@ -1819,6 +1830,11 @@ export interface ProductsSelect<T extends boolean = true> {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
+        archive?: T | ArchiveBlockSelect<T>;
+        carousel?: T | CarouselBlockSelect<T>;
+        threeItemGrid?: T | ThreeItemGridBlockSelect<T>;
+        banner?: T | BannerBlockSelect<T>;
+        formBlock?: T | FormBlockSelect<T>;
       };
   inventory?: T;
   enableVariants?: T;
