@@ -30,6 +30,9 @@ export default async function ShopPage({ searchParams }: Props) {
         gallery: true,
         categories: true,
         priceInLKR: true,
+        enableVariants: true,
+        variants: true,
+        meta: true,
       },
       ...(sort ? { sort } : { sort: "title" }),
       ...(searchValue || category
@@ -99,11 +102,11 @@ export default async function ShopPage({ searchParams }: Props) {
       )}
 
       {products?.docs.length > 0 ? (
-        <Grid className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border-border/60 dark:border-border/50">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {products.docs.map((product) => {
             return <ProductGridItem key={product.id} product={product} />;
           })}
-        </Grid>
+        </div>
       ) : null}
     </div>
   );

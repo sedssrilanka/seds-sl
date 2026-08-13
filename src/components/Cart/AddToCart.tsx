@@ -9,6 +9,8 @@ import { useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
+import { ShoppingBag, Loader2 } from "lucide-react";
+
 type Props = {
   product: Product;
 };
@@ -46,7 +48,7 @@ export function AddToCart({ product }: Props) {
         product: product.id,
         variant: selectedVariant?.id ?? undefined,
       }).then(() => {
-        toast.success("Item added to cart.");
+        toast.success("Item added to your cart.");
       });
     },
     [addItem, product, selectedVariant],
@@ -100,15 +102,30 @@ export function AddToCart({ product }: Props) {
   return (
     <Button
       aria-label="Add to cart"
-      variant={"outline"}
-      className={clsx({
-        "hover:opacity-90": true,
-      })}
+      className={clsx(
+        "w-full py-6 text-base font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5 shadow-md hover:shadow-lg cursor-pointer",
+        {
+          "bg-primary text-primary-foreground hover:opacity-95": !disabled && !isLoading,
+          "opacity-60 cursor-not-allowed": disabled || isLoading,
+        },
+      )}
       disabled={disabled || isLoading}
       onClick={addToCart}
       type="submit"
     >
-      Add To Cart
+      {isLoading ? (
+        <>
+          <Loader2 className="w-5 h-5 animate-spin" />
+          <span>Adding to Cart...</span>
+        </>
+      ) : disabled ? (
+        <span>Unavailable</span>
+      ) : (
+        <>
+          <ShoppingBag className="w-5 h-5" />
+          <span>Add to Cart</span>
+        </>
+      )}
     </Button>
   );
 }

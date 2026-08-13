@@ -43,12 +43,39 @@ export const StockIndicator: React.FC<Props> = ({ product }) => {
     return null;
   }
 
+  const isLowStock = stockQuantity > 0 && stockQuantity < 10;
+  const isOutOfStock = stockQuantity <= 0;
+
   return (
-    <div className="uppercase font-mono text-sm font-medium text-gray-500">
-      {stockQuantity < 10 && stockQuantity > 0 && (
-        <p>Only {stockQuantity} left in stock</p>
+    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider border bg-background/80 backdrop-blur-md">
+      {isOutOfStock ? (
+        <>
+          <span className="relative flex h-2 w-2">
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-red-500" />
+          </span>
+          <span className="text-red-600 dark:text-red-400">Out of Stock</span>
+        </>
+      ) : isLowStock ? (
+        <>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500" />
+          </span>
+          <span className="text-amber-600 dark:text-amber-400">
+            Only {stockQuantity} left
+          </span>
+        </>
+      ) : (
+        <>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+          </span>
+          <span className="text-emerald-600 dark:text-emerald-400">
+            In Stock & Ready
+          </span>
+        </>
       )}
-      {(stockQuantity === 0 || !stockQuantity) && <p>Out of stock</p>}
     </div>
   );
 };
