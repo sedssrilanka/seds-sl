@@ -144,19 +144,19 @@ function createWireframeMaterial(
 function getThemeColors(isLight: boolean) {
   if (isLight) {
     return {
-      primary: "#d97706", // Darker orange for light mode
-      secondary: "#ea580c", // Darker red-orange
-      accent: "#f59e0b", // Darker amber
-      grid: "#d97706", // Darker grid color
-      orbital: "#d97706", // Darker orbital rings
+      primary: "#2563eb", // Cool dark blue for light mode
+      secondary: "#0284c7", // Cool cyan-blue
+      accent: "#38bdf8", // Cool light sky blue
+      grid: "#2563eb", // Cool grid color
+      orbital: "#2563eb", // Cool orbital rings
     };
   } else {
     return {
-      primary: "#ff8c00", // Original orange
-      secondary: "#ff6b35", // Original red-orange
-      accent: "#ffa500", // Original amber
-      grid: "#ff8c00", // Original grid color
-      orbital: "#ff8c00", // Original orbital rings
+      primary: "#3b82f6", // Cool vibrant electric blue
+      secondary: "#06b6d4", // Cool cyan
+      accent: "#60a5fa", // Cool blue accent
+      grid: "#3b82f6", // Cool grid color
+      orbital: "#3b82f6", // Cool orbital rings
     };
   }
 }
