@@ -35,9 +35,9 @@ export const ProductGridItem: React.FC<Props> = ({ product }) => {
       : false;
 
   return (
-    <Card className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none group overflow-hidden flex flex-col h-full">
+    <Card className="rounded-xl p-4 md:p-6 border shadow-sm dark:shadow-none group overflow-hidden flex flex-col h-full">
       {/* Image Container */}
-      <div className="w-full aspect-video bg-muted border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center">
+      <div className="w-full aspect-square bg-muted border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center rounded-lg">
         {image ? (
           <Media
             className="absolute inset-0 w-full h-full"
