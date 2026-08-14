@@ -34,37 +34,6 @@ const generateURL: GenerateURL<Product | Page> = ({ doc }) => {
 
 const storageAdapter = process.env.STORAGE_ADAPTER || "s3";
 
-const getStoragePlugin = (): Plugin => {
-  if (storageAdapter === "vercel-blob") {
-    return vercelBlobStorage({
-      collections: {
-        media: {
-          prefix: "media",
-        },
-      },
-      token: process.env.BLOB_READ_WRITE_TOKEN || "",
-    });
-  }
-
-  return s3Storage({
-    collections: {
-      media: {
-        prefix: "media",
-      },
-    },
-    bucket: process.env.S3_BUCKET || "",
-    config: {
-      forcePathStyle: true,
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
-      },
-      region: process.env.S3_REGION || "",
-      endpoint: process.env.S3_ENDPOINT || "",
-    },
-  });
-};
-
 export const plugins: Plugin[] = [
   seoPlugin({
     generateTitle,
@@ -106,7 +75,33 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadCloudPlugin(),
-  getStoragePlugin(),
+  s3Storage({
+    enabled: storageAdapter === "s3",
+    collections: {
+      media: {
+        prefix: "media",
+      },
+    },
+    bucket: process.env.S3_BUCKET || "",
+    config: {
+      forcePathStyle: true,
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+      },
+      region: process.env.S3_REGION || "",
+      endpoint: process.env.S3_ENDPOINT || "",
+    },
+  }),
+  vercelBlobStorage({
+    enabled: storageAdapter === "vercel-blob",
+    collections: {
+      media: {
+        prefix: "media",
+      },
+    },
+    token: process.env.BLOB_READ_WRITE_TOKEN || "",
+  }),
 
   formBuilderPlugin({
     fields: {
