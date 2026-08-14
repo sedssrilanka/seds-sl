@@ -13,6 +13,11 @@ const nextConfig: NextConfig = {
       path.join(process.cwd(), "node_modules", "@payloadcms", "ui", "scss"),
     ],
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "25mb",
+    },
+  },
   images: {
     unoptimized: true,
     dangerouslyAllowLocalIP: true,
@@ -28,6 +33,18 @@ const nextConfig: NextConfig = {
         hostname: "127.0.0.1",
         port: "3000",
         pathname: "/api/media/**",
+      },
+      {
+        protocol: "https",
+        hostname: "*.public.blob.vercel-storage.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.private.blob.vercel-storage.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.blob.vercel-storage.com",
       },
     ],
   },
