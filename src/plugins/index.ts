@@ -11,6 +11,7 @@ import { ecommercePlugin } from "@payloadcms/plugin-ecommerce";
 import { payloadCloudPlugin } from "@payloadcms/payload-cloud";
 
 import { s3Storage } from "@payloadcms/storage-s3";
+import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 
 import type { Product, Page } from "@/payload-types";
 import { getServerSideURL } from "@/utilities/getURL";
@@ -29,6 +30,39 @@ const generateURL: GenerateURL<Product | Page> = ({ doc }) => {
   const url = getServerSideURL();
 
   return doc?.slug ? `${url}/${doc.slug}` : url;
+};
+
+const storageAdapter = process.env.STORAGE_ADAPTER || "s3";
+
+const getStoragePlugin = (): Plugin => {
+  if (storageAdapter === "vercel-blob") {
+    return vercelBlobStorage({
+      collections: {
+        media: {
+          prefix: "media",
+        },
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN || "",
+    });
+  }
+
+  return s3Storage({
+    collections: {
+      media: {
+        prefix: "media",
+      },
+    },
+    bucket: process.env.S3_BUCKET || "",
+    config: {
+      forcePathStyle: true,
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+      },
+      region: process.env.S3_REGION || "",
+      endpoint: process.env.S3_ENDPOINT || "",
+    },
+  });
 };
 
 export const plugins: Plugin[] = [
@@ -72,23 +106,7 @@ export const plugins: Plugin[] = [
     },
   }),
   payloadCloudPlugin(),
-  s3Storage({
-    collections: {
-      media: {
-        prefix: "media",
-      },
-    },
-    bucket: process.env.S3_BUCKET || "",
-    config: {
-      forcePathStyle: true,
-      credentials: {
-        accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
-        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
-      },
-      region: process.env.S3_REGION || "",
-      endpoint: process.env.S3_ENDPOINT || "",
-    },
-  }),
+  getStoragePlugin(),
 
   formBuilderPlugin({
     fields: {

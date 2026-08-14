@@ -144,19 +144,19 @@ function createWireframeMaterial(
 function getThemeColors(isLight: boolean) {
   if (isLight) {
     return {
-      primary: "#d97706", // Darker orange for light mode
-      secondary: "#ea580c", // Darker red-orange
-      accent: "#f59e0b", // Darker amber
-      grid: "#d97706", // Darker grid color
-      orbital: "#d97706", // Darker orbital rings
+      primary: "#2563eb", // Cool dark blue for light mode
+      secondary: "#0284c7", // Cool cyan-blue
+      accent: "#38bdf8", // Cool light sky blue
+      grid: "#2563eb", // Cool grid color
+      orbital: "#2563eb", // Cool orbital rings
     };
   } else {
     return {
-      primary: "#ff8c00", // Original orange
-      secondary: "#ff6b35", // Original red-orange
-      accent: "#ffa500", // Original amber
-      grid: "#ff8c00", // Original grid color
-      orbital: "#ff8c00", // Original orbital rings
+      primary: "#3b82f6", // Cool vibrant electric blue
+      secondary: "#06b6d4", // Cool cyan
+      accent: "#60a5fa", // Cool blue accent
+      grid: "#3b82f6", // Cool grid color
+      orbital: "#3b82f6", // Cool orbital rings
     };
   }
 }
@@ -594,9 +594,77 @@ function InfiniteGrid() {
   );
 }
 
+// Adaptive FPS Performance Monitor
+function AdaptivePerformanceMonitor({
+  onPerformanceDrop,
+}: {
+  onPerformanceDrop: () => void;
+}) {
+  const frameTimes = useRef<number[]>([]);
+  const lastTime = useRef<number>(performance.now());
+  const hasDropped = useRef<boolean>(false);
+
+  useFrame(() => {
+    if (hasDropped.current) return;
+    const now = performance.now();
+    const delta = now - lastTime.current;
+    lastTime.current = now;
+
+    frameTimes.current.push(delta);
+    if (frameTimes.current.length > 60) {
+      const avgDelta =
+        frameTimes.current.reduce((a, b) => a + b, 0) /
+        frameTimes.current.length;
+      const avgFps = 1000 / avgDelta;
+
+      if (avgFps < 35) {
+        hasDropped.current = true;
+        onPerformanceDrop();
+      }
+      frameTimes.current = [];
+    }
+  });
+
+  return null;
+}
+
+// Space Scene Wireframe Grid Placeholder
+export function SpaceScenePlaceholder() {
+  return (
+    <div className="fixed inset-0 w-screen h-screen z-0 bg-background overflow-hidden pointer-events-none">
+      {/* Theme-aware Ambient Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-sky-500/10" />
+
+      {/* Wireframe Grid Lines */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:48px_48px] opacity-40" />
+    </div>
+  );
+}
+
 // Main Space Scene Component
 export default function SpaceScene() {
   const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  const [isLowPowerDevice, setIsLowPowerDevice] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+
+    const checkHardwareTier = () => {
+      if (typeof window === "undefined") return;
+      const cores = navigator.hardwareConcurrency || 8;
+      const memory = (navigator as any).deviceMemory || 8;
+
+      // Only downgrade if CPU cores <= 4 or Device RAM <= 3GB
+      const isWeakHardware = cores <= 4 || memory <= 3;
+      setIsLowPowerDevice(isWeakHardware);
+    };
+
+    checkHardwareTier();
+  }, []);
+
+  if (!mounted) return <SpaceScenePlaceholder />;
+
   const isLight = resolvedTheme === "light";
   const colors = getThemeColors(isLight);
 
@@ -618,13 +686,18 @@ export default function SpaceScene() {
           height: "100vh",
         }}
         gl={{
-          antialias: true,
+          antialias: !isLowPowerDevice,
           alpha: true,
-          powerPreference: "high-performance",
-          preserveDrawingBuffer: true,
+          powerPreference: isLowPowerDevice ? "low-power" : "high-performance",
+          preserveDrawingBuffer: false,
         }}
-        dpr={[1, 2]}
+        dpr={isLowPowerDevice ? 1 : [1, 2]}
       >
+        {/* Real-time FPS Monitoring for adaptive scaling */}
+        <AdaptivePerformanceMonitor
+          onPerformanceDrop={() => setIsLowPowerDevice(true)}
+        />
+
         {/* Isometric Camera Setup */}
         <IsometricCamera />
 
@@ -646,19 +719,16 @@ export default function SpaceScene() {
           color="#ffffff"
         />
 
-        {/* Background stars - reduced in light mode */}
+        {/* Background stars */}
         <Stars
-          radius={400}
-          depth={80}
-          count={isLight ? 4000 : 8000}
-          factor={6}
+          radius={350}
+          depth={70}
+          count={isLowPowerDevice ? 600 : isLight ? 3000 : 6000}
+          factor={5}
           saturation={0}
-          fade={false}
-          speed={0.5}
+          fade={true}
+          speed={0.4}
         />
-
-        {/* Custom star field backup */}
-        <CustomStarField />
 
         {/* Infinite Isometric Grid */}
         <InfiniteGrid />
@@ -699,28 +769,37 @@ export default function SpaceScene() {
           rotationSpeed={0.004}
           scrollMultiplier={2.0}
         />
-        <Satellite
-          position={[0, 0, 0]}
-          orbitRadius={20}
-          orbitSpeed={-0.03}
-          orbitTilt={-2}
-          satelliteType="long"
-          rotationSpeed={0.001}
-          scrollMultiplier={-0.8}
-        />
+        {!isLowPowerDevice && (
+          <Satellite
+            position={[0, 0, 0]}
+            orbitRadius={20}
+            orbitSpeed={-0.03}
+            orbitTilt={-2}
+            satelliteType="long"
+            rotationSpeed={0.001}
+            scrollMultiplier={-0.8}
+          />
+        )}
 
-        {/* Asteroids - moved out of orbit */}
+        {/* Asteroids */}
         <Asteroid position={[25, 8, 15]} size={1.2} rotationSpeed={0.003} />
         <Asteroid position={[-22, -6, 12]} size={0.8} rotationSpeed={-0.002} />
         <Asteroid position={[18, 12, -20]} size={1.0} rotationSpeed={0.004} />
         <Asteroid position={[-15, -8, -18]} size={0.6} rotationSpeed={-0.003} />
-        <Asteroid position={[30, -4, 8]} size={0.9} rotationSpeed={0.002} />
-        <Asteroid position={[-28, 10, -25]} size={1.1} rotationSpeed={-0.004} />
+        {!isLowPowerDevice && (
+          <>
+            <Asteroid position={[30, -4, 8]} size={0.9} rotationSpeed={0.002} />
+            <Asteroid
+              position={[-28, 10, -25]}
+              size={1.1}
+              rotationSpeed={-0.004}
+            />
+          </>
+        )}
 
-        {/* Space Debris - slower speeds */}
+        {/* Space Debris */}
         <SpaceDebris position={[0, 0, 0]} orbitRadius={6} orbitSpeed={0.1} />
         <SpaceDebris position={[0, 0, 0]} orbitRadius={10} orbitSpeed={-0.08} />
-        <SpaceDebris position={[0, 0, 0]} orbitRadius={14} orbitSpeed={0.06} />
       </Canvas>
     </div>
   );

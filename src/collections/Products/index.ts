@@ -1,6 +1,11 @@
+import { Archive } from "@/blocks/ArchiveBlock/config";
+import { Banner } from "@/blocks/Banner/config";
 import { CallToAction } from "@/blocks/CallToAction/config";
+import { Carousel } from "@/blocks/Carousel/config";
 import { Content } from "@/blocks/Content/config";
+import { FormBlock } from "@/blocks/Form/config";
 import { MediaBlock } from "@/blocks/MediaBlock/config";
+import { ThreeItemGrid } from "@/blocks/ThreeItemGrid/config";
 import { type CollectionSlug, slugField } from "payload";
 import { generatePreviewPath } from "@/utilities/generatePreviewPath";
 import type { CollectionOverride } from "@payloadcms/plugin-ecommerce/types";
@@ -145,7 +150,16 @@ export const ProductsCollection: CollectionOverride = ({
             {
               name: "layout",
               type: "blocks",
-              blocks: [CallToAction, Content, MediaBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                Carousel,
+                ThreeItemGrid,
+                Banner,
+                FormBlock,
+              ],
             },
           ],
           label: "Content",

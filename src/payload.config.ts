@@ -90,7 +90,7 @@ export default buildConfig({
     outputFile: path.resolve(dirname, "payload-types.ts"),
   },
   db: postgresAdapter({
-    push: true,
+    push: process.env.NODE_ENV === "development" || process.env.PAYLOAD_MIGRATE === "true",
     pool: {
       connectionString: process.env.DATABASE_URI || "",
       // Fail fast during build if DB is offline.

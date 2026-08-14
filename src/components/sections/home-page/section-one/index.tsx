@@ -1,6 +1,15 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import SpaceScene from "./space-scene";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+
+import { SpaceScenePlaceholder } from "./space-scene";
+
+const SpaceScene = dynamic(() => import("./space-scene"), {
+  ssr: false,
+  loading: () => <SpaceScenePlaceholder />,
+});
 
 type Props = React.HTMLAttributes<HTMLDivElement>;
 

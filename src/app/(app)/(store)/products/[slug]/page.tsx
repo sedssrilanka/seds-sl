@@ -1,7 +1,7 @@
 import type { Media, Product } from "@/payload-types";
 
 import { RenderBlocks } from "@/blocks/RenderBlocks";
-import { GridTileImage } from "@/components/Grid/tile";
+import { ProductGridItem } from "@/components/ProductGridItem";
 import { Gallery } from "@/components/product/Gallery";
 import { ProductDescription } from "@/components/product/ProductDescription";
 import configPromise from "@payload-config";
@@ -131,41 +131,48 @@ export default async function ProductPage({ params }: Args) {
         }}
         type="application/ld+json"
       />
-      <div className="container mx-auto px-4 py-12">
-        <div className="container pt-8 pb-16">
-          <Button
-            asChild
-            variant="ghost"
-            className="mb-6 -ml-4 hover:bg-muted/50 rounded-full"
-          >
-            <Link href="/shop" className="flex items-center gap-2">
-              <ChevronLeftIcon className="w-4 h-4" />
-              <span>Back to Shop</span>
-            </Link>
-          </Button>
-          <div className="flex flex-col gap-8 md:gap-12 rounded-3xl border p-6 md:p-10 lg:flex-row lg:gap-16 bg-card shadow-sm overflow-hidden">
-            <div className="h-full w-full basis-full lg:basis-1/2">
-              <Suspense
-                fallback={
-                  <div className="relative aspect-square h-full min-h-[400px] max-h-[600px] w-full bg-muted/20 animate-pulse rounded-2xl" />
-                }
-              >
-                {Boolean(gallery?.length) && <Gallery gallery={gallery} />}
-              </Suspense>
-            </div>
+      <div className="container mx-auto px-4 py-6 lg:py-10">
+        {/* Main Product Section Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start mb-16">
+          {/* Sticky Left Column: Back to Store + Image Gallery */}
+          <div className="lg:col-span-7 w-full lg:sticky lg:top-24 flex flex-col gap-4">
+            <Button
+              asChild
+              variant="ghost"
+              size="sm"
+              className="w-fit hover:bg-muted/50 rounded-full text-xs font-semibold uppercase tracking-wider text-muted-foreground -ml-2"
+            >
+              <Link href="/shop" className="flex items-center gap-2">
+                <ChevronLeftIcon className="w-4 h-4 text-primary" />
+                <span>Back to Store</span>
+              </Link>
+            </Button>
 
-            <div className="basis-full lg:basis-1/2">
-              <ProductDescription product={product} />
-            </div>
+            <Suspense
+              fallback={
+                <div className="relative aspect-square h-full min-h-[350px] w-full bg-muted/20 animate-pulse rounded-2xl" />
+              }
+            >
+              {Boolean(gallery?.length) && <Gallery gallery={gallery} />}
+            </Suspense>
+          </div>
+
+          {/* Right Column: Product Description & Custom Layout Blocks */}
+          <div className="lg:col-span-5 w-full flex flex-col gap-10">
+            <ProductDescription product={product} />
+
+            {/* Custom Layout Blocks */}
+            {product.layout?.length ? (
+              <div className="pt-8 border-t border-border/40">
+                <RenderBlocks blocks={product.layout as any} />
+              </div>
+            ) : null}
           </div>
         </div>
 
-        {product.layout?.length ? (
-          <RenderBlocks blocks={product.layout} />
-        ) : null}
-
+        {/* Related Products */}
         {relatedProducts.length ? (
-          <div className="container pb-20">
+          <div className="pb-16">
             <RelatedProducts products={relatedProducts as Product[]} />
           </div>
         ) : null}
@@ -178,31 +185,15 @@ function RelatedProducts({ products }: { products: Product[] }) {
   if (!products.length) return null;
 
   return (
-    <div className="py-12 border-t mt-8">
+    <div className="py-12 border-t border-border/50 mt-12">
       <h2 className="mb-8 text-2xl font-bold tracking-tight">
         You might also like
       </h2>
-      <ul className="flex w-full gap-6 overflow-x-auto pb-4 px-2 -mx-2 snap-x">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {products.map((product) => (
-          <li
-            className="aspect-[4/5] w-[260px] flex-none snap-start transition-all duration-300 hover:-translate-y-1 hover:shadow-lg rounded-2xl overflow-hidden group border bg-card"
-            key={product.id}
-          >
-            <Link
-              className="relative h-full w-full"
-              href={`/products/${product.slug}`}
-            >
-              <GridTileImage
-                label={{
-                  amount: product.priceInLKR!,
-                  title: product.title,
-                }}
-                media={product.meta?.image as Media}
-              />
-            </Link>
-          </li>
+          <ProductGridItem key={product.id} product={product} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
@@ -228,15 +219,6 @@ const queryProductBySlug = async ({ slug }: { slug: string }) => {
           },
           ...(draft ? [] : [{ _status: { equals: "published" } }]),
         ],
-      },
-      populate: {
-        variants: {
-          title: true,
-          priceInLKR: true,
-          priceInUSD: true,
-          inventory: true,
-          options: true,
-        },
       },
     });
 

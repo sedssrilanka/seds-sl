@@ -24,107 +24,98 @@ export function VariantSelector({ product }: { product: Product }) {
 
   return variantTypes?.map((type) => {
     if (!type || typeof type !== "object") {
-      return <></>;
+      return <React.Fragment key={Math.random()} />;
     }
 
     const options = type.options?.docs;
 
     if (!options || !Array.isArray(options) || !options.length) {
-      return <></>;
+      return <React.Fragment key={type.id} />;
     }
 
     return (
-      <dl className="" key={type.id}>
-        <dt className="mb-4 text-sm">{type.label}</dt>
-        <dd className="flex flex-wrap gap-3">
-          <React.Fragment>
-            {options?.map((option) => {
-              if (!option || typeof option !== "object") {
-                return <></>;
-              }
+      <div className="flex flex-col gap-3" key={type.id}>
+        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          <span>Select {type.label}</span>
+        </div>
+        <div className="flex flex-wrap gap-2.5">
+          {options?.map((option) => {
+            if (!option || typeof option !== "object") {
+              return <React.Fragment key={Math.random()} />;
+            }
 
-              const optionID = option.id;
-              const optionKeyLowerCase = type.name;
+            const optionID = option.id;
+            const optionKeyLowerCase = type.name;
 
-              // Base option params on current params so we can preserve any other param state in the url.
-              const optionSearchParams = new URLSearchParams(
-                searchParams.toString(),
-              );
+            const optionSearchParams = new URLSearchParams(
+              searchParams.toString(),
+            );
 
-              // Remove image and variant ID from this search params so we can loop over it safely.
-              optionSearchParams.delete("variant");
-              optionSearchParams.delete("image");
+            optionSearchParams.delete("variant");
+            optionSearchParams.delete("image");
+            optionSearchParams.set(optionKeyLowerCase, String(optionID));
 
-              // Update the option params using the current option to reflect how the url *would* change,
-              // if the option was clicked.
-              optionSearchParams.set(optionKeyLowerCase, String(optionID));
+            const currentOptions = Array.from(optionSearchParams.values());
+            let isAvailableForSale = true;
 
-              const currentOptions = Array.from(optionSearchParams.values());
+            if (variants) {
+              const matchingVariant = variants
+                .filter((variant) => typeof variant === "object")
+                .find((variant) => {
+                  if (!variant.options || !Array.isArray(variant.options))
+                    return false;
 
-              let isAvailableForSale = true;
+                  return variant.options.every((variantOption) => {
+                    if (typeof variantOption !== "object")
+                      return currentOptions.includes(String(variantOption));
 
-              // Find a matching variant
-              if (variants) {
-                const matchingVariant = variants
-                  .filter((variant) => typeof variant === "object")
-                  .find((variant) => {
-                    if (!variant.options || !Array.isArray(variant.options))
-                      return false;
-
-                    // Check if all variant options match the current options in the URL
-                    return variant.options.every((variantOption) => {
-                      if (typeof variantOption !== "object")
-                        return currentOptions.includes(String(variantOption));
-
-                      return currentOptions.includes(String(variantOption.id));
-                    });
+                    return currentOptions.includes(String(variantOption.id));
                   });
+                });
 
-                if (matchingVariant) {
-                  // If we found a matching variant, set the variant ID in the search params.
-                  optionSearchParams.set("variant", String(matchingVariant.id));
-
-                  if (
-                    matchingVariant.inventory &&
-                    matchingVariant.inventory > 0
-                  ) {
-                    isAvailableForSale = true;
-                  } else {
-                    isAvailableForSale = false;
-                  }
-                }
+              if (matchingVariant) {
+                optionSearchParams.set("variant", String(matchingVariant.id));
+                isAvailableForSale = Boolean(
+                  matchingVariant.inventory && matchingVariant.inventory > 0,
+                );
               }
+            }
 
-              const optionUrl = createUrl(pathname, optionSearchParams);
+            const optionUrl = createUrl(pathname, optionSearchParams);
+            const isActive =
+              Boolean(isAvailableForSale) &&
+              searchParams.get(optionKeyLowerCase) === String(optionID);
 
-              // The option is active if it's in the url params.
-              const isActive =
-                Boolean(isAvailableForSale) &&
-                searchParams.get(optionKeyLowerCase) === String(optionID);
-
-              return (
-                <Button
-                  variant={"ghost"}
-                  aria-disabled={!isAvailableForSale}
-                  className={clsx("px-2", {
-                    "bg-primary/5 text-primary": isActive,
-                  })}
-                  disabled={!isAvailableForSale}
-                  key={option.id}
-                  onClick={() => {
-                    router.replace(`${optionUrl}`, {
-                      scroll: false,
-                    });
-                  }}
-                  title={`${option.label} ${!isAvailableForSale ? " (Out of Stock)" : ""}`}
-                >
-                  {option.label}
-                </Button>
-              );
-            })}
-          </React.Fragment>
-        </dd>
-      </dl>
+            return (
+              <button
+                type="button"
+                aria-disabled={!isAvailableForSale}
+                className={clsx(
+                  "px-4 py-2 rounded-xl text-xs font-semibold transition-all duration-200 border cursor-pointer",
+                  {
+                    "bg-primary text-primary-foreground border-primary shadow-xs":
+                      isActive,
+                    "bg-card hover:border-foreground/30 text-foreground border-border/60":
+                      !isActive && isAvailableForSale,
+                    "opacity-40 line-through cursor-not-allowed bg-muted border-border/40 text-muted-foreground":
+                      !isAvailableForSale,
+                  },
+                )}
+                disabled={!isAvailableForSale}
+                key={option.id}
+                onClick={() => {
+                  router.replace(`${optionUrl}`, {
+                    scroll: false,
+                  });
+                }}
+                title={`${option.label} ${!isAvailableForSale ? " (Out of Stock)" : ""}`}
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
     );
   });
 }
