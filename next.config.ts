@@ -13,11 +13,6 @@ const nextConfig: NextConfig = {
       path.join(process.cwd(), "node_modules", "@payloadcms", "ui", "scss"),
     ],
   },
-  experimental: {
-    serverActions: {
-      bodySizeLimit: "25mb",
-    },
-  },
   images: {
     unoptimized: true,
     dangerouslyAllowLocalIP: true,
@@ -45,6 +40,14 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "*.blob.vercel-storage.com",
+      },
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+      },
+      {
+        protocol: "https",
+        hostname: "*.supabase.in",
       },
     ],
   },
