@@ -16,6 +16,7 @@ import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
 import { ThemeSwitcher } from "../../ui/theme-switcher";
 import { Cart } from "@/components/Cart";
 import { OpenCartButton } from "@/components/Cart/OpenCart";
+import { UserNav } from "@/components/UserNav";
 
 interface NavbarLink {
   text: string;
@@ -121,6 +122,7 @@ export default function Navbar({
               <Suspense fallback={<OpenCartButton />}>
                 <Cart />
               </Suspense>
+              <UserNav />
               <Sheet>
                 <SheetTrigger asChild>
                   <Button

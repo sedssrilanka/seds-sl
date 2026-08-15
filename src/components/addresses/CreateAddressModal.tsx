@@ -55,11 +55,11 @@ export const CreateAddressModal: React.FC<Props> = ({
       <DialogTrigger asChild disabled={disabled}>
         <Button variant={"outline"}>{buttonText}</Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className="sm:max-w-xl md:max-w-2xl max-h-[90vh] flex flex-col p-6 overflow-hidden">
+        <DialogHeader className="shrink-0 pb-2">
           <DialogTitle>{modalTitle}</DialogTitle>
           <DialogDescription>
-            This address will be connected to your account.
+            Enter your shipping or billing details below.
           </DialogDescription>
         </DialogHeader>
 

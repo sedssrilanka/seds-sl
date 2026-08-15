@@ -10,7 +10,7 @@
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "OrderStatus".
  */
-export type OrderStatus = ('processing' | 'completed' | 'cancelled' | 'refunded') | null;
+export type OrderStatus = ('pending' | 'processing' | 'completed' | 'cancelled' | 'refunded') | null;
 /**
  * Supported timezones in IANA format.
  *
@@ -253,6 +253,7 @@ export interface Order {
   status?: OrderStatus;
   amount?: number | null;
   currency?: ('LKR' | 'USD') | null;
+  paymentMethod?: ('bank_transfer' | 'cod') | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -984,6 +985,7 @@ export interface Address {
   state?: string | null;
   postalCode?: string | null;
   country:
+    | 'LK'
     | 'US'
     | 'GB'
     | 'CA'
@@ -1916,6 +1918,7 @@ export interface OrdersSelect<T extends boolean = true> {
   status?: T;
   amount?: T;
   currency?: T;
+  paymentMethod?: T;
   updatedAt?: T;
   createdAt?: T;
 }

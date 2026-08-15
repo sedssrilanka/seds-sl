@@ -53,10 +53,9 @@ export function EditItemQuantityButton({
           type === "plus" ? "Increase item quantity" : "Reduce item quantity"
         }
         className={clsx(
-          "ease hover:cursor-pointer flex h-full min-w-[36px] max-w-[36px] flex-none items-center justify-center rounded-full px-2 transition-all duration-200 hover:border-neutral-800 hover:opacity-80",
+          "flex h-full w-7 items-center justify-center transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/80 rounded-md cursor-pointer",
           {
-            "cursor-not-allowed": disabled || isLoading,
-            "ml-auto": type === "minus",
+            "cursor-not-allowed opacity-40 hover:bg-transparent hover:text-muted-foreground": disabled || isLoading,
           },
         )}
         onClick={(e: React.FormEvent<HTMLButtonElement>) => {
@@ -78,9 +77,9 @@ export function EditItemQuantityButton({
         type="button"
       >
         {type === "plus" ? (
-          <PlusIcon className="h-4 w-4 dark:text-neutral-500 hover:text-blue-300" />
+          <PlusIcon className="h-3.5 w-3.5" />
         ) : (
-          <MinusIcon className="h-4 w-4 dark:text-neutral-500 hover:text-blue-300" />
+          <MinusIcon className="h-3.5 w-3.5" />
         )}
       </button>
     </form>

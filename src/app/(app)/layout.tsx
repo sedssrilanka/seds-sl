@@ -6,7 +6,6 @@ import Navbar from "@/components/sections/navbar/default";
 import Footer from "@/components/sections/footer/default";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/providers";
-import { AdminBar } from "@/components/AdminBar";
 import { LivePreviewListener } from "@/components/LivePreviewListener";
 
 const barlow = Barlow({
@@ -46,7 +45,6 @@ export default function RootLayout({
         className={`${barlow.variable} ${jetbrainsMono.variable} antialiased `}
       >
         <Providers>
-          <AdminBar />
           <LivePreviewListener />
           <ThemeProvider
             attribute="class"
