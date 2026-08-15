@@ -13,6 +13,7 @@ import { buildInitialFormState } from "./buildInitialFormState";
 import { fields } from "./fields";
 import { getClientSideURL } from "@/utilities/getURL";
 import type { DefaultDocumentIDType } from "payload";
+import posthog from "posthog-js";
 
 export type Value = unknown;
 
@@ -115,6 +116,10 @@ export const FormBlock: React.FC<
 
           setIsLoading(false);
           setHasSubmitted(true);
+          posthog.capture("form_submitted", {
+            form_id: formID,
+            confirmation_type: confirmationType,
+          });
 
           if (confirmationType === "redirect" && redirect) {
             const { url } = redirect;

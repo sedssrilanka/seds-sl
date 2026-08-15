@@ -10,6 +10,7 @@ import { createOrder } from "@/actions/createOrder";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import posthog from "posthog-js";
 
 type Props = {
   cart: Cart;
@@ -57,6 +58,12 @@ export const CheckoutForm: React.FC<Props> = ({
         });
 
         if (result.success && result.orderID) {
+          posthog.capture("order_placed", {
+            order_id: result.orderID,
+            payment_method: paymentMethod,
+            item_count: cart.items?.length ?? 0,
+            order_total: cart.subtotal ?? 0,
+          });
           toast.success("Order placed successfully!");
           router.push(`/orders/${result.orderID}`);
         } else {

@@ -11,6 +11,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useCallback, useRef } from "react";
 import { useForm } from "react-hook-form";
+import posthog from "posthog-js";
 
 type FormData = {
   email: string;
@@ -37,6 +38,7 @@ export const LoginForm: React.FC = () => {
     async (data: FormData) => {
       try {
         await login(data);
+        posthog.capture("user_logged_in");
         if (redirect?.current) router.push(redirect.current);
         else router.push("/account");
       } catch (_) {

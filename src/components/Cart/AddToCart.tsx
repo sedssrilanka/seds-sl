@@ -10,6 +10,7 @@ import type React from "react";
 import { useCallback, useMemo } from "react";
 import { toast } from "sonner";
 import { ShoppingBag, Loader2 } from "lucide-react";
+import posthog from "posthog-js";
 
 type Props = {
   product: Product;
@@ -48,6 +49,10 @@ export function AddToCart({ product }: Props) {
         product: product.id,
         variant: selectedVariant?.id ?? undefined,
       }).then(() => {
+        posthog.capture("cart_item_added", {
+          product_id: product.id,
+          variant_id: selectedVariant?.id,
+        });
         toast.success("Item added to your cart.");
       });
     },
@@ -105,7 +110,8 @@ export function AddToCart({ product }: Props) {
       className={clsx(
         "w-full py-6 text-base font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2.5 shadow-md hover:shadow-lg cursor-pointer",
         {
-          "bg-primary text-primary-foreground hover:opacity-95": !disabled && !isLoading,
+          "bg-primary text-primary-foreground hover:opacity-95":
+            !disabled && !isLoading,
           "opacity-60 cursor-not-allowed": disabled || isLoading,
         },
       )}

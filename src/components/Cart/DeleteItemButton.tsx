@@ -5,6 +5,7 @@ import { useCart } from "@payloadcms/plugin-ecommerce/client/react";
 import clsx from "clsx";
 import { XIcon } from "lucide-react";
 import type React from "react";
+import posthog from "posthog-js";
 
 export function DeleteItemButton({ item }: { item: CartItem }) {
   const { isLoading, removeItem } = useCart();
@@ -23,7 +24,13 @@ export function DeleteItemButton({ item }: { item: CartItem }) {
         disabled={!itemId || isLoading}
         onClick={(e: React.FormEvent<HTMLButtonElement>) => {
           e.preventDefault();
-          if (itemId) removeItem(itemId as unknown as number);
+          if (itemId) {
+            removeItem(itemId as unknown as number);
+            posthog.capture("cart_item_removed", {
+              cart_item_id: itemId,
+              quantity: item.quantity,
+            });
+          }
         }}
         type="button"
       >
