@@ -12,6 +12,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type React from "react";
 import { useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import posthog from "posthog-js";
 
 type FormData = {
   email: string;
@@ -67,6 +68,7 @@ export const CreateAccountForm: React.FC = () => {
 
       try {
         await login(data);
+        posthog.capture("account_created");
         clearTimeout(timer);
         if (redirect) router.push(redirect);
         else

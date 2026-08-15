@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { MinusIcon, PlusIcon } from "lucide-react";
 import type React from "react";
 import { useMemo } from "react";
+import posthog from "posthog-js";
 
 export function EditItemQuantityButton({
   type,
@@ -67,6 +68,11 @@ export function EditItemQuantityButton({
             } else {
               decrementItem(item.id as unknown as number);
             }
+            posthog.capture("cart_item_quantity_changed", {
+              cart_item_id: item.id,
+              change: type,
+              quantity: item.quantity,
+            });
           }
         }}
         type="button"

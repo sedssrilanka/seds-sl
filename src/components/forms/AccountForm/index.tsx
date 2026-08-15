@@ -13,6 +13,7 @@ import type React from "react";
 import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import posthog from "posthog-js";
 
 type FormData = {
   email: string;
@@ -57,6 +58,9 @@ export const AccountForm: React.FC = () => {
         if (response.ok) {
           const json = await response.json();
           setUser(json.doc);
+          posthog.capture("account_updated", {
+            password_changed: changePassword,
+          });
           toast.success("Successfully updated account.");
           setChangePassword(false);
           reset({
@@ -70,7 +74,7 @@ export const AccountForm: React.FC = () => {
         }
       }
     },
-    [user, setUser, reset],
+    [user, setUser, reset, changePassword],
   );
 
   // biome-ignore lint/correctness/useExhaustiveDependencies(changePassword): suppress changePassword

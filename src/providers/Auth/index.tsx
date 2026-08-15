@@ -2,6 +2,7 @@
 
 import type { User } from "@/payload-types";
 import { getClientSideURL } from "@/utilities/getURL";
+import posthog from "posthog-js";
 
 import React, {
   createContext,
@@ -43,6 +44,18 @@ type AuthContext = {
 
 const Context = createContext({} as AuthContext);
 
+const identifyUser = (user: User) => {
+  if (!Number.isInteger(user.id)) {
+    throw new Error("Authenticated user is missing a stable ID");
+  }
+
+  posthog.identify(String(user.id), {
+    email: user.email,
+    name: user.name ?? undefined,
+    roles: user.roles ?? undefined,
+  });
+};
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
@@ -72,7 +85,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (res.ok) {
         const { data, errors } = await res.json();
         if (errors) throw new Error(errors[0].message);
-        setUser(data?.loginUser?.user);
+        const user = data?.loginUser?.user as User | undefined;
+        if (!user) throw new Error("Invalid login");
+
+        setUser(user);
+        identifyUser(user);
         setStatus("loggedIn");
       } else {
         throw new Error("Invalid login");
@@ -102,7 +119,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (res.ok) {
         const { errors, user } = await res.json();
         if (errors) throw new Error(errors[0].message);
+        if (!user) throw new Error("Invalid login");
+
         setUser(user);
+        identifyUser(user);
         setStatus("loggedIn");
         return user;
       }
@@ -127,6 +147,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       );
 
       if (res.ok) {
+        posthog.reset();
         setUser(null);
         setStatus("loggedOut");
       } else {
@@ -154,6 +175,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         if (res.ok) {
           const { user: meUser } = await res.json();
           setUser(meUser || null);
+          if (meUser) identifyUser(meUser);
           setStatus(meUser ? "loggedIn" : undefined);
         } else {
           throw new Error("An error occurred while fetching your account.");
@@ -216,8 +238,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       if (res.ok) {
         const { data, errors } = await res.json();
         if (errors) throw new Error(errors[0].message);
-        setUser(data?.loginUser?.user);
-        setStatus(data?.loginUser?.user ? "loggedIn" : undefined);
+        const user = data?.loginUser?.user as User | undefined;
+        if (!user) throw new Error("Invalid login");
+
+        setUser(user);
+        identifyUser(user);
+        setStatus("loggedIn");
       } else {
         throw new Error("Invalid login");
       }

@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { deepMergeSimple } from "payload/shared";
 import { FormError } from "@/components/forms/FormError";
 import { FormItem } from "@/components/forms/FormItem";
+import posthog from "posthog-js";
 
 type AddressFormValues = {
   title?: string | null;
@@ -74,6 +75,9 @@ export const AddressForm: React.FC<Props> = ({
         } else {
           await createAddress(newData);
         }
+        posthog.capture("address_saved", {
+          action: addressID ? "updated" : "created",
+        });
       }
 
       if (callback) {
