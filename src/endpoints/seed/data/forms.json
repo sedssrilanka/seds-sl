@@ -1,0 +1,106 @@
+[
+  {
+    "id": 1,
+    "title": "Contact Form",
+    "fields": [
+      {
+        "id": "699d4aaa2716ebe29dce6bfa",
+        "name": "firstname",
+        "label": "First Name",
+        "width": 50,
+        "defaultValue": null,
+        "required": true,
+        "blockName": null,
+        "blockType": "text"
+      },
+      {
+        "id": "699d4ac82716ebe29dce6bfc",
+        "name": "lastname",
+        "label": "Last Name",
+        "width": 50,
+        "defaultValue": null,
+        "required": true,
+        "blockName": null,
+        "blockType": "text"
+      },
+      {
+        "id": "699d4ad32716ebe29dce6bfe",
+        "name": "email",
+        "label": "Email ",
+        "width": 50,
+        "required": true,
+        "blockName": null,
+        "blockType": "email"
+      },
+      {
+        "id": "699d4ae22716ebe29dce6c02",
+        "name": "phonenumber",
+        "label": "Phone Number",
+        "width": 50,
+        "defaultValue": null,
+        "required": true,
+        "blockName": null,
+        "blockType": "text"
+      },
+      {
+        "id": "699d4b602716ebe29dce6c08",
+        "name": "message",
+        "label": "Message",
+        "width": 100,
+        "defaultValue": null,
+        "required": true,
+        "blockName": null,
+        "blockType": "textarea"
+      },
+      {
+        "id": "699d4b7b2716ebe29dce6c0c",
+        "name": "terms",
+        "label": "I accept the Terms and Privacy Policy",
+        "width": 100,
+        "required": true,
+        "defaultValue": false,
+        "blockName": null,
+        "blockType": "checkbox"
+      }
+    ],
+    "submitButtonLabel": "Reach Us",
+    "confirmationType": "message",
+    "confirmationMessage": {
+      "root": {
+        "type": "root",
+        "format": "",
+        "indent": 0,
+        "version": 1,
+        "children": [
+          {
+            "type": "paragraph",
+            "format": "",
+            "indent": 0,
+            "version": 1,
+            "children": [
+              {
+                "mode": "normal",
+                "text": "Thank you! Your message has been successfully sent. We have received your inquiry and will get back to you as soon as possible.",
+                "type": "text",
+                "style": "",
+                "detail": 0,
+                "format": 0,
+                "version": 1
+              }
+            ],
+            "direction": null,
+            "textStyle": "",
+            "textFormat": 0
+          }
+        ],
+        "direction": null
+      }
+    },
+    "redirect": {
+      "url": null
+    },
+    "emails": [],
+    "updatedAt": "2026-02-24T06:56:41.813Z",
+    "createdAt": "2026-02-24T06:54:52.549Z"
+  }
+]

@@ -4,6 +4,9 @@ import { describe, it, expect, vi } from "vitest";
 // Mock the entire space-scene component to avoid Three.js issues
 vi.mock("@/components/sections/home-page/section-one/space-scene", () => ({
   default: () => <div data-testid="space-scene-mock">Space Scene Mock</div>,
+  SpaceScenePlaceholder: () => (
+    <div data-testid="space-scene-placeholder-mock">Loading...</div>
+  ),
 }));
 
 // Mock @react-three/fiber
@@ -50,10 +53,10 @@ describe("SectionOne", () => {
   it("renders the two buttons", () => {
     render(<SectionOne />);
     const section = screen.getAllByTestId("section-one")[0];
-    const projectsButton = within(section).getByRole("button", {
+    const projectsButton = within(section).getByRole("link", {
       name: /Our Projects/i,
     });
-    const joinButton = within(section).getByRole("button", {
+    const joinButton = within(section).getByRole("link", {
       name: /Join Us/i,
     });
     expect(projectsButton).toBeDefined();

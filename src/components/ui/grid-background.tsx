@@ -60,7 +60,7 @@ function GridBackground({
       "bg-indigo-400",
       "bg-green-400",
       "bg-yellow-400",
-      "bg-orange-400",
+      "bg-sky-400",
       "bg-red-400",
       "bg-pink-400",
       "bg-rose-400",

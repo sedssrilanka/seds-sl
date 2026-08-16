@@ -1,100 +1,52 @@
+import Link from "next/link";
 import {
+  ArrowRight,
   Bot,
+  Briefcase,
+  Camera,
   Laptop,
+  Microscope,
   Plane,
   Rocket,
   Telescope,
   Users,
-  ArrowRight,
+  type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
+import { getPayload } from "payload";
+import configPromise from "@payload-config";
+import type { Division } from "@/payload-types";
 
-interface Division {
-  id: number;
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}
+// Map string icon names to actual Lucide components
+const IconMap: Record<string, LucideIcon> = {
+  Bot,
+  Rocket,
+  Laptop,
+  Plane,
+  Microscope,
+  Telescope,
+  Briefcase,
+  Camera,
+  Users,
+};
 
-const divisions: Division[] = [
-  {
-    id: 1,
-    icon: <Rocket className="size-8 text-primary" />,
-    title: "Astronautics Division",
-    description:
-      "Focuses on rocketry, spacecraft design, and propulsion technology. Members work on projects like CubeSats, launch simulations, and mission planning for future space exploration.",
-  },
-  {
-    id: 2,
-    icon: <Telescope className="size-8 text-primary" />,
-    title: "Astronomy Division",
-    description:
-      "Dedicated to studying celestial bodies, astrophysics, and observational astronomy. Organizes stargazing events, telescope training, and research on deep space phenomena.",
-  },
-  {
-    id: 3,
-    icon: <Plane className="size-8 text-primary" />,
-    title: "Aeronautics Division",
-    description:
-      "Works on unmanned aerial vehicles (UAVs), drones, and aircraft design. Provides students with hands-on experience in building and testing aerial systems.",
-  },
-  {
-    id: 4,
-    icon: <Bot className="size-8 text-primary" />,
-    title: "Robotics & Rovers Division",
-    description:
-      "Develops Mars rover prototypes and robotic systems for exploration and research. Focuses on innovation in mobility, navigation, and autonomous systems.",
-  },
-  {
-    id: 5,
-    icon: <Users className="size-8 text-primary" />,
-    title: "Outreach & Education Division",
-    description:
-      "Focuses on spreading awareness of space science through workshops, school programs, and public talks. Helps young students get involved in STEM fields.",
-  },
-  {
-    id: 6,
-    icon: <Laptop className="size-8 text-primary" />,
-    title: "Development Division",
-    description:
-      "Engages in experimental projects, scientific studies, and technology development to support local and global space initiatives. Provides a platform for interdisciplinary student research.",
-  },
-];
+const DivisionsSection = async () => {
+  let divisions: Division[] = [];
+  try {
+    const payload = await getPayload({ config: configPromise });
 
-const DivisionCard = ({ division }: { division: Division }) => (
-  <Card className="rounded-none border p-6 shadow-sm dark:shadow-none">
-    <div className="flex flex-col h-full">
-      <div className="flex items-start gap-4 mb-4">
-        <div className="flex-shrink-0 p-3 bg-primary/10 border border-primary/20">
-          {division.icon}
-        </div>
-        <div className="flex-1">
-          <CardTitle className="text-xl font-bold mb-3">
-            {division.title}
-          </CardTitle>
-        </div>
-      </div>
+    const { docs } = await payload.find({
+      collection: "divisions",
+      depth: 1,
+      limit: 3, // We'll show 5 + the "Discover All" card to make a nice 6-grid
+    });
+    divisions = docs;
+  } catch (error) {
+    console.error("Error fetching divisions:", error);
+  }
 
-      <CardDescription className="text-sm leading-relaxed mb-6 flex-1">
-        {division.description}
-      </CardDescription>
-
-      <div className="flex items-center justify-between">
-        <Button
-          variant="outline"
-          size="sm"
-          className="rounded-sm border-primary/20 hover:bg-primary/10"
-        >
-          Learn More
-        </Button>
-      </div>
-    </div>
-  </Card>
-);
-
-const DivisionsSection = () => {
   return (
     <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
       <div className="section-background bg-background dark:bg-black"></div>
@@ -115,22 +67,62 @@ const DivisionsSection = () => {
 
           <div className="mt-12">
             <div className="grid grid-cols-1 md:grid-cols-2 border-border/60 dark:border-border/50">
-              {divisions.slice(0, 3).map((division) => (
-                <DivisionCard key={division.id} division={division} />
-              ))}
+              {divisions.map((division) => {
+                const IconComponent =
+                  IconMap[division.icon as keyof typeof IconMap] || Rocket;
+
+                return (
+                  <Card
+                    key={division.id}
+                    className="rounded-none border p-6 shadow-sm dark:shadow-none"
+                  >
+                    <div className="flex flex-col h-full">
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="shrink-0 p-3 bg-primary/10 border border-primary/20">
+                          <IconComponent className="size-8 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <CardTitle className="text-xl font-bold mb-3">
+                            {division.name}
+                          </CardTitle>
+                        </div>
+                      </div>
+
+                      <CardDescription className="text-sm leading-relaxed mb-6 flex-1">
+                        {division.description}
+                      </CardDescription>
+
+                      <div className="flex items-center justify-between mt-auto">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="rounded-sm border-primary/20 hover:bg-primary/10"
+                          asChild
+                        >
+                          <Link href={`/divisions/${division.slug}`}>
+                            Learn More
+                          </Link>
+                        </Button>
+                      </div>
+                    </div>
+                  </Card>
+                );
+              })}
 
               {/* View All Divisions Card */}
-              <Card className="rounded-none light-mode-card p-8 cursor-pointer transition-colors duration-300 hover:border-primary/30 dark:hover:border-primary/20 shadow-sm dark:shadow-none">
-                <div className="flex flex-col items-end justify-start h-full text-right">
-                  <h3 className="text-xl font-bold mb-4 text-foreground">
-                    Discover All Divisions
-                  </h3>
-                  <div className="flex items-right gap-2 text-primary">
-                    <span className="font-medium">View All Divisions</span>
-                    <ArrowRight className="size-5" />
+              <Link href="/divisions" className="block h-full group">
+                <Card className="rounded-none h-full light-mode-card p-12 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none min-h-[250px] flex items-center justify-center">
+                  <div className="flex flex-col items-center justify-center h-full text-center">
+                    <h3 className="text-2xl font-bold mb-4 text-foreground">
+                      Discover All Divisions
+                    </h3>
+                    <div className="flex items-center gap-2 text-primary">
+                      <span className="font-medium text-lg">View All</span>
+                      <ArrowRight className="size-6 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </div>
           </div>
         </div>

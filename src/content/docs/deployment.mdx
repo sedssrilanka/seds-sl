@@ -1,0 +1,68 @@
+---
+title: Deployment Guide
+description: How to deploy the SEDS Sri Lanka Next.js & Payload CMS application to production.
+---
+
+# Deployment Guide
+
+This guide covers the necessary steps to deploy the **SEDS Sri Lanka** platform. Because the site uses **Next.js** and **Payload CMS** together, your hosting provider needs to support Node.js server environments and PostgreSQL database connections.
+
+## Prerequisites
+
+Before deploying, ensure you have the following ready:
+
+1. **PostgreSQL Database:** A running PostgreSQL instance (e.g., Supabase, Neon, AWS RDS).
+2. **S3 Storage (Optional but Recommended):** An S3 bucker (e.g., AWS S3, Cloudflare R2, MinIO) for media storage.
+3. **Resend Account:** An active Resend API key for sending contact forms and order emails.
+4. **Stripe Account:** (If the shop is enabled) for payment processing.
+
+## 1. Environment Variables
+
+You must configure the following environment variables in your hosting provider's dashboard:
+
+```env
+# Database
+DATABASE_URI=postgresql://user:password@host:port/database
+
+# Payload CMS
+PAYLOAD_SECRET=your_super_secret_string
+NEXT_PUBLIC_SERVER_URL=https://your-production-url.com
+
+# Email (Resend)
+RESEND_API_KEY=re_your_api_key
+CONTACT_EMAIL=contact@seds-sl.org
+FROM_EMAIL=noreply@seds-sl.org
+
+# Optional: S3 Storage
+S3_ACCESS_KEY_ID=...
+S3_SECRET_ACCESS_KEY=...
+S3_BUCKET=...
+S3_REGION=...
+S3_ENDPOINT=...
+```
+
+## 2. Deploying to Vercel (Recommended)
+
+Vercel is the easiest way to deploy Next.js apps.
+
+1. Push your code to a GitHub/GitLab repository.
+2. Go to [Vercel](https://vercel.com) and click **"Add New Project"**.
+3. Import your repository.
+4. Open the **"Environment Variables"** tab and paste the `.env` values listed above.
+5. In the **"Build and Output Settings"**, set:
+   - Build Command: `bun run build`
+   - Install Command: `bun install`
+6. Click **Deploy**.
+
+> **Note on Free Tiers:** Payload CMS handles image processing and database interactions heavily. Ensure your serverless function execution timeout limits (especially on Vercel's Hobby tier) don't abort CMS uploads.
+
+## 3. Deploying using Docker
+
+If you prefer self-hosting on a VPS (like DigitalOcean, AWS EC2, or Hetzner):
+
+1. Create a `Dockerfile`.
+2. Map your `.env` variables via Docker Compose or your orchestrator.
+3. Build the Next.js standalone output.
+4. Expose port `3000`.
+
+_Be sure to run `bun run payload migrate` if you have database migrations configured._

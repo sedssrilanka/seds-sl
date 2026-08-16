@@ -1,0 +1,35 @@
+---
+title: Managing the Shop
+description: Creating products and handling orders in the built-in SEDS Sri Lanka e-commerce environment.
+---
+
+# Administering the E-Commerce Shop
+
+The SEDS platform features a completely integrated Next.js e-commerce storefront, with inventory and orders managed by Payload CMS and user checkout integrated directly.
+
+![Shop Admin Panel](https://placehold.co/800x400/0f172a/ffffff?text=Payload+CMS:+Shop+and+Orders)
+
+## 1. Creating Products
+
+1. Navigate to `/admin` and click **Products**.
+2. Click **Create New**.
+
+### Pricing
+
+The store supports the local currency (LKR) or USD. Make sure to input values appropriately to ensure correct checkout processing. You can set the price in cents (so `250000` is `$2,500.00` based on the configuration logic) or base integer amounts.
+
+### Inventory Logic
+
+Because products are physical merchandise, check the **Stock Requirements** section to enforce inventory tracking. Setting `"Track Inventory"` on a product ensures people cannot add more items to their cart than are currently available in the database.
+
+## 2. Managing Orders
+
+1. Navigate to the **Orders** section on the left sidebar.
+2. Orders generate automatically through the public storefront checkout.
+
+- Each order contains relational references to the purchasing `User`, their selected `Products`, the parsed standard price, and the total cost.
+- As an admin, you can view the specific **Status** (e.g., `Pending`, `Shipped`, `Delivered`) to update physical order processing flows over time.
+
+## 3. Categories
+
+Products can be assigned multiple **Categories** (e.g., "Clothing", "Merchandise", "Hardware"). By filling out Categories under the Collections panel, you improve the filter-ability of the frontend Shop interface, allowing users to drill down by product type.
