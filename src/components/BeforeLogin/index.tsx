@@ -2,16 +2,15 @@ import type React from "react";
 
 export const BeforeLogin: React.FC = () => {
   return (
-    <div>
-      <p>
-        <b>Welcome to your dashboard!</b>
-        {
-          " This is where site admins will log in to manage your store. Customers will need to "
-        }
-        <a href={`${process.env.PAYLOAD_PUBLIC_SERVER_URL}/login`}>
-          log in to the site instead
-        </a>
-        {" to access their user account, order history, and more."}
+    <div style={{ marginBottom: "1.5rem" }}>
+      <p style={{ margin: 0, fontSize: "0.9rem", color: "#a1a1aa" }}>
+        Welcome to the <strong style={{ color: "#ffffff" }}>SEDS Sri Lanka Administration Portal</strong>.
+      </p>
+      <p style={{ marginTop: "0.4rem", fontSize: "0.825rem", color: "#71717a" }}>
+        Authorized administrator access only. To access your customer account or store orders, please visit the{" "}
+        <a href="/" style={{ color: "#3b82f6", textDecoration: "underline" }}>
+          main website
+        </a>.
       </p>
     </div>
   );

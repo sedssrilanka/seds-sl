@@ -9,6 +9,8 @@ import { draftMode } from "next/headers";
 
 import { notFound } from "next/navigation";
 
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
   try {
     const payload = await getPayload({ config: configPromise });

@@ -13,17 +13,44 @@ const collectionLabels = {
     plural: "Pages",
     singular: "Page",
   },
-  posts: {
-    plural: "Posts",
-    singular: "Post",
-  },
   projects: {
     plural: "Projects",
     singular: "Project",
   },
+  chapters: {
+    plural: "Chapters",
+    singular: "Chapter",
+  },
+  divisions: {
+    plural: "Divisions",
+    singular: "Division",
+  },
+  orders: {
+    plural: "Orders",
+    singular: "Order",
+  },
+  products: {
+    plural: "Products",
+    singular: "Product",
+  },
+  users: {
+    plural: "Users",
+    singular: "User",
+  },
+  categories: {
+    plural: "Categories",
+    singular: "Category",
+  },
 };
 
-const Title: React.FC = () => <span>Dashboard</span>;
+const Title: React.FC = () => (
+  <div className="flex items-center gap-2 font-semibold text-xs text-white uppercase tracking-wider">
+    <span className="bg-primary/20 text-primary border border-primary/30 px-2 py-0.5 rounded text-[10px] font-bold">
+      SEDS
+    </span>
+    <span>Admin Bar</span>
+  </div>
+);
 
 export const AdminBar: React.FC<{
   adminBarProps?: PayloadAdminBarProps;

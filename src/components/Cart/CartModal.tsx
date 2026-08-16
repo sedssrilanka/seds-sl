@@ -10,7 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useCart } from "@payloadcms/plugin-ecommerce/client/react";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingBag, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -48,163 +48,188 @@ export function CartModal() {
         <OpenCartButton quantity={totalQuantity} />
       </SheetTrigger>
 
-      <SheetContent className="flex flex-col">
-        <SheetHeader>
-          <SheetTitle>My Cart</SheetTitle>
-
-          <SheetDescription>
-            Manage your cart here, add items to view the total.
+      <SheetContent side="right" className="w-full sm:max-w-md p-6 flex flex-col h-full bg-background text-foreground">
+        <SheetHeader className="pb-4 border-b border-border text-left shrink-0">
+          <div className="flex items-center justify-between">
+            <SheetTitle className="text-xl font-bold flex items-center gap-2">
+              <ShoppingBag className="size-5 text-muted-foreground" />
+              <span>My Cart</span>
+            </SheetTitle>
+            {totalQuantity !== undefined && (
+              <span className="text-xs font-semibold bg-muted text-foreground px-2.5 py-1 rounded-full">
+                {totalQuantity} {totalQuantity === 1 ? "item" : "items"}
+              </span>
+            )}
+          </div>
+          <SheetDescription className="text-xs text-muted-foreground mt-1">
+            Review items in your cart before proceeding to checkout.
           </SheetDescription>
         </SheetHeader>
 
-        {!cart || cart?.items?.length === 0 ? (
-          <div className="text-center flex flex-col items-center gap-2">
-            <ShoppingCart className="h-16" />
-            <p className="text-center text-2xl font-bold">
-              Your cart is empty.
-            </p>
+        {!cart || !cart.items || cart.items.length === 0 ? (
+          <div className="flex-1 flex flex-col items-center justify-center text-center p-6 gap-4">
+            <div className="p-4 rounded-full bg-muted text-muted-foreground">
+              <ShoppingBag className="size-10" />
+            </div>
+            <div className="space-y-1">
+              <h3 className="text-lg font-semibold text-foreground">Your cart is empty</h3>
+              <p className="text-sm text-muted-foreground">
+                Add products to your cart to start shopping.
+              </p>
+            </div>
+            <Button asChild className="mt-2" onClick={() => setIsOpen(false)}>
+              <Link href="/search">Browse Products</Link>
+            </Button>
           </div>
         ) : (
-          <div className="grow flex px-4">
-            <div className="flex flex-col justify-between w-full">
-              <ul className="grow overflow-auto py-4">
-                {cart?.items?.map((item, i) => {
-                  const product = item.product;
-                  const variant = item.variant;
+          <div className="flex-1 flex flex-col justify-between overflow-hidden pt-4 gap-4">
+            {/* Scrollable item list */}
+            <ul className="flex-1 overflow-y-auto space-y-3 pr-1">
+              {cart.items.map((item, i) => {
+                const product = item.product;
+                const variant = item.variant;
 
-                  if (
-                    typeof product !== "object" ||
-                    !item ||
-                    !product ||
-                    !product.slug
-                  )
-                    return <React.Fragment key={i} />;
+                if (
+                  typeof product !== "object" ||
+                  !item ||
+                  !product ||
+                  !product.slug
+                )
+                  return <React.Fragment key={i} />;
 
-                  const metaImage =
-                    product.meta?.image &&
-                    typeof product.meta?.image === "object"
-                      ? product.meta.image
-                      : undefined;
+                const metaImage =
+                  product.meta?.image &&
+                  typeof product.meta?.image === "object"
+                    ? product.meta.image
+                    : undefined;
 
-                  const firstGalleryImage =
-                    typeof product.gallery?.[0]?.image === "object"
-                      ? product.gallery?.[0]?.image
-                      : undefined;
+                const firstGalleryImage =
+                  typeof product.gallery?.[0]?.image === "object"
+                    ? product.gallery?.[0]?.image
+                    : undefined;
 
-                  let image = firstGalleryImage || metaImage;
-                  let price = product.priceInLKR;
+                let image = firstGalleryImage || metaImage;
+                let price = product.priceInLKR;
 
-                  const isVariant =
-                    Boolean(variant) && typeof variant === "object";
+                const isVariant =
+                  Boolean(variant) && typeof variant === "object";
 
-                  if (isVariant) {
-                    price = variant?.priceInLKR;
+                if (isVariant) {
+                  price = variant?.priceInLKR;
 
-                    const imageVariant = product.gallery?.find((item) => {
-                      if (!item.variantOption) return false;
-                      const variantOptionID =
-                        typeof item.variantOption === "object"
-                          ? item.variantOption.id
-                          : item.variantOption;
+                  const imageVariant = product.gallery?.find((gItem) => {
+                    if (!gItem.variantOption) return false;
+                    const variantOptionID =
+                      typeof gItem.variantOption === "object"
+                        ? gItem.variantOption.id
+                        : gItem.variantOption;
 
-                      const hasMatch = variant?.options?.some((option) => {
-                        if (typeof option === "object")
-                          return option.id === variantOptionID;
-                        else return option === variantOptionID;
-                      });
-
-                      return hasMatch;
+                    const hasMatch = variant?.options?.some((option) => {
+                      if (typeof option === "object")
+                        return option.id === variantOptionID;
+                      else return option === variantOptionID;
                     });
 
-                    if (
-                      imageVariant &&
-                      typeof imageVariant.image === "object"
-                    ) {
-                      image = imageVariant.image || undefined;
-                    }
-                  }
+                    return hasMatch;
+                  });
 
-                  return (
-                    <li className="flex w-full flex-col" key={i}>
-                      <div className="relative flex w-full flex-row justify-between px-1 py-4">
-                        <div className="absolute z-40 -mt-2 ml-[55px]">
+                  if (
+                    imageVariant &&
+                    typeof imageVariant.image === "object"
+                  ) {
+                    image = imageVariant.image || undefined;
+                  }
+                }
+
+                return (
+                  <li key={i} className="rounded-xl border border-border bg-card p-3 shadow-2xs transition-all hover:border-border/80">
+                    <div className="flex items-start gap-3">
+                      <Link
+                        className="relative h-16 w-16 rounded-lg overflow-hidden border border-border bg-muted shrink-0 block"
+                        href={`/products/${(item.product as Product)?.slug}`}
+                        onClick={() => setIsOpen(false)}
+                      >
+                        {image?.url && (
+                          <Image
+                            alt={image?.alt || product?.title || ""}
+                            className="h-full w-full object-cover"
+                            height={64}
+                            src={image.url}
+                            width={64}
+                          />
+                        )}
+                      </Link>
+
+                      <div className="flex-1 min-w-0 space-y-1">
+                        <div className="flex justify-between items-start gap-2">
+                          <Link
+                            href={`/products/${(item.product as Product)?.slug}`}
+                            onClick={() => setIsOpen(false)}
+                            className="font-medium text-sm text-foreground hover:underline line-clamp-1"
+                          >
+                            {product?.title}
+                          </Link>
                           <DeleteItemButton item={item} />
                         </div>
-                        <Link
-                          className="z-30 flex flex-row space-x-4"
-                          href={`/products/${(item.product as Product)?.slug}`}
-                        >
-                          <div className="relative h-16 w-16 cursor-pointer overflow-hidden rounded-md border border-neutral-300 bg-neutral-300 dark:border-neutral-700 dark:bg-neutral-900 dark:hover:bg-neutral-800">
-                            {image?.url && (
-                              <Image
-                                alt={image?.alt || product?.title || ""}
-                                className="h-full w-full object-cover"
-                                height={94}
-                                src={image.url}
-                                width={94}
-                              />
-                            )}
-                          </div>
 
-                          <div className="flex flex-1 flex-col text-base">
-                            <span className="leading-tight">
-                              {product?.title}
-                            </span>
-                            {isVariant && variant ? (
-                              <p className="text-sm text-neutral-500 dark:text-neutral-400 capitalize">
-                                {variant.options
-                                  ?.map((option) => {
-                                    if (typeof option === "object")
-                                      return option.label;
-                                    return null;
-                                  })
-                                  .join(", ")}
-                              </p>
-                            ) : null}
-                          </div>
-                        </Link>
-                        <div className="flex h-16 flex-col justify-between">
+                        {isVariant && variant ? (
+                          <p className="text-xs text-muted-foreground capitalize">
+                            {variant.options
+                              ?.map((option) => {
+                                if (typeof option === "object")
+                                  return option.label;
+                                return null;
+                              })
+                              .filter(Boolean)
+                              .join(", ")}
+                          </p>
+                        ) : null}
+
+                        <div className="flex items-center justify-between pt-1">
                           {typeof price === "number" && (
                             <Price
                               amount={price}
-                              className="flex justify-end space-y-2 text-right text-sm"
+                              className="text-sm font-semibold text-foreground"
                             />
                           )}
-                          <div className="ml-auto flex h-9 flex-row items-center rounded-lg border">
+
+                          <div className="flex items-center h-8 rounded-md border border-border bg-background">
                             <EditItemQuantityButton item={item} type="minus" />
-                            <p className="w-6 text-center">
-                              <span className="w-full text-sm">
-                                {item.quantity}
-                              </span>
-                            </p>
+                            <span className="w-6 text-center text-xs font-medium text-foreground">
+                              {item.quantity}
+                            </span>
                             <EditItemQuantityButton item={item} type="plus" />
                           </div>
                         </div>
                       </div>
-                    </li>
-                  );
-                })}
-              </ul>
-
-              <div className="px-4">
-                <div className="py-4 text-sm text-neutral-500 dark:text-neutral-400">
-                  {typeof cart?.subtotal === "number" && (
-                    <div className="mb-3 flex items-center justify-between border-b border-neutral-200 pb-1 pt-1 dark:border-neutral-700">
-                      <p>Total</p>
-                      <Price
-                        amount={cart?.subtotal}
-                        className="text-right text-base text-black dark:text-white"
-                      />
                     </div>
-                  )}
+                  </li>
+                );
+              })}
+            </ul>
 
-                  <Button asChild>
-                    <Link className="w-full" href="/checkout">
-                      Proceed to Checkout
-                    </Link>
-                  </Button>
+            {/* Bottom sticky summary */}
+            <div className="pt-4 border-t border-border space-y-3 shrink-0 bg-background">
+              {typeof cart?.subtotal === "number" && (
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground font-medium">Subtotal</span>
+                  <Price
+                    amount={cart.subtotal}
+                    className="text-lg font-bold text-foreground"
+                  />
                 </div>
-              </div>
+              )}
+
+              <p className="text-xs text-muted-foreground">
+                Shipping and taxes calculated at checkout.
+              </p>
+
+              <Button asChild size="lg" className="w-full gap-2 text-base h-12 font-medium">
+                <Link href="/checkout" onClick={() => setIsOpen(false)}>
+                  <span>Proceed to Checkout</span>
+                  <ArrowRight className="size-4" />
+                </Link>
+              </Button>
             </div>
           </div>
         )}

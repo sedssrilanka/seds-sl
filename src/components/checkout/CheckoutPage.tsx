@@ -22,6 +22,8 @@ import { FormItem } from "@/components/forms/FormItem";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { CheckoutForm } from "@/components/forms/CheckoutForm";
 
+import { UserCheck, MapPin, CreditCard, ShoppingBag, ArrowRight } from "lucide-react";
+
 export const CheckoutPage: React.FC = () => {
   const { user } = useAuth();
   const { cart } = useCart();
@@ -73,285 +75,357 @@ export const CheckoutPage: React.FC = () => {
 
   if (cartIsEmpty && isProcessingPayment) {
     return (
-      <div className="py-12 w-full items-center justify-center">
-        <div className="prose dark:prose-invert text-center max-w-none self-center mb-8">
-          <p>Processing your order...</p>
-        </div>
+      <div className="py-20 w-full flex flex-col items-center justify-center gap-4 min-h-[50vh]">
         <LoadingSpinner />
+        <p className="text-muted-foreground text-lg animate-pulse">
+          Processing your order securely...
+        </p>
       </div>
     );
   }
 
   if (cartIsEmpty) {
     return (
-      <div className="prose dark:prose-invert py-12 w-full items-center">
-        <p>Your cart is empty.</p>
-        <Link href="/search">Continue shopping?</Link>
+      <div className="max-w-md mx-auto py-20 px-4 text-center flex flex-col items-center gap-4">
+        <div className="p-4 rounded-full bg-muted text-muted-foreground">
+          <ShoppingBag className="size-10" />
+        </div>
+        <div className="space-y-1">
+          <h2 className="text-2xl font-bold text-foreground">Your cart is empty</h2>
+          <p className="text-muted-foreground text-sm">
+            Looks like you haven't added any items to your cart yet.
+          </p>
+        </div>
+        <Button asChild className="mt-2 gap-2">
+          <Link href="/search">
+            <span>Explore Products</span>
+            <ArrowRight className="size-4" />
+          </Link>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="flex flex-col items-stretch justify-stretch my-8 md:flex-row grow gap-10 md:gap-6 lg:gap-8">
-      <div className="basis-full lg:basis-2/3 flex flex-col gap-8 justify-stretch">
-        <h2 className="font-medium text-3xl">Contact</h2>
-        {!user && (
-          <div className=" bg-accent dark:bg-black rounded-lg p-4 w-full flex items-center">
-            <div className="prose dark:prose-invert">
-              <Button
-                asChild
-                className="no-underline text-inherit"
-                variant="outline"
-              >
-                <Link href="/login">Log in</Link>
-              </Button>
-              <p className="mt-0">
-                <span className="mx-2">or</span>
-                <Link href="/create-account">create an account</Link>
-              </p>
-            </div>
-          </div>
-        )}
-        {user ? (
-          <div className="bg-accent dark:bg-card rounded-lg p-4 ">
-            <div>
-              <p>{user.email}</p>{" "}
-              <p>
-                Not you?{" "}
-                <Link className="underline" href="/logout">
-                  Log out
-                </Link>
-              </p>
-            </div>
-          </div>
-        ) : (
-          <div className="bg-accent dark:bg-black rounded-lg p-4 ">
-            <div>
-              <p className="mb-4">Enter your email to checkout as a guest.</p>
-
-              <FormItem className="mb-6">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  disabled={!emailEditable}
-                  id="email"
-                  name="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  type="email"
-                />
-              </FormItem>
-
-              <Button
-                disabled={!email || !emailEditable}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setEmailEditable(false);
-                }}
-                variant="default"
-              >
-                Continue as guest
-              </Button>
-            </div>
-          </div>
-        )}
-
-        <h2 className="font-medium text-3xl">Address</h2>
-
-        {billingAddress ? (
-          <div>
-            <AddressItem
-              actions={
-                <Button
-                  variant={"outline"}
-                  disabled={isProcessingPayment}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setBillingAddress(undefined);
-                  }}
-                >
-                  Remove
-                </Button>
-              }
-              address={billingAddress}
-            />
-          </div>
-        ) : user ? (
-          <CheckoutAddresses
-            heading="Billing address"
-            setAddress={setBillingAddress}
-          />
-        ) : (
-          <CreateAddressModal
-            disabled={!email || Boolean(emailEditable)}
-            callback={(address) => {
-              setBillingAddress(address);
-            }}
-            skipSubmission={true}
-          />
-        )}
-
-        <div className="flex gap-4 items-center">
-          <Checkbox
-            id="shippingTheSameAsBilling"
-            checked={billingAddressSameAsShipping}
-            disabled={
-              (!user && (!email || Boolean(emailEditable))) ||
-              isProcessingPayment
-            }
-            onCheckedChange={(state) => {
-              setBillingAddressSameAsShipping(state as boolean);
-            }}
-          />
-          <Label htmlFor="shippingTheSameAsBilling">
-            Shipping is the same as billing
-          </Label>
-        </div>
-
-        {!billingAddressSameAsShipping && (
-          <>
-            {shippingAddress ? (
-              <div>
-                <AddressItem
-                  actions={
-                    <Button
-                      variant={"outline"}
-                      disabled={isProcessingPayment}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setShippingAddress(undefined);
-                      }}
-                    >
-                      Remove
-                    </Button>
-                  }
-                  address={shippingAddress}
-                />
-              </div>
-            ) : user ? (
-              <CheckoutAddresses
-                heading="Shipping address"
-                description="Please select a shipping address."
-                setAddress={setShippingAddress}
-              />
-            ) : (
-              <CreateAddressModal
-                callback={(address) => {
-                  setShippingAddress(address);
-                }}
-                disabled={!email || Boolean(emailEditable)}
-                skipSubmission={true}
-              />
-            )}
-          </>
-        )}
-
-        {canGoToPayment && (
-          <CheckoutForm
-            cart={cart}
-            user={user}
-            customerEmail={email}
-            billingAddress={billingAddress}
-            shippingAddress={shippingAddress}
-            billingAddressSameAsShipping={billingAddressSameAsShipping}
-            setProcessingPayment={setProcessingPayment}
-          />
-        )}
+    <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
+      <div className="mb-8 space-y-1">
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">Checkout</h1>
+        <p className="text-muted-foreground text-sm">
+          Complete your contact, shipping, and payment information below.
+        </p>
       </div>
 
-      {!cartIsEmpty && (
-        <div className="basis-full lg:basis-1/3 lg:pl-8 p-8 border-none bg-primary/5 flex flex-col gap-8 rounded-lg">
-          <h2 className="text-3xl font-medium">Your cart</h2>
-          {cart?.items?.map((item, index) => {
-            if (typeof item.product === "object" && item.product) {
-              const {
-                product,
-                product: { id, meta, title, gallery },
-                quantity,
-                variant,
-              } = item;
+      <div className="flex flex-col lg:flex-row gap-8 items-start">
+        {/* Main Form Area */}
+        <div className="flex-1 w-full flex flex-col gap-6">
+          {/* Step 1: Contact Information */}
+          <div className="rounded-xl border border-border bg-card p-6 text-card-foreground shadow-xs space-y-4">
+            <div className="flex items-center gap-3 border-b border-border pb-4">
+              <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                <UserCheck className="size-5" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">1. Contact Information</h2>
+                <p className="text-xs text-muted-foreground">
+                  Provide contact details for order updates and receipt.
+                </p>
+              </div>
+            </div>
 
-              if (!quantity) return null;
-
-              let image = gallery?.[0]?.image || meta?.image;
-              let price = product?.priceInLKR;
-
-              const isVariant = Boolean(variant) && typeof variant === "object";
-
-              if (isVariant) {
-                price = variant?.priceInLKR;
-
-                const imageVariant = product.gallery?.find((item) => {
-                  if (!item.variantOption) return false;
-                  const variantOptionID =
-                    typeof item.variantOption === "object"
-                      ? item.variantOption.id
-                      : item.variantOption;
-
-                  const hasMatch = variant?.options?.some((option) => {
-                    if (typeof option === "object")
-                      return option.id === variantOptionID;
-                    else return option === variantOptionID;
-                  });
-
-                  return hasMatch;
-                });
-
-                if (imageVariant && typeof imageVariant.image !== "string") {
-                  image = imageVariant.image;
-                }
-              }
-
-              return (
-                <div className="flex items-start gap-4" key={index}>
-                  <div className="flex items-stretch justify-stretch h-20 w-20 p-2 rounded-lg border">
-                    <div className="relative w-full h-full">
-                      {image && typeof image !== "string" && (
-                        <Media
-                          className=""
-                          fill
-                          imgClassName="rounded-lg"
-                          resource={image}
-                        />
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex grow justify-between items-center">
-                    <div className="flex flex-col gap-1">
-                      <p className="font-medium text-lg">{title}</p>
-                      {variant && typeof variant === "object" && (
-                        <p className="text-sm font-mono text-primary/50 tracking-[0.1em]">
-                          {variant.options
-                            ?.map((option) => {
-                              if (typeof option === "object")
-                                return option.label;
-                              return null;
-                            })
-                            .join(", ")}
-                        </p>
-                      )}
-                      <div>
-                        {"x"}
-                        {quantity}
-                      </div>
-                    </div>
-
-                    {typeof price === "number" && <Price amount={price} />}
+            {user ? (
+              <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50 border border-border">
+                <div className="space-y-0.5">
+                  <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+                    Logged in as
+                  </p>
+                  <p className="text-sm font-medium text-foreground">{user.email}</p>
+                </div>
+                <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                  <Link href="/logout">Log out</Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-4 pt-1">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-lg bg-muted/40 border border-border">
+                  <span className="text-sm text-muted-foreground">Already have an account?</span>
+                  <div className="flex gap-2">
+                    <Button asChild variant="outline" size="sm">
+                      <Link href="/login">Log in</Link>
+                    </Button>
+                    <Button asChild variant="ghost" size="sm">
+                      <Link href="/create-account">Create Account</Link>
+                    </Button>
                   </div>
                 </div>
-              );
-            }
-            return null;
-          })}
-          <hr />
-          <div className="flex justify-between items-center gap-2">
-            <span className="uppercase">Total</span>{" "}
-            <Price
-              className="text-3xl font-medium"
-              amount={cart.subtotal || 0}
-            />
+
+                <div className="space-y-3">
+                  <FormItem>
+                    <Label htmlFor="email">Email Address</Label>
+                    <Input
+                      disabled={!emailEditable}
+                      id="email"
+                      name="email"
+                      placeholder="name@example.com"
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      type="email"
+                      className="h-11"
+                    />
+                  </FormItem>
+
+                  {emailEditable && (
+                    <Button
+                      disabled={!email}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setEmailEditable(false);
+                      }}
+                      variant="secondary"
+                      size="sm"
+                    >
+                      Continue as guest
+                    </Button>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Step 2: Address Section */}
+          <div className="rounded-xl border border-border bg-card p-6 text-card-foreground shadow-xs space-y-4">
+            <div className="flex items-center gap-3 border-b border-border pb-4">
+              <div className="p-2 rounded-lg bg-primary/10 text-primary">
+                <MapPin className="size-5" />
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold text-foreground">2. Address Details</h2>
+                <p className="text-xs text-muted-foreground">
+                  Provide billing and shipping destination addresses.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-6">
+              <div>
+                <h3 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">
+                  Billing Address
+                </h3>
+                {billingAddress ? (
+                  <AddressItem
+                    actions={
+                      <Button
+                        variant={"outline"}
+                        size="sm"
+                        disabled={isProcessingPayment}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setBillingAddress(undefined);
+                        }}
+                      >
+                        Change
+                      </Button>
+                    }
+                    address={billingAddress}
+                  />
+                ) : user ? (
+                  <CheckoutAddresses
+                    heading="Billing Address"
+                    setAddress={setBillingAddress}
+                  />
+                ) : (
+                  <CreateAddressModal
+                    disabled={!email || Boolean(emailEditable)}
+                    buttonText="Add Billing Address"
+                    callback={(address) => {
+                      setBillingAddress(address);
+                    }}
+                    skipSubmission={true}
+                  />
+                )}
+              </div>
+
+              <div className="flex items-center gap-3 pt-2">
+                <Checkbox
+                  id="shippingTheSameAsBilling"
+                  checked={billingAddressSameAsShipping}
+                  disabled={
+                    (!user && (!email || Boolean(emailEditable))) ||
+                    isProcessingPayment
+                  }
+                  onCheckedChange={(state) => {
+                    setBillingAddressSameAsShipping(state as boolean);
+                  }}
+                />
+                <Label htmlFor="shippingTheSameAsBilling" className="cursor-pointer text-sm font-medium">
+                  Shipping address is the same as billing address
+                </Label>
+              </div>
+
+              {!billingAddressSameAsShipping && (
+                <div className="pt-2 border-t border-border">
+                  <h3 className="text-sm font-semibold text-foreground mb-3 uppercase tracking-wider">
+                    Shipping Address
+                  </h3>
+                  {shippingAddress ? (
+                    <AddressItem
+                      actions={
+                        <Button
+                          variant={"outline"}
+                          size="sm"
+                          disabled={isProcessingPayment}
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setShippingAddress(undefined);
+                          }}
+                        >
+                          Change
+                        </Button>
+                      }
+                      address={shippingAddress}
+                    />
+                  ) : user ? (
+                    <CheckoutAddresses
+                      heading="Shipping Address"
+                      description="Select shipping destination."
+                      setAddress={setShippingAddress}
+                    />
+                  ) : (
+                    <CreateAddressModal
+                      buttonText="Add Shipping Address"
+                      callback={(address) => {
+                        setShippingAddress(address);
+                      }}
+                      disabled={!email || Boolean(emailEditable)}
+                      skipSubmission={true}
+                    />
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Step 3: Payment Section */}
+          {canGoToPayment && (
+            <div className="rounded-xl border border-border bg-card p-6 text-card-foreground shadow-xs">
+              <CheckoutForm
+                cart={cart}
+                user={user}
+                customerEmail={email}
+                billingAddress={billingAddress}
+                shippingAddress={shippingAddress}
+                billingAddressSameAsShipping={billingAddressSameAsShipping}
+                setProcessingPayment={setProcessingPayment}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Right Sidebar: Order Summary */}
+        <div className="w-full lg:w-[380px] shrink-0 sticky top-24">
+          <div className="rounded-xl border border-border bg-card p-6 text-card-foreground shadow-xs space-y-6">
+            <div className="flex items-center justify-between border-b border-border pb-4">
+              <h2 className="text-lg font-semibold text-foreground flex items-center gap-2">
+                <CreditCard className="size-5 text-muted-foreground" />
+                <span>Order Summary</span>
+              </h2>
+              <span className="text-xs text-muted-foreground font-mono bg-muted px-2 py-0.5 rounded-full">
+                {cart?.items?.length || 0} {cart?.items?.length === 1 ? "item" : "items"}
+              </span>
+            </div>
+
+            <div className="space-y-4 max-h-[340px] overflow-y-auto pr-1">
+              {cart?.items?.map((item, index) => {
+                if (typeof item.product === "object" && item.product) {
+                  const {
+                    product,
+                    product: { meta, title, gallery },
+                    quantity,
+                    variant,
+                  } = item;
+
+                  if (!quantity) return null;
+
+                  let image = gallery?.[0]?.image || meta?.image;
+                  let price = product?.priceInLKR;
+
+                  const isVariant = Boolean(variant) && typeof variant === "object";
+
+                  if (isVariant) {
+                    price = variant?.priceInLKR;
+
+                    const imageVariant = product.gallery?.find((item) => {
+                      if (!item.variantOption) return false;
+                      const variantOptionID =
+                        typeof item.variantOption === "object"
+                          ? item.variantOption.id
+                          : item.variantOption;
+
+                      const hasMatch = variant?.options?.some((option) => {
+                        if (typeof option === "object")
+                          return option.id === variantOptionID;
+                        else return option === variantOptionID;
+                      });
+
+                      return hasMatch;
+                    });
+
+                    if (imageVariant && typeof imageVariant.image !== "string") {
+                      image = imageVariant.image;
+                    }
+                  }
+
+                  return (
+                    <div className="flex items-center gap-3 text-sm py-1" key={index}>
+                      <div className="relative h-14 w-14 rounded-md border border-border overflow-hidden bg-muted shrink-0">
+                        {image && typeof image !== "string" && (
+                          <Media
+                            fill
+                            imgClassName="object-cover"
+                            resource={image}
+                          />
+                        )}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <p className="font-medium text-foreground truncate">{title}</p>
+                        {variant && typeof variant === "object" && (
+                          <p className="text-xs text-muted-foreground truncate">
+                            {variant.options
+                              ?.map((option) => (typeof option === "object" ? option.label : null))
+                              .filter(Boolean)
+                              .join(", ")}
+                          </p>
+                        )}
+                        <p className="text-xs text-muted-foreground mt-0.5">Qty: {quantity}</p>
+                      </div>
+
+                      {typeof price === "number" && (
+                        <Price amount={price * quantity} className="font-semibold text-foreground text-sm shrink-0" />
+                      )}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+
+            <div className="space-y-3 pt-4 border-t border-border text-sm">
+              <div className="flex justify-between text-muted-foreground">
+                <span>Subtotal</span>
+                <Price amount={cart.subtotal || 0} className="font-medium text-foreground" />
+              </div>
+              <div className="flex justify-between text-muted-foreground">
+                <span>Shipping</span>
+                <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">Calculated next step</span>
+              </div>
+              <div className="pt-3 border-t border-border flex justify-between items-baseline">
+                <span className="text-base font-bold text-foreground">Total</span>
+                <Price amount={cart.subtotal || 0} className="text-2xl font-bold text-foreground" />
+              </div>
+            </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

@@ -23,6 +23,7 @@
     "@payloadcms/payload-cloud": "^3.68.5",
     "@payloadcms/plugin-ecommerce": "^3.68.5",
     "@payloadcms/plugin-form-builder": "^3.68.5",
+    "@payloadcms/plugin-import-export": "3.68.5",
     "@payloadcms/plugin-seo": "^3.68.5",
     "@payloadcms/richtext-lexical": "^3.68.5",
     "@payloadcms/sdk": "^3.68.5",
