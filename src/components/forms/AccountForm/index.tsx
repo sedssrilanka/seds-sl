@@ -6,6 +6,7 @@ import { Message } from "@/components/Message";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { getClientSideURL } from "@/utilities/getURL";
 import type { User } from "@/payload-types";
 import { useAuth } from "@/providers/Auth";
 import { useRouter } from "next/navigation";
@@ -43,7 +44,7 @@ export const AccountForm: React.FC = () => {
     async (data: FormData) => {
       if (user) {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/${user.id}`,
+          `${getClientSideURL()}/api/users/${user.id}`,
           {
             // Make sure to include cookies with fetch
             body: JSON.stringify(data),

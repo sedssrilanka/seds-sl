@@ -4,14 +4,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "cross-env NODE_OPTIONS=\"--no-deprecation \" next build --webpack",
+    "build": "cross-env payload migrate && cross-env NODE_OPTIONS=\"--no-deprecation \" next build --webpack",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "lint": "biome check --diagnostic-level=error",
     "format": "biome format --write",
     "test": "vitest",
     "type-check": "tsc --noEmit",
-    "payload": "cross-env payload"
+    "payload": "cross-env payload",
+    "db:migrate": "cross-env payload migrate",
+    "db:create-migration": "cross-env payload migrate:create",
+    "db:status": "cross-env payload migrate:status"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
