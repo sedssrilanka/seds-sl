@@ -4,6 +4,9 @@ import { describe, it, expect, vi } from "vitest";
 // Mock the entire space-scene component to avoid Three.js issues
 vi.mock("@/components/sections/home-page/section-one/space-scene", () => ({
   default: () => <div data-testid="space-scene-mock">Space Scene Mock</div>,
+  SpaceScenePlaceholder: () => (
+    <div data-testid="space-scene-placeholder-mock">Loading...</div>
+  ),
 }));
 
 // Mock @react-three/fiber

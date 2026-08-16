@@ -1,27 +1,163 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
+  push:
+    branches: [main, dev]
   pull_request:
-    branches: [main]
+    branches: [main, dev]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
+  # -------------------------------------------------------------
+  # Job 1: Quality & Testing (Type Check, Lint, Vitest)
+  # -------------------------------------------------------------
+  validate:
+    name: Validate Code & Run Tests
     runs-on: ubuntu-22.04
-
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-      - name: Install bun
+      - name: Setup Bun Environment
         uses: oven-sh/setup-bun@v2
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: bun install
 
-      - name: Lint and format check
+      - name: TypeScript Check
+        run: bun run type-check
+
+      - name: Biome Lint & Format Check
         run: bun run lint
 
-      - name: Run tests
-        run: bun run test
+      - name: Vitest Suite
+        run: bun run test -- --run
 
-      - name: Build
+  # -------------------------------------------------------------
+  # Job 2: Build Check (Verifies Next.js & Payload CMS build)
+  # -------------------------------------------------------------
+  build:
+    name: Build & Verify Artifacts
+    needs: [validate]
+    runs-on: ubuntu-22.04
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ci_db
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Build Application
+        env:
+          PAYLOAD_SECRET: "ci-dummy-payload-secret-0000000000"
+          DATABASE_URI: "postgresql://postgres:postgres@localhost:5432/ci_db"
+          STORAGE_ADAPTER: "s3"
+          S3_BUCKET: "dummy-bucket"
+          S3_ACCESS_KEY_ID: "dummy-access-key"
+          S3_SECRET_ACCESS_KEY: "dummy-secret-key"
+          S3_REGION: "us-east-1"
+          S3_ENDPOINT: "http://localhost:9000"
+          PAYLOAD_PUBLIC_SERVER_URL: "http://localhost:3000"
+          NEXT_PUBLIC_SERVER_URL: "http://localhost:3000"
         run: bun run build
+
+  # -------------------------------------------------------------
+  # Job 3: Deploy Preview to Vercel (Only for 'dev' branch)
+  # -------------------------------------------------------------
+  deploy-preview:
+    name: Deploy to Vercel (Preview)
+    needs: [build]
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/dev') ||
+      (github.event_name == 'pull_request' && github.base_ref == 'dev')
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Install Vercel CLI
+        run: bun add -g vercel
+
+      - name: Pull Vercel Preview Env
+        run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build Vercel Preview Artifacts
+        run: vercel build --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy Preview to Vercel
+        run: vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+  # -------------------------------------------------------------
+  # Job 4: Deploy Production to Vercel (Only for 'main' branch)
+  # -------------------------------------------------------------
+  deploy-production:
+    name: Deploy to Vercel (Production)
+    needs: [build]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun Environment
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install Dependencies
+        run: bun install
+
+      - name: Install Vercel CLI
+        run: bun add -g vercel
+
+      - name: Pull Vercel Production Env
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build Vercel Production Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy Production to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
