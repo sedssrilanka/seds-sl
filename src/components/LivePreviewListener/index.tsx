@@ -2,11 +2,22 @@
 import { RefreshRouteOnSave as PayloadLivePreview } from "@payloadcms/live-preview-react";
 import { useRouter } from "next/navigation";
 import type React from "react";
+import { useEffect, useState } from "react";
 
 import { getClientSideURL } from "../../utilities/getURL";
 
 export const LivePreviewListener: React.FC = () => {
   const router = useRouter();
+  const [isIframe, setIsIframe] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.self !== window.top) {
+      setIsIframe(true);
+    }
+  }, []);
+
+  if (!isIframe) return null;
+
   return (
     <PayloadLivePreview
       refresh={router.refresh}
@@ -14,3 +25,4 @@ export const LivePreviewListener: React.FC = () => {
     />
   );
 };
+

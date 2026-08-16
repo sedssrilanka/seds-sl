@@ -33,11 +33,16 @@ export default buildConfig({
     user: Users.slug,
     meta: {
       titleSuffix: " | SEDS Sri Lanka Admin",
+      icons: [{ url: "/favicon.ico" }],
     },
     importMap: {
       baseDir: path.resolve(dirname),
     },
     components: {
+      graphics: {
+        Logo: "@/components/AdminLogo#AdminLogo",
+        Icon: "@/components/AdminLogo#AdminIcon",
+      },
       beforeLogin: ["@/components/BeforeLogin#BeforeLogin"],
       beforeDashboard: ["@/components/BeforeDashboard#BeforeDashboard"],
     },

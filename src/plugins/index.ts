@@ -1,5 +1,6 @@
 import { formBuilderPlugin } from "@payloadcms/plugin-form-builder";
 import { seoPlugin } from "@payloadcms/plugin-seo";
+import { importExportPlugin } from "@payloadcms/plugin-import-export";
 import type { Plugin } from "payload";
 import type { GenerateTitle, GenerateURL } from "@payloadcms/plugin-seo/types";
 import {
@@ -256,6 +257,19 @@ export const plugins: Plugin[] = [
           return field;
         });
       },
+    },
+  }),
+  importExportPlugin({
+    disableJobsQueue: true,
+    overrideExportCollection: (args: any) => {
+      const col = args?.collection || args || {};
+      return {
+        ...col,
+        admin: {
+          ...(col?.admin || {}),
+          group: "Data Management",
+        },
+      };
     },
   }),
 ];
