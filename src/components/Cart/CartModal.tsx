@@ -48,7 +48,10 @@ export function CartModal() {
         <OpenCartButton quantity={totalQuantity} />
       </SheetTrigger>
 
-      <SheetContent side="right" className="w-full sm:max-w-md p-6 flex flex-col h-full bg-background text-foreground">
+      <SheetContent
+        side="right"
+        className="w-full sm:max-w-md p-6 flex flex-col h-full bg-background text-foreground"
+      >
         <SheetHeader className="pb-4 border-b border-border text-left shrink-0">
           <div className="flex items-center justify-between">
             <SheetTitle className="text-xl font-bold flex items-center gap-2">
@@ -72,7 +75,9 @@ export function CartModal() {
               <ShoppingBag className="size-10" />
             </div>
             <div className="space-y-1">
-              <h3 className="text-lg font-semibold text-foreground">Your cart is empty</h3>
+              <h3 className="text-lg font-semibold text-foreground">
+                Your cart is empty
+              </h3>
               <p className="text-sm text-muted-foreground">
                 Add products to your cart to start shopping.
               </p>
@@ -98,8 +103,7 @@ export function CartModal() {
                   return <React.Fragment key={i} />;
 
                 const metaImage =
-                  product.meta?.image &&
-                  typeof product.meta?.image === "object"
+                  product.meta?.image && typeof product.meta?.image === "object"
                     ? product.meta.image
                     : undefined;
 
@@ -133,16 +137,16 @@ export function CartModal() {
                     return hasMatch;
                   });
 
-                  if (
-                    imageVariant &&
-                    typeof imageVariant.image === "object"
-                  ) {
+                  if (imageVariant && typeof imageVariant.image === "object") {
                     image = imageVariant.image || undefined;
                   }
                 }
 
                 return (
-                  <li key={i} className="rounded-xl border border-border bg-card p-3 shadow-2xs transition-all hover:border-border/80">
+                  <li
+                    key={i}
+                    className="rounded-xl border border-border bg-card p-3 shadow-2xs transition-all hover:border-border/80"
+                  >
                     <div className="flex items-start gap-3">
                       <Link
                         className="relative h-16 w-16 rounded-lg overflow-hidden border border-border bg-muted shrink-0 block"
@@ -212,7 +216,9 @@ export function CartModal() {
             <div className="pt-4 border-t border-border space-y-3 shrink-0 bg-background">
               {typeof cart?.subtotal === "number" && (
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground font-medium">Subtotal</span>
+                  <span className="text-muted-foreground font-medium">
+                    Subtotal
+                  </span>
                   <Price
                     amount={cart.subtotal}
                     className="text-lg font-bold text-foreground"
@@ -224,7 +230,11 @@ export function CartModal() {
                 Shipping and taxes calculated at checkout.
               </p>
 
-              <Button asChild size="lg" className="w-full gap-2 text-base h-12 font-medium">
+              <Button
+                asChild
+                size="lg"
+                className="w-full gap-2 text-base h-12 font-medium"
+              >
                 <Link href="/checkout" onClick={() => setIsOpen(false)}>
                   <span>Proceed to Checkout</span>
                   <ArrowRight className="size-4" />

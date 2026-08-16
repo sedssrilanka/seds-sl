@@ -23,6 +23,7 @@ export const RenderParamsComponent: React.FC<Props> = ({
 
   const paramValuesSerialized = JSON.stringify(paramValues);
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: paramValuesSerialized stabilizes array reference
   useEffect(() => {
     if (paramValues.some(Boolean) && onParams) {
       onParams(paramValues);

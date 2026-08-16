@@ -11,7 +11,16 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import posthog from "posthog-js";
-import { Landmark, Banknote, ShieldCheck, Loader2, Upload, FileCheck, X, Building } from "lucide-react";
+import {
+  Landmark,
+  Banknote,
+  ShieldCheck,
+  Loader2,
+  Upload,
+  FileCheck,
+  X,
+  Building,
+} from "lucide-react";
 
 type Props = {
   cart: Cart;
@@ -123,11 +132,17 @@ export const CheckoutForm: React.FC<Props> = ({
   );
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6 pt-4 border-t border-border">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col gap-6 pt-4 border-t border-border"
+    >
       <div>
-        <h3 className="text-xl font-semibold mb-1 text-foreground">Payment Method</h3>
+        <h3 className="text-xl font-semibold mb-1 text-foreground">
+          Payment Method
+        </h3>
         <p className="text-sm text-muted-foreground mb-4">
-          Select your preferred payment method and attach transfer proof to submit your order.
+          Select your preferred payment method and attach transfer proof to
+          submit your order.
         </p>
 
         <RadioGroup
@@ -135,37 +150,54 @@ export const CheckoutForm: React.FC<Props> = ({
           onValueChange={(v: "bank_transfer" | "cod") => setPaymentMethod(v)}
           className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6"
         >
+          {/* biome-ignore lint/a11y/useSemanticElements: card container for radio selection */}
           <div
+            role="button"
+            tabIndex={0}
             onClick={() => setPaymentMethod("bank_transfer")}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setPaymentMethod("bank_transfer");
+              }
+            }}
             className={`relative rounded-xl border p-4 cursor-pointer transition-all flex items-start gap-3 bg-card ${
               paymentMethod === "bank_transfer"
                 ? "border-primary ring-1 ring-primary/20 bg-primary/5 dark:bg-primary/10"
                 : "border-border hover:border-border/80"
             }`}
           >
-            <RadioGroupItem value="bank_transfer" id="bank_transfer" className="mt-1" />
+            <RadioGroupItem
+              value="bank_transfer"
+              id="bank_transfer"
+              className="mt-1"
+            />
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-2 font-medium text-foreground">
                 <Landmark className="size-4 text-muted-foreground" />
-                <Label htmlFor="bank_transfer" className="cursor-pointer font-medium">
+                <Label
+                  htmlFor="bank_transfer"
+                  className="cursor-pointer font-medium"
+                >
                   Bank Transfer
                 </Label>
               </div>
               <p className="text-xs text-muted-foreground">
-                Deposit or online transfer with payment slip attachment required for verification.
+                Deposit or online transfer with payment slip attachment required
+                for verification.
               </p>
             </div>
           </div>
-
-          <div
-            className="relative rounded-xl border border-border/60 p-4 opacity-60 cursor-not-allowed flex items-start gap-3 bg-muted/20"
-          >
+          <div className="relative rounded-xl border border-border/60 p-4 opacity-60 cursor-not-allowed flex items-start gap-3 bg-muted/20">
             <RadioGroupItem value="cod" id="cod" disabled className="mt-1" />
             <div className="flex flex-col gap-1 w-full">
               <div className="flex items-center justify-between gap-2 font-medium text-muted-foreground">
                 <div className="flex items-center gap-2">
                   <Banknote className="size-4 text-muted-foreground/70" />
-                  <Label htmlFor="cod" className="cursor-not-allowed font-medium text-muted-foreground">
+                  <Label
+                    htmlFor="cod"
+                    className="cursor-not-allowed font-medium text-muted-foreground"
+                  >
                     Cash on Delivery
                   </Label>
                 </div>
@@ -174,7 +206,8 @@ export const CheckoutForm: React.FC<Props> = ({
                 </span>
               </div>
               <p className="text-xs text-muted-foreground/80">
-                Cash on delivery is currently disabled. Please use Bank Transfer.
+                Cash on delivery is currently disabled. Please use Bank
+                Transfer.
               </p>
             </div>
           </div>
@@ -191,26 +224,40 @@ export const CheckoutForm: React.FC<Props> = ({
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs bg-muted/40 p-3 rounded-lg border border-border">
               <div>
                 <span className="text-muted-foreground block">Bank Name</span>
-                <span className="font-semibold text-foreground">Commercial Bank of Ceylon</span>
+                <span className="font-semibold text-foreground">
+                  Commercial Bank of Ceylon
+                </span>
               </div>
               <div>
-                <span className="text-muted-foreground block">Account Name</span>
-                <span className="font-semibold text-foreground">SEDS Sri Lanka</span>
+                <span className="text-muted-foreground block">
+                  Account Name
+                </span>
+                <span className="font-semibold text-foreground">
+                  SEDS Sri Lanka
+                </span>
               </div>
               <div>
-                <span className="text-muted-foreground block">Account Number</span>
-                <span className="font-mono font-semibold text-foreground">1000 8945 2214</span>
+                <span className="text-muted-foreground block">
+                  Account Number
+                </span>
+                <span className="font-mono font-semibold text-foreground">
+                  1000 8945 2214
+                </span>
               </div>
               <div>
                 <span className="text-muted-foreground block">Branch</span>
-                <span className="font-semibold text-foreground">Colombo Main Branch</span>
+                <span className="font-semibold text-foreground">
+                  Colombo Main Branch
+                </span>
               </div>
             </div>
 
             <div className="space-y-2 pt-2">
               <Label className="text-sm font-medium text-foreground flex items-center justify-between">
                 <span>Upload Payment Slip / Receipt Proof*</span>
-                <span className="text-xs text-muted-foreground font-normal">(JPG, PNG, PDF max 10MB)</span>
+                <span className="text-xs text-muted-foreground font-normal">
+                  (JPG, PNG, PDF max 10MB)
+                </span>
               </Label>
 
               {proofFile ? (
@@ -218,7 +265,9 @@ export const CheckoutForm: React.FC<Props> = ({
                   <div className="flex items-center gap-3 min-w-0">
                     <FileCheck className="size-5 text-primary shrink-0" />
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{proofFile.name}</p>
+                      <p className="text-sm font-medium text-foreground truncate">
+                        {proofFile.name}
+                      </p>
                       <p className="text-xs text-muted-foreground">
                         {(proofFile.size / 1024 / 1024).toFixed(2)} MB
                       </p>
@@ -238,8 +287,12 @@ export const CheckoutForm: React.FC<Props> = ({
               ) : (
                 <label className="relative flex flex-col items-center justify-center border-2 border-dashed border-border rounded-xl p-6 hover:border-primary/50 transition-colors cursor-pointer bg-muted/20">
                   <Upload className="size-8 text-muted-foreground mb-2" />
-                  <span className="text-sm font-medium text-foreground mb-0.5">Click to upload payment slip</span>
-                  <span className="text-xs text-muted-foreground">or drag and drop your receipt file here</span>
+                  <span className="text-sm font-medium text-foreground mb-0.5">
+                    Click to upload payment slip
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    or drag and drop your receipt file here
+                  </span>
                   <input
                     type="file"
                     accept="image/png,image/jpeg,image/webp,application/pdf"
@@ -257,7 +310,9 @@ export const CheckoutForm: React.FC<Props> = ({
 
       <div className="pt-2">
         <Button
-          disabled={isLoading || (paymentMethod === "bank_transfer" && !proofFile)}
+          disabled={
+            isLoading || (paymentMethod === "bank_transfer" && !proofFile)
+          }
           type="submit"
           size="lg"
           className="w-full sm:w-auto h-12 px-8 text-base gap-2 font-medium"

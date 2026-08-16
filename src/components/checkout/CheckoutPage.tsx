@@ -22,7 +22,13 @@ import { FormItem } from "@/components/forms/FormItem";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { CheckoutForm } from "@/components/forms/CheckoutForm";
 
-import { UserCheck, MapPin, CreditCard, ShoppingBag, ArrowRight } from "lucide-react";
+import {
+  UserCheck,
+  MapPin,
+  CreditCard,
+  ShoppingBag,
+  ArrowRight,
+} from "lucide-react";
 
 export const CheckoutPage: React.FC = () => {
   const { user } = useAuth();
@@ -91,7 +97,9 @@ export const CheckoutPage: React.FC = () => {
           <ShoppingBag className="size-10" />
         </div>
         <div className="space-y-1">
-          <h2 className="text-2xl font-bold text-foreground">Your cart is empty</h2>
+          <h2 className="text-2xl font-bold text-foreground">
+            Your cart is empty
+          </h2>
           <p className="text-muted-foreground text-sm">
             Looks like you haven't added any items to your cart yet.
           </p>
@@ -109,7 +117,9 @@ export const CheckoutPage: React.FC = () => {
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 md:py-12">
       <div className="mb-8 space-y-1">
-        <h1 className="text-3xl font-bold tracking-tight text-foreground">Checkout</h1>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          Checkout
+        </h1>
         <p className="text-muted-foreground text-sm">
           Complete your contact, shipping, and payment information below.
         </p>
@@ -125,7 +135,9 @@ export const CheckoutPage: React.FC = () => {
                 <UserCheck className="size-5" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-foreground">1. Contact Information</h2>
+                <h2 className="text-lg font-semibold text-foreground">
+                  1. Contact Information
+                </h2>
                 <p className="text-xs text-muted-foreground">
                   Provide contact details for order updates and receipt.
                 </p>
@@ -138,16 +150,25 @@ export const CheckoutPage: React.FC = () => {
                   <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
                     Logged in as
                   </p>
-                  <p className="text-sm font-medium text-foreground">{user.email}</p>
+                  <p className="text-sm font-medium text-foreground">
+                    {user.email}
+                  </p>
                 </div>
-                <Button asChild variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+                <Button
+                  asChild
+                  variant="ghost"
+                  size="sm"
+                  className="text-muted-foreground hover:text-foreground"
+                >
                   <Link href="/logout">Log out</Link>
                 </Button>
               </div>
             ) : (
               <div className="space-y-4 pt-1">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-lg bg-muted/40 border border-border">
-                  <span className="text-sm text-muted-foreground">Already have an account?</span>
+                  <span className="text-sm text-muted-foreground">
+                    Already have an account?
+                  </span>
                   <div className="flex gap-2">
                     <Button asChild variant="outline" size="sm">
                       <Link href="/login">Log in</Link>
@@ -198,7 +219,9 @@ export const CheckoutPage: React.FC = () => {
                 <MapPin className="size-5" />
               </div>
               <div>
-                <h2 className="text-lg font-semibold text-foreground">2. Address Details</h2>
+                <h2 className="text-lg font-semibold text-foreground">
+                  2. Address Details
+                </h2>
                 <p className="text-xs text-muted-foreground">
                   Provide billing and shipping destination addresses.
                 </p>
@@ -256,7 +279,10 @@ export const CheckoutPage: React.FC = () => {
                     setBillingAddressSameAsShipping(state as boolean);
                   }}
                 />
-                <Label htmlFor="shippingTheSameAsBilling" className="cursor-pointer text-sm font-medium">
+                <Label
+                  htmlFor="shippingTheSameAsBilling"
+                  className="cursor-pointer text-sm font-medium"
+                >
                   Shipping address is the same as billing address
                 </Label>
               </div>
@@ -329,7 +355,8 @@ export const CheckoutPage: React.FC = () => {
                 <span>Order Summary</span>
               </h2>
               <span className="text-xs text-muted-foreground font-mono bg-muted px-2 py-0.5 rounded-full">
-                {cart?.items?.length || 0} {cart?.items?.length === 1 ? "item" : "items"}
+                {cart?.items?.length || 0}{" "}
+                {cart?.items?.length === 1 ? "item" : "items"}
               </span>
             </div>
 
@@ -348,7 +375,8 @@ export const CheckoutPage: React.FC = () => {
                   let image = gallery?.[0]?.image || meta?.image;
                   let price = product?.priceInLKR;
 
-                  const isVariant = Boolean(variant) && typeof variant === "object";
+                  const isVariant =
+                    Boolean(variant) && typeof variant === "object";
 
                   if (isVariant) {
                     price = variant?.priceInLKR;
@@ -369,13 +397,19 @@ export const CheckoutPage: React.FC = () => {
                       return hasMatch;
                     });
 
-                    if (imageVariant && typeof imageVariant.image !== "string") {
+                    if (
+                      imageVariant &&
+                      typeof imageVariant.image !== "string"
+                    ) {
                       image = imageVariant.image;
                     }
                   }
 
                   return (
-                    <div className="flex items-center gap-3 text-sm py-1" key={index}>
+                    <div
+                      className="flex items-center gap-3 text-sm py-1"
+                      key={index}
+                    >
                       <div className="relative h-14 w-14 rounded-md border border-border overflow-hidden bg-muted shrink-0">
                         {image && typeof image !== "string" && (
                           <Media
@@ -387,20 +421,31 @@ export const CheckoutPage: React.FC = () => {
                       </div>
 
                       <div className="flex-1 min-w-0">
-                        <p className="font-medium text-foreground truncate">{title}</p>
+                        <p className="font-medium text-foreground truncate">
+                          {title}
+                        </p>
                         {variant && typeof variant === "object" && (
                           <p className="text-xs text-muted-foreground truncate">
                             {variant.options
-                              ?.map((option) => (typeof option === "object" ? option.label : null))
+                              ?.map((option) =>
+                                typeof option === "object"
+                                  ? option.label
+                                  : null,
+                              )
                               .filter(Boolean)
                               .join(", ")}
                           </p>
                         )}
-                        <p className="text-xs text-muted-foreground mt-0.5">Qty: {quantity}</p>
+                        <p className="text-xs text-muted-foreground mt-0.5">
+                          Qty: {quantity}
+                        </p>
                       </div>
 
                       {typeof price === "number" && (
-                        <Price amount={price * quantity} className="font-semibold text-foreground text-sm shrink-0" />
+                        <Price
+                          amount={price * quantity}
+                          className="font-semibold text-foreground text-sm shrink-0"
+                        />
                       )}
                     </div>
                   );
@@ -412,15 +457,25 @@ export const CheckoutPage: React.FC = () => {
             <div className="space-y-3 pt-4 border-t border-border text-sm">
               <div className="flex justify-between text-muted-foreground">
                 <span>Subtotal</span>
-                <Price amount={cart.subtotal || 0} className="font-medium text-foreground" />
+                <Price
+                  amount={cart.subtotal || 0}
+                  className="font-medium text-foreground"
+                />
               </div>
               <div className="flex justify-between text-muted-foreground">
                 <span>Shipping</span>
-                <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">Calculated next step</span>
+                <span className="text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                  Calculated next step
+                </span>
               </div>
               <div className="pt-3 border-t border-border flex justify-between items-baseline">
-                <span className="text-base font-bold text-foreground">Total</span>
-                <Price amount={cart.subtotal || 0} className="text-2xl font-bold text-foreground" />
+                <span className="text-base font-bold text-foreground">
+                  Total
+                </span>
+                <Price
+                  amount={cart.subtotal || 0}
+                  className="text-2xl font-bold text-foreground"
+                />
               </div>
             </div>
           </div>

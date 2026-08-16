@@ -74,7 +74,9 @@ const AddressesModal: React.FC<Props> = ({ setAddress }) => {
   if (!addresses || addresses.length === 0) {
     return (
       <div className="flex flex-col gap-2">
-        <p className="text-sm text-muted-foreground">No saved addresses found.</p>
+        <p className="text-sm text-muted-foreground">
+          No saved addresses found.
+        </p>
         <CreateAddressModal buttonText="Add Address" />
       </div>
     );
