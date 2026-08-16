@@ -55,7 +55,8 @@ export function EditItemQuantityButton({
         className={clsx(
           "flex h-full w-7 items-center justify-center transition-colors text-muted-foreground hover:text-foreground hover:bg-muted/80 rounded-md cursor-pointer",
           {
-            "cursor-not-allowed opacity-40 hover:bg-transparent hover:text-muted-foreground": disabled || isLoading,
+            "cursor-not-allowed opacity-40 hover:bg-transparent hover:text-muted-foreground":
+              disabled || isLoading,
           },
         )}
         onClick={(e: React.FormEvent<HTMLButtonElement>) => {

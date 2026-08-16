@@ -13,14 +13,20 @@ export async function createOrder(formData: FormData) {
   const email = (formData.get("email") as string) || "";
   const shippingAddressRaw = formData.get("shippingAddress") as string;
   const billingAddressRaw = formData.get("billingAddress") as string;
-  const paymentMethod = (formData.get("paymentMethod") as "bank_transfer" | "cod") || "bank_transfer";
+  const paymentMethod =
+    (formData.get("paymentMethod") as "bank_transfer" | "cod") ||
+    "bank_transfer";
   const total = Number(formData.get("total") || 0);
   const proofFile = formData.get("paymentProofFile") as File | null;
 
   const cart: Cart = cartRaw ? JSON.parse(cartRaw) : null;
   const user: User | null = userRaw ? JSON.parse(userRaw) : null;
-  const shippingAddress: Partial<Address> = shippingAddressRaw ? JSON.parse(shippingAddressRaw) : {};
-  const billingAddress: Partial<Address> = billingAddressRaw ? JSON.parse(billingAddressRaw) : {};
+  const shippingAddress: Partial<Address> = shippingAddressRaw
+    ? JSON.parse(shippingAddressRaw)
+    : {};
+  const billingAddress: Partial<Address> = billingAddressRaw
+    ? JSON.parse(billingAddressRaw)
+    : {};
 
   const customerEmail = email || user?.email;
   if (!cart || !cart.items || cart.items.length === 0) {
@@ -118,7 +124,8 @@ export async function createOrder(formData: FormData) {
 
     const itemsSummary = cart.items
       .map((i) => {
-        const title = typeof i.product === "object" ? i.product?.title : "Product";
+        const title =
+          typeof i.product === "object" ? i.product?.title : "Product";
         return `• ${title} x ${i.quantity}`;
       })
       .join("<br/>");
@@ -153,7 +160,10 @@ export async function createOrder(formData: FormData) {
         attachments: adminAttachments.length > 0 ? adminAttachments : undefined,
       });
     } catch (adminEmailError) {
-      console.error("Failed to send admin notification email:", adminEmailError);
+      console.error(
+        "Failed to send admin notification email:",
+        adminEmailError,
+      );
     }
 
     // 6. Send Customer Confirmation Email
@@ -185,7 +195,10 @@ export async function createOrder(formData: FormData) {
           `,
         });
       } catch (customerEmailError) {
-        console.error("Failed to send customer confirmation email:", customerEmailError);
+        console.error(
+          "Failed to send customer confirmation email:",
+          customerEmailError,
+        );
       }
     }
 

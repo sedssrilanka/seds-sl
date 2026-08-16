@@ -121,7 +121,10 @@ export const AddressForm: React.FC<Props> = ({
   );
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col h-full overflow-hidden">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col h-full overflow-hidden"
+    >
       <div className="grow overflow-y-auto max-h-[calc(80vh-130px)] px-1 py-1 pr-2">
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
           <FormItem className="md:col-span-2">

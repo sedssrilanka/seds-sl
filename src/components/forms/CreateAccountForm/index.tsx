@@ -43,16 +43,13 @@ export const CreateAccountForm: React.FC = () => {
 
   const onSubmit = useCallback(
     async (data: FormData) => {
-      const response = await fetch(
-        `${getClientSideURL()}/api/users`,
-        {
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
+      const response = await fetch(`${getClientSideURL()}/api/users`, {
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        method: "POST",
+      });
 
       if (!response.ok) {
         const message =

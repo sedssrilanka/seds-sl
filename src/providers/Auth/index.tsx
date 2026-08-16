@@ -66,21 +66,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [status, setStatus] = useState<"loggedIn" | "loggedOut" | undefined>();
   const create = useCallback<Create>(async (args) => {
     try {
-      const res = await fetch(
-        `${getClientSideURL()}/api/users/create`,
-        {
-          body: JSON.stringify({
-            email: args.email,
-            password: args.password,
-            passwordConfirm: args.passwordConfirm,
-          }),
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
+      const res = await fetch(`${getClientSideURL()}/api/users/create`, {
+        body: JSON.stringify({
+          email: args.email,
+          password: args.password,
+          passwordConfirm: args.passwordConfirm,
+        }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        method: "POST",
+      });
 
       if (res.ok) {
         const { data, errors } = await res.json();
@@ -101,20 +98,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = useCallback<Login>(async (args) => {
     try {
-      const res = await fetch(
-        `${getClientSideURL()}/api/users/login`,
-        {
-          body: JSON.stringify({
-            email: args.email,
-            password: args.password,
-          }),
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
+      const res = await fetch(`${getClientSideURL()}/api/users/login`, {
+        body: JSON.stringify({
+          email: args.email,
+          password: args.password,
+        }),
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        method: "POST",
+      });
 
       if (res.ok) {
         const { errors, user } = await res.json();
@@ -135,16 +129,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const logout = useCallback<Logout>(async () => {
     try {
-      const res = await fetch(
-        `${getClientSideURL()}/api/users/logout`,
-        {
-          credentials: "include",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "POST",
+      const res = await fetch(`${getClientSideURL()}/api/users/logout`, {
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        method: "POST",
+      });
 
       if (res.ok) {
         posthog.reset();
@@ -161,16 +152,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   useEffect(() => {
     const fetchMe = async () => {
       try {
-        const res = await fetch(
-          `${getClientSideURL()}/api/users/me`,
-          {
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            method: "GET",
+        const res = await fetch(`${getClientSideURL()}/api/users/me`, {
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
           },
-        );
+          method: "GET",
+        });
 
         if (res.ok) {
           const { user: meUser } = await res.json();
