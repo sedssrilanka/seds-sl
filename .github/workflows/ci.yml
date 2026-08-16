@@ -103,24 +103,8 @@ jobs:
       - name: Install Vercel CLI
         run: bun add -g vercel
 
-      - name: Pull Vercel Preview Env
-        run: |
-          rm -rf .vercel
-          vercel pull --yes --environment=preview
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Build Vercel Preview Artifacts
-        run: vercel build
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
       - name: Deploy Preview to Vercel
-        run: vercel deploy --prebuilt
+        run: vercel deploy
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
@@ -147,24 +131,8 @@ jobs:
       - name: Install Vercel CLI
         run: bun add -g vercel
 
-      - name: Pull Vercel Production Env
-        run: |
-          rm -rf .vercel
-          vercel pull --yes --environment=production
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      - name: Build Vercel Production Artifacts
-        run: vercel build --prod
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
       - name: Deploy Production to Vercel
-        run: vercel deploy --prebuilt --prod
+        run: vercel deploy --prod
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
