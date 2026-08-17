@@ -57,10 +57,16 @@ export default function Navigation({
       href: "/chapters",
     },
     {
+      title: "Divisions",
+      isLink: true,
+      href: "/divisions",
+    },
+    {
       title: "Projects",
       isLink: true,
       href: "/projects",
     },
+
     {
       title: "Shop",
       isLink: true,

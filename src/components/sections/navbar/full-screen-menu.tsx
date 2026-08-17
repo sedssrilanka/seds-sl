@@ -43,8 +43,10 @@ export default function FullScreenMenu({
     { text: "Home", href: "/" },
     { text: "About Us", href: "/about" },
     { text: "Chapters", href: "/chapters" },
+    { text: "Divisions", href: "/divisions" },
     { text: "Projects", href: "/projects" },
   ];
+
 
   const col2Links = [
     { text: "Shop", href: "/shop" },

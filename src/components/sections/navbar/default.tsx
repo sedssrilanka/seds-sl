@@ -54,11 +54,13 @@ export default function Navbar({
     { text: "Home", href: "/" },
     { text: "About", href: "/about" },
     { text: "Chapters", href: "/chapters" },
+    { text: "Divisions", href: "/divisions" },
     { text: "Projects", href: "/projects" },
     { text: "Docs", href: "/docs/introduction" },
     { text: "Shop", href: "/shop" },
     { text: "Contact Us", href: "/contact-us" },
   ],
+
   actions = [
     {
       text: "Contact Us",
