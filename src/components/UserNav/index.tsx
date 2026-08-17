@@ -52,6 +52,7 @@ export function UserNav() {
   return (
     <div className="relative h-full" ref={dropdownRef}>
       <button
+        type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         className="h-full px-5 sm:px-8 border-l border-border/60 flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted/20 transition-colors cursor-pointer group"
         title="User Account Menu"

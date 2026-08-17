@@ -115,6 +115,7 @@ export default function Navbar({
 
             {/* Large Full-Height Boxed Menu/Close Button sitting flush on vertical margin line */}
             <button
+              type="button"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="h-full w-28 sm:w-36 border-x border-border/60 flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted/20 transition-colors cursor-pointer group"
               aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
