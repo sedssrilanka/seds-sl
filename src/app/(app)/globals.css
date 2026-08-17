@@ -840,3 +840,52 @@
     flex: 0 0 var(--field-width, 100%);
   }
 }
+
+/* ===== HIGH-TECH GRID LINE & CORNER PATTERN UTILITIES ===== */
+.grid-line-container {
+  position: relative;
+  border-color: hsl(var(--border) / 0.6);
+}
+
+.grid-corner-plus {
+  position: absolute;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  line-height: 1;
+  color: hsl(var(--primary) / 0.7);
+  user-select: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.grid-corner-plus-tl {
+  top: -0.4rem;
+  left: -0.4rem;
+}
+
+.grid-corner-plus-tr {
+  top: -0.4rem;
+  right: -0.4rem;
+}
+
+.grid-corner-plus-bl {
+  bottom: -0.4rem;
+  left: -0.4rem;
+}
+
+.grid-corner-plus-br {
+  bottom: -0.4rem;
+  right: -0.4rem;
+}
+
+.grid-box-frame {
+  position: relative;
+  border: 1px solid hsl(var(--border) / 0.6);
+  background-color: hsl(var(--background));
+}
+
+.base-layout-margin-line {
+  border-color: hsl(var(--border) / 0.6);
+}
+
+
