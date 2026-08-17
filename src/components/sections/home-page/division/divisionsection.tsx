@@ -65,16 +65,25 @@ const DivisionsSection = async () => {
             image="/section-header/division.png"
           />
 
-          <div className="mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 border-border/60 dark:border-border/50">
+          <div className="mt-12 relative">
+            {/* Extended Horizontal Bleed Lines */}
+            <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
+            <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
+
+            {/* Extended Vertical Bleed Lines */}
+            <div className="absolute -top-6 -bottom-6 left-0 border-l border-border/60 pointer-events-none" />
+            <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
+            <div className="hidden md:block absolute -top-6 -bottom-6 left-1/2 border-l border-border/40 pointer-events-none" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 border border-border/60 divide-y divide-border/60 md:divide-y-0 md:divide-x bg-background relative z-0">
               {divisions.map((division) => {
                 const IconComponent =
                   IconMap[division.icon as keyof typeof IconMap] || Rocket;
 
                 return (
-                  <Card
+                  <div
                     key={division.id}
-                    className="rounded-none border p-6 shadow-sm dark:shadow-none"
+                    className="p-6 md:p-8 bg-background flex flex-col h-full"
                   >
                     <div className="flex flex-col h-full">
                       <div className="flex items-start gap-4 mb-4">
@@ -82,15 +91,15 @@ const DivisionsSection = async () => {
                           <IconComponent className="size-8 text-primary" />
                         </div>
                         <div className="flex-1">
-                          <CardTitle className="text-xl font-bold mb-3">
+                          <h3 className="text-xl font-bold mb-3 text-foreground">
                             {division.name}
-                          </CardTitle>
+                          </h3>
                         </div>
                       </div>
 
-                      <CardDescription className="text-sm leading-relaxed mb-6 flex-1">
+                      <p className="text-sm leading-relaxed mb-6 text-muted-foreground flex-1">
                         {division.description}
-                      </CardDescription>
+                      </p>
 
                       <div className="flex items-center justify-between mt-auto">
                         <Button
@@ -103,29 +112,27 @@ const DivisionsSection = async () => {
                             Learn More
                           </Link>
                         </Button>
-
                       </div>
                     </div>
-                  </Card>
+                  </div>
                 );
               })}
 
               {/* View All Divisions Card */}
-              <Link href="/divisions" className="block h-full group">
-                <Card className="rounded-none h-full light-mode-card p-12 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none min-h-[250px] flex items-center justify-center">
-                  <div className="flex flex-col items-center justify-center h-full text-center">
-                    <h3 className="text-2xl font-bold mb-4 text-foreground">
-                      Discover All Divisions
-                    </h3>
-                    <div className="flex items-center gap-2 text-primary">
-                      <span className="font-medium text-lg">View All</span>
-                      <ArrowRight className="size-6 transition-transform group-hover:translate-x-1" />
-                    </div>
+              <Link href="/divisions" className="block h-full group bg-background p-8 flex items-center justify-center">
+                <div className="flex flex-col items-center justify-center text-center">
+                  <h3 className="text-2xl font-bold mb-4 text-foreground">
+                    Discover All Divisions
+                  </h3>
+                  <div className="flex items-center gap-2 text-primary">
+                    <span className="font-medium text-lg">View All</span>
+                    <ArrowRight className="size-6 transition-transform group-hover:translate-x-1" />
                   </div>
-                </Card>
+                </div>
               </Link>
             </div>
           </div>
+
         </div>
       </div>
     </section>

@@ -48,30 +48,13 @@ const getMediaUrl = (media: Project["image"]): string => {
 };
 
 const ProjectCard = ({ project }: { project: Project }) => {
-  const imageUrl = getMediaUrl(project.image);
-
   return (
-    <Card className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none group overflow-hidden">
-      <div className=" flex flex-col h-full">
-        {/* Project Image */}
-        <div className="w-full aspect-video bg-muted border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center">
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={project.name}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="text-muted-foreground text-sm font-medium">
-              No Image
-            </div>
-          )}
-        </div>
-
-        <CardTitle className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary">
+    <div className="p-6 md:p-8 bg-background group flex flex-col h-full">
+      <div className="flex flex-col h-full">
+        <h3 className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary">
           {project.name}
-        </CardTitle>
+        </h3>
+
 
         {project.chapter && (
           <div className="text-sm text-muted-foreground mb-2">
@@ -82,11 +65,11 @@ const ProjectCard = ({ project }: { project: Project }) => {
           </div>
         )}
 
-        <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
+        <p className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
           {project?.description?.length > 120
             ? `${project.description.substring(0, 120)}...`
             : project.description}
-        </CardDescription>
+        </p>
 
         {/* Bottom Section with Date and Button */}
         <div className="flex items-center justify-between mt-auto">
@@ -102,10 +85,9 @@ const ProjectCard = ({ project }: { project: Project }) => {
               Know More
             </Button>
           </Link>
-
         </div>
       </div>
-    </Card>
+    </div>
   );
 };
 
@@ -129,25 +111,32 @@ const ProjectsSection = async () => {
             image="/section-header/space-projects-bg.jpeg"
           />
 
-          <div className="mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 border-border/60 dark:border-border/50">
+          <div className="mt-12 relative">
+            {/* Extended Horizontal Bleed Lines */}
+            <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
+            <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
+
+            {/* Extended Vertical Bleed Lines */}
+            <div className="absolute -top-6 -bottom-6 left-0 border-l border-border/60 pointer-events-none" />
+            <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
+            <div className="hidden md:block absolute -top-6 -bottom-6 left-1/2 border-l border-border/40 pointer-events-none" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 border border-border/60 divide-y divide-border/60 md:divide-y-0 md:divide-x bg-background relative z-0">
               {projects.map((project) => (
                 <ProjectCard key={project.id} project={project} />
               ))}
 
               {/* View All Projects Card */}
-              <Link href="/projects" className="block h-full group">
-                <Card className="rounded-none h-full light-mode-card p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
-                  <div className="flex flex-col items-end justify-start h-full text-right">
-                    <h3 className="text-xl font-bold mb-4 text-foreground">
-                      Explore More Projects
-                    </h3>
-                    <div className="flex items-right gap-2 text-primary">
-                      <span className="font-medium">View All Projects</span>
-                      <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-                    </div>
+              <Link href="/projects" className="block h-full group bg-background p-8 flex items-center justify-center">
+                <div className="flex flex-col items-center justify-center text-center">
+                  <h3 className="text-xl font-bold mb-4 text-foreground">
+                    Explore More Projects
+                  </h3>
+                  <div className="flex items-center gap-2 text-primary">
+                    <span className="font-medium">View All Projects</span>
+                    <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
                   </div>
-                </Card>
+                </div>
               </Link>
             </div>
           </div>
@@ -156,5 +145,6 @@ const ProjectsSection = async () => {
     </section>
   );
 };
+
 
 export default ProjectsSection;
