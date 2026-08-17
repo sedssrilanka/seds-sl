@@ -1,14 +1,15 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  navigationMenuTriggerStyle,
 } from "./navigation-menu";
 
 interface ComponentItem {
@@ -67,22 +68,39 @@ export default function Navigation({
     },
   ],
 }: NavigationProps) {
+  const pathname = usePathname();
+
   return (
     <NavigationMenu className="hidden md:flex">
-      <NavigationMenuList>
-        {menuItems.map((item) => (
-          <NavigationMenuItem key={item.href}>
-            {item.isLink && (
-              <NavigationMenuLink
-                className={navigationMenuTriggerStyle()}
-                asChild
-              >
-                <Link href={item.href || ""}>{item.title}</Link>
-              </NavigationMenuLink>
-            )}
-          </NavigationMenuItem>
-        ))}
+      <NavigationMenuList className="gap-1.5">
+        {menuItems.map((item) => {
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/" && item.href && pathname?.startsWith(item.href));
+
+          return (
+            <NavigationMenuItem key={item.href}>
+              {item.isLink && (
+                <NavigationMenuLink asChild>
+                  <Link
+                    href={item.href || ""}
+                    className={cn(
+                      "relative inline-flex items-center justify-center px-4 py-3 text-xs font-mono font-bold uppercase tracking-wider transition-all duration-200 border-x border-y-0",
+                      isActive
+                        ? "text-primary border-primary bg-primary/5"
+                        : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/20"
+                    )}
+                  >
+                    <span>{item.title}</span>
+                  </Link>
+
+                </NavigationMenuLink>
+              )}
+            </NavigationMenuItem>
+          );
+        })}
       </NavigationMenuList>
     </NavigationMenu>
   );
 }
+
