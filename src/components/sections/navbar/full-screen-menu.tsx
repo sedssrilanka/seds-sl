@@ -47,7 +47,6 @@ export default function FullScreenMenu({
     { text: "Projects", href: "/projects" },
   ];
 
-
   const col2Links = [
     { text: "Shop", href: "/shop" },
     { text: "Contact Us", href: "/contact-us" },
@@ -73,11 +72,9 @@ export default function FullScreenMenu({
           <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-30 opacity-80" />
 
           <div className="w-full relative z-40 flex flex-col h-full max-h-screen justify-between overflow-hidden">
-
             {/* MAIN NAVIGATION ITEMS (REVEAL SEQUENTIALLY ON OPEN, DISAPPEAR FIRST ON CLOSE) */}
             <div className="max-w-7xl mx-auto px-4 md:px-8 w-full flex-1 flex flex-col justify-center py-4 sm:py-6 overflow-hidden">
               <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60 border-y border-border/60 bg-background/60">
-                
                 {/* COLUMN 1 */}
                 <div className="divide-y divide-border/60">
                   {col1Links.map((link, idx) => {
@@ -104,7 +101,7 @@ export default function FullScreenMenu({
                             "group flex items-center justify-between py-3.5 sm:py-4 md:py-5 px-4 md:px-6 transition-all duration-200 border-x border-y-0 font-mono text-xl sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-tight",
                             isActive
                               ? "text-foreground border-foreground/60 bg-foreground/5"
-                              : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/15"
+                              : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/15",
                           )}
                         >
                           <span>{link.text}</span>
@@ -141,7 +138,7 @@ export default function FullScreenMenu({
                             "group flex items-center justify-between py-3.5 sm:py-4 md:py-5 px-4 md:px-6 transition-all duration-200 border-x border-y-0 font-mono text-xl sm:text-2xl lg:text-3xl font-extrabold uppercase tracking-tight",
                             isActive
                               ? "text-foreground border-foreground/60 bg-foreground/5"
-                              : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/15"
+                              : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/15",
                           )}
                         >
                           <span>{link.text}</span>
@@ -151,7 +148,6 @@ export default function FullScreenMenu({
                     );
                   })}
                 </div>
-
               </div>
             </div>
 
@@ -162,7 +158,11 @@ export default function FullScreenMenu({
                   initial={{ y: 15, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
-                  transition={{ duration: 0.35, delay: 0.82, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{
+                    duration: 0.35,
+                    delay: 0.82,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                 >
                   SEDS SRI LANKA
                 </motion.span>
@@ -170,20 +170,19 @@ export default function FullScreenMenu({
                   initial={{ y: 15, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -10, opacity: 0 }}
-                  transition={{ duration: 0.35, delay: 0.88, ease: [0.16, 1, 0.3, 1] }}
+                  transition={{
+                    duration: 0.35,
+                    delay: 0.88,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
                 >
                   AD ASTRA PER ASPERA
                 </motion.span>
               </div>
             </div>
-
-
-
           </div>
         </motion.div>
       )}
     </AnimatePresence>
   );
-
-
 }

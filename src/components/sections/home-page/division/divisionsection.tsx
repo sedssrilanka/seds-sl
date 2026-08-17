@@ -82,7 +82,11 @@ const DivisionsSection = () => {
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: false, margin: "-40px" }}
-                    transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
+                    transition={{
+                      duration: 0.5,
+                      delay: idx * 0.1,
+                      ease: "easeOut",
+                    }}
                     className="p-6 md:p-8 bg-background flex flex-col h-full"
                   >
                     <div className="flex flex-col h-full">
@@ -126,7 +130,10 @@ const DivisionsSection = () => {
                 transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
                 className="h-full"
               >
-                <Link href="/divisions" className="block h-full group bg-background p-8 flex items-center justify-center">
+                <Link
+                  href="/divisions"
+                  className="block h-full group bg-background p-8 flex items-center justify-center"
+                >
                   <div className="flex flex-col items-center justify-center text-center">
                     <h3 className="text-2xl font-bold mb-4 text-foreground">
                       Discover All Divisions

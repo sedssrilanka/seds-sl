@@ -109,7 +109,6 @@ const CountrySelect = ({
           className="flex gap-1 rounded-none border-0 outline-none ring-0 shadow-none focus:ring-0 focus:outline-none px-2.5 h-9 bg-transparent hover:bg-transparent text-foreground"
           disabled={disabled}
         >
-
           <FlagComponent
             country={selectedCountry}
             countryName={selectedCountry}

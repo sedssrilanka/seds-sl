@@ -107,7 +107,10 @@ export function DivisionsClient() {
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-border/60 divide-y divide-border/60 md:divide-y-0 bg-background relative z-0">
             {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="p-6 border-r border-border/60 animate-pulse space-y-4">
+              <div
+                key={i}
+                className="p-6 border-r border-border/60 animate-pulse space-y-4"
+              >
                 <div className="h-12 w-12 bg-muted/50 rounded-md" />
                 <div className="h-5 bg-muted/50 rounded w-1/2" />
                 <div className="h-4 bg-muted/50 rounded w-full" />
@@ -164,7 +167,9 @@ export function DivisionsClient() {
           <div className="bg-muted/30 w-16 h-16 flex items-center justify-center mx-auto mb-4 border border-border/60">
             <SearchX className="w-8 h-8 text-muted-foreground" />
           </div>
-          <h3 className="text-xl font-semibold mb-2 text-foreground">No divisions found</h3>
+          <h3 className="text-xl font-semibold mb-2 text-foreground">
+            No divisions found
+          </h3>
           <p className="text-muted-foreground text-sm">
             We couldn't find any divisions matching "{searchQuery}". Try
             adjusting your search terms.

@@ -45,7 +45,6 @@ const Index: React.FC<Props> = () => {
                   <Button asChild variant="outline" size="lg" bleed={true}>
                     <Link href="/join-us">Join Us</Link>
                   </Button>
-
                 </div>
               </div>
             </div>

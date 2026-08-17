@@ -61,4 +61,3 @@ export const BeforeDashboard: React.FC = () => {
     </div>
   );
 };
-

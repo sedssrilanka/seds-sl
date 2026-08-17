@@ -198,11 +198,17 @@ export default function Footer() {
         <div className="py-6 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground font-mono gap-3">
           <p>© {currentYear} SEDS Sri Lanka. All rights reserved.</p>
           <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-primary transition-colors">
+            <Link
+              href="/privacy"
+              className="hover:text-primary transition-colors"
+            >
               Privacy Policy
             </Link>
             <span>•</span>
-            <Link href="/terms" className="hover:text-primary transition-colors">
+            <Link
+              href="/terms"
+              className="hover:text-primary transition-colors"
+            >
               Terms of Service
             </Link>
           </div>

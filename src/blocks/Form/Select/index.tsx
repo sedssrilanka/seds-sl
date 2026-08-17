@@ -47,7 +47,6 @@ export const Select: React.FC<
                 <SelectValue placeholder="Select..." />
               </SelectTrigger>
 
-
               <SelectContent>
                 {options.map(({ label, value }) => {
                   return (

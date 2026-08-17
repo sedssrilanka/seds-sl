@@ -132,7 +132,6 @@ export const seed = async ({
       payload.logger.error(`Error deleting ${coll}: ${e}`);
     }
 
-
     const docs = readData(coll);
     if (!docs.length) {
       payload.logger.info(`No data found for ${coll}. Skipping.`);

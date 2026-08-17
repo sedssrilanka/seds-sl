@@ -25,8 +25,12 @@ const joinSchema = z.object({
   phone: z.string().optional(),
   institution: z.string().min(2, "Institution / University is required"),
   chapter: z.string().optional(),
-  statement: z.string().min(10, "Please share why you want to join SEDS Sri Lanka"),
-  terms: z.boolean().refine((val) => val === true, "You must accept the Code of Conduct"),
+  statement: z
+    .string()
+    .min(10, "Please share why you want to join SEDS Sri Lanka"),
+  terms: z
+    .boolean()
+    .refine((val) => val === true, "You must accept the Code of Conduct"),
 });
 
 export type JoinUsFormValues = z.infer<typeof joinSchema>;
@@ -63,16 +67,24 @@ export const JoinUsFormCodeBased: React.FC = () => {
         body: JSON.stringify({
           fullName: data.fullName,
           email: data.email,
-          reasons: ["Membership Application", `Institution: ${data.institution}`, `Chapter: ${data.chapter || "N/A"}`],
+          reasons: [
+            "Membership Application",
+            `Institution: ${data.institution}`,
+            `Chapter: ${data.chapter || "N/A"}`,
+          ],
           message: `Phone: ${data.phone || "N/A"}\nStatement: ${data.statement}`,
         }),
       });
 
-      toast.success("Membership application submitted! Our executive committee will get in touch with you.");
+      toast.success(
+        "Membership application submitted! Our executive committee will get in touch with you.",
+      );
       reset();
     } catch (err) {
       console.error(err);
-      toast.success("Application received! Thank you for applying to join SEDS Sri Lanka.");
+      toast.success(
+        "Application received! Thank you for applying to join SEDS Sri Lanka.",
+      );
       reset();
     } finally {
       setIsSubmitting(false);
@@ -96,7 +108,10 @@ export const JoinUsFormCodeBased: React.FC = () => {
         <div className="border border-border/60 divide-y divide-border/60 bg-background relative z-0">
           {/* Row 1: Full Name */}
           <div className="p-4 md:p-5 space-y-1.5 bg-background">
-            <Label htmlFor="fullName" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+            <Label
+              htmlFor="fullName"
+              className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+            >
               Full Name
             </Label>
             <Input
@@ -106,14 +121,19 @@ export const JoinUsFormCodeBased: React.FC = () => {
               {...register("fullName")}
             />
             {errors.fullName && (
-              <p className="text-xs text-destructive mt-1">{errors.fullName.message}</p>
+              <p className="text-xs text-destructive mt-1">
+                {errors.fullName.message}
+              </p>
             )}
           </div>
 
           {/* Row 2: Email & Phone side-by-side */}
           <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60">
             <div className="p-4 md:p-5 space-y-1.5 bg-background">
-              <Label htmlFor="email" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+              <Label
+                htmlFor="email"
+                className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+              >
                 Email Address
               </Label>
               <Input
@@ -124,12 +144,17 @@ export const JoinUsFormCodeBased: React.FC = () => {
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-xs text-destructive mt-1">{errors.email.message}</p>
+                <p className="text-xs text-destructive mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             <div className="p-4 md:p-5 space-y-1.5 bg-background">
-              <Label htmlFor="phone" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+              <Label
+                htmlFor="phone"
+                className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+              >
                 Phone Number
               </Label>
               <PhoneInput
@@ -144,7 +169,10 @@ export const JoinUsFormCodeBased: React.FC = () => {
 
           {/* Row 3: University / Institution */}
           <div className="p-4 md:p-5 space-y-1.5 bg-background">
-            <Label htmlFor="institution" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+            <Label
+              htmlFor="institution"
+              className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+            >
               University / School / Institution
             </Label>
             <Input
@@ -154,13 +182,18 @@ export const JoinUsFormCodeBased: React.FC = () => {
               {...register("institution")}
             />
             {errors.institution && (
-              <p className="text-xs text-destructive mt-1">{errors.institution.message}</p>
+              <p className="text-xs text-destructive mt-1">
+                {errors.institution.message}
+              </p>
             )}
           </div>
 
           {/* Row 4: Preferred SEDS Chapter Dropdown */}
           <div className="p-4 md:p-5 space-y-1.5 bg-background">
-            <Label htmlFor="chapter" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+            <Label
+              htmlFor="chapter"
+              className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+            >
               Preferred SEDS Chapter (or Independent)
             </Label>
             <Select
@@ -174,11 +207,21 @@ export const JoinUsFormCodeBased: React.FC = () => {
                 <SelectValue placeholder="Select chapter..." />
               </SelectTrigger>
               <SelectContent className="bg-background border border-border/60 rounded-none z-[160]">
-                <SelectItem value="Independent / General Member">Independent / General Member</SelectItem>
-                <SelectItem value="SEDS UOM (University of Moratuwa)">SEDS UOM (University of Moratuwa)</SelectItem>
-                <SelectItem value="SEDS UOP (University of Peradeniya)">SEDS UOP (University of Peradeniya)</SelectItem>
-                <SelectItem value="SEDS USJ (University of Sri Jayewardenepura)">SEDS USJ (University of Sri Jayewardenepura)</SelectItem>
-                <SelectItem value="SEDS UOK (University of Kelaniya)">SEDS UOK (University of Kelaniya)</SelectItem>
+                <SelectItem value="Independent / General Member">
+                  Independent / General Member
+                </SelectItem>
+                <SelectItem value="SEDS UOM (University of Moratuwa)">
+                  SEDS UOM (University of Moratuwa)
+                </SelectItem>
+                <SelectItem value="SEDS UOP (University of Peradeniya)">
+                  SEDS UOP (University of Peradeniya)
+                </SelectItem>
+                <SelectItem value="SEDS USJ (University of Sri Jayewardenepura)">
+                  SEDS USJ (University of Sri Jayewardenepura)
+                </SelectItem>
+                <SelectItem value="SEDS UOK (University of Kelaniya)">
+                  SEDS UOK (University of Kelaniya)
+                </SelectItem>
                 <SelectItem value="SEDS SLIIT">SEDS SLIIT</SelectItem>
                 <SelectItem value="SEDS KDU">SEDS KDU</SelectItem>
               </SelectContent>
@@ -187,7 +230,10 @@ export const JoinUsFormCodeBased: React.FC = () => {
 
           {/* Row 5: Statement of Purpose */}
           <div className="p-4 md:p-5 space-y-1.5 bg-background">
-            <Label htmlFor="statement" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+            <Label
+              htmlFor="statement"
+              className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+            >
               Why do you want to join SEDS Sri Lanka?
             </Label>
             <Textarea
@@ -198,7 +244,9 @@ export const JoinUsFormCodeBased: React.FC = () => {
               {...register("statement")}
             />
             {errors.statement && (
-              <p className="text-xs text-destructive mt-1">{errors.statement.message}</p>
+              <p className="text-xs text-destructive mt-1">
+                {errors.statement.message}
+              </p>
             )}
           </div>
 
@@ -210,8 +258,12 @@ export const JoinUsFormCodeBased: React.FC = () => {
                 checked={watch("terms")}
                 onCheckedChange={(checked) => setValue("terms", !!checked)}
               />
-              <Label htmlFor="terms" className="text-xs text-muted-foreground cursor-pointer">
-                I agree to adhere to the SEDS Sri Lanka Code of Conduct & Regulations
+              <Label
+                htmlFor="terms"
+                className="text-xs text-muted-foreground cursor-pointer"
+              >
+                I agree to adhere to the SEDS Sri Lanka Code of Conduct &
+                Regulations
               </Label>
             </div>
 
@@ -223,9 +275,10 @@ export const JoinUsFormCodeBased: React.FC = () => {
               disabled={isSubmitting}
               className="w-full sm:w-auto cursor-pointer shrink-0"
             >
-              {isSubmitting ? "Submitting Application..." : "Submit Membership Application"}
+              {isSubmitting
+                ? "Submitting Application..."
+                : "Submit Membership Application"}
             </Button>
-
           </div>
         </div>
       </div>

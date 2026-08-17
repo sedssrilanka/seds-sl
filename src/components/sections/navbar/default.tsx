@@ -104,7 +104,6 @@ export default function Navbar({
               <div className="h-6 sm:h-7 md:h-8 w-auto relative shrink-0 flex items-center justify-center invert dark:invert-0">
                 {logo}
               </div>
-
             </a>
           </NavbarLeft>
 

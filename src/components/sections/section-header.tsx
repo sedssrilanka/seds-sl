@@ -65,7 +65,9 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
         <div className="text-sm md:text-base lg:text-lg mt-2 md:mt-3 px-0 md:px-2 max-w-4xl drop-shadow-sm">
           {description}
         </div>
-        {children && <div className="mt-4 md:mt-6 px-0 md:px-2">{children}</div>}
+        {children && (
+          <div className="mt-4 md:mt-6 px-0 md:px-2">{children}</div>
+        )}
       </motion.div>
     </div>
   );

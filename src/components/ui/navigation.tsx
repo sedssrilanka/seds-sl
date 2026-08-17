@@ -94,13 +94,11 @@ export default function Navigation({
                       "relative inline-flex items-center justify-center px-4 py-3 text-xs font-mono font-bold uppercase tracking-wider transition-all duration-200 border-x border-y-0",
                       isActive
                         ? "text-foreground border-foreground/60 bg-foreground/5"
-                        : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/20"
-
+                        : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/20",
                     )}
                   >
                     <span>{item.title}</span>
                   </Link>
-
                 </NavigationMenuLink>
               )}
             </NavigationMenuItem>
@@ -110,4 +108,3 @@ export default function Navigation({
     </NavigationMenu>
   );
 }
-

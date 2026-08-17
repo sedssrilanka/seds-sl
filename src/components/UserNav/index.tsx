@@ -59,12 +59,13 @@ export function UserNav() {
         <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-[10px] font-bold flex items-center justify-center font-mono border border-primary/40">
           {userInitial}
         </span>
-        <span className="hidden md:inline font-mono text-xs">{user.name || "Account"}</span>
+        <span className="hidden md:inline font-mono text-xs">
+          {user.name || "Account"}
+        </span>
       </button>
 
       {isOpen && (
         <div className="absolute right-0 top-full mt-1 w-56 border border-border/60 bg-background/95 backdrop-blur-md shadow-lg p-1.5 text-foreground z-50 font-mono">
-
           <div className="px-3 py-2 border-b border-border mb-1">
             <p className="text-xs font-semibold truncate text-foreground">
               {user.name || "My Account"}

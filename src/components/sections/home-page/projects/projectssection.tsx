@@ -8,7 +8,13 @@ import type { Project } from "@/payload-types";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 
-const ProjectCard = ({ project, index }: { project: Project; index: number }) => {
+const ProjectCard = ({
+  project,
+  index,
+}: {
+  project: Project;
+  index: number;
+}) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
@@ -41,9 +47,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         <div className="flex items-center justify-between mt-auto">
           <div className="flex items-center gap-2 text-muted-foreground font-mono text-xs">
             <Calendar className="size-3.5" />
-            <span>
-              {new Date(project.createdAt).toLocaleDateString()}
-            </span>
+            <span>{new Date(project.createdAt).toLocaleDateString()}</span>
           </div>
 
           <Link href={`/projects/${project.slug}`}>
@@ -107,7 +111,10 @@ const ProjectsSection = () => {
                 transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
                 className="h-full"
               >
-                <Link href="/projects" className="block h-full group bg-background p-8 flex items-center justify-center">
+                <Link
+                  href="/projects"
+                  className="block h-full group bg-background p-8 flex items-center justify-center"
+                >
                   <div className="flex flex-col items-center justify-center text-center">
                     <h3 className="text-xl font-bold mb-4 text-foreground">
                       Explore More Projects

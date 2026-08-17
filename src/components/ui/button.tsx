@@ -63,7 +63,9 @@ function Button({
   const buttonContent = (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant: activeVariant, size, className }))}
+      className={cn(
+        buttonVariants({ variant: activeVariant, size, className }),
+      )}
       {...props}
     >
       {children}
@@ -87,4 +89,3 @@ function Button({
 }
 
 export { Button, buttonVariants };
-

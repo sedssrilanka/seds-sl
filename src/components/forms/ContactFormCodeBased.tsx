@@ -76,7 +76,9 @@ export const ContactFormCodeBased: React.FC = () => {
       reset();
     } catch (err) {
       console.error(err);
-      toast.success("Message received! Thank you for reaching out to SEDS Sri Lanka.");
+      toast.success(
+        "Message received! Thank you for reaching out to SEDS Sri Lanka.",
+      );
       reset();
     } finally {
       setIsSubmitting(false);
@@ -101,7 +103,10 @@ export const ContactFormCodeBased: React.FC = () => {
           {/* Row 1: First Name & Last Name */}
           <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60">
             <div className="p-4 md:p-5 space-y-1.5 bg-background">
-              <Label htmlFor="firstName" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+              <Label
+                htmlFor="firstName"
+                className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+              >
                 First Name
               </Label>
               <Input
@@ -111,12 +116,17 @@ export const ContactFormCodeBased: React.FC = () => {
                 {...register("firstName")}
               />
               {errors.firstName && (
-                <p className="text-xs text-destructive mt-1">{errors.firstName.message}</p>
+                <p className="text-xs text-destructive mt-1">
+                  {errors.firstName.message}
+                </p>
               )}
             </div>
 
             <div className="p-4 md:p-5 space-y-1.5 bg-background">
-              <Label htmlFor="lastName" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+              <Label
+                htmlFor="lastName"
+                className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+              >
                 Last Name
               </Label>
               <Input
@@ -126,7 +136,9 @@ export const ContactFormCodeBased: React.FC = () => {
                 {...register("lastName")}
               />
               {errors.lastName && (
-                <p className="text-xs text-destructive mt-1">{errors.lastName.message}</p>
+                <p className="text-xs text-destructive mt-1">
+                  {errors.lastName.message}
+                </p>
               )}
             </div>
           </div>
@@ -134,7 +146,10 @@ export const ContactFormCodeBased: React.FC = () => {
           {/* Row 2: Email & Phone */}
           <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60">
             <div className="p-4 md:p-5 space-y-1.5 bg-background">
-              <Label htmlFor="email" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+              <Label
+                htmlFor="email"
+                className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+              >
                 Email Address
               </Label>
               <Input
@@ -145,12 +160,17 @@ export const ContactFormCodeBased: React.FC = () => {
                 {...register("email")}
               />
               {errors.email && (
-                <p className="text-xs text-destructive mt-1">{errors.email.message}</p>
+                <p className="text-xs text-destructive mt-1">
+                  {errors.email.message}
+                </p>
               )}
             </div>
 
             <div className="p-4 md:p-5 space-y-1.5 bg-background">
-              <Label htmlFor="phone" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+              <Label
+                htmlFor="phone"
+                className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+              >
                 Phone Number
               </Label>
               <PhoneInput
@@ -165,7 +185,10 @@ export const ContactFormCodeBased: React.FC = () => {
 
           {/* Row 3: Shadcn UI Dropdown */}
           <div className="p-4 md:p-5 space-y-1.5 bg-background">
-            <Label htmlFor="reason" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+            <Label
+              htmlFor="reason"
+              className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+            >
               Reason for Contact
             </Label>
             <Select
@@ -180,8 +203,12 @@ export const ContactFormCodeBased: React.FC = () => {
               </SelectTrigger>
               <SelectContent className="bg-background border border-border/60 rounded-none z-[160]">
                 <SelectItem value="General Inquiry">General Inquiry</SelectItem>
-                <SelectItem value="Membership">Membership & Chapter Info</SelectItem>
-                <SelectItem value="Partnership">Sponsorship & Partnership</SelectItem>
+                <SelectItem value="Membership">
+                  Membership & Chapter Info
+                </SelectItem>
+                <SelectItem value="Partnership">
+                  Sponsorship & Partnership
+                </SelectItem>
                 <SelectItem value="Events">Events & Competitions</SelectItem>
               </SelectContent>
             </Select>
@@ -189,7 +216,10 @@ export const ContactFormCodeBased: React.FC = () => {
 
           {/* Row 4: Message Textarea */}
           <div className="p-4 md:p-5 space-y-1.5 bg-background">
-            <Label htmlFor="message" className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground">
+            <Label
+              htmlFor="message"
+              className="text-xs uppercase tracking-wider font-mono font-bold text-muted-foreground"
+            >
               Message
             </Label>
             <Textarea
@@ -200,7 +230,9 @@ export const ContactFormCodeBased: React.FC = () => {
               {...register("message")}
             />
             {errors.message && (
-              <p className="text-xs text-destructive mt-1">{errors.message.message}</p>
+              <p className="text-xs text-destructive mt-1">
+                {errors.message.message}
+              </p>
             )}
           </div>
 
@@ -212,7 +244,10 @@ export const ContactFormCodeBased: React.FC = () => {
                 checked={watch("terms")}
                 onCheckedChange={(checked) => setValue("terms", !!checked)}
               />
-              <Label htmlFor="terms" className="text-xs text-muted-foreground cursor-pointer">
+              <Label
+                htmlFor="terms"
+                className="text-xs text-muted-foreground cursor-pointer"
+              >
                 I accept the Terms & Privacy Policy
               </Label>
             </div>
@@ -227,7 +262,6 @@ export const ContactFormCodeBased: React.FC = () => {
             >
               {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
-
           </div>
         </div>
       </div>

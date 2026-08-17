@@ -343,7 +343,6 @@
   }
 }
 
-
 /* Grid Column Spans - Mobile (4 columns) */
 .col-span-1 {
   grid-column: span 1;
@@ -903,6 +902,3 @@ body,
   height: 0px;
   background: transparent;
 }
-
-
-

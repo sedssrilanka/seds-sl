@@ -102,7 +102,10 @@ const WhoWeAreSection = () => {
                 transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
                 className="h-full"
               >
-                <Link href="/about" className="block h-full group bg-background p-8 flex items-center justify-center">
+                <Link
+                  href="/about"
+                  className="block h-full group bg-background p-8 flex items-center justify-center"
+                >
                   <div className="flex flex-col items-center justify-center text-center">
                     <h3 className="text-xl font-bold mb-4 text-foreground">
                       Learn More About Us

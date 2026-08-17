@@ -10,14 +10,15 @@ export const Width: React.FC<{
 
   return (
     <div
-      className={["px-3 py-2 form-field-width", className].filter(Boolean).join(" ")}
+      className={["px-3 py-2 form-field-width", className]
+        .filter(Boolean)
+        .join(" ")}
       style={
         {
           "--field-width": `${desktopWidth}%`,
         } as React.CSSProperties
       }
     >
-
       {children}
     </div>
   );

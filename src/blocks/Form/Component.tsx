@@ -194,8 +194,6 @@ export const FormBlock: React.FC<
                 className="mt-4 w-full sm:w-auto cursor-pointer"
                 disabled={isLoading}
               >
-
-
                 {isLoading ? (
                   <>
                     <svg

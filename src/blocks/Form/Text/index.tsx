@@ -79,8 +79,6 @@ export const Text: React.FC<
           />
         )}
 
-
-
         {errors?.[name]?.message &&
           typeof errors?.[name]?.message === "string" && (
             <FormError message={errors?.[name]?.message} />

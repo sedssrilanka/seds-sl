@@ -50,7 +50,6 @@ export default function ChaptersPage() {
             image="/section-header/who-we-are-bg.jpg"
           />
 
-
           {/* High-Tech Hairline Bleeding Search Bar */}
           <div className="max-w-xl mx-auto my-10 relative">
             <div className="absolute -left-4 -right-4 top-0 border-t border-border/60 pointer-events-none" />
@@ -95,7 +94,10 @@ export default function ChaptersPage() {
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 border border-border/60 divide-y divide-border/60 md:divide-y-0 bg-background relative z-0">
                 {[1, 2, 3, 4, 5, 6].map((i) => (
-                  <div key={i} className="p-6 border-r border-border/60 animate-pulse space-y-4">
+                  <div
+                    key={i}
+                    className="p-6 border-r border-border/60 animate-pulse space-y-4"
+                  >
                     <div className="w-full aspect-video bg-muted/50 border border-border/50" />
                     <div className="h-6 bg-muted/50 rounded w-2/3" />
                     <div className="h-4 bg-muted/50 rounded w-full" />
@@ -136,20 +138,15 @@ export default function ChaptersPage() {
                     {/* Footer & Meta Info */}
                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
                       <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
-                        {chapter.socialLinks && chapter.socialLinks.length > 0 && (
-                          <span>{chapter.socialLinks.length} Links</span>
-                        )}
-                        {chapter.contactEmail && (
-                          <span>Email Contact</span>
-                        )}
+                        {chapter.socialLinks &&
+                          chapter.socialLinks.length > 0 && (
+                            <span>{chapter.socialLinks.length} Links</span>
+                          )}
+                        {chapter.contactEmail && <span>Email Contact</span>}
                       </div>
 
                       <Link href={`/chapters/${chapter.slug}`}>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          bleed={true}
-                        >
+                        <Button variant="outline" size="sm" bleed={true}>
                           Know More
                         </Button>
                       </Link>
@@ -166,7 +163,9 @@ export default function ChaptersPage() {
               <div className="bg-muted/30 w-16 h-16 flex items-center justify-center mx-auto mb-4 border border-border/60">
                 <SearchX className="w-8 h-8 text-muted-foreground" />
               </div>
-              <h3 className="text-xl font-semibold mb-2 text-foreground">No chapters found</h3>
+              <h3 className="text-xl font-semibold mb-2 text-foreground">
+                No chapters found
+              </h3>
               <p className="text-muted-foreground text-sm">
                 We couldn't find any chapters matching "{searchQuery}". Try
                 adjusting your search terms.

@@ -9,7 +9,6 @@ import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/providers";
 import { LivePreviewListener } from "@/components/LivePreviewListener";
 
-
 const barlow = Barlow({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -68,7 +67,6 @@ export default function RootLayout({
 
             <Cart />
             <Toaster />
-
           </ThemeProvider>
         </Providers>
       </body>

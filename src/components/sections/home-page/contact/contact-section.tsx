@@ -34,7 +34,6 @@ const ContactSection = () => {
               </Card>
             </div>
 
-
             {/* Right Sidebar - Takes 1 column on desktop */}
             <div className="lg:col-span-1">
               <div className="space-y-6">
@@ -55,7 +54,6 @@ const ContactSection = () => {
                     >
                       Join SEDS Sri Lanka
                     </Button>
-
                   </div>
                 </Card>
 
