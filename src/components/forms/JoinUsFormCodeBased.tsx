@@ -219,11 +219,13 @@ export const JoinUsFormCodeBased: React.FC = () => {
               type="submit"
               variant="default"
               size="lg"
+              bleed={true}
               disabled={isSubmitting}
               className="w-full sm:w-auto cursor-pointer shrink-0"
             >
               {isSubmitting ? "Submitting Application..." : "Submit Membership Application"}
             </Button>
+
           </div>
         </div>
       </div>

@@ -98,10 +98,11 @@ const ProjectCard = ({ project }: { project: Project }) => {
           </div>
 
           <Link href={`/projects/${project.slug}`}>
-            <Button variant="outline" size="sm" className="rounded-sm">
+            <Button variant="outline" size="sm" bleed={true}>
               Know More
             </Button>
           </Link>
+
         </div>
       </div>
     </Card>

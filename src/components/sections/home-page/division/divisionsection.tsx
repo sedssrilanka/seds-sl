@@ -96,13 +96,14 @@ const DivisionsSection = async () => {
                         <Button
                           variant="outline"
                           size="sm"
-                          className="rounded-sm border-primary/20 hover:bg-primary/10"
+                          bleed={true}
                           asChild
                         >
                           <Link href={`/divisions/${division.slug}`}>
                             Learn More
                           </Link>
                         </Button>
+
                       </div>
                     </div>
                   </Card>

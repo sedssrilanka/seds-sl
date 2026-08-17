@@ -131,11 +131,13 @@ export function DivisionsClient() {
                     <Button
                       variant="outline"
                       size="sm"
-                      className="rounded-sm group-hover:border-primary/50 transition-colors gap-1"
+                      bleed={true}
+                      className="gap-1"
                     >
                       Learn More
                       <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
                     </Button>
+
                   </Link>
                 </div>
               </Card>

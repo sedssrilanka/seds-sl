@@ -221,11 +221,13 @@ export const ContactFormCodeBased: React.FC = () => {
               type="submit"
               variant="default"
               size="lg"
+              bleed={true}
               disabled={isSubmitting}
               className="w-full sm:w-auto cursor-pointer shrink-0"
             >
               {isSubmitting ? "Sending..." : "Send Message"}
             </Button>
+
           </div>
         </div>
       </div>

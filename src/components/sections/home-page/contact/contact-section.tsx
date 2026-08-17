@@ -50,10 +50,12 @@ const ContactSection = () => {
                     <Button
                       variant="default"
                       size="sm"
-                      className="w-full rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                      bleed={true}
+                      className="w-full cursor-pointer"
                     >
                       Join SEDS Sri Lanka
                     </Button>
+
                   </div>
                 </Card>
 

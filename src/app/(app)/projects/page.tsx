@@ -150,11 +150,12 @@ export default function ProjectsPage() {
                       <Button
                         variant="outline"
                         size="sm"
-                        className="rounded-sm group-hover:border-primary/50 transition-colors"
+                        bleed={true}
                       >
                         Know More
                       </Button>
                     </Link>
+
                   </div>
                 </Card>
               ))}
