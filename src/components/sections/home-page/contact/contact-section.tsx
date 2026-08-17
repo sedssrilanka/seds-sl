@@ -1,32 +1,9 @@
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
-import { FormBlock } from "@/blocks/Form/Component";
+import { ContactFormCodeBased } from "@/components/forms/ContactFormCodeBased";
 import { SectionHeader } from "@/components/sections/section-header";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-const ContactSection = async () => {
-  const payload = await getPayload({ config: configPromise });
-
-  let form = null;
-  try {
-    const forms = await payload.find({
-      collection: "forms",
-      where: {
-        title: {
-          equals: "Contact Form",
-        },
-      },
-      limit: 1,
-    });
-
-    if (forms.docs && forms.docs.length > 0) {
-      form = forms.docs[0];
-    }
-  } catch (err) {
-    console.error("Error fetching form:", err);
-  }
-
+const ContactSection = () => {
   return (
     <section className="light-mode-section relative w-full min-h-screen flex flex-col pt-8 md:pt-12 lg:pt-16 pb-16">
       <div className="section-background bg-background dark:bg-black"></div>
@@ -52,21 +29,8 @@ const ContactSection = async () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Contact Form - Takes 2 columns on desktop */}
             <div className="lg:col-span-2">
-              <Card className="rounded-none light-mode-card p-6 md:p-8 shadow-sm dark:shadow-none bg-background">
-                {form ? (
-                  <FormBlock
-                    form={form as any}
-                    enableIntro={false}
-                    id={form.id}
-                  />
-                ) : (
-                  <div className="text-center py-8">
-                    <p className="text-muted-foreground">
-                      The contact form is currently unavailable. Please try
-                      again later.
-                    </p>
-                  </div>
-                )}
+              <Card className="rounded-none light-mode-card p-6 md:p-8 shadow-sm dark:shadow-none bg-background border border-border/60">
+                <ContactFormCodeBased />
               </Card>
             </div>
 
@@ -85,7 +49,8 @@ const ContactSection = async () => {
                     <Button
                       variant="default"
                       size="sm"
-                      className="w-full rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg"
+                      bleed={true}
+                      className="w-full cursor-pointer"
                     >
                       Join SEDS Sri Lanka
                     </Button>
@@ -102,10 +67,10 @@ const ContactSection = async () => {
                         Email
                       </h4>
                       <a
-                        href="mailto:hello@seds.lk"
+                        href="mailto:hello@sedssl.org"
                         className="text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
-                        hello@seds.lk
+                        hello@sedssl.org
                       </a>
                     </div>
                     <div>

@@ -43,7 +43,7 @@ export const Textarea: React.FC<
           defaultValue={defaultValue}
           id={name}
           rows={rows}
-          className="!bg-transparent border-0 px-0 rounded-none min-h-[150px] focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+          className="w-full bg-transparent border-0 border-b border-border/60 px-0 py-2 rounded-none min-h-[140px] focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-foreground text-foreground placeholder:text-muted-foreground/60"
           placeholder="Type here"
           {...register(name, {
             required: requiredFromProps

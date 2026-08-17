@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ArrowRight,
@@ -14,10 +16,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
 import type { Division } from "@/payload-types";
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
 // Map string icon names to actual Lucide components
 const IconMap: Record<string, LucideIcon> = {
@@ -32,20 +33,15 @@ const IconMap: Record<string, LucideIcon> = {
   Users,
 };
 
-const DivisionsSection = async () => {
-  let divisions: Division[] = [];
-  try {
-    const payload = await getPayload({ config: configPromise });
+const DivisionsSection = () => {
+  const [divisions, setDivisions] = useState<Division[]>([]);
 
-    const { docs } = await payload.find({
-      collection: "divisions",
-      depth: 1,
-      limit: 3, // We'll show 5 + the "Discover All" card to make a nice 6-grid
-    });
-    divisions = docs;
-  } catch (error) {
-    console.error("Error fetching divisions:", error);
-  }
+  useEffect(() => {
+    fetch("/api/divisions?limit=3&depth=1")
+      .then((res) => res.json())
+      .then((data) => setDivisions(data.docs || []))
+      .catch(console.error);
+  }, []);
 
   return (
     <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
@@ -65,16 +61,33 @@ const DivisionsSection = async () => {
             image="/section-header/division.png"
           />
 
-          <div className="mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 border-border/60 dark:border-border/50">
-              {divisions.map((division) => {
+          <div className="mt-12 relative">
+            {/* Extended Horizontal Bleed Lines */}
+            <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
+            <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
+
+            {/* Extended Vertical Bleed Lines */}
+            <div className="absolute -top-6 -bottom-6 left-0 border-l border-border/60 pointer-events-none" />
+            <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
+            <div className="hidden md:block absolute -top-6 -bottom-6 left-1/2 border-l border-border/40 pointer-events-none" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 border border-border/60 divide-y divide-border/60 md:divide-y-0 md:divide-x bg-background relative z-0">
+              {divisions.map((division, idx) => {
                 const IconComponent =
                   IconMap[division.icon as keyof typeof IconMap] || Rocket;
 
                 return (
-                  <Card
+                  <motion.div
                     key={division.id}
-                    className="rounded-none border p-6 shadow-sm dark:shadow-none"
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, margin: "-40px" }}
+                    transition={{
+                      duration: 0.5,
+                      delay: idx * 0.1,
+                      ease: "easeOut",
+                    }}
+                    className="p-6 md:p-8 bg-background flex flex-col h-full"
                   >
                     <div className="flex flex-col h-full">
                       <div className="flex items-start gap-4 mb-4">
@@ -82,21 +95,21 @@ const DivisionsSection = async () => {
                           <IconComponent className="size-8 text-primary" />
                         </div>
                         <div className="flex-1">
-                          <CardTitle className="text-xl font-bold mb-3">
+                          <h3 className="text-xl font-bold mb-3 text-foreground">
                             {division.name}
-                          </CardTitle>
+                          </h3>
                         </div>
                       </div>
 
-                      <CardDescription className="text-sm leading-relaxed mb-6 flex-1">
+                      <p className="text-sm leading-relaxed mb-6 text-muted-foreground flex-1">
                         {division.description}
-                      </CardDescription>
+                      </p>
 
                       <div className="flex items-center justify-between mt-auto">
                         <Button
                           variant="outline"
                           size="sm"
-                          className="rounded-sm border-primary/20 hover:bg-primary/10"
+                          bleed={true}
                           asChild
                         >
                           <Link href={`/divisions/${division.slug}`}>
@@ -105,14 +118,23 @@ const DivisionsSection = async () => {
                         </Button>
                       </div>
                     </div>
-                  </Card>
+                  </motion.div>
                 );
               })}
 
               {/* View All Divisions Card */}
-              <Link href="/divisions" className="block h-full group">
-                <Card className="rounded-none h-full light-mode-card p-12 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none min-h-[250px] flex items-center justify-center">
-                  <div className="flex flex-col items-center justify-center h-full text-center">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                className="h-full"
+              >
+                <Link
+                  href="/divisions"
+                  className="block h-full group bg-background p-8 flex items-center justify-center"
+                >
+                  <div className="flex flex-col items-center justify-center text-center">
                     <h3 className="text-2xl font-bold mb-4 text-foreground">
                       Discover All Divisions
                     </h3>
@@ -121,8 +143,8 @@ const DivisionsSection = async () => {
                       <ArrowRight className="size-6 transition-transform group-hover:translate-x-1" />
                     </div>
                   </div>
-                </Card>
-              </Link>
+                </Link>
+              </motion.div>
             </div>
           </div>
         </div>

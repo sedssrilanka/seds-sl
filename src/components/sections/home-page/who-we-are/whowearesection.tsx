@@ -1,18 +1,17 @@
+"use client";
+
 import { Globe, Users, Flag, Network, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { SectionHeader } from "@/components/sections/section-header";
-import {
-  Card,
-  CardDescription,
-  CardTitle,
-  CardVisual,
-} from "@/components/ui/card";
+import { motion } from "motion/react";
+
 interface WhoWeAre {
   id: number;
   icon: React.ReactNode;
   title: string;
   description: string;
 }
+
 const whoweare: WhoWeAre[] = [
   {
     id: 1,
@@ -43,17 +42,25 @@ const whoweare: WhoWeAre[] = [
       "We aim to inspire and empower students to contribute to space exploration and development, promoting innovation, education, and sustainable progress in the global space sector.",
   },
 ];
-const Cardd = ({ whoweare }: { whoweare: WhoWeAre }) => (
-  <Card className="rounded-none border shadow-sm dark:shadow-none">
-    <CardVisual className="h-20 items-start justify-start">
-      <div className="glass-3 rounded-md p-4 ">{whoweare.icon}</div>
-    </CardVisual>
-    <CardTitle className="text-xl">{whoweare.title}</CardTitle>
-    <CardDescription className="text-sm leading-relaxed">
+
+const Cardd = ({ whoweare, index }: { whoweare: WhoWeAre; index: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: false, margin: "-40px" }}
+    transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+    className="p-6 md:p-8 bg-background flex flex-col h-full space-y-4"
+  >
+    <div className="p-3 bg-primary/10 border border-primary/20 w-fit">
+      {whoweare.icon}
+    </div>
+    <h3 className="text-xl font-bold text-foreground">{whoweare.title}</h3>
+    <p className="text-sm leading-relaxed text-muted-foreground flex-1">
       {whoweare.description}
-    </CardDescription>
-  </Card>
+    </p>
+  </motion.div>
 );
+
 const WhoWeAreSection = () => {
   return (
     <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
@@ -73,25 +80,43 @@ const WhoWeAreSection = () => {
             image="/section-header/who-we-are-bg.jpg"
           />
 
-          <div className="mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 border-border/60 dark:border-border/50">
-              {whoweare.slice(0, 3).map((w) => (
-                <Cardd key={w.id} whoweare={w} />
+          <div className="mt-12 relative">
+            {/* Extended Horizontal Bleed Lines */}
+            <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
+            <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
+
+            {/* Extended Vertical Bleed Lines */}
+            <div className="absolute -top-6 -bottom-6 left-0 border-l border-border/60 pointer-events-none" />
+            <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
+            <div className="hidden md:block absolute -top-6 -bottom-6 left-1/2 border-l border-border/40 pointer-events-none" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 border border-border/60 divide-y divide-border/60 md:divide-y-0 md:divide-x bg-background relative z-0">
+              {whoweare.slice(0, 3).map((w, idx) => (
+                <Cardd key={w.id} whoweare={w} index={idx} />
               ))}
               {/* View All About Us Card */}
-              <Link href="/about" className="block h-full group">
-                <Card className="rounded-none h-full light-mode-card p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
-                  <div className="flex flex-col items-end justify-start h-full text-right">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                className="h-full"
+              >
+                <Link
+                  href="/about"
+                  className="block h-full group bg-background p-8 flex items-center justify-center"
+                >
+                  <div className="flex flex-col items-center justify-center text-center">
                     <h3 className="text-xl font-bold mb-4 text-foreground">
                       Learn More About Us
                     </h3>
-                    <div className="flex items-right gap-2 text-primary">
+                    <div className="flex items-center gap-2 text-primary">
                       <span className="font-medium">View All About Us</span>
                       <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
                     </div>
                   </div>
-                </Card>
-              </Link>
+                </Link>
+              </motion.div>
             </div>
           </div>
         </div>
@@ -99,4 +124,5 @@ const WhoWeAreSection = () => {
     </section>
   );
 };
+
 export default WhoWeAreSection;

@@ -5,7 +5,7 @@ import type * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-xs text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -21,13 +21,15 @@ const buttonVariants = cva(
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-foreground underline-offset-4 hover:underline",
         nav: "text-primary/50 hover:text-primary/100 [&.active]:text-primary/100 p-0 pt-2 pb-6 uppercase font-mono tracking-[0.1em] text-xs",
+        bleed:
+          "text-primary-foreground shadow-sm dark:hover:from-primary/80 hover:from-primary/70 dark:hover:to-primary/70 hover:to-primary/90 bg-linear-to-b from-primary/60 to-primary/100 dark:from-primary/100 dark:to-primary/70 border-t-primary rounded-xs",
       },
       size: {
         clear: "",
         default: "h-9 px-4 py-2",
-        xs: "h-7 rounded-md px-2",
-        sm: "h-8 rounded-md px-3 text-xs",
-        lg: "h-10 rounded-md px-5",
+        xs: "h-7 rounded-xs px-2",
+        sm: "h-8 rounded-xs px-3 text-xs",
+        lg: "h-10 rounded-xs px-5",
         icon: "size-9",
       },
     },
@@ -42,6 +44,7 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
+  bleed?: boolean;
 }
 
 function Button({
@@ -49,16 +52,40 @@ function Button({
   variant,
   size,
   asChild = false,
+  bleed = false,
+  children,
   ...props
 }: ButtonProps) {
+  const isBleed = bleed || variant === "bleed";
   const Comp = asChild ? Slot : "button";
-  return (
+  const activeVariant = variant === "bleed" ? "default" : variant;
+
+  const buttonContent = (
     <Comp
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(
+        buttonVariants({ variant: activeVariant, size, className }),
+      )}
       {...props}
-    />
+    >
+      {children}
+    </Comp>
   );
+
+  if (isBleed) {
+    return (
+      <div className="relative inline-block my-1 mx-1">
+        {/* Extended Corner Bleed Lines */}
+        <div className="absolute -left-2.5 -right-2.5 top-0 border-t border-border/80 pointer-events-none z-10" />
+        <div className="absolute -left-2.5 -right-2.5 bottom-0 border-b border-border/80 pointer-events-none z-10" />
+        <div className="absolute -top-2.5 -bottom-2.5 left-0 border-l border-border/80 pointer-events-none z-10" />
+        <div className="absolute -top-2.5 -bottom-2.5 right-0 border-r border-border/80 pointer-events-none z-10" />
+        {buttonContent}
+      </div>
+    );
+  }
+
+  return buttonContent;
 }
 
 export { Button, buttonVariants };

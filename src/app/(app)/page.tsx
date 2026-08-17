@@ -10,7 +10,7 @@ export const revalidate = 60; // Revalidate every 60 seconds
 
 export default function Home() {
   return (
-    <div>
+    <div className="w-full divide-y divide-border/60">
       <SectionOne />
       <Chapters />
       <DivisionsSection />

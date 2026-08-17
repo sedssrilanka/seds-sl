@@ -41,11 +41,12 @@ export const Select: React.FC<
               value={controlledValue?.value}
             >
               <SelectTrigger
-                className="w-full !bg-transparent border-0 border-b border-b-border px-0 rounded-none focus:ring-0 focus:ring-offset-0 focus:border-b-primary"
+                className="w-full bg-transparent border-0 border-b border-border/60 px-0 py-2 rounded-none focus:ring-0 focus:ring-offset-0 text-foreground"
                 id={name}
               >
-                <SelectValue placeholder={label} />
+                <SelectValue placeholder="Select..." />
               </SelectTrigger>
+
               <SelectContent>
                 {options.map(({ label, value }) => {
                   return (
