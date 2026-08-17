@@ -14,7 +14,7 @@ const ContactSection = async () => {
       collection: "forms",
       where: {
         title: {
-          equals: "Contact Form",
+          like: "Contact",
         },
       },
       limit: 1,
@@ -22,10 +22,19 @@ const ContactSection = async () => {
 
     if (forms.docs && forms.docs.length > 0) {
       form = forms.docs[0];
+    } else {
+      const allForms = await payload.find({
+        collection: "forms",
+        limit: 1,
+      });
+      if (allForms.docs && allForms.docs.length > 0) {
+        form = allForms.docs[0];
+      }
     }
   } catch (err) {
     console.error("Error fetching form:", err);
   }
+
 
   return (
     <section className="light-mode-section relative w-full min-h-screen flex flex-col pt-8 md:pt-12 lg:pt-16 pb-16">

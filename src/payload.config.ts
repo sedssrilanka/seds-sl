@@ -45,7 +45,9 @@ export default buildConfig({
       },
       beforeLogin: ["@/components/BeforeLogin#BeforeLogin"],
       beforeDashboard: ["@/components/BeforeDashboard#BeforeDashboard"],
+      beforeNavLinks: ["@/components/AdminSeedNav#AdminSeedNav"],
     },
+
   },
 
   collections: [Users, Media, Projects, Chapters, Categories, Pages, Divisions],
