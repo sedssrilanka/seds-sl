@@ -32,17 +32,13 @@ export function UserNav() {
 
   if (!user) {
     return (
-      <Button
-        asChild
-        variant="outline"
-        size="sm"
-        className="gap-2 rounded-full border-border/80 text-foreground hover:bg-muted/80 text-xs px-3.5 h-9"
+      <Link
+        href="/login"
+        className="h-full px-5 sm:px-8 border-l border-border/60 flex items-center justify-center gap-2 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted/20 transition-colors cursor-pointer group"
       >
-        <Link href="/login">
-          <User className="size-3.5 text-muted-foreground" />
-          <span className="font-medium">Sign In</span>
-        </Link>
-      </Button>
+        <span>Sign In</span>
+        <User className="size-4 group-hover:scale-110 transition-transform shrink-0" />
+      </Link>
     );
   }
 
@@ -54,21 +50,23 @@ export function UserNav() {
       : "U";
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <Button
-        variant="ghost"
-        size="icon"
+    <div className="relative h-full" ref={dropdownRef}>
+      <button
+        type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="relative size-9 rounded-full border border-border/80 bg-card hover:bg-muted focus-visible:ring-1 focus-visible:ring-primary/30"
+        className="h-full px-5 sm:px-8 border-l border-border/60 flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted/20 transition-colors cursor-pointer group"
         title="User Account Menu"
       >
-        <span className="flex size-full items-center justify-center font-bold text-xs text-foreground uppercase">
+        <span className="w-5 h-5 rounded-full bg-primary/20 text-primary text-[10px] font-bold flex items-center justify-center font-mono border border-primary/40">
           {userInitial}
         </span>
-      </Button>
+        <span className="hidden md:inline font-mono text-xs">
+          {user.name || "Account"}
+        </span>
+      </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-56 rounded-xl border border-border bg-card/95 backdrop-blur-md shadow-lg p-1.5 text-foreground z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+        <div className="absolute right-0 top-full mt-1 w-56 border border-border/60 bg-background/95 backdrop-blur-md shadow-lg p-1.5 text-foreground z-50 font-mono">
           <div className="px-3 py-2 border-b border-border mb-1">
             <p className="text-xs font-semibold truncate text-foreground">
               {user.name || "My Account"}

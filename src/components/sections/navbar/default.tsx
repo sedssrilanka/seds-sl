@@ -1,5 +1,9 @@
-import { Menu } from "lucide-react";
-import { Suspense, type ReactNode } from "react";
+"use client";
+
+import { Menu, X } from "lucide-react";
+
+import { useState, Suspense, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
@@ -12,8 +16,7 @@ import {
   NavbarRight,
 } from "../../ui/navbar";
 import Navigation from "../../ui/navigation";
-import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
-import { ThemeSwitcher } from "../../ui/theme-switcher";
+import FullScreenMenu from "./full-screen-menu";
 import { Cart } from "@/components/Cart";
 import { OpenCartButton } from "@/components/Cart/OpenCart";
 import { UserNav } from "@/components/UserNav";
@@ -51,11 +54,13 @@ export default function Navbar({
     { text: "Home", href: "/" },
     { text: "About", href: "/about" },
     { text: "Chapters", href: "/chapters" },
+    { text: "Divisions", href: "/divisions" },
     { text: "Projects", href: "/projects" },
     { text: "Docs", href: "/docs/introduction" },
     { text: "Shop", href: "/shop" },
     { text: "Contact Us", href: "/contact-us" },
   ],
+
   actions = [
     {
       text: "Contact Us",
@@ -73,100 +78,67 @@ export default function Navbar({
   customNavigation,
   className,
 }: NavbarProps) {
-  return (
-    <header className={cn("sticky top-0 z-50 -mb-4", className)}>
-      <div className="fade-bottom bg-background/80 dark:bg-background/15 absolute left-0 h-24 flex flex-col items-center justify-center w-full backdrop-blur-lg border-b border-border/20 dark:border-border/10"></div>
-      <div className="grid-container section-content">
-        <div className="col-span-4 md:col-span-8 lg:col-span-12">
-          <NavbarComponent>
-            <NavbarLeft>
-              <a
-                href={homeUrl}
-                className="flex items-center gap-2 text-xl font-bold text-foreground"
-              >
-                <div className="invert dark:invert-0">{logo}</div>
-                {name}
-              </a>
-            </NavbarLeft>
-            <NavbarCenter>
-              {showNavigation && (customNavigation || <Navigation />)}
-            </NavbarCenter>
-            <NavbarRight>
-              {/* <div className="hidden md:block">
-                <ThemeSwitcher defaultValue="dark" />
-              </div> */}
-              {actions.map((action) =>
-                action.isButton ? (
-                  <Button
-                    key={action.href}
-                    variant={action.variant || "default"}
-                    asChild
-                  >
-                    <a href={action.href}>
-                      {action.icon}
-                      {action.text}
-                      {action.iconRight}
-                    </a>
-                  </Button>
-                ) : (
-                  <a
-                    key={action.href}
-                    href={action.href}
-                    className="hidden text-sm md:block text-foreground hover:text-primary transition-colors"
-                  >
-                    {action.text}
-                  </a>
-                ),
-              )}
+  const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-              <Suspense fallback={<OpenCartButton />}>
-                <Cart />
-              </Suspense>
+  return (
+    <header
+      className={cn(
+        "fixed top-0 left-0 right-0 z-[110] w-full border-b border-border/60 bg-background/80 backdrop-blur-md",
+        className,
+      )}
+    >
+      {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
+      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl border-x border-border/80 pointer-events-none z-[140]" />
+      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-[140] opacity-80" />
+
+      {/* NAVBAR CONTAINER ALIGNED FLUSH WITH MARGIN LINES */}
+      <div className="w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto relative z-[150]">
+        <NavbarComponent className="py-0 h-16 sm:h-20 flex items-stretch justify-between">
+          <NavbarLeft className="my-auto pl-4 md:pl-8">
+            <a
+              href={homeUrl}
+              className="flex items-center text-foreground font-mono"
+              aria-label="SEDS SL Home"
+            >
+              <div className="h-6 sm:h-7 md:h-8 w-auto relative shrink-0 flex items-center justify-center invert dark:invert-0">
+                {logo}
+              </div>
+            </a>
+          </NavbarLeft>
+
+          <NavbarRight className="h-full items-stretch flex items-stretch gap-0">
+            {/* Profile / Sign In Boxed Button (Hidden on Mobile) */}
+            <div className="hidden sm:flex h-full items-stretch">
               <UserNav />
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="shrink-0 md:hidden"
-                  >
-                    <Menu className="size-5" />
-                    <span className="sr-only">Toggle navigation menu</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="right">
-                  <nav className="grid gap-6 text-lg font-medium">
-                    <a
-                      href={homeUrl}
-                      className="flex items-center gap-2 text-xl font-bold text-foreground"
-                    >
-                      <div className="invert dark:invert-0">{logo}</div>
-                      <span>{name}</span>
-                    </a>
-                    {mobileLinks.map((link) => (
-                      <a
-                        key={link.href}
-                        href={link.href}
-                        className="text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {link.text}
-                      </a>
-                    ))}
-                    {/* <div className="pt-4 border-t border-border">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-foreground">
-                          Theme
-                        </span>
-                        <ThemeSwitcher defaultValue="system" />
-                      </div>
-                    </div> */}
-                  </nav>
-                </SheetContent>
-              </Sheet>
-            </NavbarRight>
-          </NavbarComponent>
-        </div>
+            </div>
+
+            {/* Large Full-Height Boxed Menu/Close Button sitting flush on vertical margin line */}
+            <button
+              type="button"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="h-full w-28 sm:w-36 border-x border-border/60 flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted/20 transition-colors cursor-pointer group"
+              aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
+            >
+              <span className="w-12 text-center inline-block">
+                {isMenuOpen ? "CLOSE" : "MENU"}
+              </span>
+              {isMenuOpen ? (
+                <X className="size-5 group-hover:rotate-90 transition-transform duration-300 shrink-0" />
+              ) : (
+                <Menu className="size-5 group-hover:scale-110 transition-transform shrink-0" />
+              )}
+            </button>
+          </NavbarRight>
+        </NavbarComponent>
       </div>
+
+      {/* FULL SCREEN ARCHITECTURAL OVERLAY MENU */}
+      <FullScreenMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        homeUrl={homeUrl}
+      />
     </header>
   );
 }

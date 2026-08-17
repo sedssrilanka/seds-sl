@@ -123,7 +123,11 @@ export const seed = async ({
     payload.logger.info(`— Seeding ${coll}...`);
 
     try {
-      await payload.db.deleteMany({ collection: coll as any, req, where: {} });
+      await payload.delete({
+        collection: coll as any,
+        req,
+        where: { id: { exists: true } },
+      });
     } catch (e) {
       payload.logger.error(`Error deleting ${coll}: ${e}`);
     }

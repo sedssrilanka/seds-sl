@@ -308,7 +308,7 @@
 /* Grid Container - Mobile First - 4 columns */
 .grid-container {
   width: 100%;
-  max-width: 100%;
+  max-width: 80rem;
   margin: 0 auto;
   padding: 0 1rem;
   display: grid;
@@ -331,15 +331,15 @@
     grid-template-columns: repeat(12, 1fr);
     gap: 2rem;
     padding: 0 2rem;
-    max-width: 1200px;
+    max-width: 80rem;
   }
 }
 
-/* Large Desktop - 12 columns with larger max-width */
+/* Large Desktop - 12 columns aligned to max-w-7xl margin lines */
 @media (min-width: 1280px) {
   .grid-container {
-    max-width: 1400px;
-    padding: 0 3rem;
+    max-width: 80rem;
+    padding: 0 2rem;
   }
 }
 
@@ -839,4 +839,66 @@
     max-width: var(--field-width, 100%);
     flex: 0 0 var(--field-width, 100%);
   }
+}
+
+/* ===== HIGH-TECH GRID LINE & CORNER PATTERN UTILITIES ===== */
+.grid-line-container {
+  position: relative;
+  border-color: hsl(var(--border) / 0.6);
+}
+
+.grid-corner-plus {
+  position: absolute;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.75rem;
+  line-height: 1;
+  color: hsl(var(--primary) / 0.7);
+  user-select: none;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.grid-corner-plus-tl {
+  top: -0.4rem;
+  left: -0.4rem;
+}
+
+.grid-corner-plus-tr {
+  top: -0.4rem;
+  right: -0.4rem;
+}
+
+.grid-corner-plus-bl {
+  bottom: -0.4rem;
+  left: -0.4rem;
+}
+
+.grid-corner-plus-br {
+  bottom: -0.4rem;
+  right: -0.4rem;
+}
+
+.grid-box-frame {
+  position: relative;
+  border: 1px solid hsl(var(--border) / 0.6);
+  background-color: hsl(var(--background));
+}
+
+.base-layout-margin-line {
+  border-color: hsl(var(--border) / 0.6);
+}
+
+/* ===== GLOBAL HIDDEN SCROLLBAR (PRESERVES FULL SCROLL FUNCTIONALITY) ===== */
+html,
+body,
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  height: 0px;
+  background: transparent;
 }

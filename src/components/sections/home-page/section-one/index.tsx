@@ -39,10 +39,10 @@ const Index: React.FC<Props> = () => {
                 </h1>
 
                 <div className="flex gap-4 justify-end">
-                  <Button asChild variant="default" size="lg">
+                  <Button asChild variant="default" size="lg" bleed={true}>
                     <Link href="/projects">Our Projects</Link>
                   </Button>
-                  <Button asChild variant="outline" size="lg">
+                  <Button asChild variant="outline" size="lg" bleed={true}>
                     <Link href="/join-us">Join Us</Link>
                   </Button>
                 </div>

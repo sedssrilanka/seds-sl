@@ -60,7 +60,7 @@ export const Text: React.FC<
                 value={value as string}
                 onChange={onChange}
                 id={name}
-                className="w-full"
+                className="w-full bg-transparent border-0 border-b border-border/60 rounded-none"
               />
             )}
           />
@@ -69,7 +69,7 @@ export const Text: React.FC<
             defaultValue={defaultValue}
             id={name}
             type="text"
-            className="!bg-transparent border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+            className="w-full bg-transparent border-0 border-b border-border/60 px-0 py-2 rounded-none focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-foreground text-foreground placeholder:text-muted-foreground/60"
             placeholder="Type here"
             {...register(name, {
               required: requiredFromProps

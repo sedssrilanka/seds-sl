@@ -39,8 +39,8 @@ export const Email: React.FC<
         <Input
           defaultValue={defaultValue}
           id={name}
-          type="text"
-          className="!bg-transparent border-0 border-b border-b-border px-0 rounded-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-b-primary"
+          type="email"
+          className="w-full bg-transparent border-0 border-b border-border/60 px-0 py-2 rounded-none focus-visible:ring-0 focus-visible:outline-none focus-visible:border-b-foreground text-foreground placeholder:text-muted-foreground/60"
           placeholder="Type here"
           {...register(name, {
             pattern: /^\S[^\s@]*@\S+$/,

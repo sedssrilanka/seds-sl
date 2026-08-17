@@ -1,80 +1,35 @@
+"use client";
+
 import { Calendar, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { SectionHeader } from "@/components/sections/section-header";
 import Link from "next/link";
-import Image from "next/image";
 import type { Project } from "@/payload-types";
-import config from "@payload-config";
-import { getPayload } from "payload";
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
-async function getProjects(): Promise<Project[]> {
-  console.log("Fetching unassigned projects for homepage...");
-  try {
-    const payload = await getPayload({ config });
-    // Fetch projects that are NOT assigned to a chapter (using Payload's OR operator)
-    const result = await payload.find({
-      collection: "projects",
-      limit: 3,
-      sort: "-createdAt",
-      where: {
-        or: [
-          {
-            chapter: {
-              equals: null,
-            },
-          },
-          {
-            chapter: {
-              exists: false,
-            },
-          },
-        ],
-      },
-      depth: 1,
-    });
-    return result.docs as Project[];
-  } catch (error) {
-    console.error("Error fetching projects:", error);
-    return [];
-  }
-}
-
-const getMediaUrl = (media: Project["image"]): string => {
-  if (typeof media === "object" && media !== null && "url" in media) {
-    if (media.url) return media.url;
-  }
-  return "";
-};
-
-const ProjectCard = ({ project }: { project: Project }) => {
-  const imageUrl = getMediaUrl(project.image);
-
+const ProjectCard = ({
+  project,
+  index,
+}: {
+  project: Project;
+  index: number;
+}) => {
   return (
-    <Card className="rounded-none p-4 md:p-6 border shadow-sm dark:shadow-none group overflow-hidden">
-      <div className=" flex flex-col h-full">
-        {/* Project Image */}
-        <div className="w-full aspect-video bg-muted border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center">
-          {imageUrl ? (
-            <Image
-              src={imageUrl}
-              alt={project.name}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-105"
-            />
-          ) : (
-            <div className="text-muted-foreground text-sm font-medium">
-              No Image
-            </div>
-          )}
-        </div>
-
-        <CardTitle className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: false, margin: "-40px" }}
+      transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+      className="p-6 md:p-8 bg-background group flex flex-col h-full"
+    >
+      <div className="flex flex-col h-full">
+        <h3 className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary">
           {project.name}
-        </CardTitle>
+        </h3>
 
         {project.chapter && (
-          <div className="text-sm text-muted-foreground mb-2">
+          <div className="text-sm text-muted-foreground mb-2 font-mono">
             Chapter:{" "}
             {typeof project.chapter === "object"
               ? project.chapter.name
@@ -82,34 +37,39 @@ const ProjectCard = ({ project }: { project: Project }) => {
           </div>
         )}
 
-        <CardDescription className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
+        <p className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
           {project?.description?.length > 120
             ? `${project.description.substring(0, 120)}...`
             : project.description}
-        </CardDescription>
+        </p>
 
         {/* Bottom Section with Date and Button */}
         <div className="flex items-center justify-between mt-auto">
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Calendar className="size-4" />
-            <span className="text-sm font-medium">
-              {new Date(project.createdAt).toLocaleDateString()}
-            </span>
+          <div className="flex items-center gap-2 text-muted-foreground font-mono text-xs">
+            <Calendar className="size-3.5" />
+            <span>{new Date(project.createdAt).toLocaleDateString()}</span>
           </div>
 
           <Link href={`/projects/${project.slug}`}>
-            <Button variant="outline" size="sm" className="rounded-sm">
+            <Button variant="outline" size="sm" bleed={true}>
               Know More
             </Button>
           </Link>
         </div>
       </div>
-    </Card>
+    </motion.div>
   );
 };
 
-const ProjectsSection = async () => {
-  const projects = await getProjects();
+const ProjectsSection = () => {
+  const [projects, setProjects] = useState<Project[]>([]);
+
+  useEffect(() => {
+    fetch("/api/projects?limit=3&depth=1&sort=-createdAt")
+      .then((res) => res.json())
+      .then((data) => setProjects(data.docs || []))
+      .catch(console.error);
+  }, []);
 
   return (
     <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
@@ -128,26 +88,44 @@ const ProjectsSection = async () => {
             image="/section-header/space-projects-bg.jpeg"
           />
 
-          <div className="mt-12">
-            <div className="grid grid-cols-1 md:grid-cols-2 border-border/60 dark:border-border/50">
-              {projects.map((project) => (
-                <ProjectCard key={project.id} project={project} />
+          <div className="mt-12 relative">
+            {/* Extended Horizontal Bleed Lines */}
+            <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
+            <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
+
+            {/* Extended Vertical Bleed Lines */}
+            <div className="absolute -top-6 -bottom-6 left-0 border-l border-border/60 pointer-events-none" />
+            <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
+            <div className="hidden md:block absolute -top-6 -bottom-6 left-1/2 border-l border-border/40 pointer-events-none" />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 border border-border/60 divide-y divide-border/60 md:divide-y-0 md:divide-x bg-background relative z-0">
+              {projects.map((project, idx) => (
+                <ProjectCard key={project.id} project={project} index={idx} />
               ))}
 
               {/* View All Projects Card */}
-              <Link href="/projects" className="block h-full group">
-                <Card className="rounded-none h-full light-mode-card p-8 cursor-pointer transition-colors duration-300 group-hover:border-primary/30 dark:group-hover:border-primary/20 shadow-sm dark:shadow-none">
-                  <div className="flex flex-col items-end justify-start h-full text-right">
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                className="h-full"
+              >
+                <Link
+                  href="/projects"
+                  className="block h-full group bg-background p-8 flex items-center justify-center"
+                >
+                  <div className="flex flex-col items-center justify-center text-center">
                     <h3 className="text-xl font-bold mb-4 text-foreground">
                       Explore More Projects
                     </h3>
-                    <div className="flex items-right gap-2 text-primary">
+                    <div className="flex items-center gap-2 text-primary">
                       <span className="font-medium">View All Projects</span>
                       <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
                     </div>
                   </div>
-                </Card>
-              </Link>
+                </Link>
+              </motion.div>
             </div>
           </div>
         </div>
