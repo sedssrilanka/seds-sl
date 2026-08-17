@@ -57,8 +57,15 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <main className="min-h-screen pt-16 sm:pt-20">{children}</main>
+            <main className="relative min-h-screen pt-16 sm:pt-20">
+              {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
+              <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl border-x border-border/80 pointer-events-none z-[5]" />
+              <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-[5] opacity-80" />
+
+              {children}
+            </main>
             <Footer />
+
             <Cart />
             <Toaster />
 

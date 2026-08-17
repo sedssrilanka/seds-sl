@@ -308,7 +308,7 @@
 /* Grid Container - Mobile First - 4 columns */
 .grid-container {
   width: 100%;
-  max-width: 100%;
+  max-width: 80rem;
   margin: 0 auto;
   padding: 0 1rem;
   display: grid;
@@ -331,17 +331,18 @@
     grid-template-columns: repeat(12, 1fr);
     gap: 2rem;
     padding: 0 2rem;
-    max-width: 1200px;
+    max-width: 80rem;
   }
 }
 
-/* Large Desktop - 12 columns with larger max-width */
+/* Large Desktop - 12 columns aligned to max-w-7xl margin lines */
 @media (min-width: 1280px) {
   .grid-container {
-    max-width: 1400px;
-    padding: 0 3rem;
+    max-width: 80rem;
+    padding: 0 2rem;
   }
 }
+
 
 /* Grid Column Spans - Mobile (4 columns) */
 .col-span-1 {
