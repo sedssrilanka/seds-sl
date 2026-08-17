@@ -12,7 +12,11 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full bg-background/80 backdrop-blur-xs border-t border-border/60 relative overflow-hidden">
+    <footer className="w-full bg-background border-t border-border/60 relative overflow-hidden">
+      {/* Extended Bleeding Guide Lines */}
+      <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none z-40" />
+      <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none z-40" />
+
       {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
       <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl border-x border-border/80 pointer-events-none z-30" />
       <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-30 opacity-80" />
@@ -40,17 +44,17 @@ export default function Footer() {
               </p>
             </div>
 
-            {/* Segregated 2x2 Square Grid Box for Social Media Anchored at Bottom */}
+            {/* Inline Social Icons inside Hairline Grid Box */}
             <div className="pt-4">
-              <div className="text-xs font-mono font-semibold uppercase text-primary tracking-wider mb-2">
+              <div className="text-xs font-mono font-semibold uppercase text-primary tracking-wider mb-3">
                 CONNECT WITH US
               </div>
-              <div className="grid grid-cols-2 divide-x divide-y divide-border/60 border border-border/60 bg-background/50 w-28 h-28">
+              <div className="flex items-center divide-x divide-border/60 border border-border/60 bg-background w-fit">
                 <a
                   href="https://www.facebook.com/sedssrilanka/"
                   target="_blank"
                   rel="noreferrer"
-                  className="aspect-square flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors group"
+                  className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors group"
                   aria-label="Facebook"
                 >
                   <FaFacebook className="w-4 h-4 group-hover:scale-110 transition-transform" />
@@ -59,7 +63,7 @@ export default function Footer() {
                   href="https://twitter.com/sedssl"
                   target="_blank"
                   rel="noreferrer"
-                  className="aspect-square flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors group"
+                  className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors group"
                   aria-label="Twitter"
                 >
                   <FaXTwitter className="w-4 h-4 group-hover:scale-110 transition-transform" />
@@ -68,7 +72,7 @@ export default function Footer() {
                   href="https://www.instagram.com/sedssrilanka/"
                   target="_blank"
                   rel="noreferrer"
-                  className="aspect-square flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors group"
+                  className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors group"
                   aria-label="Instagram"
                 >
                   <FaInstagram className="w-4 h-4 group-hover:scale-110 transition-transform" />
@@ -77,7 +81,7 @@ export default function Footer() {
                   href="https://lk.linkedin.com/company/seds-sri-lanka"
                   target="_blank"
                   rel="noreferrer"
-                  className="aspect-square flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors group"
+                  className="w-10 h-10 flex items-center justify-center text-muted-foreground hover:text-primary hover:bg-primary/10 transition-colors group"
                   aria-label="LinkedIn"
                 >
                   <FaLinkedin className="w-4 h-4 group-hover:scale-110 transition-transform" />
@@ -112,20 +116,11 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/products"
+                  href="/shop"
                   className="text-muted-foreground hover:text-primary text-sm transition-colors flex items-center group font-mono"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mr-2 group-hover:bg-primary transition-colors" />
                   Shop
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/events"
-                  className="text-muted-foreground hover:text-primary text-sm transition-colors flex items-center group font-mono"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mr-2 group-hover:bg-primary transition-colors" />
-                  Events
                 </Link>
               </li>
             </ul>
@@ -148,29 +143,29 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="/contact"
+                  href="/divisions"
                   className="text-muted-foreground hover:text-primary text-sm transition-colors flex items-center group font-mono"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mr-2 group-hover:bg-primary transition-colors" />
-                  Contact
+                  Divisions
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/terms"
+                  href="/contact-us"
                   className="text-muted-foreground hover:text-primary text-sm transition-colors flex items-center group font-mono"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mr-2 group-hover:bg-primary transition-colors" />
-                  Terms & Conditions
+                  Contact Us
                 </Link>
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/join-us"
                   className="text-muted-foreground hover:text-primary text-sm transition-colors flex items-center group font-mono"
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-primary/50 mr-2 group-hover:bg-primary transition-colors" />
-                  Privacy Policy
+                  Join Us
                 </Link>
               </li>
             </ul>
@@ -179,36 +174,37 @@ export default function Footer() {
           {/* Contact Details */}
           <div className="p-5 sm:p-6 md:py-16 md:pl-6 flex flex-col space-y-4">
             <h3 className="font-bold text-sm uppercase tracking-wider text-primary font-mono mb-1">
-              Get in touch
+              Contact
             </h3>
-            <ul className="space-y-3.5">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-primary mt-1 shrink-0" />
-                <span className="text-sm text-muted-foreground leading-relaxed font-sans">
-                  No 10, SEDS Headquarters,
-                  <br /> Colombo 00500, Sri Lanka
-                </span>
+            <ul className="space-y-3 font-mono text-xs">
+              <li className="flex items-start gap-2.5 text-muted-foreground">
+                <MapPin className="size-4 shrink-0 text-primary mt-0.5" />
+                <span>Sri Lanka</span>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-primary shrink-0" />
+              <li className="flex items-center gap-2.5 text-muted-foreground">
+                <Mail className="size-4 shrink-0 text-primary" />
                 <a
-                  href="mailto:hello@sedssl.org"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors font-mono"
+                  href="mailto:contact@sedssl.org"
+                  className="hover:text-primary transition-colors"
                 >
-                  hello@sedssl.org
+                  contact@sedssl.org
                 </a>
               </li>
             </ul>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="py-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs sm:text-sm font-mono text-muted-foreground">
-          <p className="text-center md:text-left">
-            &copy; {currentYear} SEDS Sri Lanka. All rights reserved.
-          </p>
-          <div className="flex items-center gap-6">
-            <span>Ad Astra per Aspera</span>
+        {/* Bottom copyright sub-bar */}
+        <div className="py-6 flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground font-mono gap-3">
+          <p>© {currentYear} SEDS Sri Lanka. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacy" className="hover:text-primary transition-colors">
+              Privacy Policy
+            </Link>
+            <span>•</span>
+            <Link href="/terms" className="hover:text-primary transition-colors">
+              Terms of Service
+            </Link>
           </div>
         </div>
       </div>
