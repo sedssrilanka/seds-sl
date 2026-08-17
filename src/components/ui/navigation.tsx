@@ -87,8 +87,9 @@ export default function Navigation({
                     className={cn(
                       "relative inline-flex items-center justify-center px-4 py-3 text-xs font-mono font-bold uppercase tracking-wider transition-all duration-200 border-x border-y-0",
                       isActive
-                        ? "text-primary border-primary bg-primary/5"
+                        ? "text-foreground border-foreground/60 bg-foreground/5"
                         : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/20"
+
                     )}
                   >
                     <span>{item.title}</span>

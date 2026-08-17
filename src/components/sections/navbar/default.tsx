@@ -1,7 +1,8 @@
 "use client";
 
-import { Menu } from "lucide-react";
-import { Suspense, type ReactNode } from "react";
+import { Menu, X } from "lucide-react";
+
+import { useState, Suspense, type ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
 import { cn } from "@/lib/utils";
@@ -15,7 +16,7 @@ import {
   NavbarRight,
 } from "../../ui/navbar";
 import Navigation from "../../ui/navigation";
-import { Sheet, SheetContent, SheetTrigger } from "../../ui/sheet";
+import FullScreenMenu from "./full-screen-menu";
 import { Cart } from "@/components/Cart";
 import { OpenCartButton } from "@/components/Cart/OpenCart";
 import { UserNav } from "@/components/UserNav";
@@ -76,109 +77,67 @@ export default function Navbar({
   className,
 }: NavbarProps) {
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className={cn("sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md", className)}>
-      {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
-      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl border-x border-border/80 pointer-events-none z-30" />
-      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-30 opacity-80" />
+    <header className={cn("fixed top-0 left-0 right-0 z-[110] w-full border-b border-border/60 bg-background/80 backdrop-blur-md", className)}>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-40">
-        <NavbarComponent className="py-4">
-          <NavbarLeft>
+      {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
+      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl border-x border-border/80 pointer-events-none z-[140]" />
+      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-[140] opacity-80" />
+
+      {/* NAVBAR CONTAINER CONSTRAINED INSIDE MARGIN LINES */}
+      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-[150]">
+        <NavbarComponent className="py-0 h-16 sm:h-20 flex items-stretch justify-between">
+          <NavbarLeft className="my-auto">
             <a
               href={homeUrl}
-              className="flex items-center gap-2 text-xl font-bold text-foreground"
+              className="flex items-center text-foreground font-mono"
+              aria-label="SEDS SL Home"
             >
-              <div className="invert dark:invert-0">{logo}</div>
-              {name}
+              <div className="h-7 sm:h-9 md:h-10 w-auto relative shrink-0 flex items-center justify-center invert dark:invert-0">{logo}</div>
             </a>
           </NavbarLeft>
-          <NavbarCenter>
-            {showNavigation && (customNavigation || <Navigation />)}
-          </NavbarCenter>
-          <NavbarRight>
-            {actions.map((action) =>
-              action.isButton ? (
-                <Button
-                  key={action.href}
-                  variant={action.variant || "default"}
-                  asChild
-                >
-                  <a href={action.href}>
-                    {action.icon}
-                    {action.text}
-                    {action.iconRight}
-                  </a>
-                </Button>
-              ) : (
-                <a
-                  key={action.href}
-                  href={action.href}
-                  className="hidden text-sm md:block text-foreground hover:text-primary transition-colors font-mono"
-                >
-                  {action.text}
-                </a>
-              ),
-            )}
 
-            <Suspense fallback={<OpenCartButton />}>
-              <Cart />
-            </Suspense>
+          <NavbarRight className="h-full items-stretch flex items-stretch">
+            {/* Profile / Sign In Boxed Button */}
             <UserNav />
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="shrink-0 md:hidden"
-                >
-                  <Menu className="size-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right">
-                <nav className="grid gap-3 text-lg font-medium pt-6">
-                  <a
-                    href={homeUrl}
-                    className="flex items-center gap-2 text-xl font-bold text-foreground mb-4"
-                  >
-                    <div className="invert dark:invert-0">{logo}</div>
-                    <span>{name}</span>
-                  </a>
-                  {mobileLinks.map((link) => {
-                    const isActive =
-                      pathname === link.href ||
-                      (link.href !== "/" && pathname?.startsWith(link.href));
 
-                    return (
-                      <a
-                        key={link.href}
-                        href={link.href}
-                        className={cn(
-                          "flex items-center justify-between px-4 py-3 text-xs font-mono font-bold uppercase tracking-wider transition-colors border-x border-y-0",
-                          isActive
-                            ? "text-primary border-primary bg-primary/5"
-                            : "text-muted-foreground border-transparent hover:text-foreground hover:bg-muted/20"
-                        )}
-                      >
-                        <span>{link.text}</span>
-                        {isActive && (
-                          <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                        )}
-                      </a>
-
-                    );
-                  })}
-                </nav>
-              </SheetContent>
-            </Sheet>
+            {/* Large Full-Height Boxed Menu/Close Button inside margin lines */}
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="h-full w-32 sm:w-36 border-x border-border/60 flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted/20 transition-colors cursor-pointer group"
+              aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
+            >
+              <span className="w-12 text-center inline-block">{isMenuOpen ? "CLOSE" : "MENU"}</span>
+              {isMenuOpen ? (
+                <X className="size-5 group-hover:rotate-90 transition-transform duration-300 shrink-0" />
+              ) : (
+                <Menu className="size-5 group-hover:scale-110 transition-transform shrink-0" />
+              )}
+            </button>
           </NavbarRight>
+
         </NavbarComponent>
       </div>
+
+
+
+
+
+
+      {/* FULL SCREEN ARCHITECTURAL OVERLAY MENU */}
+      <FullScreenMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        homeUrl={homeUrl}
+      />
     </header>
   );
 }
+
+
+
 
 
 

@@ -888,4 +888,20 @@
   border-color: hsl(var(--border) / 0.6);
 }
 
+/* ===== GLOBAL HIDDEN SCROLLBAR (PRESERVES FULL SCROLL FUNCTIONALITY) ===== */
+html,
+body,
+* {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+::-webkit-scrollbar {
+  display: none;
+  width: 0px;
+  height: 0px;
+  background: transparent;
+}
+
+
 

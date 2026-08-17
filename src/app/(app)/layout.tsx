@@ -55,8 +55,9 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             <Navbar />
-            <main className="min-h-screen">{children}</main>
+            <main className="min-h-screen pt-16 sm:pt-20">{children}</main>
             <Footer />
+
             <Toaster />
           </ThemeProvider>
         </Providers>

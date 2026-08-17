@@ -7,12 +7,13 @@ const SEDSSL = (
   },
 ) => (
   <Image
-    width={120}
-    height={120}
+    width={200}
+    height={200}
     alt={props.alt || "Logo"}
     src={props.src || "/logo/main-white.png"}
     {...props}
   />
+
 );
 
 export default SEDSSL;
