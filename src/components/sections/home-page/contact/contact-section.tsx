@@ -102,10 +102,10 @@ const ContactSection = async () => {
                         Email
                       </h4>
                       <a
-                        href="mailto:hello@seds.lk"
+                        href="mailto:hello@sedssl.org"
                         className="text-sm text-muted-foreground hover:text-primary transition-colors"
                       >
-                        hello@seds.lk
+                        hello@sedssl.org
                       </a>
                     </div>
                     <div>
