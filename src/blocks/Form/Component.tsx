@@ -190,9 +190,12 @@ export const FormBlock: React.FC<
                 form={formID}
                 type="submit"
                 variant="default"
-                className="px-6 rounded-sm transition-all duration-300 hover:scale-105 hover:shadow-lg w-full md:w-auto"
+                size="lg"
+                className="mt-4 w-full sm:w-auto cursor-pointer"
                 disabled={isLoading}
               >
+
+
                 {isLoading ? (
                   <>
                     <svg
