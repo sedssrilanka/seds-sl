@@ -80,36 +80,47 @@ export default function Navbar({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className={cn("fixed top-0 left-0 right-0 z-[110] w-full border-b border-border/60 bg-background/80 backdrop-blur-md", className)}>
-
+    <header
+      className={cn(
+        "fixed top-0 left-0 right-0 z-[110] w-full border-b border-border/60 bg-background/80 backdrop-blur-md",
+        className,
+      )}
+    >
       {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
       <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl border-x border-border/80 pointer-events-none z-[140]" />
       <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-[140] opacity-80" />
 
-      {/* NAVBAR CONTAINER CONSTRAINED INSIDE MARGIN LINES */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 relative z-[150]">
+      {/* NAVBAR CONTAINER ALIGNED FLUSH WITH MARGIN LINES */}
+      <div className="w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto relative z-[150]">
         <NavbarComponent className="py-0 h-16 sm:h-20 flex items-stretch justify-between">
-          <NavbarLeft className="my-auto">
+          <NavbarLeft className="my-auto pl-4 md:pl-8">
             <a
               href={homeUrl}
               className="flex items-center text-foreground font-mono"
               aria-label="SEDS SL Home"
             >
-              <div className="h-7 sm:h-9 md:h-10 w-auto relative shrink-0 flex items-center justify-center invert dark:invert-0">{logo}</div>
+              <div className="h-6 sm:h-7 md:h-8 w-auto relative shrink-0 flex items-center justify-center invert dark:invert-0">
+                {logo}
+              </div>
+
             </a>
           </NavbarLeft>
 
-          <NavbarRight className="h-full items-stretch flex items-stretch">
-            {/* Profile / Sign In Boxed Button */}
-            <UserNav />
+          <NavbarRight className="h-full items-stretch flex items-stretch gap-0">
+            {/* Profile / Sign In Boxed Button (Hidden on Mobile) */}
+            <div className="hidden sm:flex h-full items-stretch">
+              <UserNav />
+            </div>
 
-            {/* Large Full-Height Boxed Menu/Close Button inside margin lines */}
+            {/* Large Full-Height Boxed Menu/Close Button sitting flush on vertical margin line */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="h-full w-32 sm:w-36 border-x border-border/60 flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted/20 transition-colors cursor-pointer group"
+              className="h-full w-28 sm:w-36 border-x border-border/60 flex items-center justify-center gap-2.5 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider text-foreground hover:bg-muted/20 transition-colors cursor-pointer group"
               aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
             >
-              <span className="w-12 text-center inline-block">{isMenuOpen ? "CLOSE" : "MENU"}</span>
+              <span className="w-12 text-center inline-block">
+                {isMenuOpen ? "CLOSE" : "MENU"}
+              </span>
               {isMenuOpen ? (
                 <X className="size-5 group-hover:rotate-90 transition-transform duration-300 shrink-0" />
               ) : (
@@ -117,14 +128,8 @@ export default function Navbar({
               )}
             </button>
           </NavbarRight>
-
         </NavbarComponent>
       </div>
-
-
-
-
-
 
       {/* FULL SCREEN ARCHITECTURAL OVERLAY MENU */}
       <FullScreenMenu
@@ -135,9 +140,3 @@ export default function Navbar({
     </header>
   );
 }
-
-
-
-
-
-

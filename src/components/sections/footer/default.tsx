@@ -23,14 +23,16 @@ export default function Footer() {
           {/* Brand & About */}
           <div className="p-5 sm:p-6 md:py-16 md:pr-6 flex flex-col justify-between space-y-4">
             <div className="space-y-4">
-              <Link href="/" className="inline-flex items-center gap-3 group">
-                <div className="w-9 h-9 relative shrink-0">
-                  <SEDSSL className="w-full h-full object-contain invert dark:invert-0" />
+              <Link
+                href="/"
+                className="inline-block group"
+                aria-label="SEDS SL Home"
+              >
+                <div className="h-8 sm:h-10 w-auto relative shrink-0">
+                  <SEDSSL className="h-full w-auto object-contain invert dark:invert-0" />
                 </div>
-                <span className="text-2xl font-bold tracking-tight bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70 font-mono">
-                  SEDS SL
-                </span>
               </Link>
+
               <p className="text-muted-foreground text-sm leading-relaxed font-sans">
                 Students for the Exploration and Development of Space (SEDS) Sri
                 Lanka. Empowering students to contribute to the global space
@@ -84,11 +86,11 @@ export default function Footer() {
             </div>
           </div>
 
-
-
           {/* Quick Links */}
           <div className="p-5 sm:p-6 md:py-16 md:px-6 flex flex-col space-y-4">
-            <h3 className="font-bold text-sm uppercase tracking-wider text-primary font-mono mb-1">Explore</h3>
+            <h3 className="font-bold text-sm uppercase tracking-wider text-primary font-mono mb-1">
+              Explore
+            </h3>
             <ul className="space-y-2.5">
               <li>
                 <Link
@@ -131,7 +133,9 @@ export default function Footer() {
 
           {/* Organization */}
           <div className="p-5 sm:p-6 md:py-16 md:px-6 flex flex-col space-y-4">
-            <h3 className="font-bold text-sm uppercase tracking-wider text-primary font-mono mb-1">Organization</h3>
+            <h3 className="font-bold text-sm uppercase tracking-wider text-primary font-mono mb-1">
+              Organization
+            </h3>
             <ul className="space-y-2.5">
               <li>
                 <Link
@@ -174,7 +178,9 @@ export default function Footer() {
 
           {/* Contact Details */}
           <div className="p-5 sm:p-6 md:py-16 md:pl-6 flex flex-col space-y-4">
-            <h3 className="font-bold text-sm uppercase tracking-wider text-primary font-mono mb-1">Get in touch</h3>
+            <h3 className="font-bold text-sm uppercase tracking-wider text-primary font-mono mb-1">
+              Get in touch
+            </h3>
             <ul className="space-y-3.5">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-primary mt-1 shrink-0" />
@@ -209,4 +215,3 @@ export default function Footer() {
     </footer>
   );
 }
-
