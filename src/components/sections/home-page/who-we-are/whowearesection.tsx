@@ -1,18 +1,17 @@
+"use client";
+
 import { Globe, Users, Flag, Network, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { SectionHeader } from "@/components/sections/section-header";
-import {
-  Card,
-  CardDescription,
-  CardTitle,
-  CardVisual,
-} from "@/components/ui/card";
+import { motion } from "motion/react";
+
 interface WhoWeAre {
   id: number;
   icon: React.ReactNode;
   title: string;
   description: string;
 }
+
 const whoweare: WhoWeAre[] = [
   {
     id: 1,
@@ -43,8 +42,15 @@ const whoweare: WhoWeAre[] = [
       "We aim to inspire and empower students to contribute to space exploration and development, promoting innovation, education, and sustainable progress in the global space sector.",
   },
 ];
-const Cardd = ({ whoweare }: { whoweare: WhoWeAre }) => (
-  <div className="p-6 md:p-8 bg-background flex flex-col h-full space-y-4">
+
+const Cardd = ({ whoweare, index }: { whoweare: WhoWeAre; index: number }) => (
+  <motion.div
+    initial={{ opacity: 0, y: 30 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    viewport={{ once: false, margin: "-40px" }}
+    transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
+    className="p-6 md:p-8 bg-background flex flex-col h-full space-y-4"
+  >
     <div className="p-3 bg-primary/10 border border-primary/20 w-fit">
       {whoweare.icon}
     </div>
@@ -52,8 +58,9 @@ const Cardd = ({ whoweare }: { whoweare: WhoWeAre }) => (
     <p className="text-sm leading-relaxed text-muted-foreground flex-1">
       {whoweare.description}
     </p>
-  </div>
+  </motion.div>
 );
+
 const WhoWeAreSection = () => {
   return (
     <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
@@ -84,21 +91,29 @@ const WhoWeAreSection = () => {
             <div className="hidden md:block absolute -top-6 -bottom-6 left-1/2 border-l border-border/40 pointer-events-none" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 border border-border/60 divide-y divide-border/60 md:divide-y-0 md:divide-x bg-background relative z-0">
-              {whoweare.slice(0, 3).map((w) => (
-                <Cardd key={w.id} whoweare={w} />
+              {whoweare.slice(0, 3).map((w, idx) => (
+                <Cardd key={w.id} whoweare={w} index={idx} />
               ))}
               {/* View All About Us Card */}
-              <Link href="/about" className="block h-full group bg-background p-8 flex items-center justify-center">
-                <div className="flex flex-col items-center justify-center text-center">
-                  <h3 className="text-xl font-bold mb-4 text-foreground">
-                    Learn More About Us
-                  </h3>
-                  <div className="flex items-center gap-2 text-primary">
-                    <span className="font-medium">View All About Us</span>
-                    <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                className="h-full"
+              >
+                <Link href="/about" className="block h-full group bg-background p-8 flex items-center justify-center">
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <h3 className="text-xl font-bold mb-4 text-foreground">
+                      Learn More About Us
+                    </h3>
+                    <div className="flex items-center gap-2 text-primary">
+                      <span className="font-medium">View All About Us</span>
+                      <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             </div>
           </div>
         </div>

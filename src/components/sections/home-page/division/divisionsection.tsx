@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import {
   ArrowRight,
@@ -14,10 +16,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
-import { Card, CardDescription, CardTitle } from "@/components/ui/card";
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
 import type { Division } from "@/payload-types";
+import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 
 // Map string icon names to actual Lucide components
 const IconMap: Record<string, LucideIcon> = {
@@ -32,20 +33,15 @@ const IconMap: Record<string, LucideIcon> = {
   Users,
 };
 
-const DivisionsSection = async () => {
-  let divisions: Division[] = [];
-  try {
-    const payload = await getPayload({ config: configPromise });
+const DivisionsSection = () => {
+  const [divisions, setDivisions] = useState<Division[]>([]);
 
-    const { docs } = await payload.find({
-      collection: "divisions",
-      depth: 1,
-      limit: 3, // We'll show 5 + the "Discover All" card to make a nice 6-grid
-    });
-    divisions = docs;
-  } catch (error) {
-    console.error("Error fetching divisions:", error);
-  }
+  useEffect(() => {
+    fetch("/api/divisions?limit=3&depth=1")
+      .then((res) => res.json())
+      .then((data) => setDivisions(data.docs || []))
+      .catch(console.error);
+  }, []);
 
   return (
     <section className="light-mode-section relative w-full pt-8 md:pt-12 lg:pt-16">
@@ -76,13 +72,17 @@ const DivisionsSection = async () => {
             <div className="hidden md:block absolute -top-6 -bottom-6 left-1/2 border-l border-border/40 pointer-events-none" />
 
             <div className="grid grid-cols-1 md:grid-cols-2 border border-border/60 divide-y divide-border/60 md:divide-y-0 md:divide-x bg-background relative z-0">
-              {divisions.map((division) => {
+              {divisions.map((division, idx) => {
                 const IconComponent =
                   IconMap[division.icon as keyof typeof IconMap] || Rocket;
 
                 return (
-                  <div
+                  <motion.div
                     key={division.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false, margin: "-40px" }}
+                    transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
                     className="p-6 md:p-8 bg-background flex flex-col h-full"
                   >
                     <div className="flex flex-col h-full">
@@ -114,25 +114,32 @@ const DivisionsSection = async () => {
                         </Button>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 );
               })}
 
               {/* View All Divisions Card */}
-              <Link href="/divisions" className="block h-full group bg-background p-8 flex items-center justify-center">
-                <div className="flex flex-col items-center justify-center text-center">
-                  <h3 className="text-2xl font-bold mb-4 text-foreground">
-                    Discover All Divisions
-                  </h3>
-                  <div className="flex items-center gap-2 text-primary">
-                    <span className="font-medium text-lg">View All</span>
-                    <ArrowRight className="size-6 transition-transform group-hover:translate-x-1" />
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: 0.3, ease: "easeOut" }}
+                className="h-full"
+              >
+                <Link href="/divisions" className="block h-full group bg-background p-8 flex items-center justify-center">
+                  <div className="flex flex-col items-center justify-center text-center">
+                    <h3 className="text-2xl font-bold mb-4 text-foreground">
+                      Discover All Divisions
+                    </h3>
+                    <div className="flex items-center gap-2 text-primary">
+                      <span className="font-medium text-lg">View All</span>
+                      <ArrowRight className="size-6 transition-transform group-hover:translate-x-1" />
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
+              </motion.div>
             </div>
           </div>
-
         </div>
       </div>
     </section>

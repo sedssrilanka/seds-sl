@@ -41,14 +41,15 @@ export default function ChaptersPage() {
   }, [debouncedSearchQuery]);
 
   return (
-    <div className="flex flex-col w-full">
-      <SectionHeader
-        title="SEDS Chapters"
-        description="Explore our various SEDS chapters across Sri Lanka. Each chapter brings unique perspectives and initiatives to advance space exploration and technology."
-        image="/section-header/who-we-are-bg.jpg"
-      />
-      <div className="grid-container section-content mt-12">
+    <div className="flex flex-col w-full pt-8 md:pt-12 lg:pt-16">
+      <div className="grid-container section-content">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
+          <SectionHeader
+            title="SEDS Chapters"
+            description="Explore our various SEDS chapters across Sri Lanka. Each chapter brings unique perspectives and initiatives to advance space exploration and technology."
+            image="/section-header/who-we-are-bg.jpg"
+          />
+
 
           {/* High-Tech Hairline Bleeding Search Bar */}
           <div className="max-w-xl mx-auto my-10 relative">

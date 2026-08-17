@@ -1,4 +1,7 @@
-import type React from "react";
+"use client";
+
+import React, { useRef } from "react";
+import { motion, useScroll, useTransform } from "motion/react";
 
 interface SectionHeaderProps {
   title: string;
@@ -16,15 +19,28 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
   align = "center",
 }) => {
   const isLeft = align === "left";
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+
+  // Smooth Zoom-In on Scroll Down, Smooth Zoom-Out on Scroll Up
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.25]);
 
   return (
-    <div className="relative w-full min-h-[200px] md:min-h-[250px] lg:min-h-[300px] overflow-hidden">
-      {/* Background image with adaptive filter */}
-      <div
+    <div
+      ref={containerRef}
+      className="relative w-full min-h-[200px] md:min-h-[250px] lg:min-h-[300px] overflow-hidden"
+    >
+      {/* Background image with scroll-driven zoom in/out effect */}
+      <motion.div
         className="absolute inset-0 bg-center bg-cover bg-no-repeat"
         style={{
           backgroundImage: `url(${image})`,
           filter: "grayscale(100%) brightness(0.8)",
+          scale,
         }}
       />
 
@@ -32,7 +48,11 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
       <div className="absolute inset-0 bg-white/95 dark:bg-black/80" />
 
       {/* Content */}
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: false, margin: "-50px" }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
         className={`relative z-10 flex flex-col justify-center min-h-[200px] md:min-h-[250px] lg:min-h-[300px] w-full text-foreground ${
           isLeft
             ? "items-start text-left p-6 md:p-8 lg:p-12"
@@ -46,7 +66,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
           {description}
         </div>
         {children && <div className="mt-4 md:mt-6 px-0 md:px-2">{children}</div>}
-      </div>
+      </motion.div>
     </div>
   );
 };
