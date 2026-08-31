@@ -9,7 +9,8 @@ export const ObserveMoonEvents: CollectionConfig = {
     defaultColumns: [
       "title",
       "year",
-      "eventDate",
+      "startTime",
+      "endTime",
       "isPaid",
       "status",
       "createdAt",
@@ -48,35 +49,39 @@ export const ObserveMoonEvents: CollectionConfig = {
       label: "Event Year (e.g. 2026)",
     },
     {
-      name: "eventDate",
-      type: "date",
-      label: "Event Date",
-      admin: {
-        date: {
-          pickerAppearance: "dayOnly",
-          displayFormat: "MMMM d, yyyy",
-        },
-      },
-    },
-    {
       name: "startTime",
       type: "date",
-      label: "Start Time (Sri Lanka Time +05:30)",
+      required: true,
+      label: "Start Date & Time (Sri Lanka Time +05:30)",
       admin: {
         date: {
-          pickerAppearance: "timeOnly",
-          displayFormat: "hh:mm a",
+          pickerAppearance: "dayAndTime",
+          displayFormat: "MMM d, yyyy - hh:mm a",
         },
       },
     },
     {
       name: "endTime",
       type: "date",
-      label: "End Time (Sri Lanka Time +05:30)",
+      required: true,
+      label: "End Date & Time (Sri Lanka Time +05:30)",
       admin: {
         date: {
-          pickerAppearance: "timeOnly",
-          displayFormat: "hh:mm a",
+          pickerAppearance: "dayAndTime",
+          displayFormat: "MMM d, yyyy - hh:mm a",
+        },
+      },
+    },
+    {
+      name: "eventDate",
+      type: "date",
+      label: "Event Date (Legacy)",
+      admin: {
+        description:
+          "Legacy date field. Start Date & Time and End Date & Time are used automatically.",
+        date: {
+          pickerAppearance: "dayOnly",
+          displayFormat: "MMMM d, yyyy",
         },
       },
     },
@@ -98,32 +103,15 @@ export const ObserveMoonEvents: CollectionConfig = {
       label: "Hero / Header Image",
     },
     {
-      name: "listingImage",
-      type: "upload",
-      relationTo: "media",
-      label: "Listing Thumbnail Image for Projects Page",
-    },
-    {
-      name: "isFeatured",
-      type: "checkbox",
-      defaultValue: true,
-      label: "Feature on Projects Page",
-      admin: {
-        description:
-          "Check to display this flagship event in the Featured spotlight banner on Projects page",
-      },
-    },
-
-    {
       name: "isPaid",
       type: "checkbox",
+      label: "Is this a paid ticketed event?",
       defaultValue: false,
-      label: "Is Paid Event?",
     },
     {
       name: "ticketPrice",
       type: "text",
-      label: "Ticket Price / Fee (e.g. LKR 1,000)",
+      label: "Ticket Price (e.g. LKR 1,500)",
       admin: {
         condition: (data) => Boolean(data?.isPaid),
       },
@@ -140,27 +128,72 @@ export const ObserveMoonEvents: CollectionConfig = {
     {
       name: "paymentDetails",
       type: "textarea",
-      label: "Bank Account Transfer & Payment Details",
+      label: "Bank Account Transfer Instructions & Details",
       admin: {
         condition: (data) => Boolean(data?.isPaid),
       },
     },
     {
+      name: "confirmationEmailSubject",
+      type: "text",
+      label: "Custom Confirmation Email Subject (Optional)",
+    },
+    {
+      name: "confirmationEmailBody",
+      type: "textarea",
+      label: "Custom Confirmation Email Message / Instructions (Optional)",
+    },
+    {
+      name: "locations",
+      type: "array",
+      label: "Host Observation Locations",
+      fields: [
+        {
+          name: "name",
+          type: "text",
+          required: true,
+          label: "Location Name",
+        },
+        {
+          name: "city",
+          type: "text",
+          label: "City / Region",
+        },
+        {
+          name: "latitude",
+          type: "number",
+          required: true,
+          label: "Latitude",
+        },
+        {
+          name: "longitude",
+          type: "number",
+          required: true,
+          label: "Longitude",
+        },
+        {
+          name: "isPrimary",
+          type: "checkbox",
+          label: "Primary Central Host Site",
+          defaultValue: false,
+        },
+      ],
+    },
+    {
       name: "agenda",
       type: "array",
-      label: "Event Agenda & Schedule",
+      label: "Event Agenda Schedule",
       fields: [
         {
           name: "time",
           type: "text",
           required: true,
-          label: "Time (e.g. 06:30 PM)",
+          label: "Time Slot (e.g. 18:30 - 19:15)",
         },
         {
           name: "stage",
           type: "text",
-          defaultValue: "PHASE 01",
-          label: "Stage / Phase Tag",
+          label: "Session Stage / Type (e.g. KEYNOTE, WORKSHOP)",
         },
         {
           name: "title",
@@ -176,139 +209,55 @@ export const ObserveMoonEvents: CollectionConfig = {
       ],
     },
     {
-      name: "locations",
-      type: "array",
-      label: "Observation Host Locations",
-      fields: [
-        {
-          name: "name",
-          type: "text",
-          required: true,
-          label: "Location Name (e.g. Galle Face Green)",
-        },
-        {
-          name: "city",
-          type: "text",
-          label: "City / Address (e.g. Colombo 03)",
-        },
-        {
-          name: "latitude",
-          type: "number",
-          required: true,
-          label: "Latitude Coordinate",
-        },
-        {
-          name: "longitude",
-          type: "number",
-          required: true,
-          label: "Longitude Coordinate",
-        },
-        {
-          name: "isPrimary",
-          type: "checkbox",
-          defaultValue: false,
-          label: "Primary Host Site",
-        },
-      ],
-    },
-    {
       name: "partners",
       type: "array",
-      label: "Event Partners & Sponsors",
+      label: "Event Partners & Organizers",
       fields: [
         {
           name: "name",
           type: "text",
           required: true,
-          label: "Partner / Sponsor Name",
+        },
+        {
+          name: "role",
+          type: "text",
         },
         {
           name: "logo",
           type: "upload",
           relationTo: "media",
-          label: "Partner Logo",
         },
         {
-          name: "partnershipType",
-          type: "select",
-          defaultValue: "Sponsor",
-          options: [
-            { label: "Sponsor", value: "Sponsor" },
-            { label: "Global Partner", value: "Global Partner" },
-            { label: "Academic Partner", value: "Academic Partner" },
-            { label: "Media Partner", value: "Media Partner" },
-            { label: "Equipment Partner", value: "Equipment Partner" },
-          ],
-          label: "Partnership Type",
-        },
-        {
-          name: "websiteUrl",
+          name: "website",
           type: "text",
-          label: "Website URL",
         },
       ],
-    },
-    {
-      name: "feedbackUrl",
-      type: "text",
-      label: "Tally Feedback Form URL / Embed Link",
-      admin: {
-        description:
-          "Paste your Tally.so form link or embed URL (e.g. https://tally.so/r/gD604M?transparentBackground=1)",
-      },
     },
     {
       name: "isFeedbackActive",
       type: "checkbox",
+      label: "Show Feedback Form Section?",
       defaultValue: true,
-      label: "Enable Feedback Form",
-      admin: {
-        description:
-          "Check to enable the feedback button and feedback page for this event year",
-      },
+    },
+    {
+      name: "feedbackUrl",
+      type: "text",
+      label: "Embedded Feedback Form Iframe URL",
     },
     {
       name: "feedbackFormHeight",
       type: "text",
+      label: "Feedback Form Iframe Height (px)",
       defaultValue: "1850",
-      label: "Tally Form Height (px)",
-      admin: {
-        description:
-          "Optional height in pixels for the feedback form iframe (e.g. 1850 or 2200). Defaults to 1850.",
-      },
-    },
-    {
-      name: "confirmationEmailSubject",
-      type: "text",
-      label: "Registration Confirmation Email Subject",
-      admin: {
-        description:
-          "Custom email subject for registration confirmation (e.g. Registration Confirmed: International Observe the Moon Night 2026)",
-      },
-    },
-    {
-      name: "confirmationEmailBody",
-      type: "textarea",
-      label: "Registration Confirmation Email Custom Message",
-      admin: {
-        description:
-          "Custom welcome message and event instructions included in the confirmation email sent to registrants for this year.",
-      },
     },
     {
       name: "status",
       type: "select",
-      defaultValue: "published",
       options: [
+        { label: "Draft", value: "draft" },
         { label: "Published", value: "published" },
-        { label: "Unpublished / Draft", value: "draft" },
-        { label: "Unpublished", value: "unpublished" },
       ],
-      label: "Publication Status",
-      admin: {
-        description:
-          "Only 'Published' events appear publicly on the Projects listing page and event URL routes.",
-      },
+      defaultValue: "draft",
     },
   ],
 };

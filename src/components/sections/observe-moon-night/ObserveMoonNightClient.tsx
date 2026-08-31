@@ -17,10 +17,12 @@ import {
   Wind,
   Eye,
   MessageSquareHeart,
+  MapPin,
 } from "lucide-react";
 
 import { motion } from "motion/react";
 import type { ObserveMoonEventResult } from "@/utilities/getObserveMoonNightProject";
+import { formatEventStartAndEnd } from "@/utilities/generateRegistrationEmail";
 
 interface ObserveMoonNightClientProps {
   slug: string;
@@ -35,12 +37,18 @@ export function ObserveMoonNightClient({
 }: ObserveMoonNightClientProps) {
   const title =
     eventData?.title || `International Observe the Moon Night ${year}`;
-  const eventDate = eventData?.eventDate;
-  const eventTime = eventData?.eventTime;
-  const location = eventData?.location;
+  const eventDate = eventData?.eventDate || "Saturday, September 19, 2026";
+  const location = eventData?.location || "Galle Face Green, Colombo 03";
   const description =
     eventData?.description ||
     "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration. Connect with observers worldwide as we look up at the Moon together.";
+
+  const eventTimeFormatting = formatEventStartAndEnd(
+    eventData?.startTime,
+    eventData?.endTime,
+    eventDate,
+  );
+  const formattedDateDisplay = eventTimeFormatting.fullDisplay;
 
   // Dynamic locations list from Payload CMS collection
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -156,8 +164,11 @@ export function ObserveMoonNightClient({
           isFeedbackActive={eventData?.isFeedbackActive}
         />
 
-        {/* DEDICATED FULL-WIDTH LIVE COUNTDOWN SECTION */}
-        <EventCountdownTimer targetDate={eventData?.startTime || eventDate} />
+        {/* DEDICATED FULL-WIDTH LIVE COUNTDOWN SECTION WITH EVENT DATE & TIME */}
+        <EventCountdownTimer
+          targetDate={eventData?.startTime || eventDate}
+          formattedDateDisplay={formattedDateDisplay}
+        />
 
         {/* SECTION 1: ABOUT THE INITIATIVE & MAP (MAP RENDERED SAFELY FOR DATABASE LOCATIONS) */}
         <div className="w-full border-b border-border/60 py-16 bg-background">
@@ -208,9 +219,9 @@ export function ObserveMoonNightClient({
                 </div>
               </div>
 
-              {/* Right Side: Leaflet Dark Map (Rendered safely if location or locations exist in database) */}
+              {/* Right Side: Leaflet Dark Map */}
               {showMap && (
-                <div className="lg:col-span-5 flex items-stretch">
+                <div className="lg:col-span-5 flex items-stretch min-h-[380px]">
                   <SriLankaDarkMap locations={locationsList} />
                 </div>
               )}

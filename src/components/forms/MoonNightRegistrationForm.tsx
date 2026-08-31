@@ -816,10 +816,10 @@ export function MoonNightRegistrationForm({
                 >
                   {/* Ticket header */}
                   <div
-                    className="relative px-6 py-5 flex items-center justify-between gap-4 overflow-hidden"
+                    className="relative px-6 py-6 flex flex-col items-center text-center space-y-3 overflow-hidden"
                     style={{
                       background:
-                        "radial-gradient(ellipse at 80% 50%, #1a1a3e 0%, #0a0a0f 70%)",
+                        "radial-gradient(ellipse at 50% 30%, #1a1a3e 0%, #0a0a0f 80%)",
                       borderBottom: "1px dashed rgba(255,255,255,0.15)",
                     }}
                   >
@@ -851,24 +851,24 @@ export function MoonNightRegistrationForm({
                       ))}
                     </div>
 
-                    <div className="relative space-y-1 z-10">
-                      <p className="text-[9px] font-mono font-bold uppercase tracking-widest text-slate-500">
-                        Observe the Moon Night · {year}
-                      </p>
-                      <p className="text-xl md:text-2xl font-black font-mono leading-tight text-white tracking-tight">
-                        {formValues.fullName || "—"}
-                      </p>
-                      <p className="text-xs text-slate-400 font-mono">
-                        {formValues.institution || "—"}
-                      </p>
-                    </div>
-
-                    {/* Moon logo */}
+                    {/* Centered Moon logo */}
                     <img
                       src="/logo/moon-seds.png"
                       alt="Observe the Moon Night"
-                      className="relative shrink-0 z-10 h-10 md:h-12 w-auto object-contain select-none opacity-90"
+                      className="relative shrink-0 z-10 h-10 md:h-12 w-auto object-contain select-none opacity-95 mx-auto"
                     />
+
+                    <div className="relative space-y-1.5 z-10 w-full max-w-full">
+                      <p className="text-[9px] font-mono font-bold uppercase tracking-widest text-slate-400">
+                        Observe the Moon Night · {year}
+                      </p>
+                      <h3 className="text-lg md:text-2xl font-extrabold font-mono leading-tight text-white tracking-tight break-words max-w-full">
+                        {formValues.fullName || "—"}
+                      </h3>
+                      <p className="text-xs text-slate-400 font-mono break-words">
+                        {formValues.institution || "—"}
+                      </p>
+                    </div>
                   </div>
 
                   {/* Perforated tear line */}
@@ -882,8 +882,8 @@ export function MoonNightRegistrationForm({
 
                   {/* Ticket body */}
                   <div className="flex flex-col sm:flex-row">
-                    {/* Main fields */}
-                    <div className="flex-1 px-6 py-5 grid grid-cols-2 gap-x-6 gap-y-5">
+                    {/* Main fields (Single column on mobile, 2 columns on desktop) */}
+                    <div className="flex-1 px-6 py-5 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
                       {[
                         { label: "Email", value: formValues.email },
                         { label: "Phone", value: formValues.phone },
@@ -901,7 +901,7 @@ export function MoonNightRegistrationForm({
                         },
                         { label: "Attendance", value: "In-Person" },
                       ].map((f) => (
-                        <div key={f.label}>
+                        <div key={f.label} className="min-w-0">
                           <p
                             className="text-[9px] font-mono font-bold uppercase tracking-widest mb-0.5"
                             style={{ color: "rgba(255,255,255,0.35)" }}
@@ -1062,15 +1062,6 @@ export function MoonNightRegistrationForm({
                               <p className="text-2xl font-black font-mono text-white tracking-tight mt-0.5">
                                 {formatCurrency(eventData.ticketPrice)}
                               </p>
-                            </div>
-                            <div
-                              className="px-3 py-1 text-[10px] font-mono font-bold uppercase tracking-widest"
-                              style={{
-                                background: "rgba(255,255,255,0.08)",
-                                color: "rgba(255,255,255,0.5)",
-                              }}
-                            >
-                              Bank Transfer
                             </div>
                           </div>
                         )}
@@ -1284,7 +1275,7 @@ export function MoonNightRegistrationForm({
                 className="bg-white border-slate-300 text-slate-900 hover:bg-slate-100 font-mono text-xs font-bold uppercase tracking-wider inline-flex items-center gap-2"
               >
                 <ArrowLeft className="size-4" />
-                <span>Previous</span>
+                <span className="hidden sm:inline">Previous</span>
               </Button>
             ) : (
               <div />
@@ -1313,7 +1304,7 @@ export function MoonNightRegistrationForm({
                     <span>Submitting...</span>
                   </span>
                 ) : (
-                  <span>Submit Registration</span>
+                  <span>Submit</span>
                 )}
               </Button>
             )}

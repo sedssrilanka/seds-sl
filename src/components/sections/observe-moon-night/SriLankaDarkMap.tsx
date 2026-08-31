@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Plus, Minus } from "lucide-react";
+import { Plus, Minus, ExternalLink, Navigation } from "lucide-react";
 import "leaflet/dist/leaflet.css";
 
 export interface MapLocationItem {
@@ -35,6 +35,8 @@ export function SriLankaDarkMap({ locations }: SriLankaDarkMapProps) {
     locations && locations.length > 0 ? locations : [defaultLocation];
   const primaryLoc =
     activeLocations.find((l) => l.isPrimary) || activeLocations[0];
+
+  const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${primaryLoc.latitude},${primaryLoc.longitude}`;
 
   useEffect(() => {
     setIsMounted(true);
@@ -104,12 +106,18 @@ export function SriLankaDarkMap({ locations }: SriLankaDarkMapProps) {
         });
       }
 
-      // Add CartoDB Dark Matter Tile Layer
+      // Add CartoDB Dark Matter Tile Layer with API Key
+      const cartoApiKey =
+        process.env.NEXT_PUBLIC_CARTO_API_KEY ||
+        "cb1_2n67_1_5439ee4a67277643b69e3bae";
+
       L.tileLayer(
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
+        `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${cartoApiKey}`,
         {
           maxZoom: 19,
           subdomains: "abcd",
+          attribution:
+            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>',
         },
       ).addTo(map);
 
@@ -140,11 +148,52 @@ export function SriLankaDarkMap({ locations }: SriLankaDarkMapProps) {
         const marker = L.marker(markerCoords, { icon: customIcon }).addTo(map);
 
         if (loc.name) {
+          const accentColor = loc.isPrimary ? "#3b82f6" : "#38bdf8";
           marker.bindTooltip(
-            `<div style="font-family: monospace; font-size: 11px; font-weight: bold; padding: 2px 4px;">${loc.name} ${
-              loc.city ? `(${loc.city})` : ""
-            }</div>`,
-            { permanent: false, direction: "top" },
+            `
+            <div style="
+              display: inline-flex;
+              align-items: center;
+              gap: 8px;
+              background: rgba(8, 12, 20, 0.92);
+              backdrop-filter: blur(8px);
+              border: 1px solid ${loc.isPrimary ? "rgba(59, 130, 246, 0.6)" : "rgba(56, 189, 248, 0.4)"};
+              padding: 4px 10px;
+              box-shadow: 0 4px 16px rgba(0, 0, 0, 0.7), 0 0 12px ${loc.isPrimary ? "rgba(59, 130, 246, 0.25)" : "rgba(56, 189, 248, 0.25)"};
+              white-space: nowrap;
+              pointer-events: none;
+            ">
+              <span style="
+                display: inline-block;
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background-color: ${accentColor};
+                box-shadow: 0 0 8px ${accentColor};
+                flex-shrink: 0;
+              "></span>
+              <span style="
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                font-size: 11px;
+                font-weight: 700;
+                color: #f8fafc;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+              ">
+                ${loc.name} ${
+                  loc.city
+                    ? `<span style="color: #94a3b8; font-weight: 500; font-size: 10px;">(${loc.city})</span>`
+                    : ""
+                }
+              </span>
+            </div>
+            `,
+            {
+              permanent: true,
+              direction: "top",
+              offset: [0, -12],
+              className: "custom-leaflet-tooltip",
+            },
           );
         }
       });
@@ -197,7 +246,19 @@ export function SriLankaDarkMap({ locations }: SriLankaDarkMapProps) {
         className="w-full h-full min-h-[380px] md:min-h-[440px] z-10 touch-pan-y"
       />
 
-      {/* Custom Theme Zoom Controls */}
+      {/* Open Direct in Google Maps Button (Bottom Left Corner) */}
+      <a
+        href={googleMapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="absolute bottom-4 left-4 z-30 inline-flex items-center gap-2 border border-border/60 bg-background/90 backdrop-blur-md px-3 py-1.5 text-xs font-mono font-bold uppercase text-foreground hover:bg-muted/30 transition-colors shadow-sm cursor-pointer"
+      >
+        <Navigation className="size-3.5 text-primary shrink-0" />
+        <span>Open in Google Maps</span>
+        <ExternalLink className="size-3 text-muted-foreground shrink-0" />
+      </a>
+
+      {/* Custom Theme Zoom Controls (Bottom Right Corner) */}
       <div className="absolute bottom-4 right-4 z-30 flex flex-col border border-border/60 divide-y divide-border/60 bg-background/90 backdrop-blur-md">
         <button
           type="button"

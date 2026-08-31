@@ -29,10 +29,14 @@ interface ObserveMoonHeroProps {
   isFeedbackActive?: boolean;
 }
 
+import { formatEventStartAndEnd } from "@/utilities/generateRegistrationEmail";
+
 export function ObserveMoonHero({
   title = "International Observe the Moon Night",
   year = "2026",
   eventDate,
+  startTime,
+  endTime,
   locations,
   agenda,
   description = "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration. Connect with observers worldwide as we look up at the Moon together.",
@@ -40,17 +44,21 @@ export function ObserveMoonHero({
   feedbackUrl,
   isFeedbackActive = true,
 }: ObserveMoonHeroProps) {
-  // Format eventDate if ISO string is passed
-  const formattedDate = eventDate
-    ? eventDate.includes("T")
-      ? new Date(eventDate).toLocaleDateString("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
+  const startDateObj = startTime
+    ? new Date(startTime)
+    : eventDate
+      ? new Date(eventDate)
+      : null;
+
+  const heroDateDisplay =
+    startDateObj && !isNaN(startDateObj.getTime())
+      ? startDateObj.toLocaleDateString("en-US", {
           timeZone: "Asia/Colombo",
+          weekday: "short",
+          month: "short",
+          day: "numeric",
         })
-      : eventDate
-    : undefined;
+      : "Sat, Sep 19";
 
   // Derive location string from locations array
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -108,32 +116,17 @@ export function ObserveMoonHero({
               </motion.p>
             )}
 
-            {/* Event Key Parameters Bar */}
-            {(formattedDate || locationName) && (
+            {/* Always Visible Short Event Date Pill (e.g. Sat, Sep 19) */}
+            {heroDateDisplay && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="relative pt-2"
+                className="pt-2"
               >
-                <div className="inline-flex max-w-fit flex-wrap border border-border/60 divide-y sm:divide-y-0 sm:divide-x divide-border/60 bg-background/90 backdrop-blur-md">
-                  {formattedDate && (
-                    <div className="p-3.5 inline-flex items-center gap-3 shrink-0">
-                      <Calendar className="size-4 text-primary shrink-0" />
-                      <div className="text-xs font-mono font-semibold text-foreground">
-                        {formattedDate}
-                      </div>
-                    </div>
-                  )}
-
-                  {locationName && (
-                    <div className="p-3.5 inline-flex items-center gap-3 shrink-0">
-                      <MapPin className="size-4 text-primary shrink-0" />
-                      <div className="text-xs font-mono font-semibold text-foreground">
-                        {locationName}
-                      </div>
-                    </div>
-                  )}
+                <div className="inline-flex items-center gap-2.5 border border-border/80 bg-background/95 backdrop-blur-md px-3.5 py-2 text-xs font-mono font-bold uppercase text-foreground tracking-wider shadow-xs">
+                  <Calendar className="size-3.5 text-primary shrink-0" />
+                  <span>{heroDateDisplay}</span>
                 </div>
               </motion.div>
             )}

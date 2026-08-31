@@ -3,6 +3,7 @@ import {
   generateRegistrationEmail,
   formatDateISO,
   formatTimeISO,
+  formatEventStartAndEnd,
 } from "../utilities/generateRegistrationEmail";
 import { Resend } from "resend";
 import { checkRole } from "@/access/utilities";
@@ -57,6 +58,8 @@ export const MoonRegistrations: CollectionConfig = {
               let cmsSubject: string | undefined;
               let cmsCustomMessage: string | undefined;
               let eventDate: string | undefined;
+              let startTime: string | undefined;
+              let endTime: string | undefined;
               let eventTime: string | undefined;
               let ticketPrice: string | undefined;
               let paymentDetails: string | undefined;
@@ -80,6 +83,8 @@ export const MoonRegistrations: CollectionConfig = {
                   cmsCustomMessage =
                     eventDoc.confirmationEmailBody || undefined;
                   eventDate = eventDoc.eventDate || undefined;
+                  startTime = eventDoc.startTime || undefined;
+                  endTime = eventDoc.endTime || undefined;
                   eventTime = eventDoc.startTime
                     ? `${eventDoc.startTime}${eventDoc.endTime ? ` - ${eventDoc.endTime}` : ""}`
                     : undefined;
@@ -110,8 +115,14 @@ export const MoonRegistrations: CollectionConfig = {
                       `You're confirmed — Observe the Moon Night ${year}`
                     : `Registration update — Observe the Moon Night ${year}`;
 
-                  const formattedEventDate = formatDateISO(eventDate);
-                  const formattedEventTime = formatTimeISO(eventTime);
+                  const {
+                    formattedDate: formattedEventDate,
+                    formattedTime: formattedEventTime,
+                  } = formatEventStartAndEnd(
+                    startTime || eventTime,
+                    endTime,
+                    eventDate,
+                  );
 
                   // eslint-disable-next-line @typescript-eslint/no-explicit-any
                   const resendResult: any = await resend.emails.send({

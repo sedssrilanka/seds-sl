@@ -1354,30 +1354,21 @@ export interface ObserveMoonEvent {
   id: number;
   title: string;
   year: string;
+  startTime: string;
+  endTime: string;
+  /**
+   * Legacy date field. Start Date & Time and End Date & Time are used automatically.
+   */
   eventDate?: string | null;
-  startTime?: string | null;
-  endTime?: string | null;
   description?: string | null;
   shortDescription?: string | null;
   heroImage?: (number | null) | Media;
-  listingImage?: (number | null) | Media;
-  /**
-   * Check to display this flagship event in the Featured spotlight banner on Projects page
-   */
-  isFeatured?: boolean | null;
   isPaid?: boolean | null;
   ticketPrice?: string | null;
   bankAccountNumber?: string | null;
   paymentDetails?: string | null;
-  agenda?:
-    | {
-        time: string;
-        stage?: string | null;
-        title: string;
-        description?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  confirmationEmailSubject?: string | null;
+  confirmationEmailBody?: string | null;
   locations?:
     | {
         name: string;
@@ -1388,47 +1379,28 @@ export interface ObserveMoonEvent {
         id?: string | null;
       }[]
     | null;
-  partners?:
+  agenda?:
     | {
-        name: string;
-        logo?: (number | null) | Media;
-        partnershipType?:
-          | (
-              | "Sponsor"
-              | "Global Partner"
-              | "Academic Partner"
-              | "Media Partner"
-              | "Equipment Partner"
-            )
-          | null;
-        websiteUrl?: string | null;
+        time: string;
+        stage?: string | null;
+        title: string;
+        description?: string | null;
         id?: string | null;
       }[]
     | null;
-  /**
-   * Paste your Tally.so form link or embed URL (e.g. https://tally.so/r/gD604M?transparentBackground=1)
-   */
-  feedbackUrl?: string | null;
-  /**
-   * Check to enable the feedback button and feedback page for this event year
-   */
+  partners?:
+    | {
+        name: string;
+        role?: string | null;
+        logo?: (number | null) | Media;
+        website?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   isFeedbackActive?: boolean | null;
-  /**
-   * Optional height in pixels for the feedback form iframe (e.g. 1850 or 2200). Defaults to 1850.
-   */
+  feedbackUrl?: string | null;
   feedbackFormHeight?: string | null;
-  /**
-   * Custom email subject for registration confirmation (e.g. Registration Confirmed: International Observe the Moon Night 2026)
-   */
-  confirmationEmailSubject?: string | null;
-  /**
-   * Custom welcome message and event instructions included in the confirmation email sent to registrants for this year.
-   */
-  confirmationEmailBody?: string | null;
-  /**
-   * Only 'Published' events appear publicly on the Projects listing page and event URL routes.
-   */
-  status?: ("published" | "draft" | "unpublished") | null;
+  status?: ("draft" | "published") | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -2117,27 +2089,18 @@ export interface MoonRegistrationsSelect<T extends boolean = true> {
 export interface ObserveMoonEventsSelect<T extends boolean = true> {
   title?: T;
   year?: T;
-  eventDate?: T;
   startTime?: T;
   endTime?: T;
+  eventDate?: T;
   description?: T;
   shortDescription?: T;
   heroImage?: T;
-  listingImage?: T;
-  isFeatured?: T;
   isPaid?: T;
   ticketPrice?: T;
   bankAccountNumber?: T;
   paymentDetails?: T;
-  agenda?:
-    | T
-    | {
-        time?: T;
-        stage?: T;
-        title?: T;
-        description?: T;
-        id?: T;
-      };
+  confirmationEmailSubject?: T;
+  confirmationEmailBody?: T;
   locations?:
     | T
     | {
@@ -2148,20 +2111,27 @@ export interface ObserveMoonEventsSelect<T extends boolean = true> {
         isPrimary?: T;
         id?: T;
       };
+  agenda?:
+    | T
+    | {
+        time?: T;
+        stage?: T;
+        title?: T;
+        description?: T;
+        id?: T;
+      };
   partners?:
     | T
     | {
         name?: T;
+        role?: T;
         logo?: T;
-        partnershipType?: T;
-        websiteUrl?: T;
+        website?: T;
         id?: T;
       };
-  feedbackUrl?: T;
   isFeedbackActive?: T;
+  feedbackUrl?: T;
   feedbackFormHeight?: T;
-  confirmationEmailSubject?: T;
-  confirmationEmailBody?: T;
   status?: T;
   updatedAt?: T;
   createdAt?: T;

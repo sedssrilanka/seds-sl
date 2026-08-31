@@ -27,6 +27,12 @@ export interface RegistrationEmailParams {
   agenda?: any[];
 }
 
+export interface FormattedEventTimeResult {
+  formattedDate: string;
+  formattedTime: string;
+  fullDisplay: string;
+}
+
 export function formatDateISO(dateStr?: string | null): string {
   if (!dateStr) return "Saturday, September 19, 2026";
   if (dateStr.includes("T") || !isNaN(Date.parse(dateStr))) {
@@ -64,6 +70,113 @@ export function formatTimeISO(timeStr?: string | null): string {
     }
   }
   return timeStr;
+}
+
+export function formatEventStartAndEnd(
+  startTime?: string | null,
+  endTime?: string | null,
+  fallbackDate?: string | null,
+): FormattedEventTimeResult {
+  if (!startTime && !endTime) {
+    const fallbackStr =
+      formatDateISO(fallbackDate) || "Saturday, September 19, 2026";
+    return {
+      formattedDate: fallbackStr,
+      formattedTime: "06:30 PM - 10:30 PM (SLST)",
+      fullDisplay: `${fallbackStr} · 06:30 PM - 10:30 PM (SLST)`,
+    };
+  }
+
+  // Handle case where startTime is a combined string e.g. "2026-09-19T13:00:00.000Z - 2026-09-19T17:00:00.000Z"
+  let startRaw = startTime;
+  let endRaw = endTime;
+  if (startTime && startTime.includes(" - ") && !endTime) {
+    const parts = startTime.split(" - ");
+    startRaw = parts[0].trim();
+    endRaw = parts[1].trim();
+  }
+
+  const startDate = startRaw ? new Date(startRaw) : null;
+  const endDate = endRaw ? new Date(endRaw) : null;
+
+  if (!startDate || isNaN(startDate.getTime())) {
+    const fallbackStr =
+      formatDateISO(fallbackDate) || "Saturday, September 19, 2026";
+    return {
+      formattedDate: fallbackStr,
+      formattedTime: "06:30 PM - 10:30 PM (SLST)",
+      fullDisplay: `${fallbackStr} · 06:30 PM - 10:30 PM (SLST)`,
+    };
+  }
+
+  const validEnd = endDate && !isNaN(endDate.getTime()) ? endDate : null;
+
+  const startLongDateStr = startDate.toLocaleDateString("en-US", {
+    timeZone: "Asia/Colombo",
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  const startDayShort = startDate.toLocaleDateString("en-US", {
+    timeZone: "Asia/Colombo",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  const startTimeStr = startDate.toLocaleTimeString("en-US", {
+    timeZone: "Asia/Colombo",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  if (!validEnd) {
+    return {
+      formattedDate: startLongDateStr,
+      formattedTime: `${startTimeStr} (SLST)`,
+      fullDisplay: `${startLongDateStr} at ${startTimeStr} (SLST)`,
+    };
+  }
+
+  const endLongDateStr = validEnd.toLocaleDateString("en-US", {
+    timeZone: "Asia/Colombo",
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
+  const endDayShort = validEnd.toLocaleDateString("en-US", {
+    timeZone: "Asia/Colombo",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
+  const endTimeStr = validEnd.toLocaleTimeString("en-US", {
+    timeZone: "Asia/Colombo",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+  });
+
+  const isSameDay =
+    startDate.toLocaleDateString("en-US", { timeZone: "Asia/Colombo" }) ===
+    validEnd.toLocaleDateString("en-US", { timeZone: "Asia/Colombo" });
+
+  if (isSameDay) {
+    return {
+      formattedDate: startLongDateStr,
+      formattedTime: `${startTimeStr} - ${endTimeStr} (SLST)`,
+      fullDisplay: `${startLongDateStr} · ${startTimeStr} - ${endTimeStr} (SLST)`,
+    };
+  }
+
+  // Multi-day / Overnight Event
+  return {
+    formattedDate: `${startDayShort} - ${endDayShort}, ${startDate.getFullYear()}`,
+    formattedTime: `${startDayShort}, ${startTimeStr} - ${endDayShort}, ${endTimeStr} (SLST)`,
+    fullDisplay: `${startDayShort}, ${startTimeStr} - ${endDayShort}, ${endTimeStr} (SLST)`,
+  };
 }
 
 export function generateRegistrationEmail(params: RegistrationEmailParams): {
@@ -125,12 +238,13 @@ export function generateRegistrationEmail(params: RegistrationEmailParams): {
           ? "Vegan"
           : "None / No Meal Required";
 
-  const formattedDate = formatDateISO(eventDate);
-  const formattedTimeDisplay = formatTimeISO(eventTime);
-
-  const formattedTime = formattedTimeDisplay.includes("SLST")
-    ? formattedTimeDisplay
-    : `${formattedTimeDisplay} (SLST)`;
+  const eventTimeFormatting = formatEventStartAndEnd(
+    eventTime,
+    null,
+    eventDate,
+  );
+  const formattedDate = eventTimeFormatting.formattedDate;
+  const formattedTime = eventTimeFormatting.formattedTime;
 
   // Determine Email Subject
   let subject = `Observe the Moon Night ${year} Registration`;

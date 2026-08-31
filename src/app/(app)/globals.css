@@ -919,3 +919,14 @@ body::-webkit-scrollbar,
   -ms-overflow-style: none !important;
   scrollbar-width: none !important;
 }
+
+/* Custom Leaflet Tooltip Styles */
+.leaflet-tooltip.custom-leaflet-tooltip {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+}
+.leaflet-tooltip.custom-leaflet-tooltip::before {
+  display: none !important;
+}

@@ -1,14 +1,18 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Timer, Sparkles } from "lucide-react";
+import { Timer, Sparkles, Calendar } from "lucide-react";
 import { motion } from "motion/react";
 
 interface EventCountdownTimerProps {
   targetDate?: string;
+  formattedDateDisplay?: string;
 }
 
-export function EventCountdownTimer({ targetDate }: EventCountdownTimerProps) {
+export function EventCountdownTimer({
+  targetDate,
+  formattedDateDisplay,
+}: EventCountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
     hours: number;
