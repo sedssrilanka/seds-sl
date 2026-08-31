@@ -53,6 +53,10 @@ export const Users: CollectionConfig = {
           value: "admin",
         },
         {
+          label: "finance",
+          value: "finance",
+        },
+        {
           label: "customer",
           value: "customer",
         },

@@ -214,7 +214,7 @@ export interface UserAuthOperations {
 export interface User {
   id: number;
   name?: string | null;
-  roles?: ("admin" | "customer")[] | null;
+  roles?: ("admin" | "finance" | "customer")[] | null;
   orders?: {
     docs?: (number | Order)[];
     hasNextPage?: boolean;
@@ -1310,20 +1310,39 @@ export interface Division {
  */
 export interface MoonRegistration {
   id: number;
-  registrationCode?: string | null;
+  /**
+   * Unique pass registration code e.g., IOTMN-2026-X8F9K
+   */
+  registrationCode: string;
   fullName: string;
   email: string;
   phone?: string | null;
+  /**
+   * University, school, or organization name
+   */
   institution: string;
+  /**
+   * Host observation site selected by participant
+   */
   selectedLocation?: string | null;
   year: string;
-  eventSlug: string;
+  eventSlug?: string | null;
   attendanceMode?: ("in-person" | "virtual" | "watch-party") | null;
-  equipment?: ("bringing-equipment" | "observer" | "astrophotography") | null;
+  equipment?: ("observer" | "bringing-equipment" | "astrophotography") | null;
+  emergencyContactName: string;
+  emergencyContactPhone: string;
+  emergencyContactRelation?: string | null;
+  mealPreference?:
+    | ("no-meal" | "vegetarian" | "non-vegetarian" | "vegan")
+    | null;
+  dietaryRestrictions?: string | null;
+  /**
+   * Uploaded bank receipt or payment confirmation slip
+   */
   paymentSlip?: (number | null) | Media;
   paymentStatus?: ("n/a" | "pending" | "verified" | "rejected") | null;
   notes?: string | null;
-  status?: ("confirmed" | "pending" | "cancelled") | null;
+  status?: ("pending" | "confirmed" | "cancelled") | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1348,6 +1367,7 @@ export interface ObserveMoonEvent {
   isFeatured?: boolean | null;
   isPaid?: boolean | null;
   ticketPrice?: string | null;
+  bankAccountNumber?: string | null;
   paymentDetails?: string | null;
   agenda?:
     | {
@@ -2078,6 +2098,11 @@ export interface MoonRegistrationsSelect<T extends boolean = true> {
   eventSlug?: T;
   attendanceMode?: T;
   equipment?: T;
+  emergencyContactName?: T;
+  emergencyContactPhone?: T;
+  emergencyContactRelation?: T;
+  mealPreference?: T;
+  dietaryRestrictions?: T;
   paymentSlip?: T;
   paymentStatus?: T;
   notes?: T;
@@ -2102,6 +2127,7 @@ export interface ObserveMoonEventsSelect<T extends boolean = true> {
   isFeatured?: T;
   isPaid?: T;
   ticketPrice?: T;
+  bankAccountNumber?: T;
   paymentDetails?: T;
   agenda?:
     | T

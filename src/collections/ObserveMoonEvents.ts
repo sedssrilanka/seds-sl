@@ -129,6 +129,15 @@ export const ObserveMoonEvents: CollectionConfig = {
       },
     },
     {
+      name: "bankAccountNumber",
+      type: "text",
+      label:
+        "Bank Account Number (shown as copyable field on registration form)",
+      admin: {
+        condition: (data) => Boolean(data?.isPaid),
+      },
+    },
+    {
       name: "paymentDetails",
       type: "textarea",
       label: "Bank Account Transfer & Payment Details",

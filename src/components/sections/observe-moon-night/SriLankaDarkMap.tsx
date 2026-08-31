@@ -20,6 +20,8 @@ export function SriLankaDarkMap({ locations }: SriLankaDarkMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<unknown>(null);
   const [isMounted, setIsMounted] = useState(false);
+  const [showTwoFingerOverlay, setShowTwoFingerOverlay] = useState(false);
+  const overlayTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const defaultLocation: MapLocationItem = {
     name: "Galle Face Green",
@@ -46,22 +48,61 @@ export function SriLankaDarkMap({ locations }: SriLankaDarkMapProps) {
     import("leaflet").then((L) => {
       if (!mapContainerRef.current || mapInstanceRef.current) return;
 
+      const isMobile =
+        typeof window !== "undefined" &&
+        (window.innerWidth < 768 || L.Browser.mobile);
+
       const centerCoords: [number, number] = [
         primaryLoc.latitude,
         primaryLoc.longitude,
       ];
 
-      // Initialize Leaflet Map
+      // Initialize Leaflet Map: Disable single-finger drag on mobile to allow page scrolling
       const map = L.map(mapContainerRef.current, {
         center: centerCoords,
         zoom: 13,
         zoomControl: false,
         attributionControl: false,
-        dragging: true,
+        dragging: !isMobile,
         scrollWheelZoom: false,
+        touchZoom: true,
       });
 
       mapInstanceRef.current = map;
+
+      // Handle 2-finger touch gesture for mobile map panning
+      if (isMobile && mapContainerRef.current) {
+        const container = mapContainerRef.current;
+
+        const handleTouchStart = (e: TouchEvent) => {
+          if (e.touches.length === 1) {
+            // Single finger: allow page scroll and show hint overlay
+            map.dragging.disable();
+            setShowTwoFingerOverlay(true);
+            if (overlayTimerRef.current) clearTimeout(overlayTimerRef.current);
+            overlayTimerRef.current = setTimeout(() => {
+              setShowTwoFingerOverlay(false);
+            }, 1800);
+          } else if (e.touches.length >= 2) {
+            // Two fingers: enable map drag
+            setShowTwoFingerOverlay(false);
+            map.dragging.enable();
+          }
+        };
+
+        const handleTouchEnd = (e: TouchEvent) => {
+          if (e.touches.length < 2) {
+            map.dragging.disable();
+          }
+        };
+
+        container.addEventListener("touchstart", handleTouchStart, {
+          passive: true,
+        });
+        container.addEventListener("touchend", handleTouchEnd, {
+          passive: true,
+        });
+      }
 
       // Add CartoDB Dark Matter Tile Layer
       L.tileLayer(
@@ -110,6 +151,7 @@ export function SriLankaDarkMap({ locations }: SriLankaDarkMapProps) {
     });
 
     return () => {
+      if (overlayTimerRef.current) clearTimeout(overlayTimerRef.current);
       if (mapInstanceRef.current) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (mapInstanceRef.current as any).remove();
@@ -133,17 +175,26 @@ export function SriLankaDarkMap({ locations }: SriLankaDarkMapProps) {
   };
 
   return (
-    <div className="relative w-full h-full min-h-[380px] md:min-h-[440px] bg-[#090b10] border border-border/60 overflow-hidden select-none">
+    <div className="relative w-full h-full min-h-[380px] md:min-h-[440px] bg-[#090b10] border border-border/60 overflow-hidden select-none touch-pan-y">
       {/* Extended Bleeding Hairline Guide Lines */}
       <div className="absolute -left-8 -right-8 top-0 border-t border-border/60 pointer-events-none z-20" />
       <div className="absolute -left-8 -right-8 bottom-0 border-b border-border/60 pointer-events-none z-20" />
       <div className="absolute -top-8 -bottom-8 left-0 border-l border-border/60 pointer-events-none z-20" />
       <div className="absolute -top-8 -bottom-8 right-0 border-r border-border/60 pointer-events-none z-20" />
 
+      {/* Two-finger Touch Hint Overlay on Mobile */}
+      {showTwoFingerOverlay && (
+        <div className="absolute inset-0 z-30 bg-black/75 backdrop-blur-xs flex items-center justify-center p-4 transition-opacity pointer-events-none">
+          <p className="text-white text-xs font-mono font-bold uppercase tracking-wider bg-slate-900/90 border border-slate-700 px-4 py-2 text-center shadow-lg">
+            Use two fingers to move the map
+          </p>
+        </div>
+      )}
+
       {/* Leaflet Map Container */}
       <div
         ref={mapContainerRef}
-        className="w-full h-full min-h-[380px] md:min-h-[440px] z-10"
+        className="w-full h-full min-h-[380px] md:min-h-[440px] z-10 touch-pan-y"
       />
 
       {/* Custom Theme Zoom Controls */}

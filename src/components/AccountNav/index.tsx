@@ -9,15 +9,29 @@ type Props = {
   className?: string;
 };
 
-import { User, MapPin, Package, LogOut } from "lucide-react";
+import { User, MapPin, Package, LogOut, ShieldCheck } from "lucide-react";
+import { useAuth } from "@/providers/Auth";
+import { checkRole } from "@/access/utilities";
 
 export const AccountNav: React.FC<Props> = ({ className }) => {
   const pathname = usePathname();
+  const { user } = useAuth();
+
+  const isStaff = checkRole(["admin", "finance"], user);
 
   const navItems = [
     { label: "Account settings", href: "/account", icon: User },
     { label: "Addresses", href: "/account/addresses", icon: MapPin },
     { label: "Orders", href: "/orders", icon: Package },
+    ...(isStaff
+      ? [
+          {
+            label: "Verify Payments",
+            href: "/admin/verify-payments",
+            icon: ShieldCheck,
+          },
+        ]
+      : []),
   ];
 
   return (

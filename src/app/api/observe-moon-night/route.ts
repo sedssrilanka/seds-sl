@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 import { getPayload } from "payload";
 import configPromise from "@payload-config";
 import { generateRegistrationEmail } from "@/utilities/generateRegistrationEmail";
-
 import { verifyTurnstileToken } from "@/utilities/verifyTurnstile";
+import { Resend } from "resend";
 
 function generateRegistrationCode(year: string): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
@@ -27,6 +27,11 @@ export async function POST(req: Request) {
     let equipment: "bringing-equipment" | "observer" | "astrophotography" =
       "observer";
     let selectedLocation = "";
+    let emergencyContactName = "";
+    let emergencyContactPhone = "";
+    let emergencyContactRelation = "";
+    let mealPreference = "no-meal";
+    let dietaryRestrictions = "";
     let notes = "";
     let paymentSlipMediaId: string | number | null = null;
     let isPaidEvent = false;
@@ -51,6 +56,15 @@ export async function POST(req: Request) {
         | "observer"
         | "astrophotography";
       selectedLocation = (formData.get("selectedLocation") as string) || "";
+      emergencyContactName =
+        (formData.get("emergencyContactName") as string) || "";
+      emergencyContactPhone =
+        (formData.get("emergencyContactPhone") as string) || "";
+      emergencyContactRelation =
+        (formData.get("emergencyContactRelation") as string) || "";
+      mealPreference = (formData.get("mealPreference") as string) || "no-meal";
+      dietaryRestrictions =
+        (formData.get("dietaryRestrictions") as string) || "";
       notes = (formData.get("notes") as string) || "";
       isPaidEvent = formData.get("isPaid") === "true";
       turnstileToken = (formData.get("turnstileToken") as string) || null;
@@ -89,6 +103,11 @@ export async function POST(req: Request) {
         | "observer"
         | "astrophotography";
       selectedLocation = body.selectedLocation || "";
+      emergencyContactName = body.emergencyContactName || "";
+      emergencyContactPhone = body.emergencyContactPhone || "";
+      emergencyContactRelation = body.emergencyContactRelation || "";
+      mealPreference = body.mealPreference || "no-meal";
+      dietaryRestrictions = body.dietaryRestrictions || "";
       notes = body.notes || "";
       isPaidEvent = Boolean(body.isPaid);
       turnstileToken = body.turnstileToken || null;
@@ -104,16 +123,25 @@ export async function POST(req: Request) {
       }
     }
 
-    if (!fullName || !email || !institution) {
+    if (
+      !fullName ||
+      !email ||
+      !institution ||
+      !emergencyContactName ||
+      !emergencyContactPhone
+    ) {
       return NextResponse.json(
-        { error: "Full Name, Email, and Institution are required fields." },
+        {
+          error:
+            "Full Name, Email, Institution, and Emergency Contact details are required.",
+        },
         { status: 400 },
       );
     }
 
     const registrationCode = generateRegistrationCode(year);
 
-    const registration = await payload.create({
+    const createdDoc = await payload.create({
       collection: "moon-registrations",
       data: {
         registrationCode,
@@ -126,6 +154,16 @@ export async function POST(req: Request) {
         eventSlug,
         attendanceMode,
         equipment,
+        emergencyContactName,
+        emergencyContactPhone,
+        emergencyContactRelation,
+        mealPreference: mealPreference as
+          | "vegetarian"
+          | "non-vegetarian"
+          | "vegan"
+          | "no-meal"
+          | null,
+        dietaryRestrictions,
         paymentSlip: paymentSlipMediaId || undefined,
         paymentStatus: isPaidEvent
           ? paymentSlipMediaId
@@ -133,11 +171,11 @@ export async function POST(req: Request) {
             : "n/a"
           : "n/a",
         notes,
-        status: isPaidEvent ? "pending" : "confirmed",
+        status: "pending",
       },
     });
 
-    // Fetch custom email subject and message from the Observe Moon Event CMS collection for this year
+    // Fetch CMS settings for email details
     let cmsSubject: string | undefined;
     let cmsCustomMessage: string | undefined;
     let eventDate: string | undefined;
@@ -145,28 +183,29 @@ export async function POST(req: Request) {
     let ticketPrice: string | undefined;
     let paymentDetails: string | undefined;
     let agenda: any[] | undefined;
+
     try {
-      const eventQuery = await payload.find({
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        collection: "observe-moon-events" as any,
+      const eventQueryResult = await payload.find({
+        collection: "observe-moon-events",
         where: {
-          year: {
-            equals: year,
+          slug: {
+            equals: eventSlug || "observe-the-moon-night-2026",
           },
         },
         limit: 1,
       });
 
-      if (eventQuery.docs[0]) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const eventDoc = eventQuery.docs[0] as any;
+      if (eventQueryResult.docs && eventQueryResult.docs.length > 0) {
+        const eventDoc: any = eventQueryResult.docs[0];
         cmsSubject = eventDoc.confirmationEmailSubject || undefined;
         cmsCustomMessage = eventDoc.confirmationEmailBody || undefined;
         eventDate = eventDoc.eventDate || undefined;
         eventTime = eventDoc.startTime
           ? `${eventDoc.startTime}${eventDoc.endTime ? ` - ${eventDoc.endTime}` : ""}`
           : undefined;
-        ticketPrice = eventDoc.ticketPrice || undefined;
+        ticketPrice = eventDoc.isPaid
+          ? eventDoc.ticketPrice || undefined
+          : undefined;
         paymentDetails = eventDoc.paymentDetails || undefined;
         agenda = eventDoc.agenda || undefined;
       }
@@ -177,46 +216,199 @@ export async function POST(req: Request) {
       );
     }
 
-    // Send confirmation email via Payload Resend Adapter (non-blocking for registration creation)
+    // 1. Send Pending Verification Email to Participant (using Resend template observe-moon-night-registration-received)
     try {
-      const { subject, html, text } = generateRegistrationEmail({
-        fullName,
-        email,
-        institution,
-        selectedLocation,
-        attendanceMode,
-        equipment,
-        year,
-        isPaidEvent,
-        registrationId: registrationCode,
-        cmsSubject,
-        cmsCustomMessage,
-        eventDate,
-        eventTime,
-        ticketPrice,
-        paymentDetails,
-        agenda,
-      });
+      const fromAddress = process.env.FROM_EMAIL || "info@seds-sl.org";
+      const orgName = process.env.ORG_NAME || "SEDS Sri Lanka";
 
-      await payload.sendEmail({
-        to: email,
-        subject,
-        html,
-        text,
-      });
+      let sentWithResendTemplate = false;
+
+      if (
+        process.env.RESEND_API_KEY &&
+        process.env.RESEND_API_KEY !== "dummy_key_for_build"
+      ) {
+        try {
+          const resend = new Resend(process.env.RESEND_API_KEY);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const resendResult: any = await resend.emails.send({
+            from: `${orgName} <${fromAddress}>`,
+            to: email,
+            subject: `We received your registration — Observe the Moon Night ${year}`,
+            // @ts-ignore Resend SDK supports template parameter
+            template: {
+              id: "observe-moon-night-registration-received",
+              variables: {
+                fullName,
+                year,
+                registrationCode,
+              },
+            },
+          });
+
+          if (resendResult.data && !resendResult.error) {
+            sentWithResendTemplate = true;
+          } else if (resendResult.error) {
+            console.warn(
+              "Resend participant template send error, falling back to payload email:",
+              resendResult.error,
+            );
+          }
+        } catch (resendErr) {
+          console.warn(
+            "Resend participant template API send failed, falling back to HTML email:",
+            resendErr,
+          );
+        }
+      }
+
+      if (!sentWithResendTemplate) {
+        const participantEmail = generateRegistrationEmail({
+          fullName,
+          email,
+          phone,
+          institution,
+          selectedLocation,
+          attendanceMode,
+          equipment,
+          emergencyContactName,
+          emergencyContactPhone,
+          emergencyContactRelation,
+          mealPreference,
+          dietaryRestrictions,
+          year,
+          isPaidEvent,
+          registrationId: registrationCode,
+          cmsSubject,
+          cmsCustomMessage,
+          eventDate,
+          eventTime,
+          ticketPrice,
+          paymentDetails,
+          agenda,
+          isPendingVerification: true,
+        });
+
+        await payload.sendEmail({
+          to: email,
+          subject: participantEmail.subject,
+          html: participantEmail.html,
+          text: participantEmail.text,
+        });
+      }
     } catch (emailErr) {
-      console.error(
-        "Failed to send registration confirmation email:",
-        emailErr,
-      );
+      console.error("Failed to send participant pending email:", emailErr);
+    }
+
+    // 2. Send Notification Email to Finance / Admin (using Resend template observe-the-moon-registration-amin)
+    try {
+      const financeAddress =
+        process.env.FINANCE_EMAIL ||
+        process.env.ADMIN_EMAIL ||
+        "finance@sedssl.org";
+      const fromAddress = process.env.FROM_EMAIL || "info@seds-sl.org";
+      const orgName = process.env.ORG_NAME || "SEDS Sri Lanka";
+      const baseUrl =
+        process.env.NEXT_PUBLIC_SERVER_URL ||
+        process.env.WEBSITE_URL ||
+        "https://seds-sl.org";
+      const attachmentLink = `${baseUrl}/admin/verify-payments`;
+
+      let sentWithResendTemplate = false;
+
+      if (
+        process.env.RESEND_API_KEY &&
+        process.env.RESEND_API_KEY !== "dummy_key_for_build"
+      ) {
+        try {
+          const resend = new Resend(process.env.RESEND_API_KEY);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const resendResult: any = await resend.emails.send({
+            from: `${orgName} <${fromAddress}>`,
+            to: financeAddress,
+            subject: `[NEW REGISTRATION] ${fullName} (${registrationCode}) - Moon Night ${year}`,
+            // @ts-ignore Resend SDK supports template parameter
+            template: {
+              id: "observe-the-moon-registration-amin",
+              variables: {
+                registrationCode,
+                fullName,
+                email,
+                phone: phone || "N/A",
+                institution: institution || "N/A",
+                selectedLocation: selectedLocation || "N/A",
+                mealPreference: mealPreference || "None",
+                emergencyContactName: emergencyContactName || "N/A",
+                emergencyContactPhone: emergencyContactPhone || "N/A",
+                emergencyContactRelation: emergencyContactRelation || "N/A",
+                paymentStatus: isPaidEvent
+                  ? paymentSlipMediaId
+                    ? "Pending Verification"
+                    : "Payment Required"
+                  : "Free Event",
+                attachmentLink,
+              },
+            },
+          });
+
+          if (resendResult.data && !resendResult.error) {
+            sentWithResendTemplate = true;
+          } else if (resendResult.error) {
+            console.warn(
+              "Resend template send error, falling back to payload email:",
+              resendResult.error,
+            );
+          }
+        } catch (resendErr) {
+          console.warn(
+            "Resend template API send failed, falling back to HTML email:",
+            resendErr,
+          );
+        }
+      }
+
+      if (!sentWithResendTemplate) {
+        const adminEmailData = generateRegistrationEmail({
+          fullName,
+          email,
+          phone,
+          institution,
+          selectedLocation,
+          attendanceMode,
+          equipment,
+          emergencyContactName,
+          emergencyContactPhone,
+          emergencyContactRelation,
+          mealPreference,
+          dietaryRestrictions,
+          year,
+          isPaidEvent,
+          registrationId: registrationCode,
+          cmsSubject,
+          cmsCustomMessage,
+          eventDate,
+          eventTime,
+          ticketPrice,
+          paymentDetails,
+          agenda,
+          isAdminAlert: true,
+        });
+
+        await payload.sendEmail({
+          to: financeAddress,
+          subject: adminEmailData.subject,
+          html: adminEmailData.html,
+          text: adminEmailData.text,
+        });
+      }
+    } catch (adminEmailErr) {
+      console.error("Failed to send admin notification email:", adminEmailErr);
     }
 
     return NextResponse.json(
       {
         success: true,
-        message: isPaidEvent
-          ? "Registration submitted! Payment slip received and pending verification."
-          : "Successfully registered for Observe the Moon Night!",
+        message:
+          "Registration submitted successfully! Your submission is pending verification.",
         registrationId: registrationCode,
         registrationCode,
       },

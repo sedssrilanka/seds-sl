@@ -15,6 +15,7 @@ export interface ObserveMoonEventResult {
   heroImage?: any;
   isPaid?: boolean;
   ticketPrice?: string;
+  bankAccountNumber?: string;
   paymentDetails?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   agenda?: any[];
@@ -83,6 +84,7 @@ export async function getObserveMoonNightProject(
           heroImage: doc.heroImage,
           isPaid: doc.isPaid || false,
           ticketPrice: doc.ticketPrice || "",
+          bankAccountNumber: doc.bankAccountNumber || "",
           paymentDetails: doc.paymentDetails || "",
           agenda: doc.agenda || [],
           locations: doc.locations || [],
@@ -133,6 +135,7 @@ export async function getObserveMoonNightProject(
         heroImage: doc.heroImage,
         isPaid: doc.isPaid || false,
         ticketPrice: doc.ticketPrice || "",
+        bankAccountNumber: doc.bankAccountNumber || "",
         paymentDetails: doc.paymentDetails || "",
         agenda: doc.agenda || [],
         locations: doc.locations || [],

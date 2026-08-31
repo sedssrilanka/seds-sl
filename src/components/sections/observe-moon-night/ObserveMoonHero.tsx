@@ -145,18 +145,16 @@ export function ObserveMoonHero({
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-wrap items-center gap-4 pt-4"
             >
-              <Button
-                type="button"
-                variant="default"
-                size="lg"
-                bleed={true}
-                onClick={() => {
-                  document
-                    .getElementById("register-section")
-                    ?.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                Register for Event
+              <Button asChild variant="default" size="lg" bleed={true}>
+                <Link
+                  href={
+                    slug
+                      ? `/projects/${slug}/register`
+                      : "/projects/observe-the-moon-night/register"
+                  }
+                >
+                  Register for Event
+                </Link>
               </Button>
 
               {hasAgenda && (

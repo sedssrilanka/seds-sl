@@ -4,7 +4,6 @@ import { ObserveMoonHero } from "./ObserveMoonHero";
 import { SriLankaDarkMap } from "./SriLankaDarkMap";
 import { EventCountdownTimer } from "./EventCountdownTimer";
 
-import { MoonNightRegistrationForm } from "@/components/forms/MoonNightRegistrationForm";
 import {
   Moon,
   Telescope,
@@ -490,33 +489,35 @@ export function ObserveMoonNightClient({
           </div>
         )}
 
-        {/* SECTION 5: DEDICATED REGISTRATION SECTION */}
+        {/* SECTION 5: DEDICATED REGISTRATION CALL-TO-ACTION SECTION */}
         <div
           id="register-section"
           className="w-full py-20 bg-white text-slate-900 border-t border-slate-200"
         >
           <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
-            <div className="text-center max-w-3xl mx-auto space-y-3">
-              <div className="flex items-center justify-center gap-2 text-xs font-mono font-bold uppercase text-blue-700 tracking-wider">
-                <CheckCircle2 className="size-4 text-blue-600" />
-                <span>OFFICIAL REGISTRATION FORM</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-slate-900 font-mono">
+            <div className="max-w-4xl mx-auto text-center space-y-6 bg-slate-50 border border-slate-300 p-8 md:p-12 relative overflow-hidden">
+              <div className="absolute -left-4 -right-4 top-0 border-t border-slate-300 pointer-events-none" />
+              <div className="absolute -left-4 -right-4 bottom-0 border-b border-slate-300 pointer-events-none" />
+
+              <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-slate-900 font-mono">
                 Reserve Your Spot for Moon Night {year}
               </h2>
-              <p className="text-sm md:text-base text-slate-600">
-                Registration is open to all students, researchers, and public
-                space enthusiasts.
-              </p>
-            </div>
 
-            {/* Registration Form Container */}
-            <div className="max-w-4xl mx-auto">
-              <MoonNightRegistrationForm
-                year={year}
-                eventSlug={slug}
-                eventData={eventData}
-              />
+              <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                Registration is officially open to all students, astronomy
+                enthusiasts, and researchers. Complete our multi-step
+                registration form to secure your pass and select your host
+                observation site.
+              </p>
+
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href={`/projects/${slug}/register`}
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 border border-blue-700 shadow-md transition-all cursor-pointer"
+                >
+                  <span>Open Registration Form →</span>
+                </a>
+              </div>
             </div>
           </div>
         </div>
