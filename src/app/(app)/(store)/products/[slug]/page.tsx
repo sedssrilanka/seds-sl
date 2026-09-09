@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ChevronLeftIcon, ShoppingCart } from "lucide-react";
+import { ChevronLeftIcon, Mail } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -85,11 +85,13 @@ export default async function ProductPage({
 
           <div className="pt-8 border-t border-border/60 flex flex-col sm:flex-row gap-4 items-center">
             <Button
+              asChild
               size="lg"
               className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium gap-2 px-8"
-              onClick={() => alert(`To place an order for ${product.title}, please contact our merchandising team or visit the order form.`)}
             >
-              <ShoppingCart className="w-5 h-5" /> Order Merchandise
+              <Link href="/contact-us">
+                <Mail className="w-5 h-5" /> Inquire / Order via Team
+              </Link>
             </Button>
           </div>
         </div>

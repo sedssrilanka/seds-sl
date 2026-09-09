@@ -12,15 +12,14 @@ export const metadata: Metadata = {
 export default async function ObserveMoonNightDefaultPage() {
   const eventData = await getObserveMoonNightProject();
 
-  // If no active published event exists in the database, return 404
   if (!eventData) {
     notFound();
   }
 
   return (
     <ObserveMoonNightClient
-      slug={eventData.slug}
-      year={eventData.year}
+      slug={eventData.slug || "observe-the-moon-night-2026"}
+      year={eventData.year || "2026"}
       eventData={eventData}
     />
   );

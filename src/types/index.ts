@@ -5,6 +5,13 @@ export interface Media {
   width?: number | null;
   height?: number | null;
   filename?: string | null;
+  mimeType?: string | null;
+}
+
+export interface Category {
+  id?: string | number;
+  title: string;
+  slug: string;
 }
 
 export interface Chapter {
@@ -41,21 +48,6 @@ export interface Division {
   };
 }
 
-export interface Project {
-  id?: string | number;
-  name: string;
-  slug: string;
-  description: string;
-  chapter?: Chapter | string | null;
-  image?: Media | string | null;
-  isFeatured?: boolean;
-  customLink?: string | null;
-  hero?: any;
-  layout?: any[];
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 export interface Variant {
   id?: string;
   title?: string;
@@ -80,6 +72,7 @@ export interface Product {
   gallery?: Array<{
     image: Media | string;
     id?: string;
+    variantOption?: any;
   }>;
   categories?: any[];
   meta?: {
@@ -87,6 +80,21 @@ export interface Product {
     description?: string | null;
     image?: Media | null;
   };
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface Project {
+  id?: string | number;
+  name: string;
+  slug: string;
+  description: string;
+  chapter?: Chapter | string | null;
+  image?: Media | string | null;
+  isFeatured?: boolean;
+  customLink?: string | null;
+  hero?: any;
+  layout?: any[];
   createdAt?: string;
   updatedAt?: string;
 }
