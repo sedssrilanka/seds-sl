@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { SectionHeader } from "@/components/sections/section-header";
 import { DivisionsClient } from "./DivisionsClient";
-import configPromise from "@payload-config";
-import { getPayload } from "payload";
-import type { Division } from "@/payload-types";
+import { getAllDivisions } from "@/lib/keystatic";
 
 export const revalidate = 3600; // Revalidate every hour
 
@@ -20,15 +18,17 @@ export const metadata: Metadata = {
 };
 
 export default async function DivisionsPage() {
-  let initialDivisions: Division[] = [];
+  let initialDivisions: any[] = [];
   try {
-    const payload = await getPayload({ config: configPromise });
-    const res = await payload.find({
-      collection: "divisions",
-      limit: 100,
-      depth: 1,
-    });
-    initialDivisions = res.docs as Division[];
+    const rawDivisions = await getAllDivisions();
+    initialDivisions = rawDivisions.map((div) => ({
+      id: div.slug,
+      name: div.name,
+      slug: div.slug,
+      lead: div.lead,
+      description: div.description,
+      createdAt: new Date().toISOString(),
+    }));
   } catch (err) {
     console.error("Error fetching divisions:", err);
   }

@@ -5,27 +5,27 @@ import ProjectsSection from "@/components/sections/home-page/projects/projectsse
 import FAQSection from "@/components/sections/home-page/faqs/faqsection";
 import WhoWeAreSection from "@/components/sections/home-page/who-we-are/whowearesection";
 import ContactSection from "@/components/sections/home-page/contact/contact-section";
-import configPromise from "@payload-config";
-import { getPayload } from "payload";
 import { fetchChapters } from "@/actions/chapters";
 import { fetchProjects, type UnifiedProjectItem } from "@/actions/projects";
-import type { Chapter, Division } from "@/payload-types";
+import { getAllDivisions } from "@/lib/keystatic";
 
-export const revalidate = 86400; // Revalidate every 24 hours (On-Demand revalidation via Payload hooks)
+export const revalidate = 86400; // Revalidate every 24 hours
 
 export default async function Home() {
-  let divisions: Division[] = [];
-  let chapters: Chapter[] = [];
+  let divisions: any[] = [];
+  let chapters: any[] = [];
   let projects: UnifiedProjectItem[] = [];
 
   try {
-    const payload = await getPayload({ config: configPromise });
-    const divisionsRes = await payload.find({
-      collection: "divisions",
-      limit: 3,
-      depth: 1,
-    });
-    divisions = divisionsRes.docs as Division[];
+    const rawDivisions = await getAllDivisions();
+    divisions = rawDivisions.slice(0, 3).map((div) => ({
+      id: div.slug,
+      name: div.name,
+      slug: div.slug,
+      lead: div.lead,
+      description: div.description,
+      createdAt: new Date().toISOString(),
+    }));
   } catch (err) {
     console.error("Error loading divisions for homepage:", err);
   }

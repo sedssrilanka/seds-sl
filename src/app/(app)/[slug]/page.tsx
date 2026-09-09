@@ -1,114 +1,79 @@
 import type { Metadata } from "next";
-
-import { RenderBlocks } from "@/blocks/RenderBlocks";
-import { RenderHero } from "@/heros/RenderHero";
-import { generateMeta } from "@/utilities/generateMeta";
-import configPromise from "@payload-config";
-import { getPayload } from "payload";
-import { draftMode } from "next/headers";
-
 import { notFound } from "next/navigation";
+import { keystaticReader } from "@/lib/keystatic";
 
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
   try {
-    const payload = await getPayload({ config: configPromise });
-    const pages = await payload.find({
-      collection: "pages",
-      draft: false,
-      limit: 1000,
-      overrideAccess: false,
-      pagination: false,
-      select: {
-        slug: true,
-      },
-    });
-
-    const params = pages.docs
-      ?.filter((doc) => {
-        return doc.slug !== "home";
-      })
-      .map(({ slug }) => {
-        return { slug };
-      });
-
-    return params || [];
+    const pages = await keystaticReader.collections.pages.all();
+    return pages.map((p) => ({ slug: p.slug }));
   } catch (error) {
-    console.error("Error during generateStaticParams:", error);
     return [];
   }
 }
 
-type Args = {
-  params: Promise<{
-    slug?: string;
-  }>;
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const page = await keystaticReader.collections.pages.read(slug);
+    if (!page) return { title: "Page Not Found | SEDS Sri Lanka" };
 
-export default async function SubPage({ params }: Args) {
+    return {
+      title: `${page.title} | SEDS Sri Lanka`,
+      description: page.description || "",
+    };
+  } catch {
+    return { title: "SEDS Sri Lanka" };
+  }
+}
+
+export default async function SubPage({
+  params,
+}: {
+  params: Promise<{ slug?: string }>;
+}) {
   const { slug = "home" } = await params;
-  const _url = `/${slug}`;
 
-  const page = await queryPageBySlug({
-    slug,
-  });
+  let pageData: any = null;
+  try {
+    pageData = await keystaticReader.collections.pages.read(slug);
+  } catch (err) {
+    console.error(`Error reading page ${slug}:`, err);
+  }
 
-  if (!page) {
+  if (!pageData) {
     return notFound();
   }
 
-  const { hero, layout } = page;
+  const Content = await pageData.content();
 
   return (
-    <div className="flex flex-col w-full">
-      <RenderHero {...hero} />
-      <div className="grid-container section-content">
-        <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
-          <RenderBlocks blocks={layout} />
+    <div className="flex flex-col w-full min-h-screen py-12">
+      <div className="grid-container section-content max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article className="col-span-4 md:col-span-8 lg:col-span-12">
+          <div className="border-b border-border/60 pb-8 mb-8">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+              {pageData.title}
+            </h1>
+            {pageData.description && (
+              <p className="text-lg text-zinc-400 mt-4 leading-relaxed">
+                {pageData.description}
+              </p>
+            )}
+          </div>
+
+          <div className="prose prose-invert max-w-none prose-headings:text-white prose-a:text-indigo-400 prose-p:text-zinc-300">
+            {typeof Content === "string" ? (
+              <p className="whitespace-pre-line">{Content}</p>
+            ) : null}
+          </div>
         </article>
       </div>
     </div>
   );
 }
-
-export async function generateMetadata({ params }: Args): Promise<Metadata> {
-  const { slug = "home" } = await params;
-
-  const page = await queryPageBySlug({
-    slug,
-  });
-
-  return generateMeta({ doc: page });
-}
-
-const queryPageBySlug = async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode();
-
-  try {
-    const payload = await getPayload({ config: configPromise });
-
-    const result = await payload.find({
-      collection: "pages",
-      draft,
-      limit: 1,
-      overrideAccess: draft,
-      pagination: false,
-      where: {
-        and: [
-          {
-            slug: {
-              equals: slug,
-            },
-          },
-          ...(draft ? [] : [{ _status: { equals: "published" } }]),
-        ],
-      },
-    });
-
-    return result.docs?.[0] || null;
-  } catch (error) {
-    console.error("Error fetching page by slug:", error);
-    return null;
-  }
-};

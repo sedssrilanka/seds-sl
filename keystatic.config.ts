@@ -1,0 +1,207 @@
+import { config, fields, collection } from "@keystatic/core";
+
+export default config({
+  storage:
+    process.env.NODE_ENV === "production" && process.env.KEYSTATIC_GITHUB_REPO
+      ? {
+          kind: "github",
+          repo: {
+            name: process.env.KEYSTATIC_GITHUB_REPO || "seds-sl",
+            owner: process.env.KEYSTATIC_GITHUB_OWNER || "SEDS-SL",
+          },
+        }
+      : {
+          kind: "local",
+        },
+  collections: {
+    projects: collection({
+      label: "Projects & Flagships",
+      slugField: "name",
+      path: "src/content/projects/*",
+      format: { contentField: "content" },
+      schema: {
+        name: fields.slug({
+          name: {
+            label: "Project Name",
+            validation: { isRequired: true },
+          },
+        }),
+        description: fields.text({
+          label: "Short Description",
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        image: fields.image({
+          label: "Thumbnail / Cover Image",
+          directory: "public/images/projects",
+          publicPath: "/images/projects/",
+        }),
+        chapter: fields.text({
+          label: "Chapter Name (e.g. SEDS Mora, SEDS UoP)",
+          description: "Optional: name of the associated chapter",
+        }),
+        isFeatured: fields.checkbox({
+          label: "Feature this Project in Spotlight banner",
+          defaultValue: false,
+        }),
+        customLink: fields.text({
+          label: "Custom Page Link (Optional)",
+          description:
+            "e.g. /projects/observe-the-moon-night. Leave empty to use default page.",
+        }),
+        content: fields.markdoc({
+          label: "Project Details & Content",
+        }),
+      },
+    }),
+
+    chapters: collection({
+      label: "Chapters",
+      slugField: "name",
+      path: "src/content/chapters/*",
+      format: { contentField: "content" },
+      schema: {
+        name: fields.slug({
+          name: {
+            label: "Chapter Name",
+            validation: { isRequired: true },
+          },
+        }),
+        university: fields.text({
+          label: "University / Institution",
+          validation: { isRequired: false },
+        }),
+        description: fields.text({
+          label: "Description",
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        logoDark: fields.image({
+          label: "Dark Logo (Default)",
+          directory: "public/images/chapters",
+          publicPath: "/images/chapters/",
+        }),
+        logoLight: fields.image({
+          label: "Light Logo (Optional)",
+          directory: "public/images/chapters",
+          publicPath: "/images/chapters/",
+        }),
+        mainImage: fields.image({
+          label: "Main Image / Cover",
+          directory: "public/images/chapters",
+          publicPath: "/images/chapters/",
+        }),
+        contactEmail: fields.text({
+          label: "Contact Email",
+        }),
+        socialLinks: fields.array(
+          fields.object({
+            platform: fields.select({
+              label: "Platform",
+              options: [
+                { label: "Facebook", value: "facebook" },
+                { label: "Twitter / X", value: "twitter" },
+                { label: "Instagram", value: "instagram" },
+                { label: "LinkedIn", value: "linkedin" },
+              ],
+              defaultValue: "facebook",
+            }),
+            url: fields.text({ label: "Profile URL" }),
+          }),
+          {
+            label: "Social Media Links",
+            itemLabel: (props) =>
+              `${props.fields.platform.value}: ${props.fields.url.value || "No URL"}`,
+          },
+        ),
+        content: fields.markdoc({
+          label: "Chapter Full Overview & History",
+        }),
+      },
+    }),
+
+    divisions: collection({
+      label: "Divisions",
+      slugField: "name",
+      path: "src/content/divisions/*",
+      format: { contentField: "content" },
+      schema: {
+        name: fields.slug({
+          name: {
+            label: "Division Name",
+            validation: { isRequired: true },
+          },
+        }),
+        lead: fields.text({
+          label: "Division Lead / Head",
+        }),
+        description: fields.text({
+          label: "Short Description",
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        content: fields.markdoc({
+          label: "Division Overview & Projects",
+        }),
+      },
+    }),
+
+    products: collection({
+      label: "Products & Merchandise",
+      slugField: "title",
+      path: "src/content/products/*",
+      format: { contentField: "content" },
+      schema: {
+        title: fields.slug({
+          name: {
+            label: "Product Name",
+            validation: { isRequired: true },
+          },
+        }),
+        priceInLKR: fields.number({
+          label: "Price (LKR)",
+          validation: { isRequired: true, min: 0 },
+        }),
+        inStock: fields.checkbox({
+          label: "In Stock / Available for Order",
+          defaultValue: true,
+        }),
+        image: fields.image({
+          label: "Product Main Image",
+          directory: "public/images/products",
+          publicPath: "/images/products/",
+        }),
+        description: fields.text({
+          label: "Short Description",
+          multiline: true,
+          validation: { isRequired: true },
+        }),
+        content: fields.markdoc({
+          label: "Product Details, Sizing & Information",
+        }),
+      },
+    }),
+
+    pages: collection({
+      label: "Custom Pages",
+      slugField: "title",
+      path: "src/content/pages/*",
+      format: { contentField: "content" },
+      schema: {
+        title: fields.slug({
+          name: {
+            label: "Page Title",
+            validation: { isRequired: true },
+          },
+        }),
+        description: fields.text({
+          label: "Meta Description",
+          multiline: true,
+        }),
+        content: fields.markdoc({
+          label: "Page Content",
+        }),
+      },
+    }),
+  },
+});

@@ -1,46 +1,27 @@
-import type { Project } from "@/payload-types";
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
 import { notFound } from "next/navigation";
-import { RenderBlocks } from "@/blocks/RenderBlocks";
-import { RenderHero } from "@/heros/RenderHero";
+import { getProjectBySlug, getAllProjects } from "@/lib/keystatic";
+import type { Metadata } from "next";
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  try {
-    const payload = await getPayload({ config: configPromise });
-    const projects = await payload.find({
-      collection: "projects",
-      limit: 100,
-      select: {
-        slug: true,
-      },
-    });
-    return projects.docs.map((doc) => ({ slug: doc.slug }));
-  } catch (error) {
-    return [];
-  }
+  const projects = await getAllProjects();
+  return projects.map((p) => ({ slug: p.slug }));
 }
 
-async function getProject(slug: string): Promise<Project | null> {
-  try {
-    const payload = await getPayload({ config: configPromise });
-    const result = await payload.find({
-      collection: "projects",
-      where: {
-        slug: {
-          equals: slug,
-        },
-      },
-      limit: 1,
-    });
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const project = await getProjectBySlug(slug);
+  if (!project) return { title: "Project Not Found | SEDS Sri Lanka" };
 
-    return (result.docs[0] as Project) || null;
-  } catch (error) {
-    console.error("Error fetching project:", error);
-    return null;
-  }
+  return {
+    title: `${project.name} | SEDS Sri Lanka`,
+    description: project.description,
+  };
 }
 
 export default async function Page({
@@ -49,22 +30,37 @@ export default async function Page({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const project = await getProject(slug);
+  const project = await getProjectBySlug(slug);
+
   if (!project) {
     notFound();
   }
 
-  const { hero, layout } = project;
+  const Content = await project.content();
 
   return (
-    <div className="flex flex-col w-full">
-      {/* Render the Hero block if one exists */}
-      {hero && <RenderHero {...hero} />}
+    <div className="flex flex-col w-full min-h-screen py-12">
+      <div className="grid-container section-content max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <article className="col-span-4 md:col-span-8 lg:col-span-12">
+          <div className="border-b border-border/60 pb-8 mb-8">
+            <span className="text-xs font-mono text-indigo-400 uppercase tracking-wider">
+              {project.chapter || "SEDS Sri Lanka Initiative"}
+            </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white mt-2">
+              {project.name}
+            </h1>
+            <p className="text-lg text-zinc-400 mt-4 leading-relaxed">
+              {project.description}
+            </p>
+          </div>
 
-      <div className="grid-container section-content">
-        <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
-          {/* Render the layout blocks if they exist */}
-          {layout && <RenderBlocks blocks={layout} />}
+          <div className="prose prose-invert max-w-none prose-headings:text-white prose-a:text-indigo-400 prose-p:text-zinc-300">
+            {typeof Content === "string" ? (
+              <p className="whitespace-pre-line">{Content}</p>
+            ) : (
+              <p className="text-zinc-300">{project.description}</p>
+            )}
+          </div>
         </article>
       </div>
     </div>

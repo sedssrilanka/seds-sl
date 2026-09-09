@@ -1,7 +1,6 @@
 "use server";
 
-import config from "@payload-config";
-import { getPayload } from "payload";
+import { getAllProjects } from "@/lib/keystatic";
 
 export interface UnifiedProjectItem {
   id: string | number;
@@ -21,94 +20,58 @@ export interface UnifiedProjectItem {
 export const fetchProjects = async (
   searchQuery = "",
 ): Promise<UnifiedProjectItem[]> => {
-  const payload = await getPayload({ config });
-
   try {
-    // 1. Fetch standard projects
-    const projectsResult = await payload.find({
-      collection: "projects",
-      sort: "-createdAt",
-      where: searchQuery
-        ? {
-            name: {
-              like: searchQuery,
-            },
-          }
-        : {},
-      depth: 1,
-    });
+    const rawProjects = await getAllProjects();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const standardProjects: UnifiedProjectItem[] = projectsResult.docs.map(
-      (doc: any) => ({
-        id: doc.id,
-        name: doc.name,
-        description: doc.description,
-        image: doc.image,
-        chapterName:
-          typeof doc.chapter === "object" && doc.chapter !== null
-            ? doc.chapter.name
-            : "",
-        createdAt: doc.createdAt,
-        slug: doc.slug,
-        customLink: doc.customLink,
-        isFeatured: Boolean(doc.isFeatured),
+    const standardProjects: UnifiedProjectItem[] = rawProjects
+      .filter((proj) => {
+        if (!searchQuery) return true;
+        const q = searchQuery.toLowerCase();
+        return (
+          proj.name.toLowerCase().includes(q) ||
+          proj.description.toLowerCase().includes(q)
+        );
+      })
+      .map((proj) => ({
+        id: proj.slug,
+        name: proj.name,
+        description: proj.description,
+        image: proj.image ? { url: proj.image } : null,
+        chapterName: proj.chapter || "",
+        createdAt: new Date().toISOString(),
+        slug: proj.slug,
+        customLink: proj.customLink || undefined,
+        isFeatured: Boolean(proj.isFeatured),
         isFlagship: false,
-        badgeLabel: doc.isFeatured ? "FEATURED PROJECT" : undefined,
-      }),
-    );
+        badgeLabel: proj.isFeatured ? "FEATURED PROJECT" : undefined,
+      }));
 
-    // 2. Fetch observe-moon-events collection entries
-    const eventsResult = await payload.find({
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      collection: "observe-moon-events" as any,
-      sort: "-year",
-      where: {
-        and: [
-          {
-            status: {
-              equals: "published",
-            },
-          },
-          ...(searchQuery
-            ? [
-                {
-                  title: {
-                    like: searchQuery,
-                  },
-                },
-              ]
-            : []),
-        ],
-      },
-      depth: 1,
-    });
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const flagshipEvents: UnifiedProjectItem[] = eventsResult.docs.map(
-      (doc: any) => ({
-        id: `moon-${doc.id}`,
-        name: doc.title || `International Observe the Moon Night ${doc.year}`,
+    // Add flagship events
+    const flagshipEvents: UnifiedProjectItem[] = [
+      {
+        id: "moon-2025",
+        name: "International Observe the Moon Night 2025",
         description:
-          doc.shortDescription ||
-          doc.description ||
           "Join SEDS Sri Lanka for an annual global celebration of lunar science and observation.",
-        image: doc.listingImage || doc.heroImage,
+        image: { url: "/section-header/space-projects-bg.jpeg" },
         chapterName: "SEDS Sri Lanka Flagship Event",
-        createdAt: doc.eventDate || doc.createdAt || new Date().toISOString(),
-        slug: `observe-the-moon-night/${doc.year}`,
-        customLink: `/projects/observe-the-moon-night/${doc.year}`,
-        isFeatured: doc.isFeatured ?? true,
-
+        createdAt: new Date().toISOString(),
+        slug: "observe-the-moon-night/2025",
+        customLink: "/projects/observe-the-moon-night",
+        isFeatured: true,
         isFlagship: true,
         badgeLabel: "FEATURED EVENT",
-      }),
-    );
+      },
+    ].filter((event) => {
+      if (!searchQuery) return true;
+      const q = searchQuery.toLowerCase();
+      return (
+        event.name.toLowerCase().includes(q) ||
+        event.description.toLowerCase().includes(q)
+      );
+    });
 
-    // 3. Combine both collections (Featured flagship events & featured projects sorted to front)
-    const combined = [...flagshipEvents, ...standardProjects];
-
-    return combined;
+    return [...flagshipEvents, ...standardProjects];
   } catch (error) {
     console.error("Error fetching projects:", error);
     return [];
