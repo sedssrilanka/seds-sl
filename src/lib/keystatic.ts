@@ -98,18 +98,20 @@ export async function getProjectBySlug(slug: string): Promise<ProjectEntry | nul
 export async function getAllChapters(): Promise<ChapterEntry[]> {
   try {
     const raw = await keystaticReader.collections.chapters.all();
-    return raw.map((item) => ({
-      slug: item.slug,
-      name: item.entry.name,
-      university: item.entry.university,
-      description: item.entry.description,
-      logoDark: item.entry.logoDark,
-      logoLight: item.entry.logoLight,
-      mainImage: item.entry.mainImage,
-      contactEmail: item.entry.contactEmail,
-      socialLinks: item.entry.socialLinks,
-      content: item.entry.content,
-    }));
+    return raw
+      .filter((item) => item.slug !== "chapter-one" && item.slug !== "chapter-two" && item.slug !== "seds-uoc")
+      .map((item) => ({
+        slug: item.slug,
+        name: item.entry.name,
+        university: item.entry.university,
+        description: item.entry.description,
+        logoDark: item.entry.logoDark,
+        logoLight: item.entry.logoLight,
+        mainImage: item.entry.mainImage,
+        contactEmail: item.entry.contactEmail,
+        socialLinks: item.entry.socialLinks,
+        content: item.entry.content,
+      }));
   } catch (error) {
     console.error("Error loading chapters from Keystatic:", error);
     return [];

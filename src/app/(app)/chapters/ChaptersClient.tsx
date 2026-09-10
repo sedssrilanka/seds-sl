@@ -51,12 +51,12 @@ export function ChaptersClient({
   }, [debouncedSearchQuery, initialChapters]);
 
   return (
-    <div className="flex flex-col w-full pt-8 md:pt-12 lg:pt-16">
+    <div className="flex flex-col w-full pt-8 md:pt-12 lg:pt-16 pb-16 md:pb-24 lg:pb-32">
       <div className="grid-container section-content">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <SectionHeader
             title="SEDS Chapters"
-            description="Explore our various SEDS chapters across Sri Lanka. Each chapter brings unique perspectives and initiatives to advance space exploration and technology."
+            description="Explore our student-led university chapters across Sri Lanka. Each chapter brings together students from different disciplines to collaborate on space science, robotics, rocketry, and astronomy."
             image="/section-header/who-we-are-bg.jpg"
           />
 
@@ -71,7 +71,7 @@ export function ChaptersClient({
               <Search className="size-4 text-muted-foreground shrink-0" />
               <Input
                 type="text"
-                placeholder="Search chapters..."
+                placeholder="Search chapters by name or university..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-transparent border-0 px-0 py-1 text-foreground placeholder:text-muted-foreground/50 h-9"
@@ -92,7 +92,7 @@ export function ChaptersClient({
           </div>
 
           {/* High-Tech Bleeding Grid Layout */}
-          <div className="relative my-6">
+          <div className="relative my-6 mb-12 sm:mb-16">
             {/* Extended Horizontal Bleed Lines */}
             <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
             <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
@@ -119,45 +119,34 @@ export function ChaptersClient({
                 {chapters.map((chapter) => (
                   <div
                     key={chapter.id}
-                    className="p-6 bg-background group flex flex-col h-full border-r border-border/60 last:border-r-0"
+                    className="p-6 bg-background group flex flex-col h-full border-r border-border/60 last:border-r-0 hover:bg-muted/5 transition-colors"
                   >
-                    {/* Image Container */}
-                    <div className="w-full aspect-video bg-muted border border-border/50 mb-4 relative overflow-hidden flex items-center justify-center">
-                      {chapter.mainImage ? (
-                        <Image
-                          src={getMediaUrl(chapter.mainImage)}
-                          alt={chapter.name}
-                          fill
-                          className="object-cover transition-transform duration-500 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="text-muted-foreground text-sm font-medium">
-                          No Image
-                        </div>
-                      )}
-                    </div>
+                    {/* University Badge */}
+                    {chapter.university && (
+                      <span className="text-[11px] font-mono text-primary font-semibold uppercase tracking-wider mb-2 line-clamp-1">
+                        {chapter.university}
+                      </span>
+                    )}
 
-                    <h3 className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary line-clamp-2">
+                    <h3 className="text-xl font-bold mb-2 text-foreground transition-colors group-hover:text-primary line-clamp-2">
                       {chapter.name}
                     </h3>
 
-                    <p className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1 line-clamp-3">
+                    <p className="text-xs sm:text-sm leading-relaxed mb-4 text-muted-foreground flex-1 line-clamp-3">
                       {chapter.description}
                     </p>
 
                     {/* Footer & Meta Info */}
                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
-                      <div className="flex items-center gap-4 text-xs font-mono text-muted-foreground">
-                        {chapter.socialLinks &&
-                          chapter.socialLinks.length > 0 && (
-                            <span>{chapter.socialLinks.length} Links</span>
-                          )}
-                        {chapter.contactEmail && <span>Email Contact</span>}
+                      <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground">
+                        {chapter.contactEmail && (
+                          <span className="text-primary font-medium">Active Chapter</span>
+                        )}
                       </div>
 
                       <Link href={`/chapters/${chapter.slug}`} prefetch={false}>
-                        <Button variant="outline" size="sm" bleed={true}>
-                          Know More
+                        <Button variant="outline" size="sm" bleed={true} className="cursor-pointer text-xs font-mono">
+                          View Chapter →
                         </Button>
                       </Link>
                     </div>
