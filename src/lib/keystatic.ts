@@ -35,6 +35,7 @@ export interface DivisionEntry {
   name: string;
   lead?: string | null;
   description: string;
+  icon?: string | null;
   content: () => Promise<any>;
 }
 
@@ -145,6 +146,7 @@ export async function getAllDivisions(): Promise<DivisionEntry[]> {
       name: item.entry.name,
       lead: item.entry.lead,
       description: item.entry.description,
+      icon: (item.entry as any).icon || "Rocket",
       content: item.entry.content,
     }));
   } catch (error) {
@@ -162,6 +164,7 @@ export async function getDivisionBySlug(slug: string): Promise<DivisionEntry | n
       name: entry.name,
       lead: entry.lead,
       description: entry.description,
+      icon: (entry as any).icon || "Rocket",
       content: entry.content,
     };
   } catch (error) {

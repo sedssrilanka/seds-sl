@@ -132,6 +132,21 @@ export default config({
             validation: { isRequired: true },
           },
         }),
+        icon: fields.select({
+          label: "Display Icon",
+          options: [
+            { label: "Bot (Robotics & Rovers)", value: "Bot" },
+            { label: "Rocket (Rocketry & Propulsion)", value: "Rocket" },
+            { label: "Laptop (Satellite & Space Systems)", value: "Laptop" },
+            { label: "Telescope (Radio Astronomy & Observation)", value: "Telescope" },
+            { label: "Plane (Aeronautics & Drones)", value: "Plane" },
+            { label: "Microscope (Space Bio & Sciences)", value: "Microscope" },
+            { label: "Users (Education & Outreach)", value: "Users" },
+            { label: "Camera (Media & PR)", value: "Camera" },
+            { label: "Briefcase (Operations & Management)", value: "Briefcase" },
+          ],
+          defaultValue: "Rocket",
+        }),
         lead: fields.text({
           label: "Division Lead / Head",
         }),

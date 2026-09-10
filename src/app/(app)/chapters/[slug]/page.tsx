@@ -1,7 +1,9 @@
+import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getChapterBySlug, getAllChapters } from "@/lib/keystatic";
 import { getServerSideURL } from "@/utilities/getURL";
+import Markdoc from "@markdoc/markdoc";
 import {
   FaEnvelope,
   FaTwitter,
@@ -78,6 +80,16 @@ export default async function Page({
     },
   };
 
+  let renderedContent: React.ReactNode = null;
+  if (Content?.node) {
+    const transformed = Markdoc.transform(Content.node);
+    renderedContent = Markdoc.renderers.react(transformed, React);
+  } else if (typeof Content === "string") {
+    renderedContent = <p className="whitespace-pre-line">{Content}</p>;
+  } else {
+    renderedContent = <p className="text-zinc-300">{chapter.description}</p>;
+  }
+
   return (
     <>
       <script
@@ -111,12 +123,8 @@ export default async function Page({
               )}
             </div>
 
-            <div className="prose prose-invert max-w-none prose-headings:text-white prose-a:text-indigo-400 prose-p:text-zinc-300">
-              {typeof Content === "string" ? (
-                <p className="whitespace-pre-line">{Content}</p>
-              ) : (
-                <p className="text-zinc-300">{chapter.description}</p>
-              )}
+            <div className="prose prose-invert max-w-none prose-headings:text-white prose-a:text-indigo-400 prose-p:text-zinc-300 prose-li:text-zinc-300 prose-strong:text-white">
+              {renderedContent}
             </div>
           </article>
         </div>

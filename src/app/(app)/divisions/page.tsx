@@ -26,6 +26,7 @@ export default async function DivisionsPage() {
       name: div.name,
       slug: div.slug,
       lead: div.lead,
+      icon: div.icon,
       description: div.description,
       createdAt: new Date().toISOString(),
     }));
@@ -34,7 +35,7 @@ export default async function DivisionsPage() {
   }
 
   return (
-    <div className="flex flex-col w-full pt-8 md:pt-12 lg:pt-16">
+    <div className="flex flex-col w-full pt-8 md:pt-12 lg:pt-16 pb-16 md:pb-24 lg:pb-32">
       <div className="grid-container section-content">
         <div className="col-span-4 md:col-span-8 lg:col-span-12">
           <SectionHeader

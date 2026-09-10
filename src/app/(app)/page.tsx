@@ -41,6 +41,7 @@ export default async function Home() {
       name: div.name,
       slug: div.slug,
       lead: div.lead,
+      icon: div.icon,
       description: div.description,
       createdAt: new Date().toISOString(),
     }));
