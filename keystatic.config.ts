@@ -1,18 +1,9 @@
 import { config, fields, collection } from "@keystatic/core";
 
 export default config({
-  storage:
-    process.env.NODE_ENV === "production" && process.env.KEYSTATIC_GITHUB_REPO
-      ? {
-          kind: "github",
-          repo: {
-            name: process.env.KEYSTATIC_GITHUB_REPO || "seds-sl",
-            owner: process.env.KEYSTATIC_GITHUB_OWNER || "SEDS-SL",
-          },
-        }
-      : {
-          kind: "local",
-        },
+  storage: {
+    kind: "local",
+  },
   collections: {
     projects: collection({
       label: "Projects & Flagships",
