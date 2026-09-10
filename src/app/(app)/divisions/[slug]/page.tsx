@@ -88,7 +88,7 @@ export default async function Page({
 
   return (
     <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      <div className="w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 section-content relative z-10">
         {/* Top Back Breadcrumb */}
         <div className="mb-8">
           <Link href="/divisions">

@@ -92,7 +92,7 @@ export default async function ProductPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdProduct) }}
       />
       <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
-        <div className="grid-container section-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid-container section-content w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative z-10">
           <div className="col-span-4 md:col-span-8 lg:col-span-12">
             <ProductDetailView
               product={serializableProduct}

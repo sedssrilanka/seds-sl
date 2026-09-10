@@ -1,6 +1,8 @@
+import React from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { keystaticReader } from "@/lib/keystatic";
+import Markdoc from "@markdoc/markdoc";
 
 export const dynamicParams = true;
 
@@ -51,29 +53,37 @@ export default async function SubPage({
   }
 
   const Content = await pageData.content();
+  let renderedContent: React.ReactNode = null;
+  if (Content?.node) {
+    const transformed = Markdoc.transform(Content.node);
+    renderedContent = Markdoc.renderers.react(transformed, React);
+  } else if (typeof Content === "string") {
+    renderedContent = <p className="whitespace-pre-line">{Content}</p>;
+  } else if (pageData.description) {
+    renderedContent = <p className="text-muted-foreground">{pageData.description}</p>;
+  }
 
   return (
-    <div className="flex flex-col w-full min-h-screen py-12">
-      <div className="grid-container section-content max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <article className="col-span-4 md:col-span-8 lg:col-span-12">
-          <div className="border-b border-border/60 pb-8 mb-8">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-white">
+    <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
+      <div className="w-[calc(100%-2rem)] md:w-full max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 section-content relative z-10">
+        <article className="space-y-8">
+          <div className="border-b border-border/60 pb-8 space-y-3">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-tight">
               {pageData.title}
             </h1>
             {pageData.description && (
-              <p className="text-lg text-zinc-400 mt-4 leading-relaxed">
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
                 {pageData.description}
               </p>
             )}
           </div>
 
-          <div className="prose prose-invert max-w-none prose-headings:text-white prose-a:text-indigo-400 prose-p:text-zinc-300">
-            {typeof Content === "string" ? (
-              <p className="whitespace-pre-line">{Content}</p>
-            ) : null}
+          <div className="prose prose-invert max-w-none prose-headings:text-foreground prose-a:text-primary prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground">
+            {renderedContent}
           </div>
         </article>
       </div>
     </div>
   );
 }
+
