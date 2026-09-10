@@ -36,7 +36,7 @@ export default async function ShopPage() {
             {/* Image Container with Crisp Border */}
             <div className="relative aspect-square w-full bg-muted/20 border border-border/40 overflow-hidden">
               <Image
-                src={product.image || "/images/products/seds-tshirt.jpg"}
+                src={product.image || "/images/products/tshit-2026-front.png"}
                 alt={product.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -59,7 +59,11 @@ export default async function ShopPage() {
                   </span>
                 )}
                 <span className="text-xs font-mono text-muted-foreground">
-                  {product.inStock ? "• In Stock" : "• Out of Stock"}
+                  {product.isPreOrder
+                    ? "• Pre-Order"
+                    : product.inStock
+                    ? "• In Stock"
+                    : "• Out of Stock"}
                 </span>
               </div>
 

@@ -166,6 +166,12 @@ export default config({
           label: "In Stock / Available for Order",
           defaultValue: true,
         }),
+        isPreOrder: fields.checkbox({
+          label: "Pre-Order Item",
+          description:
+            "Enable if this item is in pre-order state (displays 'Pre-Order Now' instead of 'Proceed to Checkout')",
+          defaultValue: false,
+        }),
         category: fields.select({
           label: "Category",
           options: [

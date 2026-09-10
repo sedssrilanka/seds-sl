@@ -43,6 +43,7 @@ export interface ProductEntry {
   title: string;
   priceInLKR: number;
   inStock?: boolean;
+  isPreOrder?: boolean;
   category?: string | null;
   badge?: string | null;
   image?: string | null;
@@ -177,6 +178,7 @@ export async function getAllProducts(): Promise<ProductEntry[]> {
       title: item.entry.title,
       priceInLKR: item.entry.priceInLKR,
       inStock: item.entry.inStock,
+      isPreOrder: Boolean((item.entry as any).isPreOrder),
       category: item.entry.category,
       badge: item.entry.badge,
       image: item.entry.image,
@@ -202,6 +204,7 @@ export async function getProductBySlug(slug: string): Promise<ProductEntry | nul
       title: entry.title,
       priceInLKR: entry.priceInLKR,
       inStock: entry.inStock,
+      isPreOrder: Boolean((entry as any).isPreOrder),
       category: entry.category,
       badge: entry.badge,
       image: entry.image,

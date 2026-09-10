@@ -23,7 +23,7 @@ export async function generateMetadata({
   const url = `${baseUrl}/products/${slug}`;
   const image = product.image
     ? `${baseUrl}${product.image}`
-    : `${baseUrl}/images/products/seds-tshirt.jpg`;
+    : `${baseUrl}/images/products/tshit-2026-front.png`;
 
   return {
     title: `${product.title} | SEDS Sri Lanka Store`,
@@ -82,6 +82,9 @@ export default async function ProductPage({
     },
   };
 
+  const { content: _fn, ...serializableProduct } = product;
+  const serializableRelated = relatedProducts.map(({ content: _c, ...rest }) => rest);
+
   return (
     <>
       <script
@@ -92,7 +95,7 @@ export default async function ProductPage({
         <div className="grid-container section-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="col-span-4 md:col-span-8 lg:col-span-12">
             <ProductDetailView
-              product={product}
+              product={serializableProduct}
               content={
                 typeof Content === "string" ? (
                   <div className="whitespace-pre-line">{Content}</div>
@@ -100,7 +103,7 @@ export default async function ProductPage({
                   <div>{product.description}</div>
                 )
               }
-              relatedProducts={relatedProducts}
+              relatedProducts={serializableRelated}
             />
           </div>
         </div>

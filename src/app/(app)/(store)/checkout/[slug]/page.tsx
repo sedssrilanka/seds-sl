@@ -47,6 +47,7 @@ export default async function CheckoutPage({
         slug: product.slug,
         image: product.image,
         sizes: product.sizes,
+        isPreOrder: product.isPreOrder,
         formId: product.tallyFormId,
         description: product.description,
       }}

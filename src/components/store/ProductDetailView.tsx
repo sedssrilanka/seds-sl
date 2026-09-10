@@ -10,22 +10,9 @@ import {
   Rocket,
   ArrowRight,
   ChevronLeft,
-  CreditCard,
-  Copy,
-  Check,
-  Sparkles,
-  ShoppingBag,
+  ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from "@/components/ui/dialog";
 
 interface ProductDetailViewProps {
   product: {
@@ -33,6 +20,7 @@ interface ProductDetailViewProps {
     title: string;
     priceInLKR: number;
     inStock?: boolean;
+    isPreOrder?: boolean;
     category?: string | null;
     badge?: string | null;
     image?: string | null;
@@ -57,13 +45,22 @@ export function ProductDetailView({
   content,
   relatedProducts = [],
 }: ProductDetailViewProps) {
-  // Gallery State
+  // Gallery Carousel State
   const images = Array.from(
     new Set([product.image, ...(product.gallery || [])].filter(Boolean) as string[])
   );
-  const [selectedImage, setSelectedImage] = useState(
-    images[0] || "/images/products/seds-tshirt.jpg"
-  );
+  const [currentIdx, setCurrentIdx] = useState<number>(0);
+
+  const selectedImage =
+    images[currentIdx] || images[0] || "/images/products/tshit-2026-front.png";
+
+  const nextImage = () => {
+    setCurrentIdx((prev) => (prev + 1) % images.length);
+  };
+
+  const prevImage = () => {
+    setCurrentIdx((prev) => (prev - 1 + images.length) % images.length);
+  };
 
   // Selection State
   const [selectedSize, setSelectedSize] = useState<string>(
@@ -71,52 +68,14 @@ export function ProductDetailView({
   );
   const [quantity, setQuantity] = useState<number>(1);
 
-  // Checkout Dialog State
-  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
-  const [step, setStep] = useState<1 | 2>(1);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [copied, setCopied] = useState(false);
+  const isBuy4Get1 =
+    (product.badge && product.badge.toLowerCase().includes("buy 4")) ||
+    (product.description && product.description.toLowerCase().includes("buy 4")) ||
+    product.slug.includes("band");
 
-  const totalAmount = product.priceInLKR * quantity;
-  const activeFormId = product.tallyFormId || "rj4eVo";
-
-  const copyBankDetails = () => {
-    const text = `SEDS Sri Lanka Bank Details:\nBank: Commercial Bank\nAccount Name: Students for the Exploration and Development of Space Sri Lanka\nAccount Number: 1000889944\nBranch: Colombo\nRef: ${name || "Order"} - ${product.title}`;
-    navigator.clipboard.writeText(text);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 3000);
-  };
-
-  const buildTallyUrl = () => {
-    const params = new URLSearchParams({
-      name: name.trim(),
-      email: email.trim(),
-      phone: phone.trim(),
-      address: address.trim(),
-      city: city.trim(),
-      size: selectedSize,
-      quantity: String(quantity),
-      product_name: product.title,
-      price: String(totalAmount),
-      slug: product.slug,
-      order_status: "PENDING_VERIFICATION",
-      status: "PENDING_VERIFICATION",
-      transparentBackground: "1",
-    });
-
-    return `https://tally.so/embed/${activeFormId}?${params.toString()}`;
-  };
-
-  const isStep1Valid =
-    name.trim().length > 1 &&
-    email.includes("@") &&
-    phone.trim().length >= 9 &&
-    address.trim().length > 3 &&
-    city.trim().length > 1;
+  const freeItems = isBuy4Get1 ? Math.floor(quantity / 5) : 0;
+  const billableUnits = isBuy4Get1 ? Math.max(1, quantity - freeItems) : quantity;
+  const subtotal = product.priceInLKR * billableUnits;
 
   return (
     <div className="w-full">
@@ -140,38 +99,72 @@ export function ProductDetailView({
         </span>
       </div>
 
-      {/* Main Two-Column E-Commerce Layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
-        {/* Left Column: Image Gallery */}
-        <div className="lg:col-span-6 space-y-4">
-          <div className="relative aspect-square w-full bg-background border border-border/60 overflow-hidden">
+      {/* Main Two-Column E-Commerce Layout with Sticky Image */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start relative">
+        {/* Left Column: Sticky Image Carousel */}
+        <div className="lg:col-span-6 lg:sticky lg:top-28 self-start space-y-4">
+          <div className="relative aspect-square w-full bg-muted/10 border border-border/60 overflow-hidden group">
             <Image
               src={selectedImage}
-              alt={product.title}
+              alt={`${product.title} - View ${currentIdx + 1}`}
               fill
               priority
               sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-center transition-all duration-300"
+              className="object-contain p-2 object-center transition-all duration-300"
             />
+
             {product.badge && (
               <div className="absolute top-4 left-4 z-10 px-3 py-1 bg-background/90 backdrop-blur-sm border border-border/80 text-foreground text-xs font-mono font-semibold uppercase tracking-wider">
                 {product.badge}
               </div>
             )}
+
+            {/* Carousel Navigation Arrows (If Multiple Images) */}
+            {images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={prevImage}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-background/80 hover:bg-background border border-border/80 text-foreground backdrop-blur-xs transition-all opacity-80 hover:opacity-100 cursor-pointer shadow-sm"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={nextImage}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 w-9 h-9 flex items-center justify-center bg-background/80 hover:bg-background border border-border/80 text-foreground backdrop-blur-xs transition-all opacity-80 hover:opacity-100 cursor-pointer shadow-sm"
+                  aria-label="Next image"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+
+                {/* Counter & View Badge */}
+                <div className="absolute bottom-4 right-4 z-10 px-2.5 py-1 bg-background/90 backdrop-blur-xs border border-border/80 text-foreground text-[10px] font-mono flex items-center gap-1.5">
+                  <span className="font-bold text-primary">
+                    {currentIdx === 0 ? "FRONT" : currentIdx === 1 ? "BACK" : `VIEW ${currentIdx + 1}`}
+                  </span>
+                  <span className="text-muted-foreground">•</span>
+                  <span>
+                    {currentIdx + 1} / {images.length}
+                  </span>
+                </div>
+              </>
+            )}
           </div>
 
-          {/* Thumbnails */}
+          {/* Interactive Thumbnails */}
           {images.length > 1 && (
             <div className="flex items-center gap-3 overflow-x-auto pb-1">
               {images.map((img, idx) => (
                 <button
                   key={idx}
                   type="button"
-                  onClick={() => setSelectedImage(img)}
-                  className={`relative w-20 h-20 bg-background border transition-colors shrink-0 cursor-pointer ${
-                    selectedImage === img
-                      ? "border-primary ring-1 ring-primary"
-                      : "border-border/60 hover:border-muted-foreground opacity-70 hover:opacity-100"
+                  onClick={() => setCurrentIdx(idx)}
+                  className={`relative w-20 h-20 bg-muted/10 border transition-all shrink-0 cursor-pointer overflow-hidden ${
+                    currentIdx === idx
+                      ? "border-primary ring-1 ring-primary opacity-100"
+                      : "border-border/60 hover:border-muted-foreground opacity-60 hover:opacity-100"
                   }`}
                 >
                   <Image
@@ -179,15 +172,24 @@ export function ProductDetailView({
                     alt={`${product.title} thumb ${idx + 1}`}
                     fill
                     sizes="80px"
-                    className="object-cover"
+                    className="object-contain p-1"
                   />
+                  <div className="absolute bottom-0 inset-x-0 bg-background/90 text-[9px] font-mono text-center py-0.5 border-t border-border/40">
+                    {idx === 0 ? "FRONT" : idx === 1 ? "BACK" : `VIEW ${idx + 1}`}
+                  </div>
                 </button>
               ))}
             </div>
           )}
+
+          {/* Non-profit badge */}
+          <div className="p-3.5 border border-primary/20 bg-primary/5 text-xs text-muted-foreground flex items-center gap-3">
+            <Rocket className="w-4 h-4 text-primary shrink-0" />
+            <span>100% of merchandise proceeds directly fund SEDS Sri Lanka student rocketry & outreach projects.</span>
+          </div>
         </div>
 
-        {/* Right Column: Information, Size Picker, Quantity, Single CTA */}
+        {/* Right Column: Information, Size Picker, Quantity, Direct Checkout CTA */}
         <div className="lg:col-span-6 space-y-6">
           {/* Category & Status */}
           <div className="flex items-center gap-3">
@@ -197,7 +199,11 @@ export function ProductDetailView({
               </span>
             )}
             <span className="text-xs font-mono text-muted-foreground">
-              {product.inStock ? "• In Stock" : "• Out of Stock"}
+              {product.isPreOrder
+                ? "• Pre-Order"
+                : product.inStock
+                ? "• In Stock"
+                : "• Out of Stock"}
             </span>
           </div>
 
@@ -211,8 +217,20 @@ export function ProductDetailView({
             <span className="text-3xl font-bold text-foreground">
               Rs. {Number(product.priceInLKR || 0).toLocaleString()}
             </span>
-            <span className="text-xs font-mono text-muted-foreground">LKR</span>
+            <span className="text-xs font-mono text-muted-foreground">LKR per unit</span>
           </div>
+
+          {/* Promo Callout (if Buy 4 Get 1 Free) */}
+          {isBuy4Get1 && (
+            <div className="p-3 bg-primary/10 border border-primary/30 text-xs text-foreground space-y-1">
+              <div className="font-bold flex items-center gap-1.5 text-primary">
+                <span>🔥 Special Deal: Buy 4, Get 1 FREE!</span>
+              </div>
+              <p className="text-muted-foreground">
+                For every 4 wristbands purchased, 1 extra wristband is added completely free to your delivery.
+              </p>
+            </div>
+          )}
 
           {/* Description */}
           <p className="text-sm text-muted-foreground leading-relaxed">
@@ -224,7 +242,7 @@ export function ProductDetailView({
             <div className="space-y-2.5 pt-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-mono uppercase tracking-wider text-foreground font-semibold">
-                  Size: <span className="text-primary">{selectedSize}</span>
+                  Select Size: <span className="text-primary">{selectedSize}</span>
                 </span>
                 <span className="text-muted-foreground text-[11px]">Unisex Regular Fit</span>
               </div>
@@ -256,7 +274,7 @@ export function ProductDetailView({
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono font-bold"
+                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono font-bold cursor-pointer"
               >
                 -
               </button>
@@ -264,31 +282,56 @@ export function ProductDetailView({
               <button
                 type="button"
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono font-bold"
+                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono font-bold cursor-pointer"
               >
                 +
               </button>
             </div>
+            {isBuy4Get1 && quantity === 4 && (
+              <p className="text-[11px] font-mono text-primary font-medium">
+                🎁 Awesome! +1 FREE wristband will be included with your 4 bands!
+              </p>
+            )}
+            {isBuy4Get1 && freeItems > 0 && (
+              <p className="text-[11px] font-mono text-primary font-medium">
+                🎁 Deal applied! {freeItems} free wristband{freeItems > 1 ? "s" : ""} included ({quantity} total bands for the price of {billableUnits})!
+              </p>
+            )}
           </div>
 
-          {/* Total Preview & Single Buy CTA */}
-          <div className="pt-4 space-y-4">
-            <div className="flex items-baseline justify-between text-xs font-mono pb-2">
-              <span className="text-muted-foreground">Order Subtotal:</span>
-              <span className="text-base font-bold text-foreground">
-                Rs. {totalAmount.toLocaleString()} LKR
-              </span>
+          {/* Total Preview & Direct Checkout Navigation (NO POPUPS) */}
+          <div className="pt-4 space-y-3">
+            <div className="space-y-1 text-xs font-mono pb-2 border-b border-border/40">
+              <div className="flex items-center justify-between text-muted-foreground">
+                <span>
+                  Item Subtotal ({quantity} {quantity === 1 ? "unit" : "units"}
+                  {isBuy4Get1 && freeItems > 0 ? ` • ${freeItems} free` : ""}):
+                </span>
+                <span>Rs. {subtotal.toLocaleString()} LKR</span>
+              </div>
+              <div className="flex items-center justify-between text-muted-foreground">
+                <span>Island-Wide Delivery:</span>
+                <span className="text-foreground">Rs. 200 LKR</span>
+              </div>
+              <div className="flex items-baseline justify-between pt-2 text-sm font-bold text-foreground">
+                <span>{product.isPreOrder ? "Total Pre-Order Amount:" : "Total Order Amount:"}</span>
+                <span className="text-xl font-bold text-primary">
+                  Rs. {(subtotal + 200).toLocaleString()} LKR
+                </span>
+              </div>
             </div>
 
             <Button
+              asChild
               size="lg"
-              onClick={() => {
-                setStep(1);
-                setIsCheckoutOpen(true);
-              }}
               className="w-full h-13 text-sm font-semibold cursor-pointer"
             >
-              Order Merchandise <ArrowRight className="w-4 h-4 ml-2" />
+              <Link
+                href={`/checkout/${product.slug}?size=${encodeURIComponent(selectedSize)}&quantity=${quantity}`}
+              >
+                {product.isPreOrder ? "Pre-Order Now" : "Proceed to Checkout"}{" "}
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Link>
             </Button>
           </div>
 
@@ -296,7 +339,7 @@ export function ProductDetailView({
           {product.features && product.features.length > 0 && (
             <div className="pt-6 border-t border-border/60 space-y-2.5">
               <h3 className="text-xs font-mono font-semibold uppercase tracking-wider text-foreground">
-                Specifications
+                Specifications & Highlights
               </h3>
               <ul className="grid grid-cols-1 gap-2">
                 {product.features.map((feat, idx) => (
@@ -329,10 +372,10 @@ export function ProductDetailView({
         </div>
       </div>
 
-      {/* Product Overview Section */}
-      <div className="mt-16 pt-12 border-t border-border/60">
+      {/* Product Overview Story Section */}
+      <div className="mt-20 pt-12 border-t border-border/60">
         <div className="border border-border/60 p-6 sm:p-10 bg-background">
-          <h3 className="text-xl font-bold text-foreground mb-4">Product Details & Story</h3>
+          <h3 className="text-xl font-bold text-foreground mb-4">Complete Product Information</h3>
           <div className="prose prose-invert max-w-none text-muted-foreground leading-relaxed text-sm">
             {content || <div>{product.description}</div>}
           </div>
@@ -365,7 +408,7 @@ export function ProductDetailView({
                 <div className="space-y-4">
                   <div className="relative aspect-square w-full bg-muted/20 border border-border/40 overflow-hidden">
                     <Image
-                      src={rel.image || "/images/products/seds-stickers.jpg"}
+                      src={rel.image || "/images/products/tshit-2026-front.png"}
                       alt={rel.title}
                       fill
                       sizes="(max-width: 768px) 100vw, 33vw"
@@ -395,182 +438,6 @@ export function ProductDetailView({
           </div>
         </div>
       )}
-
-      {/* Streamlined Checkout Modal */}
-      <Dialog open={isCheckoutOpen} onOpenChange={setIsCheckoutOpen}>
-        <DialogContent className="max-w-xl bg-background border border-border/80 text-foreground p-0 overflow-hidden shadow-2xl rounded-none max-h-[90vh] flex flex-col">
-          <div className="p-6 border-b border-border/60 bg-muted/20">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="p-2.5 bg-primary/10 border border-primary/20 text-primary">
-                  <ShoppingBag className="w-5 h-5" />
-                </div>
-                <div>
-                  <DialogTitle className="text-lg font-bold text-foreground">
-                    {step === 1 ? "Delivery Address" : "Bank Transfer & Slip"}
-                  </DialogTitle>
-                  <DialogDescription className="text-xs font-mono text-muted-foreground mt-0.5">
-                    Step {step} of 2 • {quantity}x {product.title} ({selectedSize !== "N/A" ? `Size: ${selectedSize}` : "Regular"})
-                  </DialogDescription>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="text-[10px] font-mono uppercase text-muted-foreground block">Total</span>
-                <span className="text-sm font-bold font-mono text-primary">
-                  Rs. {totalAmount.toLocaleString()} LKR
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-6 overflow-y-auto space-y-6 flex-1">
-            {step === 1 ? (
-              <>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label className="text-xs font-medium text-foreground">Full Name *</Label>
-                      <Input
-                        placeholder="Nimal Perera"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        className="bg-background border-border/80 text-foreground text-sm"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs font-medium text-foreground">Email (for Receipt) *</Label>
-                      <Input
-                        type="email"
-                        placeholder="nimal@gmail.com"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="bg-background border-border/80 text-foreground text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label className="text-xs font-medium text-foreground">Phone / WhatsApp *</Label>
-                      <Input
-                        placeholder="077 123 4567"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                        className="bg-background border-border/80 text-foreground text-sm"
-                      />
-                    </div>
-                    <div className="space-y-1.5">
-                      <Label className="text-xs font-medium text-foreground">City / Town *</Label>
-                      <Input
-                        placeholder="Colombo 03, Kandy, Galle..."
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                        className="bg-background border-border/80 text-foreground text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5">
-                    <Label className="text-xs font-medium text-foreground">Street Delivery Address *</Label>
-                    <Input
-                      placeholder="No. 123, Main Street, Apartment 4B..."
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      className="bg-background border-border/80 text-foreground text-sm"
-                    />
-                  </div>
-                </div>
-
-                <div className="pt-4 border-t border-border/60">
-                  <Button
-                    disabled={!isStep1Valid}
-                    onClick={() => setStep(2)}
-                    className="w-full h-11 text-sm font-semibold cursor-pointer"
-                  >
-                    Proceed to Bank Slip & Confirm <ArrowRight className="w-4 h-4 ml-2" />
-                  </Button>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Step 2: Bank Details */}
-                <div className="p-4 border border-border/60 bg-muted/10 space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-primary flex items-center gap-1.5">
-                      <CreditCard className="w-4 h-4" /> Bank Account Details
-                    </span>
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      onClick={copyBankDetails}
-                      className="h-7 text-xs border-border/60"
-                    >
-                      {copied ? (
-                        <>
-                          <Check className="w-3.5 h-3.5 mr-1 text-primary" /> Copied!
-                        </>
-                      ) : (
-                        <>
-                          <Copy className="w-3.5 h-3.5 mr-1" /> Copy
-                        </>
-                      )}
-                    </Button>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-3 text-xs bg-background p-3 border border-border/40 font-mono">
-                    <div>
-                      <span className="text-muted-foreground block text-[10px] uppercase">Bank</span>
-                      <span className="text-foreground font-semibold">Commercial Bank</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground block text-[10px] uppercase">Account No.</span>
-                      <span className="text-primary font-bold">1000889944</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground block text-[10px] uppercase">Account Name</span>
-                      <span className="text-foreground">SEDS Sri Lanka</span>
-                    </div>
-                    <div>
-                      <span className="text-muted-foreground block text-[10px] uppercase">Amount Due</span>
-                      <span className="text-primary font-bold">Rs. {totalAmount.toLocaleString()}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Tally Embedded File Upload */}
-                <div className="border border-border/60 bg-background overflow-hidden">
-                  <div className="p-3 bg-muted/20 border-b border-border/40 text-xs font-mono text-muted-foreground flex items-center justify-between">
-                    <span>Attach Transfer Proof:</span>
-                    <span className="text-[11px]">Auto-fills for {name}</span>
-                  </div>
-                  <iframe
-                    src={buildTallyUrl()}
-                    width="100%"
-                    height="340"
-                    title="SEDS Order Form"
-                    className="w-full border-0"
-                  />
-                </div>
-
-                <div className="pt-2 flex items-center justify-between">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => setStep(1)}
-                    className="text-muted-foreground hover:text-foreground text-xs cursor-pointer"
-                  >
-                    ← Edit Delivery Info
-                  </Button>
-                  <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
-                    <ShieldCheck className="w-3.5 h-3.5 text-primary" />
-                    <span>SEDS Verified Checkout</span>
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 }
