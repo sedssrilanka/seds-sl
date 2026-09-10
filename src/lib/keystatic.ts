@@ -59,16 +59,18 @@ export interface ProductEntry {
 export async function getAllProjects(): Promise<ProjectEntry[]> {
   try {
     const raw = await keystaticReader.collections.projects.all();
-    return raw.map((item) => ({
-      slug: item.slug,
-      name: item.entry.name,
-      description: item.entry.description,
-      image: item.entry.image,
-      chapter: item.entry.chapter,
-      isFeatured: Boolean(item.entry.isFeatured),
-      customLink: item.entry.customLink,
-      content: item.entry.content,
-    }));
+    return raw
+      .filter((item) => item.slug !== "building" && item.slug !== "cansat")
+      .map((item) => ({
+        slug: item.slug,
+        name: item.entry.name,
+        description: item.entry.description,
+        image: item.entry.image,
+        chapter: item.entry.chapter,
+        isFeatured: Boolean(item.entry.isFeatured),
+        customLink: item.entry.customLink,
+        content: item.entry.content,
+      }));
   } catch (error) {
     console.error("Error loading projects from Keystatic:", error);
     return [];

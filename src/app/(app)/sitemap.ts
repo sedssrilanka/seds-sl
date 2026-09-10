@@ -90,11 +90,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         priority: 0.6,
       },
       {
-        url: `${baseUrl}/join-us`,
+        url: `${baseUrl}/nasa-space-apps-challenge`,
         lastModified: new Date(),
-        changeFrequency: "monthly",
-        priority: 0.6,
+        changeFrequency: "weekly",
+        priority: 0.9,
       },
+      ...["2025", "2024", "2023", "2022", "2021", "2020", "2019"].map((year) => ({
+        url: `${baseUrl}/nasa-space-apps-challenge/${year}`,
+        lastModified: new Date(),
+        changeFrequency: "monthly" as const,
+        priority: 0.8,
+      })),
     ];
 
     return [

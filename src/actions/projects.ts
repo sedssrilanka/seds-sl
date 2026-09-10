@@ -49,6 +49,20 @@ export const fetchProjects = async (
     // Add flagship events
     const flagshipEvents: UnifiedProjectItem[] = [
       {
+        id: "nasa-space-apps",
+        name: "NASA Space Apps Challenge Sri Lanka",
+        description:
+          "The official national hackathon organized across Sri Lanka by SEDS Sri Lanka across 7 consecutive editions (2019 - 2025).",
+        image: { url: "/section-header/space-projects-bg.jpeg" },
+        chapterName: "SEDS Sri Lanka Flagship Hackathon",
+        createdAt: new Date().toISOString(),
+        slug: "nasa-space-apps-challenge",
+        customLink: "/nasa-space-apps-challenge",
+        isFeatured: true,
+        isFlagship: true,
+        badgeLabel: "GLOBAL HACKATHON",
+      },
+      {
         id: "moon-2025",
         name: "International Observe the Moon Night 2025",
         description:
