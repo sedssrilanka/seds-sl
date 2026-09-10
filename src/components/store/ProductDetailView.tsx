@@ -190,44 +190,51 @@ export function ProductDetailView({
         </div>
 
         {/* Right Column: Information, Size Picker, Quantity, Direct Checkout CTA */}
-        <div className="lg:col-span-6 space-y-6">
+        <div className="lg:col-span-6 space-y-7">
           {/* Category & Status */}
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             {product.category && (
-              <span className="text-xs font-mono uppercase tracking-wider font-semibold text-primary">
+              <span className="text-xs font-mono uppercase tracking-wider font-semibold text-primary px-2.5 py-0.5 bg-primary/10 border border-primary/20">
                 {product.category}
               </span>
             )}
             <span className="text-xs font-mono text-muted-foreground">
               {product.isPreOrder
-                ? "• Pre-Order"
+                ? "Pre-Order Edition"
                 : product.inStock
-                ? "• In Stock"
-                : "• Out of Stock"}
+                ? "In Stock • Ready to Dispatch"
+                : "Out of Stock"}
             </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground leading-tight">
             {product.title}
           </h1>
 
-          {/* Price */}
-          <div className="flex items-baseline gap-3 pb-4 border-b border-border/60">
-            <span className="text-3xl font-bold text-foreground">
-              Rs. {Number(product.priceInLKR || 0).toLocaleString()}
-            </span>
-            <span className="text-xs font-mono text-muted-foreground">LKR per unit</span>
+          {/* Price Block */}
+          <div className="space-y-1 pb-4 border-b border-border/60">
+            <div className="flex flex-wrap items-baseline gap-2.5">
+              <span className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+                Rs. {Number(product.priceInLKR || 0).toLocaleString()}
+              </span>
+              <span className="text-xs font-mono text-muted-foreground uppercase">
+                LKR / unit
+              </span>
+            </div>
+            <p className="text-[11px] font-mono text-muted-foreground">
+              Island-wide delivery: Rs. 200 LKR
+            </p>
           </div>
 
           {/* Promo Callout (if Buy 4 Get 1 Free) */}
           {isBuy4Get1 && (
-            <div className="p-3 bg-primary/10 border border-primary/30 text-xs text-foreground space-y-1">
+            <div className="p-3.5 bg-primary/10 border border-primary/30 text-xs text-foreground space-y-1">
               <div className="font-bold flex items-center gap-1.5 text-primary">
                 <span>🔥 Special Deal: Buy 4, Get 1 FREE!</span>
               </div>
-              <p className="text-muted-foreground">
-                For every 4 wristbands purchased, 1 extra wristband is added completely free to your delivery.
+              <p className="text-muted-foreground leading-relaxed">
+                For every 4 wristbands purchased, 1 extra wristband is added completely free to your package.
               </p>
             </div>
           )}
@@ -239,7 +246,7 @@ export function ProductDetailView({
 
           {/* Inline Size Selector (If Apparel) */}
           {product.sizes && product.sizes.length > 0 && (
-            <div className="space-y-2.5 pt-2">
+            <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-mono uppercase tracking-wider text-foreground font-semibold">
                   Select Size: <span className="text-primary">{selectedSize}</span>
@@ -252,9 +259,9 @@ export function ProductDetailView({
                     key={s}
                     type="button"
                     onClick={() => setSelectedSize(s)}
-                    className={`px-4 py-2 text-xs font-mono font-bold border transition-colors cursor-pointer ${
+                    className={`px-4 py-2.5 text-xs font-mono font-bold border transition-all cursor-pointer ${
                       selectedSize === s
-                        ? "bg-primary text-primary-foreground border-primary"
+                        ? "bg-primary text-primary-foreground border-primary shadow-sm"
                         : "bg-background text-muted-foreground border-border/60 hover:border-foreground hover:text-foreground"
                     }`}
                   >
@@ -266,7 +273,7 @@ export function ProductDetailView({
           )}
 
           {/* Quantity Selector */}
-          <div className="space-y-2 pt-2">
+          <div className="space-y-2.5 pt-2">
             <span className="text-xs font-mono uppercase tracking-wider text-foreground font-semibold block">
               Quantity
             </span>
@@ -274,15 +281,17 @@ export function ProductDetailView({
               <button
                 type="button"
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono font-bold cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono font-bold cursor-pointer transition-colors"
+                aria-label="Decrease quantity"
               >
                 -
               </button>
-              <span className="text-sm font-mono font-bold px-3">{quantity}</span>
+              <span className="text-sm font-mono font-bold px-3 min-w-[2rem] text-center">{quantity}</span>
               <button
                 type="button"
                 onClick={() => setQuantity(quantity + 1)}
-                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono font-bold cursor-pointer"
+                className="w-8 h-8 flex items-center justify-center text-muted-foreground hover:text-foreground font-mono font-bold cursor-pointer transition-colors"
+                aria-label="Increase quantity"
               >
                 +
               </button>
@@ -299,24 +308,26 @@ export function ProductDetailView({
             )}
           </div>
 
-          {/* Total Preview & Direct Checkout Navigation (NO POPUPS) */}
-          <div className="pt-4 space-y-3">
-            <div className="space-y-1 text-xs font-mono pb-2 border-b border-border/40">
-              <div className="flex items-center justify-between text-muted-foreground">
+          {/* Total Preview & Direct Checkout Navigation */}
+          <div className="pt-4 space-y-4">
+            <div className="space-y-2 text-xs font-mono p-4 border border-border/60 bg-muted/10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-muted-foreground">
                 <span>
                   Item Subtotal ({quantity} {quantity === 1 ? "unit" : "units"}
                   {isBuy4Get1 && freeItems > 0 ? ` • ${freeItems} free` : ""}):
                 </span>
-                <span>Rs. {subtotal.toLocaleString()} LKR</span>
+                <span className="font-semibold text-foreground">Rs. {subtotal.toLocaleString()} LKR</span>
               </div>
-              <div className="flex items-center justify-between text-muted-foreground">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-muted-foreground">
                 <span>Island-Wide Delivery:</span>
-                <span className="text-foreground">Rs. 200 LKR</span>
+                <span className="font-semibold text-foreground">Rs. 200 LKR</span>
               </div>
-              <div className="flex items-baseline justify-between pt-2 text-sm font-bold text-foreground">
-                <span>{product.isPreOrder ? "Total Pre-Order Amount:" : "Total Order Amount:"}</span>
-                <span className="text-xl font-bold text-primary">
-                  Rs. {(subtotal + 200).toLocaleString()} LKR
+              <div className="pt-2 border-t border-border/40 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+                <span className="font-bold text-foreground">
+                  {product.isPreOrder ? "Total Pre-Order Amount:" : "Total Order Amount:"}
+                </span>
+                <span className="text-xl sm:text-2xl font-bold text-primary">
+                  Rs. {(subtotal + 200).toLocaleString()} <span className="text-xs font-mono font-normal text-muted-foreground">LKR</span>
                 </span>
               </div>
             </div>
@@ -353,15 +364,15 @@ export function ProductDetailView({
           )}
 
           {/* Trust Row */}
-          <div className="grid grid-cols-2 gap-3 pt-4 border-t border-border/60 text-xs">
-            <div className="p-3 border border-border/60 bg-muted/10 flex items-center gap-2.5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-border/60 text-xs">
+            <div className="p-3.5 border border-border/60 bg-muted/10 flex items-center gap-3">
               <Truck className="w-4 h-4 text-primary shrink-0" />
               <div>
-                <p className="font-semibold text-foreground">Island-Wide</p>
+                <p className="font-semibold text-foreground">Island-Wide Delivery</p>
                 <p className="text-muted-foreground text-[11px]">2-3 Business Days</p>
               </div>
             </div>
-            <div className="p-3 border border-border/60 bg-muted/10 flex items-center gap-2.5">
+            <div className="p-3.5 border border-border/60 bg-muted/10 flex items-center gap-3">
               <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
               <div>
                 <p className="font-semibold text-foreground">Bank Slip Proof</p>

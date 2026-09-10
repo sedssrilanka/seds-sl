@@ -234,22 +234,21 @@ export function CheckoutPageClient({ product }: CheckoutPageClientProps) {
 
   return (
     <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
-      <div className="grid-container section-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="col-span-4 md:col-span-8 lg:col-span-12">
-          {/* Breadcrumb */}
-          <div className="mb-8">
-            <Link href={`/products/${product.slug}`}>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground"
-              >
-                <ChevronLeft className="w-4 h-4" /> BACK TO PRODUCT
-              </Button>
-            </Link>
-          </div>
+      <div className="w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-content relative z-10">
+        {/* Breadcrumb */}
+        <div className="mb-8">
+          <Link href={`/products/${product.slug}`}>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-1.5 text-xs font-mono text-muted-foreground hover:text-foreground"
+            >
+              <ChevronLeft className="w-4 h-4" /> BACK TO PRODUCT
+            </Button>
+          </Link>
+        </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start relative">
             {/* Left Column: Sticky Order Summary */}
             <div className="lg:col-span-5 lg:sticky lg:top-28 self-start space-y-6">
               <div className="border border-border/60 bg-background p-6 sm:p-8 space-y-6">
@@ -296,13 +295,13 @@ export function CheckoutPageClient({ product }: CheckoutPageClientProps) {
                 </div>
 
                 {/* Calculation */}
-                <div className="pt-4 border-t border-border/60 space-y-2 text-xs font-mono">
-                  <div className="flex justify-between text-muted-foreground">
+                <div className="pt-4 border-t border-border/60 space-y-2.5 text-xs font-mono">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-muted-foreground">
                     <span>
                       Item Subtotal ({quantity} {quantity === 1 ? "unit" : "units"}
-                      {isBuy4Get1 && freeItems > 0 ? ` • ${freeItems} free` : ""})
+                      {isBuy4Get1 && freeItems > 0 ? ` • ${freeItems} free` : ""}):
                     </span>
-                    <span>Rs. {subtotal.toLocaleString()} LKR</span>
+                    <span className="font-semibold text-foreground">Rs. {subtotal.toLocaleString()} LKR</span>
                   </div>
                   {isBuy4Get1 && quantity === 4 && (
                     <div className="text-[11px] text-primary font-bold">
@@ -314,14 +313,14 @@ export function CheckoutPageClient({ product }: CheckoutPageClientProps) {
                       🎁 Deal applied: {freeItems} free band{freeItems > 1 ? "s" : ""} included!
                     </div>
                   )}
-                  <div className="flex justify-between text-muted-foreground">
-                    <span>Island-Wide Courier Delivery</span>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-muted-foreground">
+                    <span>Island-Wide Courier Delivery:</span>
                     <span className="text-foreground font-semibold">Rs. {deliveryFee.toLocaleString()} LKR</span>
                   </div>
-                  <div className="flex justify-between text-sm font-bold text-foreground pt-3 border-t border-border/40">
-                    <span>{product.isPreOrder ? "Total Pre-Order Amount" : "Total Amount Due"}</span>
-                    <span className="text-primary font-bold text-base">
-                      Rs. {totalAmount.toLocaleString()} LKR
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 text-sm font-bold text-foreground pt-3 border-t border-border/40">
+                    <span>{product.isPreOrder ? "Total Pre-Order Amount:" : "Total Amount Due:"}</span>
+                    <span className="text-primary font-bold text-lg">
+                      Rs. {totalAmount.toLocaleString()} <span className="text-xs font-mono font-normal text-muted-foreground">LKR</span>
                     </span>
                   </div>
                 </div>
@@ -759,6 +758,5 @@ export function CheckoutPageClient({ product }: CheckoutPageClientProps) {
           </div>
         </div>
       </div>
-    </div>
   );
 }
