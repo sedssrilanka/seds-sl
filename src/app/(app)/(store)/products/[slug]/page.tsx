@@ -1,9 +1,6 @@
 import { getProductBySlug, getAllProducts } from "@/lib/keystatic";
-import Link from "next/link";
 import React from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { ChevronLeftIcon, Mail } from "lucide-react";
+import { ProductDetailView } from "@/components/store/ProductDetailView";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getServerSideURL } from "@/utilities/getURL";
@@ -24,10 +21,12 @@ export async function generateMetadata({
 
   const baseUrl = getServerSideURL();
   const url = `${baseUrl}/products/${slug}`;
-  const image = product.image ? `${baseUrl}${product.image}` : `${baseUrl}/section-header/space-projects-bg.jpeg`;
+  const image = product.image
+    ? `${baseUrl}${product.image}`
+    : `${baseUrl}/images/products/seds-tshirt.jpg`;
 
   return {
-    title: product.title,
+    title: `${product.title} | SEDS Sri Lanka Store`,
     description: product.description,
     alternates: {
       canonical: url,
@@ -53,7 +52,10 @@ export default async function ProductPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const [product, allProducts] = await Promise.all([
+    getProductBySlug(slug),
+    getAllProducts(),
+  ]);
 
   if (!product) {
     return notFound();
@@ -61,6 +63,7 @@ export default async function ProductPage({
 
   const Content = await product.content();
   const baseUrl = getServerSideURL();
+  const relatedProducts = allProducts.filter((p) => p.slug !== slug);
 
   const jsonLdProduct = {
     "@context": "https://schema.org",
@@ -85,58 +88,20 @@ export default async function ProductPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdProduct) }}
       />
-      <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto">
-        <div className="mb-6">
-          <Link href="/shop">
-            <Button variant="ghost" size="sm" className="gap-2 text-zinc-400 hover:text-white">
-              <ChevronLeftIcon className="w-4 h-4" /> Back to Store
-            </Button>
-          </Link>
-        </div>
-
-        <div className="border border-border/60 rounded-2xl bg-card p-8 md:p-12 shadow-xl">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-border/60 pb-8 mb-8">
-            <div>
-              <div className="flex items-center gap-3">
-                <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">
-                  {product.title}
-                </h1>
-                <Badge variant={product.inStock ? "default" : "secondary"}>
-                  {product.inStock ? "In Stock" : "Out of Stock"}
-                </Badge>
-              </div>
-              <p className="text-lg text-zinc-400 mt-3">{product.description}</p>
-            </div>
-
-            <div className="text-left md:text-right">
-              <span className="text-xs text-zinc-500 uppercase font-mono block">Price</span>
-              <span className="text-3xl font-extrabold text-indigo-400">
-                Rs. {Number(product.priceInLKR || 0).toLocaleString()}
-              </span>
-            </div>
-          </div>
-
-          <div className="space-y-6">
-            <h3 className="text-lg font-semibold text-white">Product Information</h3>
-            <div className="prose prose-invert max-w-none text-zinc-300">
-              {typeof Content === "string" ? (
-                <p className="whitespace-pre-line">{Content}</p>
-              ) : (
-                <p>{product.description}</p>
-              )}
-            </div>
-
-            <div className="pt-8 border-t border-border/60 flex flex-col sm:flex-row gap-4 items-center">
-              <Button
-                asChild
-                size="lg"
-                className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-500 text-white font-medium gap-2 px-8"
-              >
-                <Link href="/contact-us">
-                  <Mail className="w-5 h-5" /> Inquire / Order via Team
-                </Link>
-              </Button>
-            </div>
+      <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
+        <div className="grid-container section-content max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="col-span-4 md:col-span-8 lg:col-span-12">
+            <ProductDetailView
+              product={product}
+              content={
+                typeof Content === "string" ? (
+                  <div className="whitespace-pre-line">{Content}</div>
+                ) : (
+                  <div>{product.description}</div>
+                )
+              }
+              relatedProducts={relatedProducts}
+            />
           </div>
         </div>
       </div>

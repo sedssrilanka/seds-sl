@@ -43,8 +43,14 @@ export interface ProductEntry {
   title: string;
   priceInLKR: number;
   inStock?: boolean;
+  category?: string | null;
+  badge?: string | null;
   image?: string | null;
+  gallery?: readonly string[] | null;
+  sizes?: readonly string[] | null;
+  features?: readonly string[] | null;
   description: string;
+  tallyFormId?: string | null;
   content: () => Promise<any>;
 }
 
@@ -171,8 +177,14 @@ export async function getAllProducts(): Promise<ProductEntry[]> {
       title: item.entry.title,
       priceInLKR: item.entry.priceInLKR,
       inStock: item.entry.inStock,
+      category: item.entry.category,
+      badge: item.entry.badge,
       image: item.entry.image,
+      gallery: item.entry.gallery as any,
+      sizes: item.entry.sizes as any,
+      features: item.entry.features as any,
       description: item.entry.description,
+      tallyFormId: item.entry.tallyFormId,
       content: item.entry.content,
     }));
   } catch (error) {
@@ -190,8 +202,14 @@ export async function getProductBySlug(slug: string): Promise<ProductEntry | nul
       title: entry.title,
       priceInLKR: entry.priceInLKR,
       inStock: entry.inStock,
+      category: entry.category,
+      badge: entry.badge,
       image: entry.image,
+      gallery: entry.gallery as any,
+      sizes: entry.sizes as any,
+      features: entry.features as any,
       description: entry.description,
+      tallyFormId: entry.tallyFormId,
       content: entry.content,
     };
   } catch (error) {

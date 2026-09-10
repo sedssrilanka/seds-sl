@@ -166,15 +166,56 @@ export default config({
           label: "In Stock / Available for Order",
           defaultValue: true,
         }),
+        category: fields.select({
+          label: "Category",
+          options: [
+            { label: "Apparel", value: "Apparel" },
+            { label: "Patches & Stickers", value: "Patches & Stickers" },
+            { label: "Hardware & Kits", value: "Hardware & Kits" },
+            { label: "Accessories", value: "Accessories" },
+          ],
+          defaultValue: "Apparel",
+        }),
+        badge: fields.text({
+          label: "Ribbon Badge (e.g. Official Merch, Limited Edition)",
+          defaultValue: "Official Merch",
+        }),
         image: fields.image({
           label: "Product Main Image",
           directory: "public/images/products",
           publicPath: "/images/products/",
         }),
+        gallery: fields.array(
+          fields.image({
+            label: "Gallery Image",
+            directory: "public/images/products",
+            publicPath: "/images/products/",
+          }),
+          {
+            label: "Product Gallery Images",
+            itemLabel: (props) =>
+              typeof props.value === "string"
+                ? props.value
+                : props.value?.filename || "Gallery Image",
+          },
+        ),
+        sizes: fields.array(fields.text({ label: "Size (e.g. S, M, L, XL, 2XL)" }), {
+          label: "Available Sizes (Leave empty if not apparel)",
+          itemLabel: (props) => props.value || "Size",
+        }),
+        features: fields.array(fields.text({ label: "Feature / Highlight" }), {
+          label: "Key Features & Highlights",
+          itemLabel: (props) => props.value || "Feature",
+        }),
         description: fields.text({
           label: "Short Description",
           multiline: true,
           validation: { isRequired: true },
+        }),
+        tallyFormId: fields.text({
+          label: "Custom Tally Form ID (Optional)",
+          description:
+            "e.g. rj4eVo. Leave blank to use default SEDS Merch Order Form.",
         }),
         content: fields.markdoc({
           label: "Product Details, Sizing & Information",
