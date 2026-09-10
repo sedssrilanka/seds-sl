@@ -19,7 +19,6 @@ import Navigation from "../../ui/navigation";
 import FullScreenMenu from "./full-screen-menu";
 import { Cart } from "@/components/Cart";
 import { OpenCartButton } from "@/components/Cart/OpenCart";
-import { UserNav } from "@/components/UserNav";
 
 interface NavbarLink {
   text: string;
@@ -108,11 +107,6 @@ export default function Navbar({
           </NavbarLeft>
 
           <NavbarRight className="h-full items-stretch flex items-stretch gap-0">
-            {/* Profile / Sign In Boxed Button (Hidden on Mobile) */}
-            <div className="hidden sm:flex h-full items-stretch">
-              <UserNav />
-            </div>
-
             {/* Large Full-Height Boxed Menu/Close Button sitting flush on vertical margin line */}
             <button
               type="button"
