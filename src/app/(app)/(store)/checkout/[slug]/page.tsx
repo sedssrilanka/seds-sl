@@ -2,6 +2,7 @@ import { getProductBySlug, getAllProducts } from "@/lib/keystatic";
 import { notFound } from "next/navigation";
 import { CheckoutPageClient } from "./CheckoutPageClient";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 export async function generateStaticParams() {
   const products = await getAllProducts();
@@ -40,17 +41,27 @@ export default async function CheckoutPage({
   }
 
   return (
-    <CheckoutPageClient
-      product={{
-        title: product.title,
-        priceInLKR: product.priceInLKR,
-        slug: product.slug,
-        image: product.image,
-        sizes: product.sizes,
-        isPreOrder: product.isPreOrder,
-        formId: product.tallyFormId,
-        description: product.description,
-      }}
-    />
+    <Suspense
+      fallback={
+        <div className="flex flex-col w-full min-h-screen py-16 items-center justify-center">
+          <div className="text-xs font-mono text-muted-foreground animate-pulse">
+            Loading checkout...
+          </div>
+        </div>
+      }
+    >
+      <CheckoutPageClient
+        product={{
+          title: product.title,
+          priceInLKR: product.priceInLKR,
+          slug: product.slug,
+          image: product.image,
+          sizes: product.sizes,
+          isPreOrder: product.isPreOrder,
+          formId: product.tallyFormId,
+          description: product.description,
+        }}
+      />
+    </Suspense>
   );
 }
