@@ -1,10 +1,63 @@
 import { NextResponse } from "next/server";
+import crypto from "node:crypto";
 import { sendEmail } from "@/utilities/sendEmail";
 import { renderOrderReceiptEmail, renderOrderAlertEmail } from "@/emails";
 
+function verifyTallySignature(
+  rawBody: string,
+  signatureHeader: string | null,
+  signingSecret: string,
+): boolean {
+  if (!signatureHeader) return false;
+  try {
+    const calculatedSignature = crypto
+      .createHmac("sha256", signingSecret)
+      .update(rawBody)
+      .digest("base64");
+
+    const expectedBuffer = Buffer.from(calculatedSignature, "utf8");
+    const receivedBuffer = Buffer.from(signatureHeader, "utf8");
+
+    if (expectedBuffer.length !== receivedBuffer.length) {
+      return false;
+    }
+
+    return crypto.timingSafeEqual(expectedBuffer, receivedBuffer);
+  } catch (err) {
+    console.error("Tally signature verification error:", err);
+    return false;
+  }
+}
+
 export async function POST(req: Request) {
   try {
-    const payload = await req.json();
+    const rawBody = await req.text();
+    const signingSecret = process.env.TALLY_SIGNING_SECRET;
+
+    // Verify webhook signature if signing secret is configured
+    if (signingSecret) {
+      const signature =
+        req.headers.get("tally-signature") ||
+        req.headers.get("x-tally-signature");
+
+      if (!verifyTallySignature(rawBody, signature, signingSecret)) {
+        console.warn("Unauthorized Tally webhook request: invalid signature");
+        return NextResponse.json(
+          { error: "Invalid webhook signature" },
+          { status: 401 },
+        );
+      }
+    }
+
+    let payload: any;
+    try {
+      payload = JSON.parse(rawBody);
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid JSON payload" },
+        { status: 400 },
+      );
+    }
 
     // Verify Tally webhook event
     if (!payload || payload.eventType !== "FORM_RESPONSE") {
