@@ -18,55 +18,43 @@ export function renderMembershipEmail({
   statement,
 }: MembershipEmailProps): string {
   const contentHtml = `
-    <!-- Applicant Information Card -->
-    <div style="background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-      <div style="font-size: 11px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; color: #71717a; margin-bottom: 12px;">
-        Applicant Profile
-      </div>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="padding: 5px 0; color: #a1a1aa; font-size: 13px; width: 120px;">Full Name:</td>
-          <td style="padding: 5px 0; color: #ffffff; font-weight: 600; font-size: 14px;">${fullName}</td>
-        </tr>
-        <tr>
-          <td style="padding: 5px 0; color: #a1a1aa; font-size: 13px;">Email:</td>
-          <td style="padding: 5px 0; font-size: 14px;">
-            <a href="mailto:${email}" style="color: #c084fc; text-decoration: none; font-weight: 500;">${email}</a>
-          </td>
-        </tr>
-        <tr>
-          <td style="padding: 5px 0; color: #a1a1aa; font-size: 13px;">Phone Number:</td>
-          <td style="padding: 5px 0; color: #ffffff; font-size: 14px;">${phone || "Not provided"}</td>
-        </tr>
-        <tr>
-          <td style="padding: 5px 0; color: #a1a1aa; font-size: 13px;">Institution:</td>
-          <td style="padding: 5px 0; color: #ffffff; font-size: 14px;">${institution}</td>
-        </tr>
-        <tr>
-          <td style="padding: 5px 0; color: #a1a1aa; font-size: 13px;">Preferred Chapter:</td>
-          <td style="padding: 5px 0; color: #ffffff; font-size: 14px; font-weight: 600;">${chapter || "Independent"}</td>
-        </tr>
-      </table>
-    </div>
+    <p style="margin: 0 0 24px 0; color: #d4d4d8; font-size: 15px; line-height: 1.6;">
+      A new student membership application has been submitted for review.
+    </p>
 
-    <!-- Statement of Purpose -->
-    <div style="background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px;">
-      <div style="font-size: 11px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; color: #71717a; margin-bottom: 8px;">
+    <div style="margin-bottom: 24px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Applicant
+      </div>
+      <div style="color: #ffffff; font-size: 14px; font-weight: 500; margin-bottom: 16px;">
+        ${fullName} &bull; <a href="mailto:${email}" style="color: #60a5fa; text-decoration: none;">${email}</a> ${phone ? `&bull; ${phone}` : ""}
+      </div>
+
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Institution & Chapter
+      </div>
+      <div style="color: #f4f4f5; font-size: 14px; margin-bottom: 16px;">
+        ${institution} · <span style="color: #a1a1aa;">${chapter || "Independent / General"}</span>
+      </div>
+
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 6px;">
         Statement of Purpose
       </div>
-      <div style="color: #f4f4f5; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">
-        ${statement}
-      </div>
+      <div style="color: #ededed; font-size: 14px; line-height: 1.65; white-space: pre-wrap; padding-left: 12px; border-left: 2px solid #27272a;">${statement}</div>
     </div>
   `;
 
   return renderBaseEmail({
-    title: `New Membership Application: ${fullName}`,
-    preheader: `Membership application from ${fullName} (${institution})`,
-    badge: { text: "Membership", variant: "purple" },
-    heading: "New Membership Application",
-    subheading: "A student or researcher has applied to join SEDS Sri Lanka.",
+    title: `Membership Application: ${fullName}`,
+    preheader: `New membership application from ${fullName} (${institution})`,
+    badge: "Membership",
+    heading: "Membership Application",
+    subheading: `${fullName} · ${institution}`,
     contentHtml,
-    footerNote: "Review applicant profile and follow up via email.",
+    cta: {
+      text: "Contact Applicant",
+      url: `mailto:${email}?subject=SEDS Sri Lanka Membership Application - ${fullName}`,
+    },
+    footerText: "SEDS Sri Lanka · Executive Committee",
   });
 }

@@ -17,61 +17,63 @@ export function renderOrderReceiptEmail({
   city,
 }: OrderReceiptEmailProps): string {
   const contentHtml = `
-    <p style="margin-top: 0; font-size: 15px; color: #ffffff;">
-      Hello <strong>${customerName}</strong>,
-    </p>
-    <p style="color: #a1a1aa; font-size: 14px; margin-bottom: 24px;">
-      Thank you for your order! We have received your purchase details and our merchandising team is currently reviewing your payment verification slip.
+    <p style="margin: 0 0 24px 0; color: #d4d4d8; font-size: 15px; line-height: 1.6;">
+      Hi <strong style="color: #ffffff;">${customerName}</strong>, thank you for supporting student space initiatives in Sri Lanka! We have received your order details and are verifying your payment slip.
     </p>
 
-    <!-- Order Summary Card -->
-    <div style="background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-      <div style="font-size: 11px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; color: #71717a; margin-bottom: 12px;">
-        Order Details
+    <!-- Lineless Order Summary List -->
+    <div style="margin-bottom: 28px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Item
       </div>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="padding: 6px 0; color: #a1a1aa; font-size: 13px;">Item Ordered:</td>
-          <td style="padding: 6px 0; color: #ffffff; font-weight: 600; font-size: 14px; text-align: right;">${productName}</td>
-        </tr>
-        ${
-          totalAmount > 0
-            ? `<tr>
-          <td style="padding: 6px 0; color: #a1a1aa; font-size: 13px;">Total Amount:</td>
-          <td style="padding: 6px 0; color: #34d399; font-weight: 700; font-size: 15px; text-align: right;">Rs. ${totalAmount.toLocaleString()}</td>
-        </tr>`
-            : ""
-        }
-        <tr>
-          <td style="padding: 6px 0; color: #a1a1aa; font-size: 13px;">Delivery Address:</td>
-          <td style="padding: 6px 0; color: #ffffff; font-size: 13px; text-align: right;">${shippingAddress}, ${city}</td>
-        </tr>
-        <tr>
-          <td style="padding: 6px 0; color: #a1a1aa; font-size: 13px;">Fulfillment Status:</td>
-          <td style="padding: 6px 0; text-align: right;">
-            <span style="display: inline-block; background-color: #451a03; color: #fbbf24; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; border: 1px solid #d97706;">
-              Pending Verification
-            </span>
-          </td>
-        </tr>
-      </table>
+      <div style="color: #ffffff; font-size: 15px; font-weight: 600; margin-bottom: 16px;">
+        ${productName}
+      </div>
+
+      ${
+        totalAmount > 0
+          ? `
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Total Amount
+      </div>
+      <div style="color: #ffffff; font-size: 16px; font-weight: 700; font-family: monospace; margin-bottom: 16px;">
+        Rs. ${totalAmount.toLocaleString()}
+      </div>
+      `
+          : ""
+      }
+
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Delivery Address
+      </div>
+      <div style="color: #d4d4d8; font-size: 14px; margin-bottom: 16px;">
+        ${shippingAddress}, ${city}
+      </div>
+
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Status
+      </div>
+      <div style="color: #fbbf24; font-size: 14px; font-weight: 500;">
+        Payment Verification Pending
+      </div>
     </div>
 
-    <!-- Info Box -->
-    <div style="border-left: 3px solid #3b82f6; background-color: #18181b; padding: 14px 16px; border-radius: 0 8px 8px 0; margin-bottom: 24px;">
-      <p style="margin: 0; font-size: 13px; color: #d4d4d8; line-height: 1.5;">
-        You will receive another update with courier tracking information as soon as your package has been packed and dispatched.
-      </p>
-    </div>
+    <p style="margin: 0 0 20px 0; font-size: 13px; color: #82828c; line-height: 1.6;">
+      Once your payment slip is verified, your package will be prepared for delivery and you will receive a follow-up email with courier tracking information.
+    </p>
   `;
 
   return renderBaseEmail({
     title: `Order Received: ${productName} | SEDS Sri Lanka`,
-    preheader: `Thank you for your order of ${productName}.`,
-    badge: { text: "Store Order", variant: "warning" },
-    heading: "Order Received & In Review",
-    subheading: "Thank you for supporting student space initiatives and student-led space research.",
+    preheader: `Thank you for your order of ${productName}`,
+    badge: "Official Store",
+    heading: "Order Acknowledgment",
+    subheading: "Your merchandise purchase details have been recorded.",
     contentHtml,
-    footerNote: "All merchandise proceeds directly support SEDS Sri Lanka student projects.",
+    cta: {
+      text: "Visit SEDS Store",
+      url: "https://sedssl.org/shop",
+    },
+    footerText: "SEDS Sri Lanka · All proceeds fund student aerospace programs",
   });
 }

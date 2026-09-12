@@ -45,6 +45,13 @@ export function OrdersDashboardClient({
             <Button
               variant="outline"
               className="border-zinc-800 text-zinc-300 hover:bg-zinc-800"
+              onClick={() => window.open("/admin/emails", "_blank")}
+            >
+              <Mail className="w-4 h-4 mr-2" /> Email Templates Studio
+            </Button>
+            <Button
+              variant="outline"
+              className="border-zinc-800 text-zinc-300 hover:bg-zinc-800"
               onClick={() => window.open("https://tally.so/forms", "_blank")}
             >
               <FileSpreadsheet className="w-4 h-4 mr-2" /> Open Tally Dashboard

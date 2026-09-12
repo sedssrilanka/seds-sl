@@ -12,56 +12,56 @@ export function renderOrderShippedEmail({
   trackingNumber,
 }: OrderShippedEmailProps): string {
   const contentHtml = `
-    <p style="margin-top: 0; font-size: 15px; color: #ffffff;">
-      Hello <strong>${customerName}</strong>,
-    </p>
-    <p style="color: #a1a1aa; font-size: 14px; margin-bottom: 24px;">
-      Great news! We have verified your payment for <strong>${productName}</strong> and your package is now dispatched.
+    <p style="margin: 0 0 24px 0; color: #d4d4d8; font-size: 15px; line-height: 1.6;">
+      Hi <strong style="color: #ffffff;">${customerName}</strong>, your payment for <strong style="color: #ffffff;">${productName}</strong> has been verified and your package has been handed over to our courier partner.
     </p>
 
-    <!-- Shipping Card -->
-    <div style="background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px; margin-bottom: 24px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="padding: 6px 0; color: #a1a1aa; font-size: 13px;">Item:</td>
-          <td style="padding: 6px 0; color: #ffffff; font-weight: 600; font-size: 14px; text-align: right;">${productName}</td>
-        </tr>
-        <tr>
-          <td style="padding: 6px 0; color: #a1a1aa; font-size: 13px;">Delivery Status:</td>
-          <td style="padding: 6px 0; text-align: right;">
-            <span style="display: inline-block; background-color: #064e3b; color: #34d399; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; border: 1px solid #059669;">
-              Dispatched / Shipped
-            </span>
-          </td>
-        </tr>
-        ${trackingNumber
-      ? `
-        <tr>
-          <td style="padding: 10px 0 6px 0; color: #a1a1aa; font-size: 13px;">Tracking Number:</td>
-          <td style="padding: 10px 0 6px 0; text-align: right;">
-            <span style="font-family: monospace; font-size: 15px; font-weight: 700; color: #60a5fa; background-color: #172554; padding: 4px 10px; border-radius: 6px; border: 1px solid #2563eb;">
-              ${trackingNumber}
-            </span>
-          </td>
-        </tr>
-        `
-      : ""
-    }
-      </table>
+    <!-- Lineless Dispatch Summary List -->
+    <div style="margin-bottom: 28px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Item
+      </div>
+      <div style="color: #ffffff; font-size: 15px; font-weight: 600; margin-bottom: 16px;">
+        ${productName}
+      </div>
+
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Status
+      </div>
+      <div style="color: #34d399; font-size: 14px; font-weight: 600; margin-bottom: 16px;">
+        Dispatched / In Transit
+      </div>
+
+      ${
+        trackingNumber
+          ? `
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Courier Tracking Number
+      </div>
+      <div style="color: #ffffff; font-family: monospace; font-size: 16px; font-weight: 700; letter-spacing: 0.04em;">
+        ${trackingNumber}
+      </div>
+      `
+          : ""
+      }
     </div>
 
-    <p style="font-size: 13px; color: #a1a1aa; line-height: 1.6;">
-      Thank you once again for supporting space exploration in Sri Lanka. All profits directly fund student satellite, robotics, and rocketry programs.
+    <p style="margin: 0 0 20px 0; font-size: 13px; color: #82828c; line-height: 1.6;">
+      If you have questions about your delivery, reply directly to this email or reach out to us at <a href="mailto:contact@sedssl.org" style="color: #60a5fa; text-decoration: none;">contact@sedssl.org</a>.
     </p>
   `;
 
   return renderBaseEmail({
-    title: `Order Shipped: ${productName} | SEDS Sri Lanka`,
+    title: `Order Dispatched: ${productName} | SEDS Sri Lanka`,
     preheader: `Your order for ${productName} is on the way!`,
-    badge: { text: "Dispatched", variant: "success" },
-    heading: "Payment Verified & Package Shipped",
-    subheading: "Your SEDS Sri Lanka official merchandise has been handed to the courier.",
+    badge: "Delivery Update",
+    heading: "Order Dispatched",
+    subheading: "Your package is on its way to your delivery address.",
     contentHtml,
-    footerNote: "Reach out to contact@sedssl.org if you have any questions regarding your delivery.",
+    cta: {
+      text: "Contact Support",
+      url: "mailto:contact@sedssl.org?subject=Inquiry regarding order delivery",
+    },
+    footerText: "SEDS Sri Lanka · Official Merchandise",
   });
 }

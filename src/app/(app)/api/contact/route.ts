@@ -3,7 +3,11 @@ import { z } from "zod";
 import { contactFormSchema } from "@/lib/schemas/contact";
 import { verifyTurnstileToken } from "@/utilities/verifyTurnstile";
 import { sendEmail } from "@/utilities/sendEmail";
-import { renderContactEmail, renderMembershipEmail } from "@/emails";
+import {
+  renderContactEmail,
+  renderMembershipEmail,
+  renderMembershipApplicantEmail,
+} from "@/emails";
 
 export async function POST(request: NextRequest) {
   try {
@@ -31,17 +35,32 @@ export async function POST(request: NextRequest) {
     let html: string;
     let subject: string;
 
+    const institution =
+      reasons.find((r) => r.startsWith("Institution:"))?.replace("Institution:", "").trim() || "General";
+    const chapter =
+      reasons.find((r) => r.startsWith("Chapter:"))?.replace("Chapter:", "").trim() || "Independent";
+
     if (isMembership) {
       subject = `New Membership Application: ${fullName}`;
       html = renderMembershipEmail({
         fullName,
         email,
-        institution:
-          reasons.find((r) => r.startsWith("Institution:"))?.replace("Institution:", "").trim() || "General",
-        chapter:
-          reasons.find((r) => r.startsWith("Chapter:"))?.replace("Chapter:", "").trim() || "Independent",
+        institution,
+        chapter,
         statement: message,
       });
+
+      // Send acknowledgment copy email directly to applicant
+      sendEmail({
+        to: email,
+        subject: "Membership Application Received | SEDS Sri Lanka",
+        html: renderMembershipApplicantEmail({
+          fullName,
+          email,
+          institution,
+          chapter,
+        }),
+      }).catch((err) => console.warn("Failed to send applicant copy email:", err));
     } else {
       subject = `New Contact Form Submission: ${fullName}`;
       html = renderContactEmail({
@@ -52,6 +71,7 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    // Send notification to team
     const { data, error } = await sendEmail({
       to: contactEmail,
       subject,

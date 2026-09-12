@@ -14,61 +14,42 @@ export function renderContactEmail({
   message,
 }: ContactEmailProps): string {
   const contentHtml = `
-    <!-- Contact Info Card -->
-    <div style="background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-      <div style="font-size: 11px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; color: #71717a; margin-bottom: 12px;">
-        Sender Details
-      </div>
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="padding: 4px 0; color: #a1a1aa; font-size: 13px; width: 100px;">Full Name:</td>
-          <td style="padding: 4px 0; color: #ffffff; font-weight: 600; font-size: 14px;">${fullName}</td>
-        </tr>
-        <tr>
-          <td style="padding: 4px 0; color: #a1a1aa; font-size: 13px;">Email Address:</td>
-          <td style="padding: 4px 0; font-size: 14px;">
-            <a href="mailto:${email}" style="color: #60a5fa; text-decoration: none; font-weight: 500;">${email}</a>
-          </td>
-        </tr>
-      </table>
-    </div>
+    <p style="margin: 0 0 24px 0; color: #d4d4d8; font-size: 15px; line-height: 1.6;">
+      You received a new message from <strong style="color: #ffffff;">${fullName}</strong>.
+    </p>
 
-    <!-- Reason Badges -->
-    <div style="margin-bottom: 20px;">
-      <div style="font-size: 11px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; color: #71717a; margin-bottom: 8px;">
-        Inquiry Category
+    <div style="margin-bottom: 24px;">
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Sender
       </div>
-      <div>
-        ${reasons
-          .map(
-            (r) => `
-          <span style="display: inline-block; background-color: #27272a; color: #f4f4f5; font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 6px; margin-right: 6px; margin-bottom: 6px; border: 1px solid #3f3f46;">
-            ${r}
-          </span>
-        `,
-          )
-          .join("")}
+      <div style="color: #ffffff; font-size: 14px; font-weight: 500; margin-bottom: 16px;">
+        ${fullName} &bull; <a href="mailto:${email}" style="color: #60a5fa; text-decoration: none;">${email}</a>
       </div>
-    </div>
 
-    <!-- Message Block -->
-    <div style="background-color: #18181b; border: 1px solid #27272a; border-radius: 12px; padding: 20px;">
-      <div style="font-size: 11px; font-family: monospace; text-transform: uppercase; letter-spacing: 1px; color: #71717a; margin-bottom: 8px;">
-        Message Body
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 4px;">
+        Category
       </div>
-      <div style="color: #f4f4f5; font-size: 14px; line-height: 1.6; white-space: pre-wrap;">
-        ${message}
+      <div style="color: #f4f4f5; font-size: 14px; margin-bottom: 16px;">
+        ${reasons.join(", ")}
       </div>
+
+      <div style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; font-family: monospace; margin-bottom: 6px;">
+        Message
+      </div>
+      <div style="color: #ededed; font-size: 14px; line-height: 1.65; white-space: pre-wrap; padding-left: 12px; border-left: 2px solid #27272a;">${message}</div>
     </div>
   `;
 
   return renderBaseEmail({
-    title: `New Contact Submission: ${fullName}`,
+    title: `Contact Submission: ${fullName}`,
     preheader: `New message from ${fullName} (${reasons.join(", ")})`,
-    badge: { text: "Contact Form", variant: "primary" },
-    heading: "New Contact Submission",
-    subheading: "A new message was submitted via the SEDS Sri Lanka contact portal.",
+    badge: "Contact Form",
+    heading: "New Contact Message",
     contentHtml,
-    footerNote: "You can reply directly to this email to contact the sender.",
+    cta: {
+      text: "Reply via Email",
+      url: `mailto:${email}?subject=Re: SEDS Sri Lanka Contact Form Inquiry`,
+    },
+    footerText: "SEDS Sri Lanka · General Inquiries",
   });
 }

@@ -2,11 +2,12 @@ import { type NextRequest, NextResponse } from "next/server";
 import {
   renderContactEmail,
   renderMembershipEmail,
+  renderMembershipApplicantEmail,
   renderOrderReceiptEmail,
   renderOrderAlertEmail,
   renderOrderShippedEmail,
 } from "@/emails";
-import { generateRegistrationEmailHtml } from "@/utilities/generateRegistrationEmail";
+import { generateRegistrationEmail } from "@/utilities/generateRegistrationEmail";
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -34,6 +35,15 @@ export async function GET(req: NextRequest) {
         chapter: "SEDS UOM (University of Moratuwa)",
         statement:
           "I am a second-year undergraduate in Electronic & Telecommunication Engineering. I have experience in embedded systems, PCB design, and telemetry. I want to contribute to the SEDS CubeSat communications subsystem.",
+      });
+      break;
+
+    case "membership-applicant":
+      html = renderMembershipApplicantEmail({
+        fullName: "Senura Wickramasinghe",
+        email: "senura.wick@example.com",
+        institution: "University of Moratuwa",
+        chapter: "SEDS UOM (University of Moratuwa)",
       });
       break;
 
@@ -70,14 +80,15 @@ export async function GET(req: NextRequest) {
       break;
 
     case "moon-event":
-      html = generateRegistrationEmailHtml({
-        name: "Amara Jayawardena",
+      html = generateRegistrationEmail({
+        fullName: "Amara Jayawardena",
         email: "amara.jaya@example.com",
+        phone: "+94 77 555 1234",
+        institution: "SEDS Sri Lanka / General Public",
+        selectedLocation: "Arthur C. Clarke Center (Moratuwa)",
         registrationId: "MOON-892147",
-        eventYear: 2026,
-        qrCodeUrl: "https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=MOON-892147",
-        icsFileUrl: "https://seds-sl.org/events/moon-night-2026.ics",
-      });
+        year: "2026",
+      }).html;
       break;
 
     default:
