@@ -55,6 +55,11 @@ const nextConfig: NextConfig = {
         destination: "/contact-us",
         permanent: true,
       },
+      {
+        source: "/projects/savedino",
+        destination: "/projects/seds-sri-lanka-asteroid-search-campaign",
+        permanent: true,
+      },
     ];
   },
 };

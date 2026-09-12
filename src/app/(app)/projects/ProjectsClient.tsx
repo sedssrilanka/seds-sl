@@ -10,6 +10,8 @@ import {
   Sparkles,
   ArrowRight,
   FolderGit2,
+  BookOpen,
+  ExternalLink,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -164,7 +166,7 @@ export function ProjectsClient({
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between pt-4 border-t border-border/50">
+                        <div className="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-border/50">
                           <div className="flex items-center gap-2 text-muted-foreground font-mono text-xs">
                             <Calendar className="size-3.5 text-primary" />
                             <span>
@@ -179,12 +181,36 @@ export function ProjectsClient({
                             </span>
                           </div>
 
-                          <Link href={targetLink} prefetch={false}>
-                            <Button variant="default" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
-                              <span>View Initiative</span>
-                              <ArrowRight className="size-3.5 ml-1" />
-                            </Button>
-                          </Link>
+                          <div className="flex flex-wrap items-center gap-2">
+                            {item.platformLink ? (
+                              <>
+                                <Link href={targetLink} prefetch={false}>
+                                  <Button variant="outline" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
+                                    <BookOpen className="size-3.5" />
+                                    <span>Read Story</span>
+                                  </Button>
+                                </Link>
+                                <a
+                                  href={item.platformLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="inline-flex"
+                                >
+                                  <Button variant="default" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
+                                    <span>Go to Platform</span>
+                                    <ExternalLink className="size-3.5" />
+                                  </Button>
+                                </a>
+                              </>
+                            ) : (
+                              <Link href={targetLink} prefetch={false}>
+                                <Button variant="default" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
+                                  <span>View Initiative</span>
+                                  <ArrowRight className="size-3.5 ml-1" />
+                                </Button>
+                              </Link>
+                            )}
+                          </div>
                         </div>
                       </div>
                     );
