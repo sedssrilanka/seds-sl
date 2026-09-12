@@ -69,10 +69,10 @@ export const metadata: Metadata = {
       "The premier national student space organization in Sri Lanka driving innovation in rocketry, satellites, astronomy, and robotics.",
     images: [
       {
-        url: "/section-header/space-projects-bg.jpeg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "SEDS Sri Lanka - Space Exploration & Development",
+        alt: "SEDS Sri Lanka - Students for the Exploration & Development of Space",
       },
     ],
   },
@@ -83,7 +83,7 @@ export const metadata: Metadata = {
     title: "SEDS Sri Lanka | Space Exploration & Development",
     description:
       "Advancing space technology, rocketry, astronomy, and student aerospace innovation across Sri Lanka.",
-    images: ["/section-header/space-projects-bg.jpeg"],
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -106,7 +106,6 @@ export const metadata: Metadata = {
       { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
   },
-  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({

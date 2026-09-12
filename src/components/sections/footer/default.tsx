@@ -246,6 +246,14 @@ export default function Footer() {
             >
               Code of Conduct
             </Link>
+            <span>•</span>
+            <Link
+              href="/credits"
+              prefetch={false}
+              className="hover:text-primary transition-colors"
+            >
+              Credits
+            </Link>
           </div>
         </div>
       </div>

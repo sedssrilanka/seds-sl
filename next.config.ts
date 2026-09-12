@@ -50,6 +50,11 @@ const nextConfig: NextConfig = {
         destination: "/code-of-conduct",
         permanent: true,
       },
+      {
+        source: "/contact",
+        destination: "/contact-us",
+        permanent: true,
+      },
     ];
   },
 };

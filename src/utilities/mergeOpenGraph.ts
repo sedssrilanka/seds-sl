@@ -2,14 +2,18 @@ import type { Metadata } from "next";
 
 const defaultOpenGraph: Metadata["openGraph"] = {
   type: "website",
-  description: "An open-source website built with Payload and Next.js.",
+  description:
+    "SEDS Sri Lanka is the national student-led organization advancing space exploration, astronomy, rocketry, robotics, and aerospace engineering in Sri Lanka.",
   images: [
     {
-      url: "https://payloadcms.com/images/og-image.jpg",
+      url: "/og-image.png",
+      width: 1200,
+      height: 630,
+      alt: "SEDS Sri Lanka",
     },
   ],
-  siteName: "Payload Website Template",
-  title: "Payload Website Template",
+  siteName: "SEDS Sri Lanka",
+  title: "SEDS Sri Lanka | Students for the Exploration & Development of Space",
 };
 
 export const mergeOpenGraph = (
