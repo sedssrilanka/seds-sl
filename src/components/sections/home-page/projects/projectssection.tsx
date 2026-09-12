@@ -4,9 +4,17 @@ import { Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
 import Link from "next/link";
+import Image from "next/image";
 import { fetchProjects, type UnifiedProjectItem } from "@/actions/projects";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+
+const getMediaUrl = (imageObj: any) => {
+  if (!imageObj) return null;
+  if (typeof imageObj === "string") return imageObj;
+  if (typeof imageObj === "object" && imageObj.url) return imageObj.url;
+  return null;
+};
 
 const ProjectCard = ({
   project,
@@ -16,6 +24,7 @@ const ProjectCard = ({
   index: number;
 }) => {
   const targetLink = project.customLink || `/projects/${project.slug}`;
+  const mediaUrl = getMediaUrl(project.image);
 
   return (
     <motion.div
@@ -23,50 +32,67 @@ const ProjectCard = ({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: false, margin: "-40px" }}
       transition={{ duration: 0.5, delay: index * 0.1, ease: "easeOut" }}
-      className="p-6 md:p-8 bg-background group flex flex-col h-full"
+      className="p-6 md:p-8 bg-background group flex flex-col h-full justify-between space-y-6"
     >
-      <div className="flex flex-col h-full">
+      <div className="flex flex-col space-y-4">
+        {/* Cover Image Preview */}
+        {mediaUrl && (
+          <Link href={targetLink} prefetch={false} className="block overflow-hidden">
+            <div className="w-full aspect-video bg-muted border border-border/60 relative overflow-hidden">
+              <Image
+                src={mediaUrl}
+                alt={project.name}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, 50vw"
+              />
+            </div>
+          </Link>
+        )}
+
         {project.badgeLabel && (
-          <div className="mb-2 text-[10px] font-mono font-bold uppercase text-primary tracking-wider">
+          <div className="text-[10px] font-mono font-bold uppercase text-primary tracking-wider">
             {project.badgeLabel}
           </div>
         )}
 
-        <h3 className="text-xl font-bold mb-3 text-foreground transition-colors group-hover:text-primary">
-          {project.name}
-        </h3>
+        <Link href={targetLink} prefetch={false}>
+          <h3 className="text-xl font-bold text-foreground transition-colors group-hover:text-primary font-mono leading-snug">
+            {project.name}
+          </h3>
+        </Link>
 
         {project.chapterName && (
-          <div className="text-sm text-muted-foreground mb-2 font-mono">
+          <div className="text-xs text-muted-foreground font-mono">
             {project.chapterName}
           </div>
         )}
 
-        <p className="text-sm leading-relaxed mb-4 text-muted-foreground flex-1">
-          {project?.description?.length > 120
-            ? `${project.description.substring(0, 120)}...`
+        <p className="text-sm leading-relaxed text-muted-foreground">
+          {project?.description?.length > 140
+            ? `${project.description.substring(0, 140)}...`
             : project.description}
         </p>
+      </div>
 
-        {/* Bottom Section with Date and Button */}
-        <div className="flex items-center justify-between mt-auto">
-          <div className="flex items-center gap-2 text-muted-foreground font-mono text-xs">
-            <Calendar className="size-3.5" />
-            <span>
-              {new Date(project.createdAt).toLocaleDateString("en-US", {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </span>
-          </div>
-
-          <Link href={targetLink} prefetch={false}>
-            <Button variant="outline" size="sm" bleed={true}>
-              Know More
-            </Button>
-          </Link>
+      {/* Bottom Section with Date and Button */}
+      <div className="flex items-center justify-between pt-2 border-t border-border/40">
+        <div className="flex items-center gap-2 text-muted-foreground font-mono text-xs">
+          <Calendar className="size-3.5" />
+          <span>
+            {new Date(project.createdAt).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </span>
         </div>
+
+        <Link href={targetLink} prefetch={false}>
+          <Button variant="outline" size="sm" bleed={true}>
+            Know More
+          </Button>
+        </Link>
       </div>
     </motion.div>
   );
@@ -131,10 +157,10 @@ export function ProjectsSection({
                 <Link
                   href="/projects"
                   prefetch={false}
-                  className="block h-full group bg-background p-8 flex items-center justify-center"
+                  className="block h-full group bg-background p-8 flex items-center justify-center min-h-[320px]"
                 >
                   <div className="flex flex-col items-center justify-center text-center">
-                    <h3 className="text-xl font-bold mb-4 text-foreground">
+                    <h3 className="text-xl font-bold mb-4 text-foreground font-mono">
                       Explore More Projects
                     </h3>
                     <p className="text-sm text-muted-foreground mb-6 max-w-xs">
