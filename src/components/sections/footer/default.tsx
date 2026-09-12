@@ -204,7 +204,9 @@ export default function Footer() {
 
         {/* Bottom copyright sub-bar */}
         <div className="py-6 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground font-mono gap-4 text-center md:text-left">
-          <p className="order-2 md:order-1">© {currentYear} SEDS Sri Lanka. All rights reserved.</p>
+          <p className="order-2 md:order-1">
+            © {currentYear} SEDS Sri Lanka. All rights reserved.
+          </p>
 
           {/* Protected by Cloudflare Badge */}
           <a

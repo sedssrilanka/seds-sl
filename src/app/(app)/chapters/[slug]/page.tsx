@@ -40,7 +40,9 @@ export async function generateMetadata({
 
   const baseUrl = getServerSideURL();
   const url = `${baseUrl}/chapters/${slug}`;
-  const image = chapter.mainImage ? `${baseUrl}${chapter.mainImage}` : `${baseUrl}/section-header/who-we-are-bg.jpg`;
+  const image = chapter.mainImage
+    ? `${baseUrl}${chapter.mainImage}`
+    : `${baseUrl}/section-header/who-we-are-bg.jpg`;
 
   return {
     title: `${chapter.name} | SEDS Sri Lanka Chapters`,
@@ -101,7 +103,9 @@ export default async function Page({
   } else if (typeof Content === "string") {
     renderedContent = <p className="whitespace-pre-line">{Content}</p>;
   } else {
-    renderedContent = <p className="text-muted-foreground">{chapter.description}</p>;
+    renderedContent = (
+      <p className="text-muted-foreground">{chapter.description}</p>
+    );
   }
 
   const otherChapters = allChapters.filter((c) => c.slug !== chapter.slug);
@@ -183,7 +187,8 @@ export default async function Page({
                     Chapter Information
                   </h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Official student chapter details, affiliated institution, and contact channels.
+                    Official student chapter details, affiliated institution,
+                    and contact channels.
                   </p>
                 </div>
 
@@ -196,7 +201,9 @@ export default async function Page({
                     </span>
                     <div className="flex items-start gap-2.5 text-foreground font-medium pt-0.5">
                       <School className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                      <span>{chapter.university || "SEDS Sri Lanka Chapter"}</span>
+                      <span>
+                        {chapter.university || "SEDS Sri Lanka Chapter"}
+                      </span>
                     </div>
                   </div>
 
@@ -233,10 +240,18 @@ export default async function Page({
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border/60 bg-muted/20 hover:bg-primary/10 hover:border-primary/50 text-foreground hover:text-primary transition-all text-xs font-mono capitalize"
                           >
-                            {link.platform === "facebook" && <FaFacebook className="w-3.5 h-3.5 text-primary" />}
-                            {link.platform === "twitter" && <FaTwitter className="w-3.5 h-3.5 text-primary" />}
-                            {link.platform === "linkedin" && <FaLinkedin className="w-3.5 h-3.5 text-primary" />}
-                            {link.platform === "instagram" && <FaInstagram className="w-3.5 h-3.5 text-primary" />}
+                            {link.platform === "facebook" && (
+                              <FaFacebook className="w-3.5 h-3.5 text-primary" />
+                            )}
+                            {link.platform === "twitter" && (
+                              <FaTwitter className="w-3.5 h-3.5 text-primary" />
+                            )}
+                            {link.platform === "linkedin" && (
+                              <FaLinkedin className="w-3.5 h-3.5 text-primary" />
+                            )}
+                            {link.platform === "instagram" && (
+                              <FaInstagram className="w-3.5 h-3.5 text-primary" />
+                            )}
                             <span>{link.platform}</span>
                           </a>
                         ))}
@@ -277,16 +292,24 @@ export default async function Page({
 
                 {/* Join CTA */}
                 <div className="space-y-3">
-                  <Button asChild size="lg" className="w-full font-semibold cursor-pointer">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="w-full font-semibold cursor-pointer"
+                  >
                     <Link href="/join-us">
-                      Join SEDS Sri Lanka <ArrowRight className="w-4 h-4 ml-2" />
+                      Join SEDS Sri Lanka{" "}
+                      <ArrowRight className="w-4 h-4 ml-2" />
                     </Link>
                   </Button>
 
                   <div className="text-center">
                     <p className="text-[11px] text-muted-foreground font-mono">
                       General inquiries?{" "}
-                      <Link href="/contact-us" className="text-primary hover:underline font-semibold">
+                      <Link
+                        href="/contact-us"
+                        className="text-primary hover:underline font-semibold"
+                      >
                         Contact Us
                       </Link>
                     </p>
@@ -307,7 +330,9 @@ export default async function Page({
                         href={`/chapters/${c.slug}`}
                         className="block text-xs text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all py-1.5 border-b border-border/30 last:border-0"
                       >
-                        <span className="font-semibold text-foreground block">{c.name}</span>
+                        <span className="font-semibold text-foreground block">
+                          {c.name}
+                        </span>
                         {c.university && (
                           <span className="text-[10px] text-muted-foreground font-mono block truncate">
                             {c.university}
@@ -332,4 +357,3 @@ export default async function Page({
     </>
   );
 }
-

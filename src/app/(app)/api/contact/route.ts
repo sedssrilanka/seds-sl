@@ -36,9 +36,15 @@ export async function POST(request: NextRequest) {
     let subject: string;
 
     const institution =
-      reasons.find((r) => r.startsWith("Institution:"))?.replace("Institution:", "").trim() || "General";
+      reasons
+        .find((r) => r.startsWith("Institution:"))
+        ?.replace("Institution:", "")
+        .trim() || "General";
     const chapter =
-      reasons.find((r) => r.startsWith("Chapter:"))?.replace("Chapter:", "").trim() || "Independent";
+      reasons
+        .find((r) => r.startsWith("Chapter:"))
+        ?.replace("Chapter:", "")
+        .trim() || "Independent";
 
     if (isMembership) {
       subject = `New Membership Application: ${fullName}`;
@@ -60,7 +66,9 @@ export async function POST(request: NextRequest) {
           institution,
           chapter,
         }),
-      }).catch((err) => console.warn("Failed to send applicant copy email:", err));
+      }).catch((err) =>
+        console.warn("Failed to send applicant copy email:", err),
+      );
     } else {
       subject = `New Contact Form Submission: ${fullName}`;
       html = renderContactEmail({

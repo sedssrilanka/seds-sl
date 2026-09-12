@@ -15,11 +15,20 @@ export const RichText: React.FC<Props> = ({
   children,
   ...rest
 }) => {
-  const textContent = typeof data === "string" ? data : typeof content === "string" ? content : "";
+  const textContent =
+    typeof data === "string"
+      ? data
+      : typeof content === "string"
+        ? content
+        : "";
 
   return (
     <div className={cn("prose prose-invert max-w-none", className)} {...rest}>
-      {textContent ? <p className="whitespace-pre-line">{textContent}</p> : children}
+      {textContent ? (
+        <p className="whitespace-pre-line">{textContent}</p>
+      ) : (
+        children
+      )}
     </div>
   );
 };

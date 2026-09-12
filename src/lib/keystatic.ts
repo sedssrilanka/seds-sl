@@ -77,7 +77,9 @@ export async function getAllProjects(): Promise<ProjectEntry[]> {
   }
 }
 
-export async function getProjectBySlug(slug: string): Promise<ProjectEntry | null> {
+export async function getProjectBySlug(
+  slug: string,
+): Promise<ProjectEntry | null> {
   try {
     const entry = await keystaticReader.collections.projects.read(slug);
     if (!entry) return null;
@@ -101,7 +103,12 @@ export async function getAllChapters(): Promise<ChapterEntry[]> {
   try {
     const raw = await keystaticReader.collections.chapters.all();
     return raw
-      .filter((item) => item.slug !== "chapter-one" && item.slug !== "chapter-two" && item.slug !== "seds-uoc")
+      .filter(
+        (item) =>
+          item.slug !== "chapter-one" &&
+          item.slug !== "chapter-two" &&
+          item.slug !== "seds-uoc",
+      )
       .map((item) => ({
         slug: item.slug,
         name: item.entry.name,
@@ -120,7 +127,9 @@ export async function getAllChapters(): Promise<ChapterEntry[]> {
   }
 }
 
-export async function getChapterBySlug(slug: string): Promise<ChapterEntry | null> {
+export async function getChapterBySlug(
+  slug: string,
+): Promise<ChapterEntry | null> {
   try {
     const entry = await keystaticReader.collections.chapters.read(slug);
     if (!entry) return null;
@@ -159,7 +168,9 @@ export async function getAllDivisions(): Promise<DivisionEntry[]> {
   }
 }
 
-export async function getDivisionBySlug(slug: string): Promise<DivisionEntry | null> {
+export async function getDivisionBySlug(
+  slug: string,
+): Promise<DivisionEntry | null> {
   try {
     const entry = await keystaticReader.collections.divisions.read(slug);
     if (!entry) return null;
@@ -202,7 +213,9 @@ export async function getAllProducts(): Promise<ProductEntry[]> {
   }
 }
 
-export async function getProductBySlug(slug: string): Promise<ProductEntry | null> {
+export async function getProductBySlug(
+  slug: string,
+): Promise<ProductEntry | null> {
   try {
     const entry = await keystaticReader.collections.products.read(slug);
     if (!entry) return null;

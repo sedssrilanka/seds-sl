@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 export const revalidate = 3600;
 
 export default async function JoinUsPage() {
-  let chapters: { slug: string; name: string; university?: string | null }[] = [];
+  let chapters: { slug: string; name: string; university?: string | null }[] =
+    [];
   try {
     const rawChapters = await getAllChapters();
     chapters = rawChapters.map((ch) => ({
@@ -48,7 +49,8 @@ export default async function JoinUsPage() {
                 Apply for National or Chapter Membership
               </h2>
               <p className="text-xs md:text-sm text-muted-foreground">
-                Select your university chapter or apply as an independent national member.
+                Select your university chapter or apply as an independent
+                national member.
               </p>
             </div>
 
@@ -59,5 +61,3 @@ export default async function JoinUsPage() {
     </main>
   );
 }
-
-

@@ -31,16 +31,16 @@ function lexicalToMarkdown(node: any): string {
 
   if (node.type === "list") {
     const isOrdered = node.listType === "number";
-    return (node.children || [])
-      .map((item: any, idx: number) => {
-        const itemContent = (item.children || [])
-          .map(lexicalToMarkdown)
-          .join("");
-        return isOrdered
-          ? `${idx + 1}. ${itemContent}`
-          : `- ${itemContent}`;
-      })
-      .join("\n") + "\n";
+    return (
+      (node.children || [])
+        .map((item: any, idx: number) => {
+          const itemContent = (item.children || [])
+            .map(lexicalToMarkdown)
+            .join("");
+          return isOrdered ? `${idx + 1}. ${itemContent}` : `- ${itemContent}`;
+        })
+        .join("\n") + "\n"
+    );
   }
 
   if (node.type === "listitem") {
@@ -82,9 +82,13 @@ async function migrateContent() {
     fs.mkdirSync(dir, { recursive: true });
 
     for (const proj of projects) {
-      const slug = proj.slug ? cleanSlug(proj.slug.split("-")[0] || proj.name) : cleanSlug(proj.name);
-      const content = proj.hero?.richText ? lexicalToMarkdown(proj.hero.richText) : (proj.description || "");
-      
+      const slug = proj.slug
+        ? cleanSlug(proj.slug.split("-")[0] || proj.name)
+        : cleanSlug(proj.name);
+      const content = proj.hero?.richText
+        ? lexicalToMarkdown(proj.hero.richText)
+        : proj.description || "";
+
       const fileContent = `---
 name: ${JSON.stringify(proj.name || "")}
 description: ${JSON.stringify(proj.description || "")}
@@ -109,8 +113,10 @@ ${content.trim()}
 
     for (const ch of chapters) {
       const slug = cleanSlug(ch.slug || ch.name);
-      const content = ch.content ? lexicalToMarkdown(ch.content) : (ch.description || "");
-      
+      const content = ch.content
+        ? lexicalToMarkdown(ch.content)
+        : ch.description || "";
+
       const fileContent = `---
 name: ${JSON.stringify(ch.name || "")}
 university: ${JSON.stringify(ch.university || "")}
@@ -135,8 +141,10 @@ ${content.trim()}
 
     for (const div of divisions) {
       const slug = cleanSlug(div.slug || div.name);
-      const content = div.content ? lexicalToMarkdown(div.content) : (div.description || "");
-      
+      const content = div.content
+        ? lexicalToMarkdown(div.content)
+        : div.description || "";
+
       const fileContent = `---
 name: ${JSON.stringify(div.name || "")}
 lead: ${JSON.stringify(div.lead || "")}
@@ -159,17 +167,21 @@ ${content.trim()}
       slug: "seds-sl-official-t-shirt",
       priceInLKR: 2500,
       inStock: true,
-      description: "Official high-quality cotton SEDS Sri Lanka merchandise t-shirt with embroidered space crest.",
-      content: "Premium breathable fabric featuring the official SEDS Sri Lanka mission logo.",
+      description:
+        "Official high-quality cotton SEDS Sri Lanka merchandise t-shirt with embroidered space crest.",
+      content:
+        "Premium breathable fabric featuring the official SEDS Sri Lanka mission logo.",
     },
     {
       title: "SEDS Mission Patch & Sticker Pack",
       slug: "seds-mission-patch-sticker-pack",
       priceInLKR: 850,
       inStock: true,
-      description: "Collector edition woven mission patch and weatherproof space exploration stickers.",
-      content: "High durability woven embroidery patch suitable for jackets and backpacks.",
-    }
+      description:
+        "Collector edition woven mission patch and weatherproof space exploration stickers.",
+      content:
+        "High durability woven embroidery patch suitable for jackets and backpacks.",
+    },
   ];
 
   for (const prod of sampleProducts) {
@@ -182,7 +194,11 @@ description: ${JSON.stringify(prod.description)}
 
 ${prod.content}
 `;
-    fs.writeFileSync(path.join(productsDir, `${prod.slug}.mdoc`), fileContent, "utf-8");
+    fs.writeFileSync(
+      path.join(productsDir, `${prod.slug}.mdoc`),
+      fileContent,
+      "utf-8",
+    );
   }
   console.log(`Seeded ${sampleProducts.length} sample products.`);
 }

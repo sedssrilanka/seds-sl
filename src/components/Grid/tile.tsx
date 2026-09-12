@@ -1,4 +1,4 @@
-import type { Media as MediaType } from "@/payload-types";
+import type { Media as MediaType } from "@/types";
 
 import { Media } from "@/components/Media";
 import { Label } from "@/components/Grid/Label";

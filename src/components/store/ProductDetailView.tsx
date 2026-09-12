@@ -47,7 +47,9 @@ export function ProductDetailView({
 }: ProductDetailViewProps) {
   // Gallery Carousel State
   const images = Array.from(
-    new Set([product.image, ...(product.gallery || [])].filter(Boolean) as string[])
+    new Set(
+      [product.image, ...(product.gallery || [])].filter(Boolean) as string[],
+    ),
   );
   const [currentIdx, setCurrentIdx] = useState<number>(0);
 
@@ -64,17 +66,20 @@ export function ProductDetailView({
 
   // Selection State
   const [selectedSize, setSelectedSize] = useState<string>(
-    product.sizes && product.sizes.length > 0 ? product.sizes[0] : "N/A"
+    product.sizes && product.sizes.length > 0 ? product.sizes[0] : "N/A",
   );
   const [quantity, setQuantity] = useState<number>(1);
 
   const isBuy4Get1 =
     (product.badge && product.badge.toLowerCase().includes("buy 4")) ||
-    (product.description && product.description.toLowerCase().includes("buy 4")) ||
+    (product.description &&
+      product.description.toLowerCase().includes("buy 4")) ||
     product.slug.includes("band");
 
   const freeItems = isBuy4Get1 ? Math.floor(quantity / 5) : 0;
-  const billableUnits = isBuy4Get1 ? Math.max(1, quantity - freeItems) : quantity;
+  const billableUnits = isBuy4Get1
+    ? Math.max(1, quantity - freeItems)
+    : quantity;
   const subtotal = product.priceInLKR * billableUnits;
 
   return (
@@ -142,7 +147,11 @@ export function ProductDetailView({
                 {/* Counter & View Badge */}
                 <div className="absolute bottom-4 right-4 z-10 px-2.5 py-1 bg-background/90 backdrop-blur-xs border border-border/80 text-foreground text-[10px] font-mono flex items-center gap-1.5">
                   <span className="font-bold text-primary">
-                    {currentIdx === 0 ? "FRONT" : currentIdx === 1 ? "BACK" : `VIEW ${currentIdx + 1}`}
+                    {currentIdx === 0
+                      ? "FRONT"
+                      : currentIdx === 1
+                        ? "BACK"
+                        : `VIEW ${currentIdx + 1}`}
                   </span>
                   <span className="text-muted-foreground">•</span>
                   <span>
@@ -175,7 +184,11 @@ export function ProductDetailView({
                     className="object-contain p-1"
                   />
                   <div className="absolute bottom-0 inset-x-0 bg-background/90 text-[9px] font-mono text-center py-0.5 border-t border-border/40">
-                    {idx === 0 ? "FRONT" : idx === 1 ? "BACK" : `VIEW ${idx + 1}`}
+                    {idx === 0
+                      ? "FRONT"
+                      : idx === 1
+                        ? "BACK"
+                        : `VIEW ${idx + 1}`}
                   </div>
                 </button>
               ))}
@@ -185,7 +198,10 @@ export function ProductDetailView({
           {/* Non-profit badge */}
           <div className="p-3.5 border border-primary/20 bg-primary/5 text-xs text-muted-foreground flex items-center gap-3">
             <Rocket className="w-4 h-4 text-primary shrink-0" />
-            <span>100% of merchandise proceeds directly fund SEDS Sri Lanka student rocketry & outreach projects.</span>
+            <span>
+              100% of merchandise proceeds directly fund SEDS Sri Lanka student
+              rocketry & outreach projects.
+            </span>
           </div>
         </div>
 
@@ -202,8 +218,8 @@ export function ProductDetailView({
               {product.isPreOrder
                 ? "Pre-Order Edition"
                 : product.inStock
-                ? "In Stock • Ready to Dispatch"
-                : "Out of Stock"}
+                  ? "In Stock • Ready to Dispatch"
+                  : "Out of Stock"}
             </span>
           </div>
 
@@ -234,7 +250,8 @@ export function ProductDetailView({
                 <span>🔥 Special Deal: Buy 4, Get 1 FREE!</span>
               </div>
               <p className="text-muted-foreground leading-relaxed">
-                For every 4 wristbands purchased, 1 extra wristband is added completely free to your package.
+                For every 4 wristbands purchased, 1 extra wristband is added
+                completely free to your package.
               </p>
             </div>
           )}
@@ -249,9 +266,12 @@ export function ProductDetailView({
             <div className="space-y-3 pt-2">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-mono uppercase tracking-wider text-foreground font-semibold">
-                  Select Size: <span className="text-primary">{selectedSize}</span>
+                  Select Size:{" "}
+                  <span className="text-primary">{selectedSize}</span>
                 </span>
-                <span className="text-muted-foreground text-[11px]">Unisex Regular Fit</span>
+                <span className="text-muted-foreground text-[11px]">
+                  Unisex Regular Fit
+                </span>
               </div>
               <div className="flex flex-wrap gap-2.5">
                 {product.sizes.map((s) => (
@@ -286,7 +306,9 @@ export function ProductDetailView({
               >
                 -
               </button>
-              <span className="text-sm font-mono font-bold px-3 min-w-[2rem] text-center">{quantity}</span>
+              <span className="text-sm font-mono font-bold px-3 min-w-[2rem] text-center">
+                {quantity}
+              </span>
               <button
                 type="button"
                 onClick={() => setQuantity(quantity + 1)}
@@ -298,12 +320,15 @@ export function ProductDetailView({
             </div>
             {isBuy4Get1 && quantity === 4 && (
               <p className="text-[11px] font-mono text-primary font-medium">
-                🎁 Awesome! +1 FREE wristband will be included with your 4 bands!
+                🎁 Awesome! +1 FREE wristband will be included with your 4
+                bands!
               </p>
             )}
             {isBuy4Get1 && freeItems > 0 && (
               <p className="text-[11px] font-mono text-primary font-medium">
-                🎁 Deal applied! {freeItems} free wristband{freeItems > 1 ? "s" : ""} included ({quantity} total bands for the price of {billableUnits})!
+                🎁 Deal applied! {freeItems} free wristband
+                {freeItems > 1 ? "s" : ""} included ({quantity} total bands for
+                the price of {billableUnits})!
               </p>
             )}
           </div>
@@ -316,18 +341,27 @@ export function ProductDetailView({
                   Item Subtotal ({quantity} {quantity === 1 ? "unit" : "units"}
                   {isBuy4Get1 && freeItems > 0 ? ` • ${freeItems} free` : ""}):
                 </span>
-                <span className="font-semibold text-foreground">Rs. {subtotal.toLocaleString()} LKR</span>
+                <span className="font-semibold text-foreground">
+                  Rs. {subtotal.toLocaleString()} LKR
+                </span>
               </div>
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 text-muted-foreground">
                 <span>Island-Wide Delivery:</span>
-                <span className="font-semibold text-foreground">Rs. 200 LKR</span>
+                <span className="font-semibold text-foreground">
+                  Rs. 200 LKR
+                </span>
               </div>
               <div className="pt-2 border-t border-border/40 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
                 <span className="font-bold text-foreground">
-                  {product.isPreOrder ? "Total Pre-Order Amount:" : "Total Order Amount:"}
+                  {product.isPreOrder
+                    ? "Total Pre-Order Amount:"
+                    : "Total Order Amount:"}
                 </span>
                 <span className="text-xl sm:text-2xl font-bold text-primary">
-                  Rs. {(subtotal + 200).toLocaleString()} <span className="text-xs font-mono font-normal text-muted-foreground">LKR</span>
+                  Rs. {(subtotal + 200).toLocaleString()}{" "}
+                  <span className="text-xs font-mono font-normal text-muted-foreground">
+                    LKR
+                  </span>
                 </span>
               </div>
             </div>
@@ -354,7 +388,10 @@ export function ProductDetailView({
               </h3>
               <ul className="grid grid-cols-1 gap-2">
                 {product.features.map((feat, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs text-muted-foreground">
+                  <li
+                    key={idx}
+                    className="flex items-start gap-2.5 text-xs text-muted-foreground"
+                  >
                     <CheckCircle2 className="w-3.5 h-3.5 text-primary shrink-0 mt-0.5" />
                     <span>{feat}</span>
                   </li>
@@ -368,15 +405,21 @@ export function ProductDetailView({
             <div className="p-3.5 border border-border/60 bg-muted/10 flex items-center gap-3">
               <Truck className="w-4 h-4 text-primary shrink-0" />
               <div>
-                <p className="font-semibold text-foreground">Island-Wide Delivery</p>
-                <p className="text-muted-foreground text-[11px]">2-3 Business Days</p>
+                <p className="font-semibold text-foreground">
+                  Island-Wide Delivery
+                </p>
+                <p className="text-muted-foreground text-[11px]">
+                  2-3 Business Days
+                </p>
               </div>
             </div>
             <div className="p-3.5 border border-border/60 bg-muted/10 flex items-center gap-3">
               <ShieldCheck className="w-4 h-4 text-primary shrink-0" />
               <div>
                 <p className="font-semibold text-foreground">Bank Slip Proof</p>
-                <p className="text-muted-foreground text-[11px]">Manual Verification</p>
+                <p className="text-muted-foreground text-[11px]">
+                  Manual Verification
+                </p>
               </div>
             </div>
           </div>
@@ -386,7 +429,9 @@ export function ProductDetailView({
       {/* Product Overview Story Section */}
       <div className="mt-20 pt-12 border-t border-border/60">
         <div className="border border-border/60 p-6 sm:p-10 bg-background">
-          <h3 className="text-xl font-bold text-foreground mb-4">Complete Product Information</h3>
+          <h3 className="text-xl font-bold text-foreground mb-4">
+            Complete Product Information
+          </h3>
           <div className="prose prose-invert max-w-none text-muted-foreground leading-relaxed text-sm">
             {content || <div>{product.description}</div>}
           </div>
@@ -398,8 +443,12 @@ export function ProductDetailView({
         <div className="mt-16 pt-12 border-t border-border/60">
           <div className="flex items-center justify-between mb-6">
             <div>
-              <h3 className="text-xl font-bold text-foreground">More Merchandise</h3>
-              <p className="text-xs text-muted-foreground mt-1">Official space exploration gear</p>
+              <h3 className="text-xl font-bold text-foreground">
+                More Merchandise
+              </h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Official space exploration gear
+              </p>
             </div>
             <Link
               href="/shop"

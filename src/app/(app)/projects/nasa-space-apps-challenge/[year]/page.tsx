@@ -6,7 +6,9 @@ interface Props {
   }>;
 }
 
-export default async function ProjectsNasaSpaceAppsYearRedirect({ params }: Props) {
+export default async function ProjectsNasaSpaceAppsYearRedirect({
+  params,
+}: Props) {
   const { year } = await params;
   redirect(`/nasa-space-apps-challenge/${year}`);
 }

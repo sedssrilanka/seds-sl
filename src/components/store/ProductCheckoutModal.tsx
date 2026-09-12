@@ -47,7 +47,7 @@ export function ProductCheckoutModal({
 
   // Form State
   const [selectedSize, setSelectedSize] = useState<string>(
-    sizes && sizes.length > 0 ? sizes[0] : "N/A"
+    sizes && sizes.length > 0 ? sizes[0] : "N/A",
   );
   const [quantity, setQuantity] = useState<number>(1);
   const [name, setName] = useState("");
@@ -134,7 +134,9 @@ export function ProductCheckoutModal({
               </div>
               <div>
                 <DialogTitle className="text-lg font-bold text-foreground">
-                  {step === 1 ? "Delivery Information" : "Bank Transfer & Slip Upload"}
+                  {step === 1
+                    ? "Delivery Information"
+                    : "Bank Transfer & Slip Upload"}
                 </DialogTitle>
                 <DialogDescription className="text-xs font-mono text-muted-foreground mt-0.5">
                   Step {step} of 2 • {productTitle}
@@ -142,7 +144,9 @@ export function ProductCheckoutModal({
               </div>
             </div>
             <div className="text-right">
-              <span className="text-[10px] font-mono uppercase text-muted-foreground block">Total</span>
+              <span className="text-[10px] font-mono uppercase text-muted-foreground block">
+                Total
+              </span>
               <span className="text-sm font-bold font-mono text-primary">
                 Rs. {totalAmount.toLocaleString()} LKR
               </span>
@@ -165,7 +169,9 @@ export function ProductCheckoutModal({
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-foreground text-sm truncate">{productTitle}</h4>
+                  <h4 className="font-bold text-foreground text-sm truncate">
+                    {productTitle}
+                  </h4>
                   <p className="text-xs font-mono text-muted-foreground mt-0.5">
                     Rs. {priceInLKR.toLocaleString()} each
                   </p>
@@ -180,7 +186,9 @@ export function ProductCheckoutModal({
                   >
                     -
                   </button>
-                  <span className="text-xs font-mono font-bold px-1">{quantity}</span>
+                  <span className="text-xs font-mono font-bold px-1">
+                    {quantity}
+                  </span>
                   <button
                     type="button"
                     onClick={() => setQuantity(quantity + 1)}
@@ -220,7 +228,9 @@ export function ProductCheckoutModal({
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-medium text-foreground">Your Full Name *</Label>
+                    <Label className="text-xs font-medium text-foreground">
+                      Your Full Name *
+                    </Label>
                     <Input
                       placeholder="e.g. Nimal Perera"
                       value={name}
@@ -229,7 +239,9 @@ export function ProductCheckoutModal({
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-medium text-foreground">Email (for Confirmation) *</Label>
+                    <Label className="text-xs font-medium text-foreground">
+                      Email (for Confirmation) *
+                    </Label>
                     <Input
                       type="email"
                       placeholder="nimal@gmail.com"
@@ -242,7 +254,9 @@ export function ProductCheckoutModal({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-medium text-foreground">Phone / WhatsApp *</Label>
+                    <Label className="text-xs font-medium text-foreground">
+                      Phone / WhatsApp *
+                    </Label>
                     <Input
                       placeholder="077 123 4567"
                       value={phone}
@@ -251,7 +265,9 @@ export function ProductCheckoutModal({
                     />
                   </div>
                   <div className="space-y-1.5">
-                    <Label className="text-xs font-medium text-foreground">City / Town *</Label>
+                    <Label className="text-xs font-medium text-foreground">
+                      City / Town *
+                    </Label>
                     <Input
                       placeholder="e.g. Colombo 03, Kandy, Galle"
                       value={city}
@@ -262,7 +278,9 @@ export function ProductCheckoutModal({
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label className="text-xs font-medium text-foreground">Full Street Address *</Label>
+                  <Label className="text-xs font-medium text-foreground">
+                    Full Street Address *
+                  </Label>
                   <Input
                     placeholder="No. 123, Main Street, Apartment 4B..."
                     value={address}
@@ -279,7 +297,8 @@ export function ProductCheckoutModal({
                   onClick={() => setStep(2)}
                   className="w-full h-11 text-sm font-semibold"
                 >
-                  Proceed to Bank Slip & Confirm <ArrowRight className="w-4 h-4 ml-2" />
+                  Proceed to Bank Slip & Confirm{" "}
+                  <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
                 {!isStep1Valid && (
                   <p className="text-center text-xs text-muted-foreground mt-2">
@@ -304,7 +323,8 @@ export function ProductCheckoutModal({
                   >
                     {copied ? (
                       <>
-                        <Check className="w-3.5 h-3.5 mr-1 text-primary" /> Copied!
+                        <Check className="w-3.5 h-3.5 mr-1 text-primary" />{" "}
+                        Copied!
                       </>
                     ) : (
                       <>
@@ -316,20 +336,32 @@ export function ProductCheckoutModal({
 
                 <div className="grid grid-cols-2 gap-3 text-xs bg-background p-3 border border-border/40 font-mono">
                   <div>
-                    <span className="text-muted-foreground block text-[10px] uppercase">Bank</span>
-                    <span className="text-foreground font-semibold">Commercial Bank / BOC</span>
+                    <span className="text-muted-foreground block text-[10px] uppercase">
+                      Bank
+                    </span>
+                    <span className="text-foreground font-semibold">
+                      Commercial Bank / BOC
+                    </span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground block text-[10px] uppercase">Account No.</span>
+                    <span className="text-muted-foreground block text-[10px] uppercase">
+                      Account No.
+                    </span>
                     <span className="text-primary font-bold">1000889944</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground block text-[10px] uppercase">Name</span>
+                    <span className="text-muted-foreground block text-[10px] uppercase">
+                      Name
+                    </span>
                     <span className="text-foreground">SEDS Sri Lanka</span>
                   </div>
                   <div>
-                    <span className="text-muted-foreground block text-[10px] uppercase">Total Due</span>
-                    <span className="text-primary font-bold">Rs. {totalAmount.toLocaleString()}</span>
+                    <span className="text-muted-foreground block text-[10px] uppercase">
+                      Total Due
+                    </span>
+                    <span className="text-primary font-bold">
+                      Rs. {totalAmount.toLocaleString()}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -357,7 +389,8 @@ export function ProductCheckoutModal({
                   onClick={() => setStep(1)}
                   className="text-muted-foreground hover:text-foreground text-xs"
                 >
-                  <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> Edit Delivery Info
+                  <ArrowLeft className="w-3.5 h-3.5 mr-1.5" /> Edit Delivery
+                  Info
                 </Button>
                 <div className="flex items-center gap-1.5 text-xs font-mono text-muted-foreground">
                   <ShieldCheck className="w-3.5 h-3.5 text-primary" />

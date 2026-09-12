@@ -64,6 +64,7 @@ export function renderMembershipApplicantEmail({
       text: "Explore SEDS Projects",
       url: "https://sedssl.org/projects",
     },
-    footerText: "SEDS Sri Lanka · Students for the Exploration and Development of Space",
+    footerText:
+      "SEDS Sri Lanka · Students for the Exploration and Development of Space",
   });
 }

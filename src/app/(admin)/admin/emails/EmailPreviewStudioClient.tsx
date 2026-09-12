@@ -31,7 +31,8 @@ const TEMPLATES: TemplateMeta[] = [
     category: "General",
     subject: "New Contact Form Submission: Kavindu Perera",
     recipient: "Admin / Team",
-    description: "Delivered to SEDS inbox when a user submits the main contact form.",
+    description:
+      "Delivered to SEDS inbox when a user submits the main contact form.",
   },
   {
     id: "membership",
@@ -39,7 +40,8 @@ const TEMPLATES: TemplateMeta[] = [
     category: "Membership",
     subject: "New Membership Application: Senura Wickramasinghe",
     recipient: "Admin / Team",
-    description: "Detailed applicant profile sent to the executive team for review.",
+    description:
+      "Detailed applicant profile sent to the executive team for review.",
   },
   {
     id: "membership-applicant",
@@ -47,37 +49,45 @@ const TEMPLATES: TemplateMeta[] = [
     category: "Membership",
     subject: "Membership Application Received | SEDS Sri Lanka",
     recipient: "Customer / Attendee",
-    description: "Confirmation copy sent directly to applicant upon form submission.",
+    description:
+      "Confirmation copy sent directly to applicant upon form submission.",
   },
   {
     id: "order-receipt",
     name: "Store Order Receipt",
     category: "Store",
-    subject: "Order Received: SEDS Sri Lanka Official T-Shirt 2026 | SEDS Sri Lanka",
+    subject:
+      "Order Received: SEDS Sri Lanka Official T-Shirt 2026 | SEDS Sri Lanka",
     recipient: "Customer / Attendee",
-    description: "Immediate purchase acknowledgment sent to customer upon Tally order submission.",
+    description:
+      "Immediate purchase acknowledgment sent to customer upon Tally order submission.",
   },
   {
     id: "order-alert",
     name: "Store Order Team Alert",
     category: "Store",
-    subject: "New Store Order: SEDS Sri Lanka Official T-Shirt 2026 (Dilani Fernando)",
+    subject:
+      "New Store Order: SEDS Sri Lanka Official T-Shirt 2026 (Dilani Fernando)",
     recipient: "Admin / Team",
-    description: "Internal alert to merchandise team with customer info & slip link.",
+    description:
+      "Internal alert to merchandise team with customer info & slip link.",
   },
   {
     id: "order-shipped",
     name: "Order Shipped & Dispatched",
     category: "Store",
-    subject: "Order Shipped: SEDS Sri Lanka Official T-Shirt 2026 | SEDS Sri Lanka",
+    subject:
+      "Order Shipped: SEDS Sri Lanka Official T-Shirt 2026 | SEDS Sri Lanka",
     recipient: "Customer / Attendee",
-    description: "Dispatched package notification with courier tracking number.",
+    description:
+      "Dispatched package notification with courier tracking number.",
   },
   {
     id: "moon-event",
     name: "Observe the Moon Night",
     category: "Events",
-    subject: "Registration Confirmed: International Observe the Moon Night 2026",
+    subject:
+      "Registration Confirmed: International Observe the Moon Night 2026",
     recipient: "Customer / Attendee",
     description: "Event pass with QR code and calendar invite (.ics).",
   },
@@ -90,7 +100,8 @@ export function EmailPreviewStudioClient() {
   const [isSending, setIsSending] = useState<boolean>(false);
   const [iframeKey, setIframeKey] = useState<number>(0);
 
-  const currentTemplate = TEMPLATES.find((t) => t.id === selectedId) || TEMPLATES[0];
+  const currentTemplate =
+    TEMPLATES.find((t) => t.id === selectedId) || TEMPLATES[0];
   const previewUrl = `/api/emails/preview?template=${currentTemplate.id}&v=${iframeKey}`;
 
   const handleSendTest = async () => {
@@ -135,10 +146,12 @@ export function EmailPreviewStudioClient() {
           </div>
           <div>
             <h1 className="font-bold text-lg text-white flex items-center gap-2">
-              Email Templates Studio <Sparkles className="w-4 h-4 text-amber-400" />
+              Email Templates Studio{" "}
+              <Sparkles className="w-4 h-4 text-amber-400" />
             </h1>
             <p className="text-xs text-zinc-400">
-              Live visual previews & testing for all SEDS Sri Lanka transactional emails
+              Live visual previews & testing for all SEDS Sri Lanka
+              transactional emails
             </p>
           </div>
         </div>
@@ -147,6 +160,7 @@ export function EmailPreviewStudioClient() {
         <div className="flex flex-wrap items-center gap-2">
           <div className="flex items-center bg-zinc-900 border border-zinc-800 rounded-lg p-1">
             <button
+              type="button"
               onClick={() => setViewMode("desktop")}
               className={`px-3 py-1.5 rounded-md text-xs font-medium flex items-center gap-1.5 transition-colors ${
                 viewMode === "desktop"
@@ -157,6 +171,7 @@ export function EmailPreviewStudioClient() {
               <Monitor className="w-3.5 h-3.5" /> Desktop
             </button>
             <button
+              type="button"
               onClick={() => setViewMode("mobile")}
               className={`px-3 py-1.5 rounded-md text-xs font-medium flex items-center gap-1.5 transition-colors ${
                 viewMode === "mobile"
@@ -201,6 +216,7 @@ export function EmailPreviewStudioClient() {
               const isSelected = tmpl.id === selectedId;
               return (
                 <button
+                  type="button"
                   key={tmpl.id}
                   onClick={() => setSelectedId(tmpl.id)}
                   className={`w-full text-left p-3 rounded-xl border transition-all ${
@@ -284,7 +300,9 @@ export function EmailPreviewStudioClient() {
           {/* Iframe Viewport */}
           <div
             className={`transition-all duration-300 rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl bg-black ${
-              viewMode === "mobile" ? "w-[390px] h-[780px]" : "w-full max-w-[680px] h-[820px]"
+              viewMode === "mobile"
+                ? "w-[390px] h-[780px]"
+                : "w-full max-w-[680px] h-[820px]"
             }`}
           >
             <iframe

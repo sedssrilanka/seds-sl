@@ -1,5 +1,5 @@
 "use client";
-import type { Product } from "@/payload-types";
+import type { Product } from "@/types";
 import React from "react";
 import { ShieldCheck, Sparkles, Truck } from "lucide-react";
 
@@ -21,10 +21,12 @@ export function ProductDescription({ product }: { product: Product }) {
 
       <div className="grid grid-cols-1 gap-3 pt-4 border-t border-border/40 text-xs text-zinc-400">
         <div className="flex items-center gap-2">
-          <Truck className="w-4 h-4 text-indigo-400" /> Islandwide Delivery Available
+          <Truck className="w-4 h-4 text-indigo-400" /> Islandwide Delivery
+          Available
         </div>
         <div className="flex items-center gap-2">
-          <ShieldCheck className="w-4 h-4 text-indigo-400" /> Official SEDS Sri Lanka Merch
+          <ShieldCheck className="w-4 h-4 text-indigo-400" /> Official SEDS Sri
+          Lanka Merch
         </div>
       </div>
     </div>

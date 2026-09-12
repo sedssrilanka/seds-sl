@@ -1,5 +1,5 @@
 "use client";
-import type { Product } from "@/payload-types";
+import type { Product } from "@/types";
 import { Badge } from "@/components/ui/badge";
 
 export function StockIndicator({ product }: { product: Product }) {

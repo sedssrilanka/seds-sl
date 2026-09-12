@@ -1,4 +1,4 @@
-import type { Page, Product } from "@/payload-types";
+import type { Page, Product } from "@/types";
 
 import { Button, type ButtonProps } from "@/components/ui/button";
 import { cn } from "@/utilities/cn";

@@ -182,7 +182,6 @@ export default async function ProjectSlugPage({
       <main className="flex flex-col w-full min-h-screen pt-8 md:pt-12 lg:pt-16 pb-24 md:pb-32 bg-background">
         <div className="grid-container section-content">
           <div className="col-span-4 md:col-span-8 lg:col-span-12 space-y-10">
-            
             {/* BREADCRUMB & BACK NAVIGATION — BLEEDING EDGE */}
             <div className="relative">
               <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
@@ -213,12 +212,11 @@ export default async function ProjectSlugPage({
                   </span>
                 </nav>
               </div>
-            </div>            {/* ARTICLE & SIDEBAR — 2-COLUMN BLEEDING EDGE */}
+            </div>{" "}
+            {/* ARTICLE & SIDEBAR — 2-COLUMN BLEEDING EDGE */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-              
               {/* MAIN CONTENT COLUMN (8 COLS) */}
               <div className="lg:col-span-8 space-y-8">
-                
                 {/* PROJECT HEADER & COVER CARD */}
                 <div className="relative">
                   <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
@@ -230,7 +228,9 @@ export default async function ProjectSlugPage({
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-widest">
                         <Rocket className="size-4 text-primary" />
-                        <span>{project.chapter || "SEDS Sri Lanka Initiative"}</span>
+                        <span>
+                          {project.chapter || "SEDS Sri Lanka Initiative"}
+                        </span>
                       </div>
 
                       <h1 className="text-2xl sm:text-4xl lg:text-5xl font-mono font-black tracking-tight text-foreground leading-tight">
@@ -293,7 +293,6 @@ export default async function ProjectSlugPage({
                     </div>
                   </div>
                 </div>
-
               </div>
 
               {/* SIDEBAR (4 COLS) */}
@@ -315,7 +314,8 @@ export default async function ProjectSlugPage({
                         Explore Live Platform
                       </h3>
                       <p className="text-xs font-mono text-muted-foreground leading-relaxed">
-                        Access the interactive live portal and documentation for {project.name}.
+                        Access the interactive live portal and documentation for{" "}
+                        {project.name}.
                       </p>
                       <a
                         href={project.customLink}
@@ -353,9 +353,14 @@ export default async function ProjectSlugPage({
                       Join Our Space Missions
                     </h3>
                     <p className="text-xs font-mono text-muted-foreground leading-relaxed">
-                      Collaborate on high-altitude balloon experiments, CanSats, asteroid searches, and astrophysics research.
+                      Collaborate on high-altitude balloon experiments, CanSats,
+                      asteroid searches, and astrophysics research.
                     </p>
-                    <Link href="/join-us" prefetch={false} className="block w-full pt-1">
+                    <Link
+                      href="/join-us"
+                      prefetch={false}
+                      className="block w-full pt-1"
+                    >
                       <Button
                         variant="outline"
                         size="sm"
@@ -404,9 +409,7 @@ export default async function ProjectSlugPage({
                   </div>
                 )}
               </aside>
-
             </div>
-
             {/* BOTTOM NAV */}
             <div className="pt-8 border-t border-border/60 flex items-center justify-between">
               <Link href="/projects" prefetch={false}>
@@ -421,7 +424,6 @@ export default async function ProjectSlugPage({
                 </Button>
               </Link>
             </div>
-
           </div>
         </div>
       </main>

@@ -35,12 +35,13 @@ export function NasaSpaceAppsClient({
   allYears,
   isBaseHub = false,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<"overview" | "nominees" | "highlights">("overview");
+  const [activeTab, setActiveTab] = useState<
+    "overview" | "nominees" | "highlights"
+  >("overview");
 
   return (
     <div className="relative min-h-screen bg-background">
       <div className="w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-content relative z-10 pt-8 sm:pt-12 pb-24 space-y-10">
-        
         {/* BREADCRUMB & HEADER BADGES — BLEEDING EDGE */}
         <div className="relative">
           <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
@@ -50,7 +51,11 @@ export function NasaSpaceAppsClient({
 
           <div className="border border-border/60 bg-card/60 p-4 flex flex-wrap items-center justify-between gap-4 relative z-0">
             <nav className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
-              <Link href="/" prefetch={false} className="hover:text-primary transition-colors">
+              <Link
+                href="/"
+                prefetch={false}
+                className="hover:text-primary transition-colors"
+              >
                 HOME
               </Link>
               <ChevronRight className="size-3.5 opacity-60" />
@@ -64,7 +69,9 @@ export function NasaSpaceAppsClient({
               {!isBaseHub && (
                 <>
                   <ChevronRight className="size-3.5 opacity-60" />
-                  <span className="text-primary font-bold">{currentEdition.year}</span>
+                  <span className="text-primary font-bold">
+                    {currentEdition.year}
+                  </span>
                 </>
               )}
             </nav>
@@ -138,7 +145,10 @@ export function NasaSpaceAppsClient({
                 NASA SPACE APPS {currentEdition.year}
               </span>
               <span className="text-xs font-mono text-muted-foreground">
-                Theme: <strong className="text-foreground">{currentEdition.theme}</strong>
+                Theme:{" "}
+                <strong className="text-foreground">
+                  {currentEdition.theme}
+                </strong>
               </span>
             </div>
 
@@ -193,7 +203,10 @@ export function NasaSpaceAppsClient({
             {currentEdition.registrationStatus === "upcoming" && (
               <div className="pt-4 border-t border-border/60 flex flex-wrap items-center gap-4">
                 <a
-                  href={currentEdition.registrationUrl || "https://www.spaceappschallenge.org"}
+                  href={
+                    currentEdition.registrationUrl ||
+                    "https://www.spaceappschallenge.org"
+                  }
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground font-mono text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-opacity"
@@ -263,6 +276,7 @@ export function NasaSpaceAppsClient({
         {/* NAVIGATION TABS SELECTOR — SEGMENTED BAR */}
         <div className="border border-border/60 bg-card/60 divide-x divide-border/60 grid grid-cols-1 sm:grid-cols-3">
           <button
+            type="button"
             onClick={() => setActiveTab("overview")}
             className={`p-4 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 ${
               activeTab === "overview"
@@ -274,6 +288,7 @@ export function NasaSpaceAppsClient({
             <span>Overview &amp; Focus</span>
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab("nominees")}
             className={`p-4 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 ${
               activeTab === "nominees"
@@ -285,6 +300,7 @@ export function NasaSpaceAppsClient({
             <span>Winning Teams ({currentEdition.nominees.length})</span>
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab("highlights")}
             className={`p-4 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors flex items-center justify-center gap-2 ${
               activeTab === "highlights"
@@ -375,9 +391,10 @@ export function NasaSpaceAppsClient({
                     Why SEDS Sri Lanka Hosts Space Apps
                   </h3>
                   <p className="text-xs font-mono text-muted-foreground leading-relaxed">
-                    As Sri Lanka&apos;s apex student space organization, SEDS SL bridges local
-                    engineering talent with NASA open science APIs, planetary datasets, and global
-                    aerospace opportunities.
+                    As Sri Lanka&apos;s apex student space organization, SEDS SL
+                    bridges local engineering talent with NASA open science
+                    APIs, planetary datasets, and global aerospace
+                    opportunities.
                   </p>
                   <div className="pt-2 border-t border-border/60">
                     <span className="text-[11px] font-mono text-primary font-bold uppercase tracking-wider block">
@@ -405,10 +422,13 @@ export function NasaSpaceAppsClient({
                   <span>National &amp; Global Honors</span>
                 </div>
                 <h2 className="text-xl sm:text-2xl font-mono font-bold text-foreground">
-                  Featured Awardees &amp; Global Nominees ({currentEdition.year})
+                  Featured Awardees &amp; Global Nominees ({currentEdition.year}
+                  )
                 </h2>
                 <p className="text-xs font-mono text-muted-foreground">
-                  These student innovations were selected by academic and aerospace judges to represent Sri Lanka in global NASA judging rounds.
+                  These student innovations were selected by academic and
+                  aerospace judges to represent Sri Lanka in global NASA judging
+                  rounds.
                 </p>
               </div>
             </div>
@@ -440,7 +460,10 @@ export function NasaSpaceAppsClient({
                       </h3>
 
                       <div className="text-xs font-mono text-muted-foreground">
-                        Team: <strong className="text-foreground">{nominee.teamName}</strong>
+                        Team:{" "}
+                        <strong className="text-foreground">
+                          {nominee.teamName}
+                        </strong>
                         {nominee.university && ` • ${nominee.university}`}
                       </div>
 
@@ -504,7 +527,8 @@ export function NasaSpaceAppsClient({
                 Explore Other Editions of NASA Space Apps Sri Lanka
               </div>
               <div className="text-[11px] font-mono text-muted-foreground">
-                Seven years of student space innovation, CanSat telemetry, and Earth science APIs.
+                Seven years of student space innovation, CanSat telemetry, and
+                Earth science APIs.
               </div>
             </div>
 
@@ -526,7 +550,6 @@ export function NasaSpaceAppsClient({
             </div>
           </div>
         </div>
-
       </div>
     </div>
   );

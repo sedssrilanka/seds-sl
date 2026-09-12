@@ -33,7 +33,8 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(siteURL),
   title: {
-    default: "SEDS Sri Lanka | Students for the Exploration & Development of Space",
+    default:
+      "SEDS Sri Lanka | Students for the Exploration & Development of Space",
     template: "%s | SEDS Sri Lanka",
   },
   description:
@@ -119,7 +120,8 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
     name: "SEDS Sri Lanka",
-    alternateName: "Students for the Exploration and Development of Space Sri Lanka",
+    alternateName:
+      "Students for the Exploration and Development of Space Sri Lanka",
     url: siteURL,
     logo: `${siteURL}/logo.png`,
     description:
@@ -142,7 +144,9 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdOrganization) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(jsonLdOrganization),
+          }}
         />
       </head>
       <body

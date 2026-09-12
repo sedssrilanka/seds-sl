@@ -185,7 +185,12 @@ export function ProjectsClient({
                             {item.platformLink ? (
                               <>
                                 <Link href={targetLink} prefetch={false}>
-                                  <Button variant="outline" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    bleed={true}
+                                    className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider"
+                                  >
                                     <BookOpen className="size-3.5" />
                                     <span>Read Story</span>
                                   </Button>
@@ -196,7 +201,12 @@ export function ProjectsClient({
                                   rel="noopener noreferrer"
                                   className="inline-flex"
                                 >
-                                  <Button variant="default" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
+                                  <Button
+                                    variant="default"
+                                    size="sm"
+                                    bleed={true}
+                                    className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider"
+                                  >
                                     <span>Go to Platform</span>
                                     <ExternalLink className="size-3.5" />
                                   </Button>
@@ -204,7 +214,12 @@ export function ProjectsClient({
                               </>
                             ) : (
                               <Link href={targetLink} prefetch={false}>
-                                <Button variant="default" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
+                                <Button
+                                  variant="default"
+                                  size="sm"
+                                  bleed={true}
+                                  className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider"
+                                >
                                   <span>View Initiative</span>
                                   <ArrowRight className="size-3.5 ml-1" />
                                 </Button>
@@ -309,7 +324,12 @@ export function ProjectsClient({
                           </div>
 
                           <Link href={targetLink} prefetch={false}>
-                            <Button variant="outline" size="sm" bleed={true} className="font-mono text-xs">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              bleed={true}
+                              className="font-mono text-xs"
+                            >
                               Know More
                             </Button>
                           </Link>
@@ -338,7 +358,8 @@ export function ProjectsClient({
                   No projects or events found
                 </h3>
                 <p className="text-muted-foreground text-xs font-mono max-w-md mx-auto">
-                  We couldn't find any projects matching &quot;{searchQuery}&quot;. Try adjusting your search keywords.
+                  We couldn't find any projects matching &quot;{searchQuery}
+                  &quot;. Try adjusting your search keywords.
                 </p>
                 {searchQuery && (
                   <Button

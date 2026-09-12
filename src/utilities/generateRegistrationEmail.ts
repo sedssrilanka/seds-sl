@@ -396,13 +396,14 @@ export function generateRegistrationEmail(params: RegistrationEmailParams): {
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">EMAIL:</td>
                         <td style="color: #3b82f6; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0;"><a href="mailto:${email}" style="color: #3b82f6; text-decoration: none;">${email}</a></td>
                       </tr>
-                      ${phone
-      ? `<tr>
+                      ${
+                        phone
+                          ? `<tr>
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">PHONE:</td>
                         <td style="color: #cbd5e1; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0;">${phone}</td>
                       </tr>`
-      : ""
-    }
+                          : ""
+                      }
                       <tr>
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">INSTITUTION:</td>
                         <td style="color: #cbd5e1; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0;">${institution}</td>
@@ -415,13 +416,14 @@ export function generateRegistrationEmail(params: RegistrationEmailParams): {
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">TIME:</td>
                         <td style="color: #ffffff; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0; font-weight: 600;">${formattedTime}</td>
                       </tr>
-                      ${selectedLocation
-      ? `<tr>
+                      ${
+                        selectedLocation
+                          ? `<tr>
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">LOCATION:</td>
                         <td style="color: #f97316; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0; font-weight: 700;">${selectedLocation}</td>
                       </tr>`
-      : ""
-    }
+                          : ""
+                      }
                       <tr>
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">MODE:</td>
                         <td style="color: #cbd5e1; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0;">${attendanceLabel}</td>

@@ -83,7 +83,9 @@ export default async function ProductPage({
   };
 
   const { content: _fn, ...serializableProduct } = product;
-  const serializableRelated = relatedProducts.map(({ content: _c, ...rest }) => rest);
+  const serializableRelated = relatedProducts.map(
+    ({ content: _c, ...rest }) => rest,
+  );
 
   return (
     <>

@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  Package,
-  ExternalLink,
-  Mail,
-  FileSpreadsheet,
-} from "lucide-react";
+import { Package, ExternalLink, Mail, FileSpreadsheet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 interface Order {
@@ -35,10 +30,12 @@ export function OrdersDashboardClient({
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-zinc-800 pb-6">
           <div>
             <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
-              <Package className="w-8 h-8 text-indigo-400" /> Store & Order Management
+              <Package className="w-8 h-8 text-indigo-400" /> Store & Order
+              Management
             </h1>
             <p className="text-zinc-400 text-sm mt-1">
-              Merchandise orders are captured directly via Tally and automated notification emails are dispatched via Resend.
+              Merchandise orders are captured directly via Tally and automated
+              notification emails are dispatched via Resend.
             </p>
           </div>
           <div className="flex flex-wrap items-center gap-3">
@@ -59,9 +56,12 @@ export function OrdersDashboardClient({
             <Button
               variant="outline"
               className="border-zinc-800 text-zinc-300 hover:bg-zinc-800"
-              onClick={() => window.open("/keystatic/collection/products", "_blank")}
+              onClick={() =>
+                window.open("/keystatic/collection/products", "_blank")
+              }
             >
-              <ExternalLink className="w-4 h-4 mr-2" /> Manage Products (Keystatic)
+              <ExternalLink className="w-4 h-4 mr-2" /> Manage Products
+              (Keystatic)
             </Button>
           </div>
         </div>
@@ -75,17 +75,22 @@ export function OrdersDashboardClient({
               </div>
               <div>
                 <h3 className="font-semibold text-white">Tally Form Orders</h3>
-                <p className="text-xs text-zinc-400">Direct order submissions & uploaded slips</p>
+                <p className="text-xs text-zinc-400">
+                  Direct order submissions & uploaded slips
+                </p>
               </div>
             </div>
             <p className="text-sm text-zinc-300 leading-relaxed">
-              Every merchandise order submitted on the website goes directly into your Tally workspace. You can export responses to CSV, Excel, or Google Sheets anytime.
+              Every merchandise order submitted on the website goes directly
+              into your Tally workspace. You can export responses to CSV, Excel,
+              or Google Sheets anytime.
             </p>
             <Button
               className="bg-indigo-600 hover:bg-indigo-700 text-white w-full sm:w-auto"
               onClick={() => window.open("https://tally.so/forms", "_blank")}
             >
-              <ExternalLink className="w-4 h-4 mr-2" /> View Submissions on Tally
+              <ExternalLink className="w-4 h-4 mr-2" /> View Submissions on
+              Tally
             </Button>
           </div>
 
@@ -95,12 +100,18 @@ export function OrdersDashboardClient({
                 <Mail className="w-5 h-5" />
               </div>
               <div>
-                <h3 className="font-semibold text-white">Resend Email Delivery</h3>
-                <p className="text-xs text-zinc-400">Automated buyer & team alerts</p>
+                <h3 className="font-semibold text-white">
+                  Resend Email Delivery
+                </h3>
+                <p className="text-xs text-zinc-400">
+                  Automated buyer & team alerts
+                </p>
               </div>
             </div>
             <p className="text-sm text-zinc-300 leading-relaxed">
-              When an order webhook arrives from Tally, an order summary is sent to the customer and an instant notification with payment slip link is sent to the team inbox.
+              When an order webhook arrives from Tally, an order summary is sent
+              to the customer and an instant notification with payment slip link
+              is sent to the team inbox.
             </p>
             <Button
               variant="outline"

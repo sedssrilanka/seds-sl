@@ -19,7 +19,9 @@ export const metadata: Metadata = {
     description:
       "Empowering Sri Lankan students and developers to solve real-world challenges on Earth and in space with NASA open data.",
     url: "/nasa-space-apps-challenge",
-    images: [{ url: "/images/projects/nsa-cover.png", width: 1200, height: 630 }],
+    images: [
+      { url: "/images/projects/nsa-cover.png", width: 1200, height: 630 },
+    ],
     type: "website",
   },
   twitter: {

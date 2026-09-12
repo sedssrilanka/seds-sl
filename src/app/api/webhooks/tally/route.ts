@@ -8,7 +8,10 @@ export async function POST(req: Request) {
 
     // Verify Tally webhook event
     if (!payload || payload.eventType !== "FORM_RESPONSE") {
-      return NextResponse.json({ message: "Ignored non-form event" }, { status: 200 });
+      return NextResponse.json(
+        { message: "Ignored non-form event" },
+        { status: 200 },
+      );
     }
 
     const { data } = payload;
@@ -34,13 +37,22 @@ export async function POST(req: Request) {
       return undefined;
     };
 
-    const customerName = getField(["full name", "name", "customer"]) || "Supporter";
+    const customerName =
+      getField(["full name", "name", "customer"]) || "Supporter";
     const customerEmail = getField(["email", "mail"]) || "";
-    const customerPhone = getField(["phone", "contact", "whatsapp", "mobile"]) || "";
-    const shippingAddress = getField(["delivery address", "address", "street"]) || "Not provided";
+    const customerPhone =
+      getField(["phone", "contact", "whatsapp", "mobile"]) || "";
+    const shippingAddress =
+      getField(["delivery address", "address", "street"]) || "Not provided";
     const city = getField(["city", "district"]) || "Sri Lanka";
-    const productName = responses["product_name"] || getField(["product", "item"]) || "SEDS Merchandise";
-    const totalAmount = parseFloat(responses["price"] || getField(["price", "total", "amount"]) || "0") || 0;
+    const productName =
+      responses["product_name"] ||
+      getField(["product", "item"]) ||
+      "SEDS Merchandise";
+    const totalAmount =
+      parseFloat(
+        responses["price"] || getField(["price", "total", "amount"]) || "0",
+      ) || 0;
 
     // Slip URL (can be string or array of upload objects from Tally)
     const rawSlip = getField(["slip", "proof", "receipt", "upload", "payment"]);

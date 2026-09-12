@@ -64,9 +64,11 @@ export interface Product {
   priceInLKR: number;
   inStock?: boolean;
   enableVariants?: boolean;
-  variants?: {
-    docs?: Variant[];
-  } | any;
+  variants?:
+    | {
+        docs?: Variant[];
+      }
+    | any;
   inventory?: number;
   _status?: string;
   gallery?: Array<{

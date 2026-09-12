@@ -18,8 +18,12 @@ export default async function ShopPage() {
     return (
       <div className="text-center py-20 border border-border/60 bg-background text-muted-foreground p-8">
         <Package className="w-12 h-12 mx-auto mb-3 text-muted-foreground/60" />
-        <h3 className="text-base font-bold text-foreground">No merchandise available right now</h3>
-        <p className="text-xs text-muted-foreground mt-1">Check back soon for new mission gear drops.</p>
+        <h3 className="text-base font-bold text-foreground">
+          No merchandise available right now
+        </h3>
+        <p className="text-xs text-muted-foreground mt-1">
+          Check back soon for new mission gear drops.
+        </p>
       </div>
     );
   }
@@ -62,8 +66,8 @@ export default async function ShopPage() {
                   {product.isPreOrder
                     ? "• Pre-Order"
                     : product.inStock
-                    ? "• In Stock"
-                    : "• Out of Stock"}
+                      ? "• In Stock"
+                      : "• Out of Stock"}
                 </span>
               </div>
 
@@ -84,7 +88,10 @@ export default async function ShopPage() {
                 Price
               </span>
               <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
-                Rs. {Number(product.priceInLKR || 0).toLocaleString()} <span className="text-xs font-normal text-muted-foreground">LKR</span>
+                Rs. {Number(product.priceInLKR || 0).toLocaleString()}{" "}
+                <span className="text-xs font-normal text-muted-foreground">
+                  LKR
+                </span>
               </span>
             </div>
 

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { fetchChapters } from "@/actions/chapters";
 import { ChaptersClient } from "./ChaptersClient";
-import type { Chapter } from "@/payload-types";
+import type { Chapter } from "@/types";
 
 export const revalidate = 3600; // Revalidate every hour
 

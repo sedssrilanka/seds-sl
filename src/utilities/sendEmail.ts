@@ -18,13 +18,13 @@ export async function sendEmail({
   from,
 }: SendEmailOptions) {
   const fromAddress =
-    from ||
-    process.env.FROM_EMAIL ||
-    "SEDS Sri Lanka <noreply@sedssl.org>";
+    from || process.env.FROM_EMAIL || "SEDS Sri Lanka <noreply@sedssl.org>";
 
   try {
     if (!process.env.RESEND_API_KEY) {
-      console.warn("RESEND_API_KEY not configured. Email skipped in development.");
+      console.warn(
+        "RESEND_API_KEY not configured. Email skipped in development.",
+      );
       return { success: false, message: "No API key configured" };
     }
 

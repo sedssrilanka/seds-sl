@@ -139,9 +139,7 @@ export function ObserveMoonHero({
               className="flex flex-wrap items-center gap-4 pt-4"
             >
               <Button asChild variant="default" size="lg" bleed={true}>
-                <a href="#dark-map-section">
-                  View Locations & Details
-                </a>
+                <a href="#dark-map-section">View Locations & Details</a>
               </Button>
 
               {hasAgenda && (

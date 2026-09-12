@@ -13,7 +13,9 @@ export const RenderBlocks: React.FC<{
       {blocks.map((block, index) => (
         <div className="my-12" key={index}>
           {block.title && <h3 className="text-xl font-bold">{block.title}</h3>}
-          {block.description && <p className="text-zinc-400">{block.description}</p>}
+          {block.description && (
+            <p className="text-zinc-400">{block.description}</p>
+          )}
         </div>
       ))}
     </Fragment>

@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import type { Chapter } from "@/payload-types";
+import type { Chapter } from "@/types";
 import { fetchChapters } from "@/actions/chapters";
 
 export default function Component({
@@ -54,7 +54,8 @@ export default function Component({
                   const logoSrc =
                     resolvedTheme === "dark" && chapter.logoLight
                       ? getMediaUrl(chapter.logoLight)
-                      : getMediaUrl(chapter.logoDark) || getMediaUrl(chapter.logoLight);
+                      : getMediaUrl(chapter.logoDark) ||
+                        getMediaUrl(chapter.logoLight);
 
                   const identifier = chapter.slug || chapter.name;
                   const hasImageError = Boolean(imageErrors[identifier]);

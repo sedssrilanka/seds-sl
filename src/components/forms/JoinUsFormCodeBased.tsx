@@ -28,21 +28,77 @@ export interface ChapterOption {
 }
 
 const DEFAULT_CHAPTERS: ChapterOption[] = [
-  { slug: "seds-mora", name: "SEDS Mora", university: "University of Moratuwa" },
-  { slug: "seds-pera", name: "SEDS Pera", university: "University of Peradeniya" },
-  { slug: "seds-colombo", name: "SEDS Colombo", university: "University of Colombo" },
-  { slug: "seds-jpura", name: "SEDS J'pura", university: "University of Sri Jayewardenepura" },
-  { slug: "seds-kdu", name: "SEDS KDU", university: "General Sir John Kotelawala Defence University" },
-  { slug: "seds-sliit", name: "SEDS SLIIT", university: "Sri Lanka Institute of Information Technology (SLIIT)" },
-  { slug: "seds-ruhuna", name: "SEDS Ruhuna", university: "University of Ruhuna" },
-  { slug: "seds-kelaniya", name: "SEDS Kelaniya", university: "University of Kelaniya" },
-  { slug: "seds-sabra", name: "SEDS Sabra", university: "Sabaragamuwa University of Sri Lanka" },
-  { slug: "seds-ousl", name: "SEDS OUSL", university: "Open University of Sri Lanka" },
-  { slug: "seds-sltc", name: "SEDS SLTC", university: "SLTC Research University" },
-  { slug: "seds-wayamba", name: "SEDS Wayamba", university: "Wayamba University of Sri Lanka" },
+  {
+    slug: "seds-mora",
+    name: "SEDS Mora",
+    university: "University of Moratuwa",
+  },
+  {
+    slug: "seds-pera",
+    name: "SEDS Pera",
+    university: "University of Peradeniya",
+  },
+  {
+    slug: "seds-colombo",
+    name: "SEDS Colombo",
+    university: "University of Colombo",
+  },
+  {
+    slug: "seds-jpura",
+    name: "SEDS J'pura",
+    university: "University of Sri Jayewardenepura",
+  },
+  {
+    slug: "seds-kdu",
+    name: "SEDS KDU",
+    university: "General Sir John Kotelawala Defence University",
+  },
+  {
+    slug: "seds-sliit",
+    name: "SEDS SLIIT",
+    university: "Sri Lanka Institute of Information Technology (SLIIT)",
+  },
+  {
+    slug: "seds-ruhuna",
+    name: "SEDS Ruhuna",
+    university: "University of Ruhuna",
+  },
+  {
+    slug: "seds-kelaniya",
+    name: "SEDS Kelaniya",
+    university: "University of Kelaniya",
+  },
+  {
+    slug: "seds-sabra",
+    name: "SEDS Sabra",
+    university: "Sabaragamuwa University of Sri Lanka",
+  },
+  {
+    slug: "seds-ousl",
+    name: "SEDS OUSL",
+    university: "Open University of Sri Lanka",
+  },
+  {
+    slug: "seds-sltc",
+    name: "SEDS SLTC",
+    university: "SLTC Research University",
+  },
+  {
+    slug: "seds-wayamba",
+    name: "SEDS Wayamba",
+    university: "Wayamba University of Sri Lanka",
+  },
   { slug: "seds-yarl", name: "SEDS Yarl", university: "University of Jaffna" },
-  { slug: "seds-ocean", name: "SEDS Ocean", university: "Ocean University of Sri Lanka" },
-  { slug: "seds-junior", name: "SEDS Junior", university: "SEDS Sri Lanka National School Initiative" },
+  {
+    slug: "seds-ocean",
+    name: "SEDS Ocean",
+    university: "Ocean University of Sri Lanka",
+  },
+  {
+    slug: "seds-junior",
+    name: "SEDS Junior",
+    university: "SEDS Sri Lanka National School Initiative",
+  },
 ];
 
 const joinSchema = z.object({
@@ -65,7 +121,9 @@ interface JoinUsFormProps {
   chapters?: ChapterOption[];
 }
 
-export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({ chapters = DEFAULT_CHAPTERS }) => {
+export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({
+  chapters = DEFAULT_CHAPTERS,
+}) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [turnstileToken, setTurnstileToken] = useState<string>("");
 
@@ -238,7 +296,9 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({ chapters = DEFA
               </Label>
               <Select
                 value={selectedChapter}
-                onValueChange={(val) => setValue("chapter", val, { shouldValidate: true })}
+                onValueChange={(val) =>
+                  setValue("chapter", val, { shouldValidate: true })
+                }
               >
                 <SelectTrigger
                   id="chapter"
@@ -254,7 +314,10 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({ chapters = DEFA
                     Independent / General Member (National / Non-Affiliated)
                   </SelectItem>
                   {displayChapters.map((ch) => (
-                    <SelectItem key={ch.slug} value={`${ch.name}${ch.university ? ` (${ch.university})` : ""}`}>
+                    <SelectItem
+                      key={ch.slug}
+                      value={`${ch.name}${ch.university ? ` (${ch.university})` : ""}`}
+                    >
                       <span className="font-semibold">{ch.name}</span>
                       {ch.university && (
                         <span className="text-xs text-muted-foreground ml-1.5">
@@ -317,7 +380,9 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({ chapters = DEFA
               <Checkbox
                 id="terms"
                 checked={watch("terms")}
-                onCheckedChange={(checked) => setValue("terms", !!checked, { shouldValidate: true })}
+                onCheckedChange={(checked) =>
+                  setValue("terms", !!checked, { shouldValidate: true })
+                }
                 className="rounded-none"
               />
               <Label
@@ -366,7 +431,9 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({ chapters = DEFA
       </div>
 
       {errors.terms && (
-        <p className="text-xs text-destructive font-mono">{errors.terms.message}</p>
+        <p className="text-xs text-destructive font-mono">
+          {errors.terms.message}
+        </p>
       )}
     </form>
   );

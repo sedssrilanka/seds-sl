@@ -1,6 +1,6 @@
 "use client";
 
-import type { Chapter } from "@/payload-types";
+import type { Chapter } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
@@ -140,12 +140,19 @@ export function ChaptersClient({
                     <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
                       <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground">
                         {chapter.contactEmail && (
-                          <span className="text-primary font-medium">Active Chapter</span>
+                          <span className="text-primary font-medium">
+                            Active Chapter
+                          </span>
                         )}
                       </div>
 
                       <Link href={`/chapters/${chapter.slug}`} prefetch={false}>
-                        <Button variant="outline" size="sm" bleed={true} className="cursor-pointer text-xs font-mono">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          bleed={true}
+                          className="cursor-pointer text-xs font-mono"
+                        >
                           View Chapter →
                         </Button>
                       </Link>

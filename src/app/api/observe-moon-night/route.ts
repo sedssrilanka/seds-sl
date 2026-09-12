@@ -25,7 +25,8 @@ export async function POST(req: Request) {
       email = body.email || "";
       phone = body.phone || "";
       chapterOrUniversity = body.institution || body.chapterOrUniversity || "";
-      observationLocation = body.selectedLocation || body.observationLocation || "";
+      observationLocation =
+        body.selectedLocation || body.observationLocation || "";
       notes = body.notes || "";
     }
 
@@ -41,7 +42,8 @@ export async function POST(req: Request) {
     // Send confirmation email to attendee via Resend
     await sendEmail({
       to: email,
-      subject: "Registration Confirmed: International Observe the Moon Night | SEDS Sri Lanka",
+      subject:
+        "Registration Confirmed: International Observe the Moon Night | SEDS Sri Lanka",
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h2 style="color: #4f46e5;">Welcome to International Observe the Moon Night!</h2>

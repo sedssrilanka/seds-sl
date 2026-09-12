@@ -67,7 +67,8 @@ export async function GET(req: NextRequest) {
         totalAmount: 2850,
         shippingAddress: "No. 45/2, Galle Road, Colombo 03",
         city: "Colombo",
-        slipUrl: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=60",
+        slipUrl:
+          "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=600&auto=format&fit=crop&q=60",
       });
       break;
 

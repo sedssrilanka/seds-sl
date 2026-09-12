@@ -2,8 +2,9 @@ import { config, fields, collection } from "@keystatic/core";
 
 export default config({
   storage:
-    process.env.NODE_ENV === "production" ||
-    process.env.NEXT_PUBLIC_KEYSTATIC_STORAGE_KIND === "github"
+    process.env.NEXT_PUBLIC_KEYSTATIC_STORAGE_KIND === "github" ||
+    (process.env.NODE_ENV === "production" &&
+      Boolean(process.env.KEYSTATIC_GITHUB_CLIENT_ID))
       ? {
           kind: "github",
           repo: {
@@ -139,12 +140,18 @@ export default config({
             { label: "Bot (Robotics & Rovers)", value: "Bot" },
             { label: "Rocket (Rocketry & Propulsion)", value: "Rocket" },
             { label: "Laptop (Satellite & Space Systems)", value: "Laptop" },
-            { label: "Telescope (Radio Astronomy & Observation)", value: "Telescope" },
+            {
+              label: "Telescope (Radio Astronomy & Observation)",
+              value: "Telescope",
+            },
             { label: "Plane (Aeronautics & Drones)", value: "Plane" },
             { label: "Microscope (Space Bio & Sciences)", value: "Microscope" },
             { label: "Users (Education & Outreach)", value: "Users" },
             { label: "Camera (Media & PR)", value: "Camera" },
-            { label: "Briefcase (Operations & Management)", value: "Briefcase" },
+            {
+              label: "Briefcase (Operations & Management)",
+              value: "Briefcase",
+            },
           ],
           defaultValue: "Rocket",
         }),
@@ -221,10 +228,13 @@ export default config({
                 : props.value?.filename || "Gallery Image",
           },
         ),
-        sizes: fields.array(fields.text({ label: "Size (e.g. S, M, L, XL, 2XL)" }), {
-          label: "Available Sizes (Leave empty if not apparel)",
-          itemLabel: (props) => props.value || "Size",
-        }),
+        sizes: fields.array(
+          fields.text({ label: "Size (e.g. S, M, L, XL, 2XL)" }),
+          {
+            label: "Available Sizes (Leave empty if not apparel)",
+            itemLabel: (props) => props.value || "Size",
+          },
+        ),
         features: fields.array(fields.text({ label: "Feature / Highlight" }), {
           label: "Key Features & Highlights",
           itemLabel: (props) => props.value || "Feature",

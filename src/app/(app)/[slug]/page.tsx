@@ -63,7 +63,9 @@ export default async function SubPage({
   } else if (typeof Content === "string") {
     renderedContent = <p className="whitespace-pre-line">{Content}</p>;
   } else if (pageData.description) {
-    renderedContent = <p className="text-muted-foreground">{pageData.description}</p>;
+    renderedContent = (
+      <p className="text-muted-foreground">{pageData.description}</p>
+    );
   }
 
   return (
@@ -105,5 +107,3 @@ export default async function SubPage({
     </div>
   );
 }
-
-

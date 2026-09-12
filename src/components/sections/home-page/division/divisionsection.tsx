@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SectionHeader } from "@/components/sections/section-header";
-import type { Division } from "@/payload-types";
+import type { Division } from "@/types";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 

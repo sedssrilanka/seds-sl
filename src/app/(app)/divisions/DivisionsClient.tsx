@@ -1,6 +1,6 @@
 "use client";
 
-import type { Division } from "@/payload-types";
+import type { Division } from "@/types";
 import Link from "next/link";
 import {
   Search,
@@ -72,7 +72,12 @@ const DIVISION_METADATA: Record<
   },
 };
 
-const CATEGORIES = ["All", "Engineering", "Observation", "Outreach & Ops"] as const;
+const CATEGORIES = [
+  "All",
+  "Engineering",
+  "Observation",
+  "Outreach & Ops",
+] as const;
 
 export function DivisionsClient({
   initialDivisions = [],
@@ -145,7 +150,9 @@ export function DivisionsClient({
               cat === "All"
                 ? initialDivisions.length
                 : initialDivisions.filter(
-                    (d) => (DIVISION_METADATA[d.slug]?.category || "Engineering") === cat
+                    (d) =>
+                      (DIVISION_METADATA[d.slug]?.category || "Engineering") ===
+                      cat,
                   ).length;
 
             return (
@@ -160,11 +167,13 @@ export function DivisionsClient({
                 }`}
               >
                 <span>{cat}</span>
-                <span className={`text-[10px] px-1 py-0.2 rounded-xs ${
-                  selectedCategory === cat
-                    ? "bg-primary-foreground/20 text-primary-foreground"
-                    : "bg-muted text-muted-foreground"
-                }`}>
+                <span
+                  className={`text-[10px] px-1 py-0.2 rounded-xs ${
+                    selectedCategory === cat
+                      ? "bg-primary-foreground/20 text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                >
                   {count}
                 </span>
               </button>
@@ -258,7 +267,8 @@ export function DivisionsClient({
             No divisions match your filter
           </h3>
           <p className="text-muted-foreground text-xs max-w-md mx-auto">
-            We couldn't find any divisions matching &quot;{searchQuery}&quot; under &quot;{selectedCategory}&quot;.
+            We couldn't find any divisions matching &quot;{searchQuery}&quot;
+            under &quot;{selectedCategory}&quot;.
           </p>
           <Button
             variant="outline"

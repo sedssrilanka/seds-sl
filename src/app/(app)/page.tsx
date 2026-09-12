@@ -25,7 +25,9 @@ export const metadata: Metadata = {
     description:
       "Empowering students across Sri Lankan universities to design satellites, build rockets, and advance space science.",
     url: "/",
-    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "SEDS Sri Lanka" }],
+    images: [
+      { url: "/og-image.png", width: 1200, height: 630, alt: "SEDS Sri Lanka" },
+    ],
   },
 };
 

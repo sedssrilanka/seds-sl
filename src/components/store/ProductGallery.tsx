@@ -17,9 +17,11 @@ export function ProductGallery({
   badge,
 }: ProductGalleryProps) {
   const images = Array.from(
-    new Set([mainImage, ...(gallery || [])].filter(Boolean) as string[])
+    new Set([mainImage, ...(gallery || [])].filter(Boolean) as string[]),
   );
-  const [selectedImage, setSelectedImage] = useState(images[0] || "/section-header/space-projects-bg.jpeg");
+  const [selectedImage, setSelectedImage] = useState(
+    images[0] || "/section-header/space-projects-bg.jpeg",
+  );
 
   return (
     <div className="flex flex-col gap-4">

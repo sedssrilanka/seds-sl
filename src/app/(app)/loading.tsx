@@ -12,7 +12,6 @@ export default function AppLoading() {
         <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
 
         <div className="border border-border/60 bg-card/60 p-8 sm:p-10 relative z-0 flex flex-col items-center text-center space-y-6">
-          
           {/* SEDS SL Icon with Breathing Pulse Animation */}
           <div className="relative size-16 flex items-center justify-center animate-pulse">
             <Image
@@ -39,7 +38,6 @@ export default function AppLoading() {
           <div className="w-full bg-muted/40 border border-border/60 h-1 overflow-hidden relative">
             <div className="h-full bg-primary animate-indeterminate" />
           </div>
-
         </div>
       </div>
     </div>

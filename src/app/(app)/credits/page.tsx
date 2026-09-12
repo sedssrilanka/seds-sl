@@ -58,25 +58,29 @@ const openSourceTools = [
       {
         name: "Next.js 16",
         creator: "Vercel",
-        description: "The modern React framework for production-grade server components, edge routing, and image optimization.",
+        description:
+          "The modern React framework for production-grade server components, edge routing, and image optimization.",
         url: "https://nextjs.org",
       },
       {
         name: "React 19",
         creator: "Meta & Open Source",
-        description: "Declarative, component-based user interface library powering all client and server UI rendering.",
+        description:
+          "Declarative, component-based user interface library powering all client and server UI rendering.",
         url: "https://react.dev",
       },
       {
         name: "TypeScript",
         creator: "Microsoft",
-        description: "Strict, strongly-typed JavaScript layer ensuring end-to-end type safety across the entire application.",
+        description:
+          "Strict, strongly-typed JavaScript layer ensuring end-to-end type safety across the entire application.",
         url: "https://www.typescriptlang.org",
       },
       {
         name: "Bun",
         creator: "Oven (Jarred Sumner)",
-        description: "Incredible all-in-one fast JavaScript runtime, package manager, and bundler powering local builds.",
+        description:
+          "Incredible all-in-one fast JavaScript runtime, package manager, and bundler powering local builds.",
         url: "https://bun.sh",
       },
     ],
@@ -88,25 +92,29 @@ const openSourceTools = [
       {
         name: "Keystatic",
         creator: "Thinkmill",
-        description: "Zero-database, git-based CMS managing structured Markdown and Markdoc content directly in the repo.",
+        description:
+          "Zero-database, git-based CMS managing structured Markdown and Markdoc content directly in the repo.",
         url: "https://keystatic.com",
       },
       {
         name: "Markdoc",
         creator: "Stripe",
-        description: "Powerful, extensible, author-friendly Markdown framework for rendering rich documentation and articles.",
+        description:
+          "Powerful, extensible, author-friendly Markdown framework for rendering rich documentation and articles.",
         url: "https://markdoc.dev",
       },
       {
         name: "Next MDX Remote",
         creator: "HashiCorp",
-        description: "Seamless MDX rendering utility for dynamically parsing and executing Markdown with interactive React components.",
+        description:
+          "Seamless MDX rendering utility for dynamically parsing and executing Markdown with interactive React components.",
         url: "https://github.com/hashicorp/next-mdx-remote",
       },
       {
         name: "Shiki & Prism",
         creator: "Pine Wu & Anthony Fu",
-        description: "Beautiful, accurate syntax highlighting using TextMate grammars and modern color themes.",
+        description:
+          "Beautiful, accurate syntax highlighting using TextMate grammars and modern color themes.",
         url: "https://shiki.style",
       },
     ],
@@ -118,31 +126,36 @@ const openSourceTools = [
       {
         name: "Tailwind CSS",
         creator: "Tailwind Labs",
-        description: "Utility-first CSS framework delivering lightning-fast styling with the bespoke SEDS aerospace aesthetic.",
+        description:
+          "Utility-first CSS framework delivering lightning-fast styling with the bespoke SEDS aerospace aesthetic.",
         url: "https://tailwindcss.com",
       },
       {
         name: "Radix UI",
         creator: "WorkOS",
-        description: "Unstyled, accessible, composable UI primitives powering interactive dialogs, selects, popovers, and menus.",
+        description:
+          "Unstyled, accessible, composable UI primitives powering interactive dialogs, selects, popovers, and menus.",
         url: "https://www.radix-ui.com",
       },
       {
         name: "Lucide Icons",
         creator: "Lucide Community",
-        description: "Clean, consistent, lightweight SVG icon toolkit designed with precision for modern interfaces.",
+        description:
+          "Clean, consistent, lightweight SVG icon toolkit designed with precision for modern interfaces.",
         url: "https://lucide.dev",
       },
       {
         name: "Sonner",
         creator: "Emil Kowalski",
-        description: "An opinionated, elegant toast notification library for React with sleek physics and crisp visuals.",
+        description:
+          "An opinionated, elegant toast notification library for React with sleek physics and crisp visuals.",
         url: "https://sonner.emilkowal.ski",
       },
       {
         name: "cmdk",
         creator: "Paco Coursey",
-        description: "Fast, unstyled command menu component for search, navigation, and dropdown autocomplete filters.",
+        description:
+          "Fast, unstyled command menu component for search, navigation, and dropdown autocomplete filters.",
         url: "https://cmdk.paco.me",
       },
     ],
@@ -154,25 +167,29 @@ const openSourceTools = [
       {
         name: "Three.js",
         creator: "Ricardo Cabello (Mr.doob)",
-        description: "Cross-browser JavaScript 3D engine enabling high-performance WebGL rendering of space models and satellites.",
+        description:
+          "Cross-browser JavaScript 3D engine enabling high-performance WebGL rendering of space models and satellites.",
         url: "https://threejs.org",
       },
       {
         name: "React Three Fiber & Drei",
         creator: "Poimandres",
-        description: "Declarative React wrapper for Three.js with robust camera controls, shaders, and 3D asset loaders.",
+        description:
+          "Declarative React wrapper for Three.js with robust camera controls, shaders, and 3D asset loaders.",
         url: "https://docs.pmnd.rs/react-three-fiber",
       },
       {
         name: "Motion",
         creator: "Matt Perry & Framer",
-        description: "Production-ready motion library for fluid React scroll animations, transitions, and hover micro-interactions.",
+        description:
+          "Production-ready motion library for fluid React scroll animations, transitions, and hover micro-interactions.",
         url: "https://motion.dev",
       },
       {
         name: "Anime.js",
         creator: "Julian Garnier",
-        description: "Flexible JavaScript animation engine with staggered transforms and smooth SVG path morphing.",
+        description:
+          "Flexible JavaScript animation engine with staggered transforms and smooth SVG path morphing.",
         url: "https://animejs.com",
       },
     ],
@@ -184,25 +201,29 @@ const openSourceTools = [
       {
         name: "Resend & React Email",
         creator: "Resend Labs (Zeno Rocha)",
-        description: "Modern email platform with component-based JSX templates delivering transactional member notifications.",
+        description:
+          "Modern email platform with component-based JSX templates delivering transactional member notifications.",
         url: "https://resend.com",
       },
       {
         name: "Cloudflare Turnstile",
         creator: "Cloudflare",
-        description: "Privacy-preserving, frictionless CAPTCHA alternative protecting contact and membership forms from automated bots.",
+        description:
+          "Privacy-preserving, frictionless CAPTCHA alternative protecting contact and membership forms from automated bots.",
         url: "https://www.cloudflare.com/products/turnstile/",
       },
       {
         name: "Zod",
         creator: "Colin McDonnell",
-        description: "TypeScript-first schema declaration and runtime validation library ensuring robust data integrity.",
+        description:
+          "TypeScript-first schema declaration and runtime validation library ensuring robust data integrity.",
         url: "https://zod.dev",
       },
       {
         name: "React Hook Form",
         creator: "Beier Luo & Community",
-        description: "Performant, flexible, and extensible forms with easy-to-use validation without unnecessary re-renders.",
+        description:
+          "Performant, flexible, and extensible forms with easy-to-use validation without unnecessary re-renders.",
         url: "https://react-hook-form.com",
       },
     ],
@@ -214,19 +235,22 @@ const openSourceTools = [
       {
         name: "Biome",
         creator: "Biome Community",
-        description: "Fast formatter and linter for JavaScript and TypeScript maintaining clean code hygiene across the repository.",
+        description:
+          "Fast formatter and linter for JavaScript and TypeScript maintaining clean code hygiene across the repository.",
         url: "https://biomejs.dev",
       },
       {
         name: "Leaflet",
         creator: "Volodymyr Agafonkin",
-        description: "Open-source JavaScript library for mobile-friendly interactive maps displaying chapter locations.",
+        description:
+          "Open-source JavaScript library for mobile-friendly interactive maps displaying chapter locations.",
         url: "https://leafletjs.com",
       },
       {
         name: "Vercel",
         creator: "Vercel Inc.",
-        description: "Edge-first global deployment network and serverless infrastructure hosting the SEDS Sri Lanka web platform.",
+        description:
+          "Edge-first global deployment network and serverless infrastructure hosting the SEDS Sri Lanka web platform.",
         url: "https://vercel.com",
       },
     ],
@@ -266,9 +290,13 @@ async function getThawshiProfile(): Promise<GithubUserProfile> {
       return {
         login: data.login || "Thawshi-Srikanth",
         name: data.name || "Thawshi Srikanth",
-        avatar_url: data.avatar_url || "https://avatars.githubusercontent.com/u/107026727?v=4",
+        avatar_url:
+          data.avatar_url ||
+          "https://avatars.githubusercontent.com/u/107026727?v=4",
         html_url: data.html_url || "https://github.com/Thawshi-Srikanth",
-        bio: data.bio || "Architected the SEDS Sri Lanka digital platform, Keystatic CMS integration, transactional email engine, and responsive bleeding-edge design system.",
+        bio:
+          data.bio ||
+          "Architected the SEDS Sri Lanka digital platform, Keystatic CMS integration, transactional email engine, and responsive bleeding-edge design system.",
         blog: data.blog || "https://www.thawshi.com/",
       };
     }
@@ -302,7 +330,7 @@ async function getContributors(): Promise<GithubContributor[]> {
       const data: GithubContributor[] = await res.json();
       if (Array.isArray(data) && data.length > 0) {
         const hasThawshi = data.some(
-          (c) => c.login.toLowerCase() === "thawshi-srikanth"
+          (c) => c.login.toLowerCase() === "thawshi-srikanth",
         );
         if (!hasThawshi) {
           data.unshift(FALLBACK_CONTRIBUTORS[0]);
@@ -331,8 +359,9 @@ export default async function CreditsPage() {
             title="Credits & Open Source Acknowledgments"
             description={
               <>
-                SEDS Sri Lanka is proudly built upon the collective genius of the global
-                open-source software community and the dedicated contributions of student developers.
+                SEDS Sri Lanka is proudly built upon the collective genius of
+                the global open-source software community and the dedicated
+                contributions of student developers.
               </>
             }
             image="/section-header/who-we-are-bg.jpg"
@@ -355,8 +384,9 @@ export default async function CreditsPage() {
                   sedssrilanka / seds-sl
                 </h2>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  The official digital home of SEDS Sri Lanka is public and open source.
-                  We welcome contributions from student developers, designers, and aerospace enthusiasts.
+                  The official digital home of SEDS Sri Lanka is public and open
+                  source. We welcome contributions from student developers,
+                  designers, and aerospace enthusiasts.
                 </p>
               </div>
 
@@ -367,7 +397,12 @@ export default async function CreditsPage() {
                   rel="noopener noreferrer"
                   prefetch={false}
                 >
-                  <Button variant="default" size="lg" bleed={true} className="gap-2 font-mono text-xs font-bold uppercase tracking-wider">
+                  <Button
+                    variant="default"
+                    size="lg"
+                    bleed={true}
+                    className="gap-2 font-mono text-xs font-bold uppercase tracking-wider"
+                  >
                     <Github className="size-4" />
                     Star on GitHub
                   </Button>
@@ -378,7 +413,12 @@ export default async function CreditsPage() {
                   rel="noopener noreferrer"
                   prefetch={false}
                 >
-                  <Button variant="outline" size="lg" bleed={true} className="gap-2 font-mono text-xs font-bold uppercase tracking-wider">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    bleed={true}
+                    className="gap-2 font-mono text-xs font-bold uppercase tracking-wider"
+                  >
                     <GitPullRequest className="size-4" />
                     Contribute
                   </Button>
@@ -398,7 +438,9 @@ export default async function CreditsPage() {
                 Platform Architects & Contributors
               </h2>
               <p className="text-sm text-muted-foreground">
-                Special thanks to the developers and maintainers who engineered the SEDS Sri Lanka web platform, email studio, and digital systems.
+                Special thanks to the developers and maintainers who engineered
+                the SEDS Sri Lanka web platform, email studio, and digital
+                systems.
               </p>
             </div>
 
@@ -429,7 +471,8 @@ export default async function CreditsPage() {
                       </span>
                     </div>
                     <p className="text-xs md:text-sm text-muted-foreground leading-relaxed max-w-xl">
-                      {thawshiProfile.bio || "Architected the SEDS Sri Lanka digital platform, Keystatic CMS integration, transactional email engine, and responsive bleeding-edge design system."}
+                      {thawshiProfile.bio ||
+                        "Architected the SEDS Sri Lanka digital platform, Keystatic CMS integration, transactional email engine, and responsive bleeding-edge design system."}
                     </p>
                   </div>
                 </div>
@@ -441,7 +484,12 @@ export default async function CreditsPage() {
                     rel="noopener noreferrer"
                     prefetch={false}
                   >
-                    <Button variant="default" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
+                    <Button
+                      variant="default"
+                      size="sm"
+                      bleed={true}
+                      className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider"
+                    >
                       <ExternalLink className="size-3.5" />
                       thawshi.com
                     </Button>
@@ -452,7 +500,12 @@ export default async function CreditsPage() {
                     rel="noopener noreferrer"
                     prefetch={false}
                   >
-                    <Button variant="outline" size="sm" bleed={true} className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      bleed={true}
+                      className="gap-1.5 font-mono text-xs font-bold uppercase tracking-wider"
+                    >
                       <Github className="size-3.5" />
                       GitHub Profile
                     </Button>
@@ -475,11 +528,16 @@ export default async function CreditsPage() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 divide-y sm:divide-y-0 sm:divide-x divide-border/60 border border-border/60 bg-background relative z-0">
                   {contributors.map((contrib) => {
-                    const isThawshi = contrib.login.toLowerCase() === "thawshi-srikanth";
+                    const isThawshi =
+                      contrib.login.toLowerCase() === "thawshi-srikanth";
                     return (
                       <Link
                         key={contrib.id}
-                        href={isThawshi ? "https://www.thawshi.com/" : contrib.html_url}
+                        href={
+                          isThawshi
+                            ? "https://www.thawshi.com/"
+                            : contrib.html_url
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         prefetch={false}
@@ -501,7 +559,8 @@ export default async function CreditsPage() {
                             <ExternalLink className="size-3 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                           </div>
                           <p className="text-xs font-mono text-muted-foreground">
-                            {contrib.contributions} {contrib.contributions === 1 ? "commit" : "commits"}
+                            {contrib.contributions}{" "}
+                            {contrib.contributions === 1 ? "commit" : "commits"}
                             {isThawshi && " • Portfolio"}
                           </p>
                         </div>
@@ -524,7 +583,9 @@ export default async function CreditsPage() {
                 Tools, Libraries & Frameworks We Admire
               </h2>
               <p className="text-sm text-muted-foreground">
-                Our platform stands on the shoulders of remarkable open-source projects. We express our deepest gratitude to the maintainers and contributors of each library below.
+                Our platform stands on the shoulders of remarkable open-source
+                projects. We express our deepest gratitude to the maintainers
+                and contributors of each library below.
               </p>
             </div>
 
@@ -591,11 +652,15 @@ export default async function CreditsPage() {
                 Built with Open Source, for Open Space
               </h3>
               <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-                SEDS Sri Lanka believes that space science, exploration software, and education should be open, accessible, and inclusive for every student on Earth. Thank you to everyone creating open software for humanity.
+                SEDS Sri Lanka believes that space science, exploration
+                software, and education should be open, accessible, and
+                inclusive for every student on Earth. Thank you to everyone
+                creating open software for humanity.
               </p>
               <div className="pt-2">
                 <span className="text-xs font-mono text-primary uppercase tracking-widest font-semibold">
-                  Ad Astra per Aspera • Students for the Exploration & Development of Space
+                  Ad Astra per Aspera • Students for the Exploration &
+                  Development of Space
                 </span>
               </div>
             </div>

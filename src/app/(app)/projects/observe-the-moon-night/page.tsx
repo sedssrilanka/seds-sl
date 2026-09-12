@@ -11,7 +11,9 @@ export const metadata: Metadata = {
     title: "International Observe the Moon Night 2026 | SEDS Sri Lanka",
     description:
       "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration.",
-    images: [{ url: "/images/projects/iotm-day-2026.png", width: 1200, height: 630 }],
+    images: [
+      { url: "/images/projects/iotm-day-2026.png", width: 1200, height: 630 },
+    ],
     type: "article",
   },
   twitter: {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 
 export function TopProgressBar() {
@@ -9,8 +9,9 @@ export function TopProgressBar() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Reset loading state on route change completion
-    setLoading(false);
+    if (pathname !== undefined || searchParams !== undefined) {
+      setLoading(false);
+    }
   }, [pathname, searchParams]);
 
   useEffect(() => {

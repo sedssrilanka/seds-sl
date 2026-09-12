@@ -72,7 +72,8 @@ export default async function Page({
   }
 
   const Content = await division.content();
-  const IconComponent = IconMap[division.icon as keyof typeof IconMap] || Rocket;
+  const IconComponent =
+    IconMap[division.icon as keyof typeof IconMap] || Rocket;
 
   let renderedContent: React.ReactNode = null;
   if (Content?.node) {
@@ -81,7 +82,9 @@ export default async function Page({
   } else if (typeof Content === "string") {
     renderedContent = <p className="whitespace-pre-line">{Content}</p>;
   } else {
-    renderedContent = <p className="text-muted-foreground">{division.description}</p>;
+    renderedContent = (
+      <p className="text-muted-foreground">{division.description}</p>
+    );
   }
 
   const otherDivisions = allDivisions.filter((d) => d.slug !== division.slug);
@@ -123,7 +126,10 @@ export default async function Page({
 
               {division.lead && (
                 <p className="text-xs text-muted-foreground font-mono">
-                  Coordination: <span className="text-foreground font-semibold">{division.lead}</span>
+                  Coordination:{" "}
+                  <span className="text-foreground font-semibold">
+                    {division.lead}
+                  </span>
                 </p>
               )}
 
@@ -151,7 +157,9 @@ export default async function Page({
                   Join This Division
                 </h3>
                 <p className="text-xs text-muted-foreground leading-relaxed">
-                  Join fellow student space enthusiasts in Sri Lanka. Attend hands-on workshops, participate in study circles, and work on fun team projects.
+                  Join fellow student space enthusiasts in Sri Lanka. Attend
+                  hands-on workshops, participate in study circles, and work on
+                  fun team projects.
                 </p>
               </div>
 
@@ -174,7 +182,11 @@ export default async function Page({
                 </div>
               </div>
 
-              <Button asChild size="lg" className="w-full font-semibold cursor-pointer">
+              <Button
+                asChild
+                size="lg"
+                className="w-full font-semibold cursor-pointer"
+              >
                 <Link href="/join-us">
                   Join SEDS Sri Lanka <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
@@ -183,7 +195,10 @@ export default async function Page({
               <div className="text-center pt-1">
                 <p className="text-[11px] text-muted-foreground font-mono">
                   Have questions?{" "}
-                  <Link href="/contact-us" className="text-primary hover:underline font-semibold">
+                  <Link
+                    href="/contact-us"
+                    className="text-primary hover:underline font-semibold"
+                  >
                     Contact us
                   </Link>
                 </p>

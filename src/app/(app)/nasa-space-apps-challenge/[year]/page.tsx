@@ -20,7 +20,9 @@ export async function generateStaticParams() {
   }));
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { year } = await params;
   const edition = getSpaceAppsEdition(year);
   const baseUrl = getServerSideURL();
@@ -74,10 +76,9 @@ export default async function NasaSpaceAppsYearPage({ params }: PageProps) {
     url: `${baseUrl}/nasa-space-apps-challenge/${year}`,
     startDate: edition.date,
     eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode:
-      edition.format.toLowerCase().includes("virtual")
-        ? "https://schema.org/OnlineEventAttendanceMode"
-        : "https://schema.org/MixedEventAttendanceMode",
+    eventAttendanceMode: edition.format.toLowerCase().includes("virtual")
+      ? "https://schema.org/OnlineEventAttendanceMode"
+      : "https://schema.org/MixedEventAttendanceMode",
     location: {
       "@type": "Place",
       name: edition.location,

@@ -37,7 +37,11 @@ const ProjectCard = ({
       <div className="flex flex-col space-y-4">
         {/* Cover Image Preview */}
         {mediaUrl && (
-          <Link href={targetLink} prefetch={false} className="block overflow-hidden">
+          <Link
+            href={targetLink}
+            prefetch={false}
+            className="block overflow-hidden"
+          >
             <div className="w-full aspect-video bg-muted border border-border/60 relative overflow-hidden">
               <Image
                 src={mediaUrl}

@@ -24,7 +24,9 @@ export const fetchChapters = async (searchQuery = ""): Promise<any[]> => {
       description: ch.description,
       logoDark: ch.logoDark ? { url: ch.logoDark } : null,
       logoLight: ch.logoLight ? { url: ch.logoLight } : null,
-      mainImage: ch.mainImage ? { url: ch.mainImage } : { url: "/section-header/who-we-are-bg.jpg" },
+      mainImage: ch.mainImage
+        ? { url: ch.mainImage }
+        : { url: "/section-header/who-we-are-bg.jpg" },
       contactEmail: ch.contactEmail,
       socialLinks: ch.socialLinks || [],
       createdAt: new Date().toISOString(),
