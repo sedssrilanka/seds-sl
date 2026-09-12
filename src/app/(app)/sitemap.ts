@@ -1,129 +1,146 @@
 import type { MetadataRoute } from "next";
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
 import { getServerSideURL } from "@/utilities/getURL";
+import {
+  getAllProjects,
+  getAllChapters,
+  getAllDivisions,
+  getAllProducts,
+} from "@/lib/keystatic";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getServerSideURL();
 
   try {
-    const payload = await getPayload({ config: configPromise });
+    const [projects, chapters, divisions, products] = await Promise.all([
+      getAllProjects(),
+      getAllChapters(),
+      getAllDivisions(),
+      getAllProducts(),
+    ]);
 
-    // Fetch published pages
-    const pages = await payload.find({
-      collection: "pages",
-      draft: false,
-      limit: 1000,
-      overrideAccess: true,
-      select: {
-        slug: true,
-        updatedAt: true,
-      },
-    });
+    const projectUrls = projects.map((p) => ({
+      url: `${baseUrl}/projects/${p.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.8,
+    }));
 
-    // Fetch published projects
-    const projects = await payload.find({
-      collection: "projects",
-      draft: false,
-      limit: 1000,
-      overrideAccess: true,
-      select: {
-        slug: true,
-        updatedAt: true,
-      },
-    });
+    const chapterUrls = chapters.map((c) => ({
+      url: `${baseUrl}/chapters/${c.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
 
-    // Fetch published chapters
-    const chapters = await payload.find({
-      collection: "chapters",
-      draft: false,
-      limit: 1000,
-      overrideAccess: true,
-      select: {
-        slug: true,
-        updatedAt: true,
-      },
-    });
+    const divisionUrls = divisions.map((d) => ({
+      url: `${baseUrl}/divisions/${d.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }));
 
-    // Fetch published divisions
-    const divisions = await payload.find({
-      collection: "divisions",
-      draft: false,
-      limit: 1000,
-      overrideAccess: true,
-      select: {
-        slug: true,
-        updatedAt: true,
-      },
-    });
+    const productUrls = products.map((pr) => ({
+      url: `${baseUrl}/products/${pr.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.6,
+    }));
 
-    const pageUrls =
-      pages.docs
-        ?.filter((doc) => doc.slug && doc.slug !== "home")
-        .map((doc) => ({
-          url: `${baseUrl}/${doc.slug}`,
-          lastModified: doc.updatedAt ? new Date(doc.updatedAt) : new Date(),
-          changeFrequency: "weekly" as const,
-          priority: 0.8,
-        })) || [];
-
-    const projectUrls =
-      projects.docs
-        ?.filter((doc) => doc.slug)
-        .map((doc) => ({
-          url: `${baseUrl}/projects/${doc.slug}`,
-          lastModified: doc.updatedAt ? new Date(doc.updatedAt) : new Date(),
-          changeFrequency: "monthly" as const,
-          priority: 0.7,
-        })) || [];
-
-    const chapterUrls =
-      chapters.docs
-        ?.filter((doc) => doc.slug)
-        .map((doc) => ({
-          url: `${baseUrl}/chapters/${doc.slug}`,
-          lastModified: doc.updatedAt ? new Date(doc.updatedAt) : new Date(),
-          changeFrequency: "monthly" as const,
-          priority: 0.7,
-        })) || [];
-
-    const divisionUrls =
-      divisions.docs
-        ?.filter((doc) => doc.slug)
-        .map((doc) => ({
-          url: `${baseUrl}/divisions/${doc.slug}`,
-          lastModified: doc.updatedAt ? new Date(doc.updatedAt) : new Date(),
-          changeFrequency: "monthly" as const,
-          priority: 0.7,
-        })) || [];
-
-    const staticUrls = [
+    const staticUrls: MetadataRoute.Sitemap = [
       {
         url: baseUrl,
         lastModified: new Date(),
-        changeFrequency: "daily" as const,
+        changeFrequency: "daily",
         priority: 1.0,
       },
       {
-        url: `${baseUrl}/contact-us`,
+        url: `${baseUrl}/projects`,
         lastModified: new Date(),
-        changeFrequency: "monthly" as const,
-        priority: 0.5,
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/chapters`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/divisions`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.9,
       },
       {
         url: `${baseUrl}/shop`,
         lastModified: new Date(),
-        changeFrequency: "weekly" as const,
+        changeFrequency: "weekly",
+        priority: 0.8,
+      },
+      {
+        url: `${baseUrl}/about-us`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
         priority: 0.6,
       },
+      {
+        url: `${baseUrl}/join-us`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+      {
+        url: `${baseUrl}/credits`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.5,
+      },
+      {
+        url: `${baseUrl}/terms`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.4,
+      },
+      {
+        url: `${baseUrl}/privacy`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.4,
+      },
+      {
+        url: `${baseUrl}/code-of-conduct`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.4,
+      },
+      {
+        url: `${baseUrl}/contact-us`,
+        lastModified: new Date(),
+        changeFrequency: "monthly",
+        priority: 0.6,
+      },
+      {
+        url: `${baseUrl}/nasa-space-apps-challenge`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
+      ...["2025", "2024", "2023", "2022", "2021", "2020", "2019"].map(
+        (year) => ({
+          url: `${baseUrl}/nasa-space-apps-challenge/${year}`,
+          lastModified: new Date(),
+          changeFrequency: "monthly" as const,
+          priority: 0.8,
+        }),
+      ),
     ];
 
     return [
       ...staticUrls,
-      ...pageUrls,
       ...projectUrls,
       ...chapterUrls,
       ...divisionUrls,
+      ...productUrls,
     ];
   } catch (error) {
     console.error("Error generating sitemap:", error);
@@ -131,6 +148,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       {
         url: baseUrl,
         lastModified: new Date(),
+        changeFrequency: "daily",
+        priority: 1.0,
       },
     ];
   }

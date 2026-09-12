@@ -440,7 +440,7 @@ export function generateRegistrationEmail(params: RegistrationEmailParams): {
               </table>
 
               <div style="text-align: center; margin-top: 8px;">
-                <a href="${process.env.NEXT_PUBLIC_SERVER_URL || process.env.WEBSITE_URL || "https://seds-sl.org"}/projects/observe-the-moon-night" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; text-decoration: none; border: 1px solid #3b82f6; letter-spacing: 1px;">
+                <a href="${process.env.NEXT_PUBLIC_SERVER_URL || process.env.WEBSITE_URL || "https://sedssl.org"}/projects/observe-the-moon-night" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; text-decoration: none; border: 1px solid #3b82f6; letter-spacing: 1px;">
                   View Event Portal →
                 </a>
               </div>
@@ -491,7 +491,7 @@ ${selectedLocation ? `• Location: ${selectedLocation}\n` : ""}• Mode: ${atte
 ${emergencyContactName ? `• Emergency Contact: ${emergencyContactName} (${emergencyContactPhone}) [${emergencyContactRelation}]\n` : ""}• Meal Preference: ${mealLabel}${dietaryRestrictions ? ` (${dietaryRestrictions})` : ""}
 
 ${paymentDetails ? `PAYMENT INSTRUCTIONS:\n${paymentDetails}\n` : ""}
-Event Portal: ${process.env.NEXT_PUBLIC_SERVER_URL || process.env.WEBSITE_URL || "https://seds-sl.org"}/projects/observe-the-moon-night
+Event Portal: ${process.env.NEXT_PUBLIC_SERVER_URL || process.env.WEBSITE_URL || "https://sedssl.org"}/projects/observe-the-moon-night
 
 Students for the Exploration & Development of Space (SEDS Sri Lanka)
   `.trim();

@@ -1,25 +1,12 @@
 import type React from "react";
 
-import type { Page } from "@/payload-types";
+export const RenderHero: React.FC<any> = ({ title, description }) => {
+  if (!title && !description) return null;
 
-import { HighImpactHero } from "@/heros/HighImpact";
-import { LowImpactHero } from "@/heros/LowImpact";
-import { MediumImpactHero } from "@/heros/MediumImpact";
-
-const heroes = {
-  highImpact: HighImpactHero,
-  lowImpact: LowImpactHero,
-  mediumImpact: MediumImpactHero,
-};
-
-export const RenderHero: React.FC<Page["hero"]> = (props) => {
-  const { type } = props || {};
-
-  if (!type || type === "none") return null;
-
-  const HeroToRender = heroes[type];
-
-  if (!HeroToRender) return null;
-
-  return <HeroToRender {...props} />;
+  return (
+    <div className="w-full py-12 border-b border-border/40">
+      {title && <h1 className="text-4xl font-bold text-white">{title}</h1>}
+      {description && <p className="text-zinc-400 mt-2">{description}</p>}
+    </div>
+  );
 };

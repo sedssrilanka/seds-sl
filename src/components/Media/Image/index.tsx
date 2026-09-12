@@ -47,7 +47,7 @@ export const Image: React.FC<MediaProps> = (props) => {
 
     width = widthFromProps ?? fullWidth;
     height = heightFromProps ?? fullHeight;
-    alt = altFromResource;
+    alt = altFromResource || undefined;
 
     const filename = fullFilename;
 

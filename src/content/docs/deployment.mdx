@@ -1,68 +1,56 @@
 ---
 title: Deployment Guide
-description: How to deploy the SEDS Sri Lanka Next.js & Payload CMS application to production.
+description: How to deploy the SEDS Sri Lanka Next.js & Keystatic application to production.
 ---
 
 # Deployment Guide
 
-This guide covers the necessary steps to deploy the **SEDS Sri Lanka** platform. Because the site uses **Next.js** and **Payload CMS** together, your hosting provider needs to support Node.js server environments and PostgreSQL database connections.
+This guide covers the necessary steps to deploy the **SEDS Sri Lanka** platform. Because the site uses **Next.js** and **Keystatic Git-based CMS** with zero external database dependencies, deployment is fast, reliable, and lightweight.
 
 ## Prerequisites
 
 Before deploying, ensure you have the following ready:
 
-1. **PostgreSQL Database:** A running PostgreSQL instance (e.g., Supabase, Neon, AWS RDS).
-2. **S3 Storage (Optional but Recommended):** An S3 bucker (e.g., AWS S3, Cloudflare R2, MinIO) for media storage.
-3. **Resend Account:** An active Resend API key for sending contact forms and order emails.
-4. **Stripe Account:** (If the shop is enabled) for payment processing.
+1. **GitHub Repository:** Access to the `sedssrilanka/seds-sl` repository.
+2. **Resend Account:** An active Resend API key for contact forms and email notifications.
+3. **Keystatic GitHub App (Optional):** OAuth credentials for online CMS editing at `/keystatic`.
 
 ## 1. Environment Variables
 
-You must configure the following environment variables in your hosting provider's dashboard:
+You can configure the following environment variables in your hosting provider's dashboard:
 
 ```env
-# Database
-DATABASE_URI=postgresql://user:password@host:port/database
-
-# Payload CMS
-PAYLOAD_SECRET=your_super_secret_string
-NEXT_PUBLIC_SERVER_URL=https://your-production-url.com
+# Official Domain
+NEXT_PUBLIC_SERVER_URL=https://sedssl.org
 
 # Email (Resend)
 RESEND_API_KEY=re_your_api_key
-CONTACT_EMAIL=contact@seds-sl.org
-FROM_EMAIL=noreply@seds-sl.org
+CONTACT_EMAIL=contact@sedssl.org
+FROM_EMAIL=noreply@sedssl.org
 
-# Optional: S3 Storage
-S3_ACCESS_KEY_ID=...
-S3_SECRET_ACCESS_KEY=...
-S3_BUCKET=...
-S3_REGION=...
-S3_ENDPOINT=...
+# Keystatic GitHub Storage Mode (Optional for Web Admin)
+KEYSTATIC_GITHUB_CLIENT_ID=your_client_id
+KEYSTATIC_GITHUB_CLIENT_SECRET=your_client_secret
+KEYSTATIC_SECRET=your_random_32_character_secret
 ```
 
 ## 2. Deploying to Vercel (Recommended)
 
-Vercel is the easiest way to deploy Next.js apps.
+Vercel provides native support for Next.js App Router applications:
 
-1. Push your code to a GitHub/GitLab repository.
+1. Push your code to the GitHub repository (`sedssrilanka/seds-sl`).
 2. Go to [Vercel](https://vercel.com) and click **"Add New Project"**.
-3. Import your repository.
-4. Open the **"Environment Variables"** tab and paste the `.env` values listed above.
-5. In the **"Build and Output Settings"**, set:
+3. Import the repository.
+4. Set the environment variables in the project settings.
+5. In **"Build and Output Settings"**, set:
    - Build Command: `bun run build`
    - Install Command: `bun install`
 6. Click **Deploy**.
 
-> **Note on Free Tiers:** Payload CMS handles image processing and database interactions heavily. Ensure your serverless function execution timeout limits (especially on Vercel's Hobby tier) don't abort CMS uploads.
+## 3. GitHub Actions CI/CD Pipeline
 
-## 3. Deploying using Docker
-
-If you prefer self-hosting on a VPS (like DigitalOcean, AWS EC2, or Hetzner):
-
-1. Create a `Dockerfile`.
-2. Map your `.env` variables via Docker Compose or your orchestrator.
-3. Build the Next.js standalone output.
-4. Expose port `3000`.
-
-_Be sure to run `bun run payload migrate` if you have database migrations configured._
+The repository includes a built-in CI/CD workflow at `.github/workflows/ci.yml` that automatically:
+- Runs TypeScript type checking (`bun run type-check`)
+- Checks code formatting and lint rules (`bun run lint`)
+- Executes test suites (`bun run test`)
+- Verifies production builds and deploys preview/production builds to Vercel

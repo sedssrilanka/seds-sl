@@ -1,48 +1,26 @@
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
+import React from "react";
 import { notFound } from "next/navigation";
-import { RenderHero } from "@/heros/RenderHero";
-import { RichText } from "@/components/RichText";
-import type { Division, Media } from "@/payload-types";
+import { getDivisionBySlug, getAllDivisions } from "@/lib/keystatic";
+import type { Metadata } from "next";
 import Link from "next/link";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   ChevronLeftIcon,
   Bot,
   Rocket,
   Laptop,
+  Telescope,
   Plane,
   Microscope,
-  Telescope,
-  Briefcase,
-  Camera,
   Users,
-  Link2,
+  Camera,
+  Briefcase,
+  ArrowRight,
+  CheckCircle2,
+  Sparkles,
   type LucideIcon,
 } from "lucide-react";
-import { FaTwitter, FaLinkedin, FaFacebook, FaWhatsapp } from "react-icons/fa";
-import type { Metadata } from "next";
-import { getServerSideURL } from "@/utilities/getURL";
-
-export const revalidate = 3600; // Revalidate every hour
-
-export async function generateStaticParams() {
-  try {
-    const payload = await getPayload({ config: configPromise });
-    const divisions = await payload.find({
-      collection: "divisions",
-      limit: 100,
-      select: {
-        slug: true,
-      },
-    });
-    return divisions.docs.map((doc) => ({ slug: doc.slug }));
-  } catch (error) {
-    return [];
-  }
-}
+import { Button } from "@/components/ui/button";
+import Markdoc from "@markdoc/markdoc";
 
 const IconMap: Record<string, LucideIcon> = {
   Bot,
@@ -56,254 +34,204 @@ const IconMap: Record<string, LucideIcon> = {
   Users,
 };
 
-interface PageParams {
-  params: Promise<{ slug: string }>;
-}
+export const revalidate = 3600;
 
-async function queryDivision(slug: string): Promise<Division | null> {
-  try {
-    const payload = await getPayload({ config: configPromise });
-    const { docs } = await payload.find({
-      collection: "divisions",
-      where: { slug: { equals: slug } },
-      limit: 1,
-      depth: 2,
-    });
-    return docs[0] ?? null;
-  } catch (error) {
-    console.error("Error fetching division:", error);
-    return null;
-  }
+export async function generateStaticParams() {
+  const divisions = await getAllDivisions();
+  return divisions.map((div) => ({ slug: div.slug }));
 }
 
 export async function generateMetadata({
   params,
-}: PageParams): Promise<Metadata> {
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
-  const division = await queryDivision(slug);
-
+  const division = await getDivisionBySlug(slug);
   if (!division) return { title: "Division Not Found | SEDS Sri Lanka" };
 
-  const siteURL = getServerSideURL();
-  const metaImage =
-    typeof division.meta?.image === "object" && division.meta?.image !== null
-      ? (division.meta.image as Media)
-      : null;
-
   return {
-    title: division.meta?.title || `${division.name} | SEDS Sri Lanka`,
-    description:
-      division.meta?.description || division.description || undefined,
-    openGraph: {
-      title: division.meta?.title || division.name,
-      description:
-        division.meta?.description || division.description || undefined,
-      url: `${siteURL}/divisions/${slug}`,
-      ...(metaImage?.url
-        ? {
-            images: [
-              {
-                url: metaImage.url,
-                width: metaImage.width ?? undefined,
-                height: metaImage.height ?? undefined,
-                alt: metaImage.alt,
-              },
-            ],
-          }
-        : {}),
-    },
+    title: `${division.name} | SEDS Sri Lanka Divisions`,
+    description: division.description,
   };
 }
 
-export default async function DivisionDetailPage({ params }: PageParams) {
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
-  const division = await queryDivision(slug);
+  const [division, allDivisions] = await Promise.all([
+    getDivisionBySlug(slug),
+    getAllDivisions(),
+  ]);
 
-  if (!division) return notFound();
+  if (!division) {
+    notFound();
+  }
 
+  const Content = await division.content();
   const IconComponent =
     IconMap[division.icon as keyof typeof IconMap] || Rocket;
 
-  // Pull hero image for the banner if available
-  const heroImage =
-    division.hero?.media && typeof division.hero.media === "object"
-      ? (division.hero.media as Media)
-      : null;
+  let renderedContent: React.ReactNode = null;
+  if (Content?.node) {
+    const transformed = Markdoc.transform(Content.node);
+    renderedContent = Markdoc.renderers.react(transformed, React);
+  } else if (typeof Content === "string") {
+    renderedContent = <p className="whitespace-pre-line">{Content}</p>;
+  } else {
+    renderedContent = (
+      <p className="text-muted-foreground">{division.description}</p>
+    );
+  }
+
+  const otherDivisions = allDivisions.filter((d) => d.slug !== division.slug);
 
   return (
-    <div className="flex flex-col w-full min-h-screen">
-      {/* Hero */}
-      {division.hero ? (
-        <RenderHero {...division.hero} />
-      ) : (
-        /* Fallback banner when no hero is configured */
-        <div className="relative w-full h-[45vh] min-h-[320px] overflow-hidden bg-linear-to-br from-background via-muted/40 to-background border-b border-border/50">
-          {heroImage?.url && (
-            <>
-              <Image
-                src={heroImage.url}
-                alt={division.name}
-                fill
-                className="object-cover opacity-20"
-                priority
-              />
-              <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent" />
-            </>
-          )}
-          {/* Decorative grid */}
-          <div
-            className="absolute inset-0 opacity-[0.03]"
-            style={{
-              backgroundImage:
-                "linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)",
-              backgroundSize: "40px 40px",
-            }}
-          />
-          <div className="relative h-full flex items-end">
-            <div className="container mx-auto px-6 pb-10">
-              <div className="flex items-center gap-5">
-                <div className="p-4 bg-primary/15 border border-primary/30 backdrop-blur-sm">
-                  <IconComponent className="size-10 text-primary" />
-                </div>
-                <div>
-                  <Badge
-                    variant="outline"
-                    className="mb-2 text-xs font-mono tracking-widest uppercase border-primary/30 text-primary"
-                  >
-                    Division
-                  </Badge>
-                  <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                    {division.name}
-                  </h1>
-                </div>
-              </div>
-            </div>
-          </div>
+    <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
+      <div className="w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 section-content relative z-10">
+        {/* Top Back Breadcrumb */}
+        <div className="mb-8">
+          <Link href="/divisions">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 text-xs font-mono text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              <ChevronLeftIcon className="w-4 h-4" /> BACK TO DIVISIONS
+            </Button>
+          </Link>
         </div>
-      )}
 
-      {/* Main content */}
-      <div className="grid-container section-content">
-        <div className="col-span-4 md:col-span-8 lg:col-span-12 py-10">
-          {/* Back nav */}
-          <Button
-            asChild
-            variant="ghost"
-            size="sm"
-            className="mb-8 -ml-2 hover:bg-muted/50 rounded-full text-muted-foreground hover:text-foreground"
-          >
-            <Link href="/divisions" className="flex items-center gap-1.5">
-              <ChevronLeftIcon className="w-4 h-4" />
-              All Divisions
-            </Link>
-          </Button>
+        {/* 2-Column Responsive Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start relative">
+          {/* Main Article Content (8 Columns on desktop) */}
+          <article className="lg:col-span-8 space-y-8 min-w-0">
+            {/* Division Header Banner */}
+            <div className="border-b border-border/60 pb-8 space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2.5 bg-primary/10 border border-primary/20 text-primary">
+                  <IconComponent className="size-6 text-primary" />
+                </div>
+                <span className="text-xs font-mono text-primary uppercase tracking-wider font-semibold">
+                  SEDS Sri Lanka Student Division
+                </span>
+              </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
-            {/* ── Content column ── */}
-            <main className="lg:col-span-8 order-2 lg:order-1">
-              {/* Short description */}
-              {division.description && (
-                <p className="text-lg md:text-xl text-muted-foreground leading-relaxed mb-8 border-l-4 border-primary pl-5 font-light">
-                  {division.description}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-tight">
+                {division.name}
+              </h1>
+
+              {division.lead && (
+                <p className="text-xs text-muted-foreground font-mono">
+                  Coordination:{" "}
+                  <span className="text-foreground font-semibold">
+                    {division.lead}
+                  </span>
                 </p>
               )}
 
-              {/* Rich text body */}
-              {division.content && (
-                <div className="prose dark:prose-invert prose-lg max-w-none prose-headings:font-bold prose-headings:tracking-tight prose-a:text-primary prose-blockquote:border-primary">
-                  <RichText data={division.content} />
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                {division.description}
+              </p>
+            </div>
+
+            {/* Rich Content Body */}
+            <div className="prose prose-invert max-w-none prose-headings:text-foreground prose-headings:tracking-tight prose-a:text-primary prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground">
+              {renderedContent}
+            </div>
+          </article>
+
+          {/* Sticky Join Now & Quick Nav Sidebar (4 Columns on desktop) */}
+          <aside className="lg:col-span-4 lg:sticky lg:top-28 self-start space-y-6">
+            {/* Join Division Card */}
+            <div className="border border-border/60 bg-background p-6 sm:p-7 space-y-6 relative overflow-hidden">
+              <div className="space-y-2">
+                <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-primary font-bold">
+                  <Sparkles className="w-3.5 h-3.5 text-primary" />
+                  <span>Get Involved</span>
                 </div>
-              )}
-            </main>
-
-            {/* ── Sticky sidebar ── */}
-            <aside className="lg:col-span-4 order-1 lg:order-2">
-              <div className="sticky top-8 space-y-6">
-                {/* Icon card */}
-                <div className="flex items-center gap-4 bg-muted/30 backdrop-blur-sm border border-border/50 p-5">
-                  <div className="p-3 bg-primary/10 border border-primary/20 shrink-0">
-                    <IconComponent className="size-8 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-xs font-mono tracking-widest uppercase text-muted-foreground mb-1">
-                      Division
-                    </p>
-                    <p className="text-lg font-bold">{division.name}</p>
-                  </div>
-                </div>
-
-                {/* Share links */}
-                {(() => {
-                  const pageURL = `${getServerSideURL()}/divisions/${division.slug}`;
-                  const encodedURL = encodeURIComponent(pageURL);
-                  const encodedTitle = encodeURIComponent(division.name);
-                  return (
-                    <div className="bg-muted/30 backdrop-blur-sm border border-border/50 p-5 space-y-3">
-                      <h2 className="text-sm font-semibold uppercase tracking-widest text-muted-foreground">
-                        Share
-                      </h2>
-                      <div className="flex flex-col gap-2">
-                        <a
-                          href={`https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedURL}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 px-4 py-2.5 border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-colors text-sm font-medium"
-                        >
-                          <FaTwitter className="size-4 text-[#1DA1F2]" />
-                          Share on Twitter
-                        </a>
-                        <a
-                          href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedURL}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 px-4 py-2.5 border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-colors text-sm font-medium"
-                        >
-                          <FaLinkedin className="size-4 text-[#0A66C2]" />
-                          Share on LinkedIn
-                        </a>
-                        <a
-                          href={`https://www.facebook.com/sharer/sharer.php?u=${encodedURL}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 px-4 py-2.5 border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-colors text-sm font-medium"
-                        >
-                          <FaFacebook className="size-4 text-[#1877F2]" />
-                          Share on Facebook
-                        </a>
-                        <a
-                          href={`https://wa.me/?text=${encodedTitle}%20${encodedURL}`}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-3 px-4 py-2.5 border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-colors text-sm font-medium"
-                        >
-                          <FaWhatsapp className="size-4 text-[#25D366]" />
-                          Share on WhatsApp
-                        </a>
-                        <div className="flex items-center gap-2 px-4 py-2.5 border border-border/50 hover:border-primary/40 hover:bg-primary/5 transition-colors text-sm font-medium">
-                          <Link2 className="size-4 text-muted-foreground shrink-0" />
-                          <span className="truncate text-muted-foreground text-xs">
-                            {pageURL}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })()}
-
-                {/* Browse all */}
-                <Button
-                  asChild
-                  variant="outline"
-                  className="w-full rounded-sm gap-2"
-                >
-                  <Link href="/divisions">
-                    <ChevronLeftIcon className="size-4" />
-                    Browse All Divisions
-                  </Link>
-                </Button>
+                <h3 className="text-xl font-bold text-foreground">
+                  Join This Division
+                </h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  Join fellow student space enthusiasts in Sri Lanka. Attend
+                  hands-on workshops, participate in study circles, and work on
+                  fun team projects.
+                </p>
               </div>
-            </aside>
-          </div>
+
+              <div className="space-y-2.5 text-xs text-muted-foreground border-y border-border/60 py-4">
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>Open to all university & school students</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>Beginner friendly: no prior experience required</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>100% Free student community membership</span>
+                </div>
+                <div className="flex items-start gap-2.5">
+                  <CheckCircle2 className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>Hands-on workshops, field days & mentorship</span>
+                </div>
+              </div>
+
+              <Button
+                asChild
+                size="lg"
+                className="w-full font-semibold cursor-pointer"
+              >
+                <Link href="/join-us">
+                  Join SEDS Sri Lanka <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
+
+              <div className="text-center pt-1">
+                <p className="text-[11px] text-muted-foreground font-mono">
+                  Have questions?{" "}
+                  <Link
+                    href="/contact-us"
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    Contact us
+                  </Link>
+                </p>
+              </div>
+            </div>
+
+            {/* Other Divisions Navigation Card */}
+            {otherDivisions.length > 0 && (
+              <div className="border border-border/60 bg-background p-6 space-y-4">
+                <h4 className="text-xs font-mono uppercase tracking-wider font-bold text-foreground">
+                  Explore Other Divisions
+                </h4>
+                <div className="space-y-2.5">
+                  {otherDivisions.map((d) => (
+                    <Link
+                      key={d.slug}
+                      href={`/divisions/${d.slug}`}
+                      className="block text-xs text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all py-1.5 border-b border-border/30 last:border-0"
+                    >
+                      {d.name}
+                    </Link>
+                  ))}
+                </div>
+                <Link
+                  href="/divisions"
+                  className="text-xs font-mono text-primary hover:underline flex items-center gap-1 pt-2 block font-semibold"
+                >
+                  <span>View all divisions</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </Link>
+              </div>
+            )}
+          </aside>
         </div>
       </div>
     </div>

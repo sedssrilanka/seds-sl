@@ -12,7 +12,9 @@ export const metadata: Metadata = {
     title: "Our Projects & Flagship Events | SEDS Sri Lanka",
     description:
       "Discover the innovative projects developed by our student chapters alongside flagship space exploration initiatives.",
-    images: [{ url: "/section-header/space-projects-bg.jpeg" }],
+    images: [
+      { url: "/images/projects/nsa-cover.png", width: 1200, height: 630 },
+    ],
   },
 };
 

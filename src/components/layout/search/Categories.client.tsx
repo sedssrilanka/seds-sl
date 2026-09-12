@@ -2,7 +2,7 @@
 import type React from "react";
 import { useCallback, useMemo } from "react";
 
-import type { Category } from "@/payload-types";
+import type { Category } from "@/types";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import { Badge } from "@/components/ui/badge";
 import clsx from "clsx";

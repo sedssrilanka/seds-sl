@@ -1,93 +1,68 @@
-import type { Chapter, Media, Project } from "@/payload-types";
+import React from "react";
 import type { Metadata } from "next";
-import { getPayload } from "payload";
-import configPromise from "@payload-config";
 import { notFound } from "next/navigation";
-import { ChapterContent } from "@/components/rich-text/chapter-content";
-import Image from "next/image";
+import { getChapterBySlug, getAllChapters } from "@/lib/keystatic";
+import { getServerSideURL } from "@/utilities/getURL";
+import Link from "next/link";
+import {
+  ChevronLeftIcon,
+  ArrowRight,
+  CheckCircle2,
+  Sparkles,
+  School,
+  Mail,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Markdoc from "@markdoc/markdoc";
 import {
   FaEnvelope,
   FaTwitter,
   FaLinkedin,
   FaFacebook,
-  FaLink,
+  FaInstagram,
 } from "react-icons/fa";
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  try {
-    const payload = await getPayload({ config: configPromise });
-    const chapters = await payload.find({
-      collection: "chapters",
-      limit: 100,
-      select: {
-        slug: true,
-      },
-    });
-    return chapters.docs.map((doc) => ({ slug: doc.slug }));
-  } catch (error) {
-    return [];
-  }
+  const chapters = await getAllChapters();
+  return chapters.map((ch) => ({ slug: ch.slug }));
 }
 
-// Generate metadata for better social media sharing
 export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
-  const resolvedParams = await params;
-  const chapter = await getChapter(resolvedParams.slug);
+  const { slug } = await params;
+  const chapter = await getChapterBySlug(slug);
   if (!chapter) return { title: "Chapter Not Found" };
 
-  const getMediaUrl = (media: Media | number | null): string => {
-    if (
-      typeof media === "object" &&
-      media !== null &&
-      "url" in media &&
-      media.url
-    ) {
-      return media.url;
-    }
-    return "";
-  };
+  const baseUrl = getServerSideURL();
+  const url = `${baseUrl}/chapters/${slug}`;
+  const image = chapter.mainImage
+    ? `${baseUrl}${chapter.mainImage}`
+    : `${baseUrl}/section-header/who-we-are-bg.jpg`;
 
   return {
-    title: chapter.name,
+    title: `${chapter.name} | SEDS Sri Lanka Chapters`,
     description: chapter.description,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
-      title: chapter.name,
+      title: `${chapter.name} | SEDS Sri Lanka Chapters`,
       description: chapter.description,
-      images: chapter.mainImage ? [getMediaUrl(chapter.mainImage)] : [],
+      url,
+      images: [{ url: image }],
     },
     twitter: {
       card: "summary_large_image",
       title: chapter.name,
       description: chapter.description,
-      images: chapter.mainImage ? [getMediaUrl(chapter.mainImage)] : [],
+      images: [image],
     },
   };
-}
-
-async function getChapter(slug: string): Promise<Chapter | null> {
-  try {
-    const payload = await getPayload({ config: configPromise });
-    const result = await payload.find({
-      collection: "chapters",
-      where: {
-        slug: {
-          equals: slug,
-        },
-      },
-      limit: 1,
-    });
-
-    return (result.docs[0] as Chapter) || null;
-  } catch (error) {
-    console.error("Error fetching chapter:", error);
-    return null;
-  }
 }
 
 export default async function Page({
@@ -95,288 +70,290 @@ export default async function Page({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const resolvedParams = await params;
-  const { slug } = resolvedParams;
-  const chapter = await getChapter(slug);
+  const { slug } = await params;
+  const [chapter, allChapters] = await Promise.all([
+    getChapterBySlug(slug),
+    getAllChapters(),
+  ]);
 
   if (!chapter) {
     notFound();
   }
 
-  const getMediaUrl = (media: Media | number | null): string => {
-    if (
-      typeof media === "object" &&
-      media !== null &&
-      "url" in media &&
-      media.url
-    ) {
-      return media.url;
-    }
-    return "";
+  const Content = await chapter.content();
+  const baseUrl = getServerSideURL();
+
+  const jsonLdChapter = {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    name: chapter.name,
+    description: chapter.description,
+    url: `${baseUrl}/chapters/${slug}`,
+    parentOrganization: {
+      "@type": "EducationalOrganization",
+      name: "SEDS Sri Lanka",
+      url: baseUrl,
+    },
   };
 
-  // Function to get social media icon
-  const getSocialIcon = (platform: string) => {
-    switch (platform.toLowerCase()) {
-      case "twitter":
-        return <FaTwitter className="w-5 h-5" />;
-      case "linkedin":
-        return <FaLinkedin className="w-5 h-5" />;
-      case "facebook":
-        return <FaFacebook className="w-5 h-5" />;
-      default:
-        return <FaLink className="w-5 h-5" />;
-    }
-  };
-
-  // Fetch projects belonging to this chapter
-  let chapterProjects: Project[] = [];
-  try {
-    const payload = await getPayload({ config: configPromise });
-    const projectsRes = await payload.find({
-      collection: "projects",
-      where: {
-        chapter: {
-          equals: chapter.id,
-        },
-      },
-      depth: 1,
-      sort: "-createdAt",
-      limit: 50,
-    });
-    chapterProjects = projectsRes.docs as Project[];
-  } catch (err) {
-    console.error("Error fetching chapter projects", err);
+  let renderedContent: React.ReactNode = null;
+  if (Content?.node) {
+    const transformed = Markdoc.transform(Content.node);
+    renderedContent = Markdoc.renderers.react(transformed, React);
+  } else if (typeof Content === "string") {
+    renderedContent = <p className="whitespace-pre-line">{Content}</p>;
+  } else {
+    renderedContent = (
+      <p className="text-muted-foreground">{chapter.description}</p>
+    );
   }
 
-  return (
-    <div className="grid-container section-content">
-      <div className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Main Content */}
-          <main className="lg:col-span-8">
-            <article>
-              {/* Hero Section */}
-              {chapter.mainImage && (
-                <div className="relative w-full h-[60vh] min-h-[500px]  rounded-xl overflow-hidden shadow-2xl">
-                  <Image
-                    src={getMediaUrl(chapter.mainImage)}
-                    alt={chapter.name}
-                    fill
-                    className="object-cover"
-                    priority
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-8 text-white">
-                    <h1 className="text-5xl font-bold mb-4 leading-tight">
-                      {chapter.name}
-                    </h1>
-                    <div className="text-white/80 flex items-center gap-2">
-                      <time
-                        dateTime={chapter.updatedAt}
-                        className="font-medium"
-                      >
-                        {new Date(chapter.updatedAt).toLocaleDateString(
-                          "en-US",
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          },
-                        )}
-                      </time>
-                    </div>
-                  </div>
-                </div>
-              )}
+  const otherChapters = allChapters.filter((c) => c.slug !== chapter.slug);
 
-              {/* Content */}
-              <div className="prose dark:prose-invert lg:prose-lg p-5">
-                <ChapterContent content={chapter.content} />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdChapter) }}
+      />
+      <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
+        <div className="w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 section-content relative z-10">
+          {/* Top Back Breadcrumb */}
+          <div className="mb-8">
+            <Link href="/chapters">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 text-xs font-mono text-muted-foreground hover:text-foreground cursor-pointer"
+              >
+                <ChevronLeftIcon className="w-4 h-4" /> BACK TO CHAPTERS
+              </Button>
+            </Link>
+          </div>
+
+          {/* 2-Column Responsive Layout */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start relative">
+            {/* Main Article Content (8 Columns on desktop) */}
+            <article className="lg:col-span-8 space-y-8 min-w-0">
+              {/* Chapter Header Banner */}
+              <div className="border-b border-border/60 pb-8 space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2.5 bg-primary/10 border border-primary/20 text-primary">
+                    <School className="size-6 text-primary" />
+                  </div>
+                  <span className="text-xs font-mono text-primary uppercase tracking-wider font-semibold">
+                    {chapter.university || "SEDS Sri Lanka University Chapter"}
+                  </span>
+                </div>
+
+                <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-tight">
+                  {chapter.name}
+                </h1>
+
+                <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                  {chapter.description}
+                </p>
+
+                {chapter.contactEmail && (
+                  <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground pt-1">
+                    <Mail className="w-4 h-4 text-primary" />
+                    <span>Contact:</span>
+                    <a
+                      href={`mailto:${chapter.contactEmail}`}
+                      className="hover:underline text-primary font-semibold"
+                    >
+                      {chapter.contactEmail}
+                    </a>
+                  </div>
+                )}
               </div>
 
-              {/* Image Gallery */}
-              {chapter.gallery && chapter.gallery.length > 0 && (
-                <div className="mt-16">
-                  <h2 className="text-3xl font-bold mb-8">Gallery</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {chapter.gallery.map((item, index) => {
-                      if (!item.image) return null;
-                      return (
-                        <div
-                          key={index}
-                          className="group relative aspect-[4/3] rounded-xl overflow-hidden shadow-lg transition-transform hover:-translate-y-1 hover:shadow-xl"
-                        >
-                          <Image
-                            src={getMediaUrl(item.image)}
-                            alt={item.caption || `Gallery image ${index + 1}`}
-                            fill
-                            className="object-cover transition-transform duration-500 group-hover:scale-105"
-                          />
-                          {item.caption && (
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                              <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                                <p className="text-lg font-medium">
-                                  {item.caption}
-                                </p>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-
-              {/* Projects in this Chapter */}
-              {chapterProjects && chapterProjects.length > 0 && (
-                <div className="mt-16">
-                  <h2 className="text-3xl font-bold mb-6">
-                    Projects in this Chapter
-                  </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    {chapterProjects.map((proj) => (
-                      <div
-                        key={proj.id}
-                        className="flex gap-4 items-start bg-muted/10 p-4 rounded-lg border border-border/30"
-                      >
-                        <div className="w-28 h-20 relative rounded-md overflow-hidden bg-slate-100">
-                          {proj.image ? (
-                            <Image
-                              src={getMediaUrl(proj.image)}
-                              alt={proj.name}
-                              fill
-                              className="object-cover"
-                            />
-                          ) : (
-                            <div className="flex items-center justify-center text-sm text-muted-foreground">
-                              No Image
-                            </div>
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="text-lg font-semibold">
-                            <a
-                              href={`/projects/${proj.slug}`}
-                              className="hover:underline"
-                            >
-                              {proj.name}
-                            </a>
-                          </h3>
-                          <p className="text-sm text-muted-foreground mt-1">
-                            {proj.description?.substring?.(0, 120) ?? ""}
-                            {proj.description && proj.description.length > 120
-                              ? "..."
-                              : ""}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+              {/* Rich Content Body */}
+              <div className="prose prose-invert max-w-none prose-headings:text-foreground prose-headings:tracking-tight prose-a:text-primary prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground">
+                {renderedContent}
+              </div>
             </article>
-          </main>
 
-          {/* Sidebar */}
-          <aside className="lg:col-span-4">
-            <div className="sticky top-8 space-y-8">
-              {/* About Section */}
-              <div className="bg-muted/30 backdrop-blur-sm rounded-xl border border-border/50 p-6">
-                <h2 className="text-xl font-semibold mb-4">
-                  About This Chapter
-                </h2>
-                <div className="space-y-4">
-                  <p className="text-muted-foreground">
-                    Last updated on{" "}
-                    {new Date(chapter.updatedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+            {/* Sticky Chapter Info & Quick Nav Sidebar (4 Columns on desktop) */}
+            <aside className="lg:col-span-4 lg:sticky lg:top-28 self-start space-y-6">
+              {/* Chapter Information & Contact Card */}
+              <div className="border border-border/60 bg-background p-6 sm:p-7 space-y-6 relative overflow-hidden">
+                <div className="space-y-2">
+                  <div className="flex items-center gap-1.5 text-[10px] font-mono uppercase tracking-wider text-primary font-bold">
+                    <Sparkles className="w-3.5 h-3.5 text-primary" />
+                    <span>Chapter Directory</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-foreground">
+                    Chapter Information
+                  </h3>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Official student chapter details, affiliated institution,
+                    and contact channels.
                   </p>
+                </div>
 
-                  {/* Contact Info */}
+                {/* Base University & Contact Details */}
+                <div className="space-y-4 text-xs border-y border-border/60 py-4">
+                  {/* University / Institution */}
+                  <div className="space-y-1">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold">
+                      Base University / Institution
+                    </span>
+                    <div className="flex items-start gap-2.5 text-foreground font-medium pt-0.5">
+                      <School className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                      <span>
+                        {chapter.university || "SEDS Sri Lanka Chapter"}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Contact Email */}
                   {chapter.contactEmail && (
-                    <div className="flex items-center gap-3 text-muted-foreground">
-                      <FaEnvelope className="w-5 h-5" />
-                      <a
-                        href={`mailto:${chapter.contactEmail}`}
-                        className="hover:text-primary transition-colors"
-                      >
-                        {chapter.contactEmail}
-                      </a>
+                    <div className="space-y-1 pt-2 border-t border-border/30">
+                      <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold">
+                        Official Contact Email
+                      </span>
+                      <div className="flex items-center gap-2.5 text-primary pt-0.5">
+                        <Mail className="w-4 h-4 text-primary shrink-0" />
+                        <a
+                          href={`mailto:${chapter.contactEmail}`}
+                          className="hover:underline font-mono text-xs font-semibold truncate"
+                        >
+                          {chapter.contactEmail}
+                        </a>
+                      </div>
                     </div>
                   )}
-                </div>
-              </div>
 
-              {/* Social Links */}
-              {chapter.socialLinks && chapter.socialLinks.length > 0 && (
-                <div className="bg-muted/30 backdrop-blur-sm rounded-xl border border-border/50 p-6">
-                  <h2 className="text-xl font-semibold mb-4">
-                    Connect With Us
-                  </h2>
-                  <div className="flex flex-wrap gap-4">
-                    {chapter.socialLinks.map((link, index) => (
-                      <a
-                        key={index}
-                        href={link.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center gap-2 px-4 py-2 bg-muted/50 rounded-lg hover:bg-primary/10 transition-colors"
-                      >
-                        {getSocialIcon(link.platform)}
-                        <span className="capitalize">{link.platform}</span>
-                      </a>
-                    ))}
+                  {/* Social Media Links */}
+                  <div className="space-y-2 pt-2 border-t border-border/30">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-muted-foreground font-semibold block">
+                      Connect & Follow
+                    </span>
+                    {chapter.socialLinks && chapter.socialLinks.length > 0 ? (
+                      <div className="flex flex-wrap gap-2 pt-1">
+                        {chapter.socialLinks.map((link, idx) => (
+                          <a
+                            key={idx}
+                            href={link.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border/60 bg-muted/20 hover:bg-primary/10 hover:border-primary/50 text-foreground hover:text-primary transition-all text-xs font-mono capitalize"
+                          >
+                            {link.platform === "facebook" && (
+                              <FaFacebook className="w-3.5 h-3.5 text-primary" />
+                            )}
+                            {link.platform === "twitter" && (
+                              <FaTwitter className="w-3.5 h-3.5 text-primary" />
+                            )}
+                            {link.platform === "linkedin" && (
+                              <FaLinkedin className="w-3.5 h-3.5 text-primary" />
+                            )}
+                            {link.platform === "instagram" && (
+                              <FaInstagram className="w-3.5 h-3.5 text-primary" />
+                            )}
+                            <span>{link.platform}</span>
+                          </a>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2 pt-1">
+                        <a
+                          href="https://www.facebook.com/sedssl"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 border border-border/60 hover:border-primary text-muted-foreground hover:text-primary transition-colors"
+                          aria-label="SEDS Facebook"
+                        >
+                          <FaFacebook className="w-3.5 h-3.5" />
+                        </a>
+                        <a
+                          href="https://www.linkedin.com/company/seds-sri-lanka"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 border border-border/60 hover:border-primary text-muted-foreground hover:text-primary transition-colors"
+                          aria-label="SEDS LinkedIn"
+                        >
+                          <FaLinkedin className="w-3.5 h-3.5" />
+                        </a>
+                        <a
+                          href="https://www.instagram.com/sedssl"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 border border-border/60 hover:border-primary text-muted-foreground hover:text-primary transition-colors"
+                          aria-label="SEDS Instagram"
+                        >
+                          <FaInstagram className="w-3.5 h-3.5" />
+                        </a>
+                      </div>
+                    )}
                   </div>
                 </div>
-              )}
 
-              {/* Share Section */}
-              <div className="bg-muted/30 backdrop-blur-sm rounded-xl border border-border/50 p-6">
-                <h2 className="text-xl font-semibold mb-4">
-                  Share This Chapter
-                </h2>
-                <div className="flex gap-4">
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                      chapter.name,
-                    )}&url=${encodeURIComponent(global.window?.location.href || "")}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
+                {/* Join CTA */}
+                <div className="space-y-3">
+                  <Button
+                    asChild
+                    size="lg"
+                    className="w-full font-semibold cursor-pointer"
                   >
-                    <FaTwitter className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                      global.window?.location.href || "",
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
-                  >
-                    <FaLinkedin className="w-5 h-5" />
-                  </a>
-                  <a
-                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                      global.window?.location.href || "",
-                    )}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 rounded-lg hover:bg-primary/10 transition-colors"
-                  >
-                    <FaFacebook className="w-5 h-5" />
-                  </a>
+                    <Link href="/join-us">
+                      Join SEDS Sri Lanka{" "}
+                      <ArrowRight className="w-4 h-4 ml-2" />
+                    </Link>
+                  </Button>
+
+                  <div className="text-center">
+                    <p className="text-[11px] text-muted-foreground font-mono">
+                      General inquiries?{" "}
+                      <Link
+                        href="/contact-us"
+                        className="text-primary hover:underline font-semibold"
+                      >
+                        Contact Us
+                      </Link>
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-          </aside>
+
+              {/* Other Chapters Navigation Card */}
+              {otherChapters.length > 0 && (
+                <div className="border border-border/60 bg-background p-6 space-y-4">
+                  <h4 className="text-xs font-mono uppercase tracking-wider font-bold text-foreground">
+                    Explore Other Chapters
+                  </h4>
+                  <div className="space-y-2.5 max-h-72 overflow-y-auto pr-1">
+                    {otherChapters.map((c) => (
+                      <Link
+                        key={c.slug}
+                        href={`/chapters/${c.slug}`}
+                        className="block text-xs text-muted-foreground hover:text-foreground hover:translate-x-1 transition-all py-1.5 border-b border-border/30 last:border-0"
+                      >
+                        <span className="font-semibold text-foreground block">
+                          {c.name}
+                        </span>
+                        {c.university && (
+                          <span className="text-[10px] text-muted-foreground font-mono block truncate">
+                            {c.university}
+                          </span>
+                        )}
+                      </Link>
+                    ))}
+                  </div>
+                  <Link
+                    href="/chapters"
+                    className="text-xs font-mono text-primary hover:underline flex items-center gap-1 pt-2 block font-semibold"
+                  >
+                    <span>View all chapters</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </Link>
+                </div>
+              )}
+            </aside>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -1,114 +1,109 @@
+import React from "react";
 import type { Metadata } from "next";
-
-import { RenderBlocks } from "@/blocks/RenderBlocks";
-import { RenderHero } from "@/heros/RenderHero";
-import { generateMeta } from "@/utilities/generateMeta";
-import configPromise from "@payload-config";
-import { getPayload } from "payload";
-import { draftMode } from "next/headers";
-
 import { notFound } from "next/navigation";
+import Link from "next/link";
+import { ChevronLeftIcon } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { keystaticReader } from "@/lib/keystatic";
+import Markdoc from "@markdoc/markdoc";
 
 export const dynamicParams = true;
 
 export async function generateStaticParams() {
   try {
-    const payload = await getPayload({ config: configPromise });
-    const pages = await payload.find({
-      collection: "pages",
-      draft: false,
-      limit: 1000,
-      overrideAccess: false,
-      pagination: false,
-      select: {
-        slug: true,
-      },
-    });
-
-    const params = pages.docs
-      ?.filter((doc) => {
-        return doc.slug !== "home";
-      })
-      .map(({ slug }) => {
-        return { slug };
-      });
-
-    return params || [];
+    const pages = await keystaticReader.collections.pages.all();
+    return pages.map((p) => ({ slug: p.slug }));
   } catch (error) {
-    console.error("Error during generateStaticParams:", error);
     return [];
   }
 }
 
-type Args = {
-  params: Promise<{
-    slug?: string;
-  }>;
-};
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  try {
+    const page = await keystaticReader.collections.pages.read(slug);
+    if (!page) return { title: "Page Not Found | SEDS Sri Lanka" };
 
-export default async function SubPage({ params }: Args) {
+    return {
+      title: `${page.title} | SEDS Sri Lanka`,
+      description: page.description || "",
+    };
+  } catch {
+    return { title: "SEDS Sri Lanka" };
+  }
+}
+
+export default async function SubPage({
+  params,
+}: {
+  params: Promise<{ slug?: string }>;
+}) {
   const { slug = "home" } = await params;
-  const _url = `/${slug}`;
 
-  const page = await queryPageBySlug({
-    slug,
-  });
+  let pageData: any = null;
+  try {
+    pageData = await keystaticReader.collections.pages.read(slug);
+  } catch (err) {
+    console.error(`Error reading page ${slug}:`, err);
+  }
 
-  if (!page) {
+  if (!pageData) {
     return notFound();
   }
 
-  const { hero, layout } = page;
+  const Content = await pageData.content();
+  let renderedContent: React.ReactNode = null;
+  if (Content?.node) {
+    const transformed = Markdoc.transform(Content.node);
+    renderedContent = Markdoc.renderers.react(transformed, React);
+  } else if (typeof Content === "string") {
+    renderedContent = <p className="whitespace-pre-line">{Content}</p>;
+  } else if (pageData.description) {
+    renderedContent = (
+      <p className="text-muted-foreground">{pageData.description}</p>
+    );
+  }
 
   return (
-    <div className="flex flex-col w-full">
-      <RenderHero {...hero} />
-      <div className="grid-container section-content">
-        <article className="col-span-4 md:col-span-8 lg:col-span-12 py-12">
-          <RenderBlocks blocks={layout} />
+    <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
+      <div className="w-[calc(100%-2rem)] md:w-full max-w-4xl mx-auto px-3 sm:px-6 lg:px-8 section-content relative z-10">
+        {/* Top Back Breadcrumb */}
+        <div className="mb-8">
+          <Link href="/">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 text-xs font-mono text-muted-foreground hover:text-foreground cursor-pointer"
+            >
+              <ChevronLeftIcon className="w-4 h-4" /> BACK TO HOME
+            </Button>
+          </Link>
+        </div>
+
+        <article className="space-y-8">
+          <div className="border-b border-border/60 pb-8 space-y-3">
+            <span className="text-xs font-mono text-primary uppercase tracking-wider font-semibold">
+              SEDS Sri Lanka Legal & Information
+            </span>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground leading-tight">
+              {pageData.title}
+            </h1>
+            {pageData.description && (
+              <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
+                {pageData.description}
+              </p>
+            )}
+          </div>
+
+          <div className="prose prose-invert max-w-none prose-headings:text-foreground prose-a:text-primary prose-p:text-muted-foreground prose-p:leading-relaxed prose-li:text-muted-foreground prose-strong:text-foreground">
+            {renderedContent}
+          </div>
         </article>
       </div>
     </div>
   );
 }
-
-export async function generateMetadata({ params }: Args): Promise<Metadata> {
-  const { slug = "home" } = await params;
-
-  const page = await queryPageBySlug({
-    slug,
-  });
-
-  return generateMeta({ doc: page });
-}
-
-const queryPageBySlug = async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode();
-
-  try {
-    const payload = await getPayload({ config: configPromise });
-
-    const result = await payload.find({
-      collection: "pages",
-      draft,
-      limit: 1,
-      overrideAccess: draft,
-      pagination: false,
-      where: {
-        and: [
-          {
-            slug: {
-              equals: slug,
-            },
-          },
-          ...(draft ? [] : [{ _status: { equals: "published" } }]),
-        ],
-      },
-    });
-
-    return result.docs?.[0] || null;
-  } catch (error) {
-    console.error("Error fetching page by slug:", error);
-    return null;
-  }
-};

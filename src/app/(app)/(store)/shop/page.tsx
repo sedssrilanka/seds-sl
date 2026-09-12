@@ -1,113 +1,107 @@
+import { getAllProducts } from "@/lib/keystatic";
+import Link from "next/link";
+import Image from "next/image";
+import { Package, ArrowUpRight } from "lucide-react";
+
 export const dynamic = "force-dynamic";
-import { Grid } from "@/components/Grid";
-import { ProductGridItem } from "@/components/ProductGridItem";
-import configPromise from "@payload-config";
-import { getPayload } from "payload";
-import type { Product } from "@/payload-types";
+
 export const metadata = {
-  description: "Search for products in the store.",
-  title: "Shop",
+  description:
+    "Official SEDS Sri Lanka merchandise store. Discover apparel, space patches, stickers, and mission gear supporting student aerospace initiatives.",
+  title: "Official Merchandise Store | SEDS Sri Lanka",
 };
 
-type SearchParams = { [key: string]: string | string[] | undefined };
+export default async function ShopPage() {
+  const products = await getAllProducts();
 
-type Props = {
-  searchParams: Promise<SearchParams>;
-};
-
-export default async function ShopPage({ searchParams }: Props) {
-  const { q: searchValue, sort, category } = await searchParams;
-  let products: { docs: Partial<Product>[] | any[] } = { docs: [] };
-  try {
-    const payload = await getPayload({ config: configPromise });
-    products = await payload.find({
-      collection: "products",
-      draft: false,
-      overrideAccess: false,
-      select: {
-        title: true,
-        slug: true,
-        gallery: true,
-        categories: true,
-        priceInLKR: true,
-        enableVariants: true,
-        variants: true,
-        meta: true,
-      },
-      ...(sort ? { sort } : { sort: "title" }),
-      ...(searchValue || category
-        ? {
-            where: {
-              and: [
-                {
-                  _status: {
-                    equals: "published",
-                  },
-                },
-                ...(searchValue
-                  ? [
-                      {
-                        or: [
-                          {
-                            title: {
-                              like: searchValue,
-                            },
-                          },
-                        ],
-                      },
-                    ]
-                  : []),
-                ...(category
-                  ? [
-                      {
-                        categories: {
-                          contains: category,
-                        },
-                      },
-                    ]
-                  : []),
-              ],
-            },
-          }
-        : {}),
-    });
-  } catch (error) {
-    console.error("Payload find error in shop:", error);
-    console.warn("DB connection failed, continuing with empty products list.");
+  if (products.length === 0) {
+    return (
+      <div className="text-center py-20 border border-border/60 bg-background text-muted-foreground p-8">
+        <Package className="w-12 h-12 mx-auto mb-3 text-muted-foreground/60" />
+        <h3 className="text-base font-bold text-foreground">
+          No merchandise available right now
+        </h3>
+        <p className="text-xs text-muted-foreground mt-1">
+          Check back soon for new mission gear drops.
+        </p>
+      </div>
+    );
   }
 
-  const resultsText = products.docs.length > 1 ? "results" : "result";
-
   return (
-    <div className="w-full">
-      {searchValue && (
-        <div className="mb-8 border-b pb-4">
-          <h2 className="text-xl font-medium tracking-tight">
-            {products.docs?.length === 0
-              ? "0 results for "
-              : `Showing ${products.docs.length} ${resultsText} for `}
-            <span className="font-bold">&quot;{searchValue}&quot;</span>
-          </h2>
-        </div>
-      )}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border border-border/60 divide-y sm:divide-y-0 sm:divide-x divide-border/60 bg-background">
+      {products.map((product) => (
+        <Link
+          key={product.slug}
+          href={`/products/${product.slug}`}
+          className="group p-6 sm:p-8 flex flex-col justify-between hover:bg-muted/10 transition-colors"
+        >
+          <div className="space-y-5">
+            {/* Image Container with Crisp Border */}
+            <div className="relative aspect-square w-full bg-muted/20 border border-border/40 overflow-hidden">
+              <Image
+                src={product.image || "/images/products/tshit-2026-front.png"}
+                alt={product.title}
+                fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+              />
 
-      {!searchValue && products.docs?.length === 0 && (
-        <div className="flex py-20 flex-col items-center justify-center text-center bg-muted/10 border-2 border-dashed rounded-2xl">
-          <h3 className="text-xl font-semibold mb-2">No products found</h3>
-          <p className="text-muted-foreground max-w-sm">
-            Try adjusting your filters or search query to find what you're
-            looking for.
-          </p>
-        </div>
-      )}
+              {product.badge && (
+                <div className="absolute top-3 left-3 px-2.5 py-0.5 bg-background/90 backdrop-blur-sm border border-border/80 text-[10px] font-mono uppercase font-semibold text-foreground">
+                  {product.badge}
+                </div>
+              )}
+            </div>
 
-      {products?.docs.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {products.docs.map((product) => {
-            return <ProductGridItem key={product.id} product={product} />;
-          })}
-        </div>
-      ) : null}
+            {/* Product Meta */}
+            <div className="space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                {product.category && (
+                  <span className="text-xs font-mono uppercase tracking-wider text-primary font-semibold">
+                    {product.category}
+                  </span>
+                )}
+                <span className="text-xs font-mono text-muted-foreground">
+                  {product.isPreOrder
+                    ? "• Pre-Order"
+                    : product.inStock
+                      ? "• In Stock"
+                      : "• Out of Stock"}
+                </span>
+              </div>
+
+              <h3 className="font-bold text-lg text-foreground group-hover:text-primary transition-colors leading-snug">
+                {product.title}
+              </h3>
+
+              <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                {product.description}
+              </p>
+            </div>
+          </div>
+
+          {/* Clean Price & Arrow Link */}
+          <div className="mt-6 pt-4 border-t border-border/60 flex items-center justify-between">
+            <div>
+              <span className="text-[10px] font-mono uppercase text-muted-foreground block">
+                Price
+              </span>
+              <span className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">
+                Rs. {Number(product.priceInLKR || 0).toLocaleString()}{" "}
+                <span className="text-xs font-normal text-muted-foreground">
+                  LKR
+                </span>
+              </span>
+            </div>
+
+            <div className="flex items-center gap-1 text-xs font-mono font-semibold text-muted-foreground group-hover:text-foreground transition-colors">
+              <span>View</span>
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </div>
+          </div>
+        </Link>
+      ))}
     </div>
   );
 }

@@ -1,7 +1,4 @@
-"use client";
-import { useCurrency } from "@payloadcms/plugin-ecommerce/client/react";
 import type React from "react";
-import { useMemo } from "react";
 
 type BaseProps = {
   className?: string;
@@ -30,41 +27,47 @@ export const Price = ({
   className,
   highestAmount,
   lowestAmount,
-  currencyCode: currencyCodeFromProps,
+  currencyCode = "LKR",
   as = "p",
 }: Props & React.ComponentProps<"p">) => {
-  const { formatCurrency, supportedCurrencies } = useCurrency();
-
   const Element = as;
 
-  const currencyToUse = useMemo(() => {
-    const code = currencyCodeFromProps ?? "LKR";
-    return supportedCurrencies.find((currency) => currency.code === code);
-  }, [currencyCodeFromProps, supportedCurrencies]);
+  const formatPrice = (val: number) => {
+    return `${currencyCode} ${val.toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  };
 
   if (typeof amount === "number") {
     return (
       <Element className={className} suppressHydrationWarning>
-        {formatCurrency(amount, { currency: currencyToUse })}
+        {formatPrice(amount)}
       </Element>
     );
   }
 
-  if (highestAmount && highestAmount !== lowestAmount) {
+  if (
+    highestAmount &&
+    highestAmount !== lowestAmount &&
+    typeof lowestAmount === "number"
+  ) {
     return (
       <Element className={className} suppressHydrationWarning>
-        {`${formatCurrency(lowestAmount, { currency: currencyToUse })} - ${formatCurrency(highestAmount, { currency: currencyToUse })}`}
+        {`${formatPrice(lowestAmount)} - ${formatPrice(highestAmount)}`}
       </Element>
     );
   }
 
-  if (lowestAmount) {
+  if (typeof lowestAmount === "number") {
     return (
       <Element className={className} suppressHydrationWarning>
-        {`${formatCurrency(lowestAmount, { currency: currencyToUse })}`}
+        {formatPrice(lowestAmount)}
       </Element>
     );
   }
 
   return null;
 };
+
+export default Price;

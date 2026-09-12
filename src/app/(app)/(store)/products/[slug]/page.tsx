@@ -1,230 +1,113 @@
-import type { Media, Product } from "@/payload-types";
-
-import { RenderBlocks } from "@/blocks/RenderBlocks";
-import { ProductGridItem } from "@/components/ProductGridItem";
-import { Gallery } from "@/components/product/Gallery";
-import { ProductDescription } from "@/components/product/ProductDescription";
-import configPromise from "@payload-config";
-import { getPayload } from "payload";
-import { draftMode } from "next/headers";
-import Link from "next/link";
-import React, { Suspense } from "react";
-import { Button } from "@/components/ui/button";
-import { ChevronLeftIcon } from "lucide-react";
+import { getProductBySlug, getAllProducts } from "@/lib/keystatic";
+import React from "react";
+import { ProductDetailView } from "@/components/store/ProductDetailView";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { getServerSideURL } from "@/utilities/getURL";
 
-type Args = {
-  params: Promise<{
-    slug: string;
-  }>;
-};
+export async function generateStaticParams() {
+  const products = await getAllProducts();
+  return products.map((p) => ({ slug: p.slug }));
+}
 
-export async function generateMetadata({ params }: Args): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
   const { slug } = await params;
-  const product = await queryProductBySlug({ slug });
+  const product = await getProductBySlug(slug);
+  if (!product) return { title: "Product Not Found" };
 
-  if (!product) return notFound();
-
-  const gallery =
-    product.gallery?.filter((item) => typeof item.image === "object") || [];
-
-  const metaImage =
-    typeof product.meta?.image === "object" ? product.meta?.image : undefined;
-  const canIndex = product._status === "published";
-
-  const seoImage =
-    metaImage || (gallery.length ? (gallery[0]?.image as Media) : undefined);
+  const baseUrl = getServerSideURL();
+  const url = `${baseUrl}/products/${slug}`;
+  const image = product.image
+    ? `${baseUrl}${product.image}`
+    : `${baseUrl}/images/products/tshit-2026-front.png`;
 
   return {
-    description: product.meta?.description || "",
-    openGraph: seoImage?.url
-      ? {
-          images: [
-            {
-              alt: seoImage?.alt,
-              height: seoImage.height!,
-              url: seoImage?.url,
-              width: seoImage.width!,
-            },
-          ],
-        }
-      : null,
-    robots: {
-      follow: canIndex,
-      googleBot: {
-        follow: canIndex,
-        index: canIndex,
-      },
-      index: canIndex,
+    title: `${product.title} | SEDS Sri Lanka Store`,
+    description: product.description,
+    alternates: {
+      canonical: url,
     },
-    title: product.meta?.title || product.title,
+    openGraph: {
+      title: `${product.title} | SEDS Sri Lanka Store`,
+      description: product.description,
+      url,
+      images: [{ url: image }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: product.title,
+      description: product.description,
+      images: [image],
+    },
   };
 }
 
-export default async function ProductPage({ params }: Args) {
+export default async function ProductPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
   const { slug } = await params;
-  const product = await queryProductBySlug({ slug });
+  const [product, allProducts] = await Promise.all([
+    getProductBySlug(slug),
+    getAllProducts(),
+  ]);
 
-  if (!product) return notFound();
-
-  const gallery =
-    product.gallery
-      ?.filter((item) => typeof item.image === "object")
-      .map((item) => ({
-        ...item,
-        image: item.image as Media,
-      })) || [];
-
-  const metaImage =
-    typeof product.meta?.image === "object" ? product.meta?.image : undefined;
-  const hasStock = product.enableVariants
-    ? product?.variants?.docs?.some((variant) => {
-        if (typeof variant !== "object") return false;
-        return variant.inventory && variant?.inventory > 0;
-      })
-    : product.inventory! > 0;
-
-  let price = product.priceInLKR;
-
-  if (product.enableVariants && product?.variants?.docs?.length) {
-    price = product?.variants?.docs?.reduce((acc, variant) => {
-      if (
-        typeof variant === "object" &&
-        variant?.priceInLKR &&
-        acc &&
-        variant?.priceInLKR > acc
-      ) {
-        return variant.priceInLKR;
-      }
-      return acc;
-    }, price);
+  if (!product) {
+    return notFound();
   }
 
-  const productJsonLd = {
-    name: product.title,
+  const Content = await product.content();
+  const baseUrl = getServerSideURL();
+  const relatedProducts = allProducts.filter((p) => p.slug !== slug);
+
+  const jsonLdProduct = {
     "@context": "https://schema.org",
     "@type": "Product",
+    name: product.title,
     description: product.description,
-    image: metaImage?.url,
+    image: product.image ? `${baseUrl}${product.image}` : undefined,
     offers: {
-      "@type": "AggregateOffer",
-      availability: hasStock
+      "@type": "Offer",
+      price: product.priceInLKR,
+      priceCurrency: "LKR",
+      availability: product.inStock
         ? "https://schema.org/InStock"
         : "https://schema.org/OutOfStock",
-      price: price,
-      priceCurrency: "LKR",
+      url: `${baseUrl}/products/${slug}`,
     },
   };
 
-  const relatedProducts =
-    product.relatedProducts?.filter(
-      (relatedProduct) => typeof relatedProduct === "object",
-    ) ?? [];
+  const { content: _fn, ...serializableProduct } = product;
+  const serializableRelated = relatedProducts.map(
+    ({ content: _c, ...rest }) => rest,
+  );
 
   return (
-    <React.Fragment>
+    <>
       <script
-        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD schema injection is safe
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(productJsonLd),
-        }}
         type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdProduct) }}
       />
-      <div className="container mx-auto px-4 py-6 lg:py-10">
-        {/* Main Product Section Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-start mb-16">
-          {/* Sticky Left Column: Back to Store + Image Gallery */}
-          <div className="lg:col-span-7 w-full lg:sticky lg:top-24 flex flex-col gap-4">
-            <Button
-              asChild
-              variant="ghost"
-              size="sm"
-              className="w-fit hover:bg-muted/50 rounded-full text-xs font-semibold uppercase tracking-wider text-muted-foreground -ml-2"
-            >
-              <Link href="/shop" className="flex items-center gap-2">
-                <ChevronLeftIcon className="w-4 h-4 text-primary" />
-                <span>Back to Store</span>
-              </Link>
-            </Button>
-
-            <Suspense
-              fallback={
-                <div className="relative aspect-square h-full min-h-[350px] w-full bg-muted/20 animate-pulse rounded-2xl" />
-              }
-            >
-              {Boolean(gallery?.length) && <Gallery gallery={gallery} />}
-            </Suspense>
-          </div>
-
-          {/* Right Column: Product Description & Custom Layout Blocks */}
-          <div className="lg:col-span-5 w-full flex flex-col gap-10">
-            <ProductDescription product={product} />
-
-            {/* Custom Layout Blocks */}
-            {product.layout?.length ? (
-              <div className="pt-8 border-t border-border/40">
-                <RenderBlocks blocks={product.layout as any} />
-              </div>
-            ) : null}
-          </div>
+      <div className="flex flex-col w-full min-h-screen py-10 md:py-16">
+        <div className="w-[calc(100%-2rem)] md:w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 section-content relative z-10">
+          <ProductDetailView
+            product={serializableProduct}
+            content={
+              typeof Content === "string" ? (
+                <div className="whitespace-pre-line">{Content}</div>
+              ) : (
+                <div>{product.description}</div>
+              )
+            }
+            relatedProducts={serializableRelated}
+          />
         </div>
-
-        {/* Related Products */}
-        {relatedProducts.length ? (
-          <div className="pb-16">
-            <RelatedProducts products={relatedProducts as Product[]} />
-          </div>
-        ) : null}
       </div>
-    </React.Fragment>
+    </>
   );
 }
-
-function RelatedProducts({ products }: { products: Product[] }) {
-  if (!products.length) return null;
-
-  return (
-    <div className="py-12 border-t border-border/50 mt-12">
-      <h2 className="mb-8 text-2xl font-bold tracking-tight">
-        You might also like
-      </h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {products.map((product) => (
-          <ProductGridItem key={product.id} product={product} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-const queryProductBySlug = async ({ slug }: { slug: string }) => {
-  const { isEnabled: draft } = await draftMode();
-
-  try {
-    const payload = await getPayload({ config: configPromise });
-    const result = await payload.find({
-      collection: "products",
-      depth: 3,
-      draft,
-      limit: 1,
-      overrideAccess: draft,
-      pagination: false,
-      where: {
-        and: [
-          {
-            slug: {
-              equals: slug,
-            },
-          },
-          ...(draft ? [] : [{ _status: { equals: "published" } }]),
-        ],
-      },
-    });
-
-    return result.docs?.[0] || null;
-  } catch (err) {
-    console.warn("DB connection failed, proceeding with null product queries.");
-    return null;
-  }
-};

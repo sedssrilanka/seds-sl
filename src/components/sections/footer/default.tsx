@@ -203,15 +203,17 @@ export default function Footer() {
         </div>
 
         {/* Bottom copyright sub-bar */}
-        <div className="py-6 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground font-mono gap-4">
-          <p>© {currentYear} SEDS Sri Lanka. All rights reserved.</p>
+        <div className="py-6 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground font-mono gap-4 text-center md:text-left">
+          <p className="order-2 md:order-1">
+            © {currentYear} SEDS Sri Lanka. All rights reserved.
+          </p>
 
           {/* Protected by Cloudflare Badge */}
           <a
             href="https://www.cloudflare.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-3 py-1.5 bg-muted/20 border border-border/60 hover:border-primary/50 text-xs font-mono text-muted-foreground hover:text-foreground transition-all rounded-sm group"
+            className="order-3 md:order-2 inline-flex items-center gap-2 px-3 py-1.5 bg-muted/20 border border-border/60 hover:border-primary/50 text-xs font-mono text-muted-foreground hover:text-foreground transition-all rounded-sm group"
           >
             <FaCloudflare className="size-4 text-[#F38020] group-hover:scale-110 transition-transform" />
             <span>
@@ -222,21 +224,37 @@ export default function Footer() {
             </span>
           </a>
 
-          <div className="flex items-center gap-4">
+          <div className="order-1 md:order-3 flex flex-wrap items-center justify-center md:justify-end gap-x-3 gap-y-1.5">
             <Link
               href="/privacy"
               prefetch={false}
-              className="hover:text-primary transition-colors"
+              className="hover:text-primary transition-colors whitespace-nowrap"
             >
               Privacy Policy
             </Link>
-            <span>•</span>
+            <span className="opacity-40 select-none">•</span>
             <Link
               href="/terms"
               prefetch={false}
-              className="hover:text-primary transition-colors"
+              className="hover:text-primary transition-colors whitespace-nowrap"
             >
               Terms of Service
+            </Link>
+            <span className="opacity-40 select-none">•</span>
+            <Link
+              href="/code-of-conduct"
+              prefetch={false}
+              className="hover:text-primary transition-colors whitespace-nowrap"
+            >
+              Code of Conduct
+            </Link>
+            <span className="opacity-40 select-none">•</span>
+            <Link
+              href="/credits"
+              prefetch={false}
+              className="hover:text-primary transition-colors whitespace-nowrap"
+            >
+              Credits
             </Link>
           </div>
         </div>

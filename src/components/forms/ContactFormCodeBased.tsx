@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -72,17 +73,17 @@ export const ContactFormCodeBased: React.FC = () => {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to submit message");
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || "Failed to submit message");
       }
 
       toast.success("Thank you! Your message has been sent successfully.");
       reset();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      toast.success(
-        "Message received! Thank you for reaching out to SEDS Sri Lanka.",
+      toast.error(
+        err.message || "Failed to send message. Please try again later.",
       );
-      reset();
     } finally {
       setIsSubmitting(false);
     }
@@ -267,7 +268,28 @@ export const ContactFormCodeBased: React.FC = () => {
                 htmlFor="terms"
                 className="text-xs text-muted-foreground cursor-pointer"
               >
-                I accept the Terms & Privacy Policy
+                I accept the{" "}
+                <Link
+                  href="/terms"
+                  prefetch={false}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground underline hover:text-primary transition-colors font-medium"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Terms of Service
+                </Link>{" "}
+                &amp;{" "}
+                <Link
+                  href="/privacy"
+                  prefetch={false}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground underline hover:text-primary transition-colors font-medium"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Privacy Policy
+                </Link>
               </Label>
             </div>
 

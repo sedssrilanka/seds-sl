@@ -1,7 +1,7 @@
 import { cn } from "@/utilities/cn";
 import type React from "react";
 
-import type { Product } from "@/payload-types";
+import type { Product } from "@/types";
 
 /* import { Card } from '../Card' */
 
