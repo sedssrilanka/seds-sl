@@ -62,6 +62,9 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  outputFileTracingIncludes: {
+    "/**": ["./src/content/**/*"],
+  },
 };
 
 export default nextConfig;
