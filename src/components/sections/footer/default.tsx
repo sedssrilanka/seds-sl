@@ -222,7 +222,7 @@ export default function Footer() {
             </span>
           </a>
 
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             <Link
               href="/privacy"
               prefetch={false}
@@ -237,6 +237,14 @@ export default function Footer() {
               className="hover:text-primary transition-colors"
             >
               Terms of Service
+            </Link>
+            <span>•</span>
+            <Link
+              href="/code-of-conduct"
+              prefetch={false}
+              className="hover:text-primary transition-colors"
+            >
+              Code of Conduct
             </Link>
           </div>
         </div>

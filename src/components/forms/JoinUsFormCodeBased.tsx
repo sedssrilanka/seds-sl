@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -30,6 +31,7 @@ const DEFAULT_CHAPTERS: ChapterOption[] = [
   { slug: "seds-mora", name: "SEDS Mora", university: "University of Moratuwa" },
   { slug: "seds-pera", name: "SEDS Pera", university: "University of Peradeniya" },
   { slug: "seds-colombo", name: "SEDS Colombo", university: "University of Colombo" },
+  { slug: "seds-jpura", name: "SEDS J'pura", university: "University of Sri Jayewardenepura" },
   { slug: "seds-kdu", name: "SEDS KDU", university: "General Sir John Kotelawala Defence University" },
   { slug: "seds-sliit", name: "SEDS SLIIT", university: "Sri Lanka Institute of Information Technology (SLIIT)" },
   { slug: "seds-ruhuna", name: "SEDS Ruhuna", university: "University of Ruhuna" },
@@ -320,9 +322,30 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({ chapters = DEFA
               />
               <Label
                 htmlFor="terms"
-                className="text-xs text-muted-foreground cursor-pointer"
+                className="text-xs text-muted-foreground cursor-pointer leading-relaxed"
               >
-                I agree to adhere to the SEDS Sri Lanka Code of Conduct & Regulations
+                I agree to adhere to the SEDS Sri Lanka{" "}
+                <Link
+                  href="/code-of-conduct"
+                  prefetch={false}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground underline hover:text-primary transition-colors font-medium"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Code of Conduct
+                </Link>{" "}
+                &amp;{" "}
+                <Link
+                  href="/terms"
+                  prefetch={false}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-foreground underline hover:text-primary transition-colors font-medium"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  Regulations
+                </Link>
               </Label>
             </div>
 
