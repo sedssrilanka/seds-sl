@@ -19,10 +19,18 @@ export const metadata: Metadata = {
     description:
       "Empowering Sri Lankan students and developers to solve real-world challenges on Earth and in space with NASA open data.",
     url: "/nasa-space-apps-challenge",
-    images: [
-      { url: "/images/projects/nsa-cover.png", width: 1200, height: 630 },
-    ],
+    siteName: "SEDS Sri Lanka",
+    locale: "en_LK",
     type: "website",
+    images: [
+      {
+        url: "/images/projects/nsa-cover.png",
+        width: 1200,
+        height: 630,
+        alt: "NASA Space Apps Challenge Sri Lanka - SEDS Sri Lanka",
+        type: "image/png",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -30,6 +38,8 @@ export const metadata: Metadata = {
     description:
       "Official multi-year portal for NASA Space Apps Challenge in Sri Lanka organized by SEDS Sri Lanka since 2019.",
     images: ["/images/projects/nsa-cover.png"],
+    site: "@sedssl",
+    creator: "@sedssl",
   },
 };
 

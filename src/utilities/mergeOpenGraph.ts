@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 const defaultOpenGraph: Metadata["openGraph"] = {
   type: "website",
+  locale: "en_LK",
   description:
     "SEDS Sri Lanka is the national student-led organization advancing space exploration, astronomy, rocketry, robotics, and aerospace engineering in Sri Lanka.",
   images: [
@@ -10,6 +11,7 @@ const defaultOpenGraph: Metadata["openGraph"] = {
       width: 1200,
       height: 630,
       alt: "SEDS Sri Lanka",
+      type: "image/png",
     },
   ],
   siteName: "SEDS Sri Lanka",

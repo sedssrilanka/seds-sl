@@ -46,7 +46,17 @@ export async function generateMetadata({
       title: `${edition.title} | SEDS Sri Lanka`,
       description: edition.tagline,
       url,
-      images: [{ url: image, width: 1200, height: 630 }],
+      siteName: "SEDS Sri Lanka",
+      locale: "en_LK",
+      images: [
+        {
+          url: image,
+          width: 1200,
+          height: 630,
+          alt: `${edition.title} - SEDS Sri Lanka`,
+          type: "image/png",
+        },
+      ],
       type: "article",
     },
     twitter: {
@@ -54,6 +64,8 @@ export async function generateMetadata({
       title: `${edition.title} | SEDS Sri Lanka`,
       description: edition.tagline,
       images: [image],
+      site: "@sedssl",
+      creator: "@sedssl",
     },
   };
 }

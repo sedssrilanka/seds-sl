@@ -287,6 +287,13 @@ async function getThawshiProfile(): Promise<GithubUserProfile> {
     });
     if (res.ok) {
       const data = await res.json();
+      const rawBlog = (data.blog || "").trim();
+      const blogUrl = rawBlog
+        ? rawBlog.startsWith("http://") || rawBlog.startsWith("https://")
+          ? rawBlog
+          : `https://${rawBlog}`
+        : "https://www.thawshi.com/";
+
       return {
         login: data.login || "Thawshi-Srikanth",
         name: data.name || "Thawshi Srikanth",
@@ -297,7 +304,7 @@ async function getThawshiProfile(): Promise<GithubUserProfile> {
         bio:
           data.bio ||
           "Architected the SEDS Sri Lanka digital platform, Keystatic CMS integration, transactional email engine, and responsive bleeding-edge design system.",
-        blog: data.blog || "https://www.thawshi.com/",
+        blog: blogUrl,
       };
     }
   } catch (error) {
