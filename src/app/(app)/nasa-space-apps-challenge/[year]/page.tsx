@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const url = `${baseUrl}/nasa-space-apps-challenge/${year}`;
-  const image = `${baseUrl}/section-header/space-projects-bg.jpeg`;
+  const image = `${baseUrl}/images/projects/nsa-cover.png`;
 
   return {
     title: `${edition.title} | SEDS Sri Lanka`,
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${edition.title} | SEDS Sri Lanka`,
       description: edition.tagline,
       url,
-      images: [{ url: image }],
+      images: [{ url: image, width: 1200, height: 630 }],
       type: "article",
     },
     twitter: {

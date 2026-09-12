@@ -46,8 +46,8 @@ export async function getObserveMoonNightProject(year = "2026"): Promise<Observe
       { id: "kandy", name: "Kandy - University of Peradeniya", address: "Peradeniya, Kandy" },
       { id: "moratuwa", name: "Moratuwa - University of Moratuwa", address: "Katubedda, Moratuwa" },
     ],
-    listingImage: { url: "/section-header/space-projects-bg.jpeg" },
-    heroImage: { url: "/section-header/space-projects-bg.jpeg" },
+    listingImage: { url: "/images/projects/iotm-day-2026.png" },
+    heroImage: { url: "/images/projects/iotm-day-2026.png" },
     isFeatured: true,
   };
 }

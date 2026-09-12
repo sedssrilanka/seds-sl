@@ -53,7 +53,7 @@ export const fetchProjects = async (
         name: "NASA Space Apps Challenge Sri Lanka",
         description:
           "The official national hackathon organized across Sri Lanka by SEDS Sri Lanka across 7 consecutive editions (2019 - 2025).",
-        image: { url: "/section-header/space-projects-bg.jpeg" },
+        image: { url: "/images/projects/nsa-cover.png" },
         chapterName: "SEDS Sri Lanka Flagship Hackathon",
         createdAt: new Date().toISOString(),
         slug: "nasa-space-apps-challenge",
@@ -63,14 +63,14 @@ export const fetchProjects = async (
         badgeLabel: "GLOBAL HACKATHON",
       },
       {
-        id: "moon-2025",
-        name: "International Observe the Moon Night 2025",
+        id: "moon-2026",
+        name: "International Observe the Moon Night 2026",
         description:
           "Join SEDS Sri Lanka for an annual global celebration of lunar science and observation.",
-        image: { url: "/section-header/space-projects-bg.jpeg" },
+        image: { url: "/images/projects/iotm-day-2026.png" },
         chapterName: "SEDS Sri Lanka Flagship Event",
         createdAt: new Date().toISOString(),
-        slug: "observe-the-moon-night/2025",
+        slug: "observe-the-moon-night/2026",
         customLink: "/projects/observe-the-moon-night",
         isFeatured: true,
         isFlagship: true,
