@@ -63,7 +63,7 @@ export const JoinUsFormCodeBased: React.FC = () => {
   const onSubmit = async (data: JoinUsFormValues) => {
     setIsSubmitting(true);
     try {
-      await fetch("/api/contact", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -79,16 +79,20 @@ export const JoinUsFormCodeBased: React.FC = () => {
         }),
       });
 
+      if (!res.ok) {
+        const errJson = await res.json().catch(() => ({}));
+        throw new Error(errJson.error || "Failed to submit application");
+      }
+
       toast.success(
         "Membership application submitted! Our executive committee will get in touch with you.",
       );
       reset();
-    } catch (err) {
+    } catch (err: any) {
       console.error(err);
-      toast.success(
-        "Application received! Thank you for applying to join SEDS Sri Lanka.",
+      toast.error(
+        err.message || "Failed to submit application. Please try again later.",
       );
-      reset();
     } finally {
       setIsSubmitting(false);
     }

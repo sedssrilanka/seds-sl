@@ -20,7 +20,7 @@ export async function sendEmail({
   const fromAddress =
     from ||
     process.env.FROM_EMAIL ||
-    "SEDS Sri Lanka <noreply@seds-sl.org>";
+    "SEDS Sri Lanka <noreply@sedssl.org>";
 
   try {
     if (!process.env.RESEND_API_KEY) {

@@ -36,6 +36,8 @@ export async function POST(req: Request) {
       );
     }
 
+    const registrationCode = `MOON-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+
     // Send confirmation email to attendee via Resend
     await sendEmail({
       to: email,
@@ -46,6 +48,7 @@ export async function POST(req: Request) {
           <p>Hi ${fullName},</p>
           <p>Your registration for the upcoming SEDS Sri Lanka Observe the Moon Night observation has been received and confirmed.</p>
           <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+            <p><strong>Registration Code:</strong> <span style="font-family: monospace; font-weight: bold; color: #4f46e5;">${registrationCode}</span></p>
             <p><strong>Name:</strong> ${fullName}</p>
             <p><strong>Email:</strong> ${email}</p>
             <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
@@ -60,13 +63,14 @@ export async function POST(req: Request) {
     });
 
     // Notify team via Resend
-    const contactEmail = process.env.CONTACT_EMAIL || "contact@seds-sl.org";
+    const contactEmail = process.env.CONTACT_EMAIL || "contact@sedssl.org";
     await sendEmail({
       to: contactEmail,
-      subject: `New Moon Night Registration: ${fullName}`,
+      subject: `New Moon Night Registration: ${fullName} (${registrationCode})`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
           <h3 style="color: #1e1b4b;">New Event Registration</h3>
+          <p><strong>Registration Code:</strong> ${registrationCode}</p>
           <p><strong>Name:</strong> ${fullName}</p>
           <p><strong>Email:</strong> ${email}</p>
           <p><strong>Phone:</strong> ${phone || "None"}</p>
@@ -80,7 +84,9 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       message: "Registration successful!",
+      registrationCode,
       registration: {
+        code: registrationCode,
         fullName,
         email,
         observationLocation,

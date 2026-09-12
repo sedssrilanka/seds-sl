@@ -396,14 +396,13 @@ export function generateRegistrationEmail(params: RegistrationEmailParams): {
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">EMAIL:</td>
                         <td style="color: #3b82f6; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0;"><a href="mailto:${email}" style="color: #3b82f6; text-decoration: none;">${email}</a></td>
                       </tr>
-                      ${
-                        phone
-                          ? `<tr>
+                      ${phone
+      ? `<tr>
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">PHONE:</td>
                         <td style="color: #cbd5e1; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0;">${phone}</td>
                       </tr>`
-                          : ""
-                      }
+      : ""
+    }
                       <tr>
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">INSTITUTION:</td>
                         <td style="color: #cbd5e1; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0;">${institution}</td>
@@ -416,14 +415,13 @@ export function generateRegistrationEmail(params: RegistrationEmailParams): {
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">TIME:</td>
                         <td style="color: #ffffff; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0; font-weight: 600;">${formattedTime}</td>
                       </tr>
-                      ${
-                        selectedLocation
-                          ? `<tr>
+                      ${selectedLocation
+      ? `<tr>
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">LOCATION:</td>
                         <td style="color: #f97316; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0; font-weight: 700;">${selectedLocation}</td>
                       </tr>`
-                          : ""
-                      }
+      : ""
+    }
                       <tr>
                         <td style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 12px; padding: 6px 0; font-weight: 700;">MODE:</td>
                         <td style="color: #cbd5e1; font-family: 'Barlow', sans-serif; font-size: 13px; padding: 6px 0;">${attendanceLabel}</td>
@@ -440,7 +438,7 @@ export function generateRegistrationEmail(params: RegistrationEmailParams): {
               </table>
 
               <div style="text-align: center; margin-top: 8px;">
-                <a href="${process.env.NEXT_PUBLIC_SERVER_URL || process.env.WEBSITE_URL || "https://seds-sl.org"}/projects/observe-the-moon-night" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; text-decoration: none; border: 1px solid #3b82f6; letter-spacing: 1px;">
+                <a href="${process.env.NEXT_PUBLIC_SERVER_URL || process.env.WEBSITE_URL || "https://sedssl.org"}/projects/observe-the-moon-night" style="display: inline-block; background-color: #2563eb; color: #ffffff; padding: 12px 28px; font-family: 'Barlow', sans-serif; font-size: 13px; font-weight: 700; text-transform: uppercase; text-decoration: none; border: 1px solid #3b82f6; letter-spacing: 1px;">
                   View Event Portal →
                 </a>
               </div>
@@ -491,7 +489,7 @@ ${selectedLocation ? `• Location: ${selectedLocation}\n` : ""}• Mode: ${atte
 ${emergencyContactName ? `• Emergency Contact: ${emergencyContactName} (${emergencyContactPhone}) [${emergencyContactRelation}]\n` : ""}• Meal Preference: ${mealLabel}${dietaryRestrictions ? ` (${dietaryRestrictions})` : ""}
 
 ${paymentDetails ? `PAYMENT INSTRUCTIONS:\n${paymentDetails}\n` : ""}
-Event Portal: ${process.env.NEXT_PUBLIC_SERVER_URL || process.env.WEBSITE_URL || "https://seds-sl.org"}/projects/observe-the-moon-night
+Event Portal: ${process.env.NEXT_PUBLIC_SERVER_URL || process.env.WEBSITE_URL || "https://sedssl.org"}/projects/observe-the-moon-night
 
 Students for the Exploration & Development of Space (SEDS Sri Lanka)
   `.trim();
