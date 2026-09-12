@@ -10,7 +10,7 @@
 - Organization Name: **SEDS Sri Lanka** (Students for the Exploration & Development of Space).
 
 ## 🛠️ Tech Stack & Database-Free Architecture
-- **CMS**: Keystatic (`storage: { kind: 'local' }`) with Markdoc content in `src/content/`.
+- **CMS**: Keystatic (`storage: { kind: 'github', repo: 'sedssrilanka/seds-sl' }` / `'local'`) with Markdoc content in `src/content/`.
 - **Database**: No external database is used (zero database overhead).
 - **Forms & Store**: Tally Forms (`tally.so`) for merchandise orders and signups.
 - **Emails**: Resend API (`resend`) with structured templates located in `src/emails/`.
