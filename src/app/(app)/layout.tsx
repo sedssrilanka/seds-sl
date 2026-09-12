@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import type { Metadata, Viewport } from "next";
 import { Barlow, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
@@ -7,6 +8,7 @@ import Footer from "@/components/sections/footer/default";
 import { Toaster } from "@/components/ui/sonner";
 import { Providers } from "@/providers";
 import { getServerSideURL } from "@/utilities/getURL";
+import TopProgressBar from "@/components/navigation/TopProgressBar";
 
 const barlow = Barlow({
   variable: "--font-sans",
@@ -153,6 +155,9 @@ export default function RootLayout({
             forcedTheme="dark"
             disableTransitionOnChange
           >
+            <Suspense fallback={null}>
+              <TopProgressBar />
+            </Suspense>
             <Navbar />
             <main className="relative min-h-screen pt-16 sm:pt-20">
               {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
