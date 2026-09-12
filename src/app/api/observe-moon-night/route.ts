@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import { sendEmail } from "@/utilities/sendEmail";
 
 export async function POST(req: Request) {
@@ -37,27 +36,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const supabase = createAdminSupabaseClient();
-    const { data, error } = await supabase
-      .from("moon_registrations")
-      .insert({
-        full_name: fullName,
-        email,
-        phone_number: phone,
-        chapter_or_university: chapterOrUniversity,
-        observation_location: observationLocation,
-        notes,
-        event_year: 2026,
-        status: "confirmed",
-      })
-      .select()
-      .single();
-
-    if (error) {
-      console.error("Supabase registration insert error:", error);
-    }
-
-    // Send confirmation email via Resend
+    // Send confirmation email to attendee via Resend
     await sendEmail({
       to: email,
       subject: "Registration Confirmed: International Observe the Moon Night | SEDS Sri Lanka",
@@ -69,7 +48,10 @@ export async function POST(req: Request) {
           <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
             <p><strong>Name:</strong> ${fullName}</p>
             <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Phone:</strong> ${phone || "Not provided"}</p>
+            <p><strong>Institution / Chapter:</strong> ${chapterOrUniversity || "General Public"}</p>
             <p><strong>Location:</strong> ${observationLocation || "Main Center"}</p>
+            ${notes ? `<p><strong>Notes:</strong> ${notes}</p>` : ""}
           </div>
           <p>We look forward to observing the lunar surface together!</p>
           <p>Clear skies,<br><strong>SEDS Sri Lanka Team</strong></p>
@@ -77,10 +59,32 @@ export async function POST(req: Request) {
       `,
     });
 
+    // Notify team via Resend
+    const contactEmail = process.env.CONTACT_EMAIL || "contact@seds-sl.org";
+    await sendEmail({
+      to: contactEmail,
+      subject: `New Moon Night Registration: ${fullName}`,
+      html: `
+        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h3 style="color: #1e1b4b;">New Event Registration</h3>
+          <p><strong>Name:</strong> ${fullName}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Phone:</strong> ${phone || "None"}</p>
+          <p><strong>Institution:</strong> ${chapterOrUniversity || "None"}</p>
+          <p><strong>Location:</strong> ${observationLocation || "Main Center"}</p>
+          <p><strong>Notes:</strong> ${notes || "None"}</p>
+        </div>
+      `,
+    }).catch((err) => console.warn("Admin notification email error:", err));
+
     return NextResponse.json({
       success: true,
       message: "Registration successful!",
-      registration: data,
+      registration: {
+        fullName,
+        email,
+        observationLocation,
+      },
     });
   } catch (err: any) {
     console.error("Registration error:", err);

@@ -12,9 +12,9 @@
 | :--- | :--- | :--- |
 | **Static / Editorial Content** | **Keystatic (Git-based CMS)** | Projects, Chapters, Divisions, Pages, Products catalog (zero-cost, GitHub sync, Markdown/JSON). |
 | **Content Editor UI** | `/keystatic` (Keystatic Admin) | Visual editor for non-technical team members with live preview & image uploads. |
-| **Dynamic Runtime Data** | **Supabase (PostgreSQL)** | MoonRegistrations, custom form submissions, Orders, Transactions. |
-| **Orders & Transactions UI** | `/admin/orders` & `/admin/transactions` | Lightweight admin dashboard for managing orders, payment status, and exports. |
-| **Forms & Emails** | **Tally Forms + Resend** | Zero-maintenance embedded forms & automated transactional emails. |
+| **Forms & Orders** | **Tally Forms** | Merchandise store orders, event signups, and custom forms (zero database maintenance). |
+| **Transactional Emails** | **Resend** | Automated buyer confirmations, team alerts, and form dispatch notifications. |
+| **Orders Dashboard** | `/admin/orders` | Store dashboard linking directly to Tally form submissions & Resend logs. |
 
 ---
 
@@ -93,4 +93,4 @@
 * **Status:** 100% Completed & Verified
 * **Branch:** `feat/migrate-keystatic-supabase`
 * **Build Time:** 32 pages compiled and statically generated in **1.98 seconds** (down from > 2 minutes).
-* **Database Dependency:** Zero database overhead during builds or static page loads. Dynamic interactions (Forms, Orders, Event Signups) run serverlessly via Supabase.
+* **Database Dependency:** Zero database overhead. No external DB connection required. Content is stored in Git (Keystatic Markdown), orders are collected via Tally, and notifications are delivered via Resend.

@@ -1,43 +1,25 @@
 import { NextResponse } from "next/server";
-import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import { sendEmail } from "@/utilities/sendEmail";
 
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { orderId, trackingNumber, customerEmail, customerName, productName } = body;
+    const { trackingNumber, customerEmail, customerName, productName } = body;
 
-    if (!orderId && !customerEmail) {
+    if (!customerEmail) {
       return NextResponse.json(
-        { error: "orderId or customerEmail is required." },
+        { error: "customerEmail is required." },
         { status: 400 },
       );
     }
 
-    const supabase = createAdminSupabaseClient();
-    let emailToSend = customerEmail;
-    let nameToSend = customerName || "Supporter";
-    let productToSend = productName || "SEDS Merchandise";
-
-    // If orderId is provided, update Supabase order status
-    if (orderId) {
-      const { data: updatedOrder } = await supabase
-        .from("orders")
-        .update({ status: "completed", payment_status: "paid" })
-        .eq("id", orderId)
-        .select()
-        .single();
-
-      if (updatedOrder) {
-        emailToSend = updatedOrder.customer_email || emailToSend;
-        nameToSend = updatedOrder.customer_name || nameToSend;
-      }
-    }
+    const nameToSend = customerName || "Supporter";
+    const productToSend = productName || "SEDS Merchandise";
 
     // Send confirmation email via Resend
-    if (emailToSend && emailToSend.includes("@")) {
+    if (customerEmail && customerEmail.includes("@")) {
       await sendEmail({
-        to: emailToSend,
+        to: customerEmail,
         subject: `Order Confirmed & Shipped: ${productToSend} | SEDS Sri Lanka`,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 24px; color: #18181b;">

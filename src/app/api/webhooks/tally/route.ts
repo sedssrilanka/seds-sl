@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { createAdminSupabaseClient } from "@/lib/supabase/server";
 import { sendEmail } from "@/utilities/sendEmail";
 
 export async function POST(req: Request) {
@@ -12,7 +11,7 @@ export async function POST(req: Request) {
     }
 
     const { data } = payload;
-    const { formName, fields } = data;
+    const { fields } = data;
 
     // Map Tally fields to an easy key-value object
     const responses: Record<string, any> = {};
@@ -51,31 +50,7 @@ export async function POST(req: Request) {
       slipUrl = rawSlip[0]?.url || rawSlip[0] || null;
     }
 
-    const supabase = createAdminSupabaseClient();
-
-    // 1. Insert into Supabase Orders table
-    const { data: orderData, error: dbError } = await supabase
-      .from("orders")
-      .insert({
-        customer_name: customerName,
-        customer_email: customerEmail,
-        customer_phone: customerPhone,
-        shipping_address: shippingAddress,
-        city,
-        total_amount_lkr: totalAmount,
-        status: "pending",
-        payment_status: slipUrl ? "receipt_uploaded" : "unpaid",
-        payment_receipt_url: typeof slipUrl === "string" ? slipUrl : null,
-        items: [{ title: productName, quantity: 1, price: totalAmount }],
-      })
-      .select()
-      .single();
-
-    if (dbError) {
-      console.warn("Could not insert order into Supabase:", dbError.message);
-    }
-
-    // 2. Send automated acknowledgment email via Resend if email is provided
+    // 1. Send automated acknowledgment email to customer via Resend
     if (customerEmail && customerEmail.includes("@")) {
       await sendEmail({
         to: customerEmail,
@@ -110,10 +85,34 @@ export async function POST(req: Request) {
       });
     }
 
+    // 2. Notify SEDS Merchandising Team via Resend
+    const contactEmail = process.env.CONTACT_EMAIL || "contact@seds-sl.org";
+    await sendEmail({
+      to: contactEmail,
+      subject: `New Store Order: ${productName} (${customerName})`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h3 style="color: #4f46e5;">New Tally Merchandise Order Received</h3>
+          <p><strong>Item:</strong> ${productName}</p>
+          <p><strong>Total:</strong> Rs. ${totalAmount.toLocaleString()}</p>
+          <p><strong>Customer:</strong> ${customerName}</p>
+          <p><strong>Email:</strong> ${customerEmail}</p>
+          <p><strong>Phone:</strong> ${customerPhone}</p>
+          <p><strong>Shipping Address:</strong> ${shippingAddress}, ${city}</p>
+          ${slipUrl ? `<p><strong>Payment Slip:</strong> <a href="${slipUrl}">View Uploaded Slip</a></p>` : "<p><strong>Payment Slip:</strong> Not uploaded</p>"}
+        </div>
+      `,
+    }).catch((err) => console.warn("Team order alert email error:", err));
+
     return NextResponse.json({
       success: true,
       message: "Order processed and notification dispatched",
-      order: orderData,
+      order: {
+        customerName,
+        customerEmail,
+        productName,
+        totalAmount,
+      },
     });
   } catch (err: any) {
     console.error("Error processing Tally webhook:", err);
