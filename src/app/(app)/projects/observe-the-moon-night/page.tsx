@@ -2,22 +2,21 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ObserveMoonNightClient } from "@/components/sections/observe-moon-night/ObserveMoonNightClient";
 import { getObserveMoonNightProject } from "@/utilities/getObserveMoonNightProject";
+import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
 
 export const metadata: Metadata = {
   title: "International Observe the Moon Night 2026 | SEDS Sri Lanka",
   description:
-    "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration.",
+    "Join SEDS Sri Lanka and SEDS India on Monday, September 21, 2026 from 7:00 PM IST onwards for an annual virtual celebration of lunar science with live telescope streaming powered by SEDS Celestia.",
   alternates: {
     canonical: "/projects/observe-the-moon-night",
   },
-  openGraph: {
+  openGraph: mergeOpenGraph({
     title: "International Observe the Moon Night 2026 | SEDS Sri Lanka",
     description:
-      "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration.",
+      "Join SEDS Sri Lanka and SEDS India on Monday, September 21, 2026 from 7:00 PM IST onwards for an annual virtual celebration of lunar science with live telescope streaming powered by SEDS Celestia.",
     url: "/projects/observe-the-moon-night",
-    siteName: "SEDS Sri Lanka",
-    locale: "en_LK",
-    type: "article",
+    type: "website",
     images: [
       {
         url: "/images/projects/iotm-day-2026.png",
@@ -27,12 +26,12 @@ export const metadata: Metadata = {
         type: "image/png",
       },
     ],
-  },
+  }),
   twitter: {
     card: "summary_large_image",
     title: "International Observe the Moon Night 2026 | SEDS Sri Lanka",
     description:
-      "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration.",
+      "Join SEDS Sri Lanka and SEDS India on Monday, September 21, 2026 for a live virtual lunar observation with stream powered by SEDS Celestia.",
     images: ["/images/projects/iotm-day-2026.png"],
     site: "@sedssl",
     creator: "@sedssl",

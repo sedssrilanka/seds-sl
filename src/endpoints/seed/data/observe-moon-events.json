@@ -3,76 +3,85 @@
     "id": 1,
     "title": "International Observe the Moon Night 2026",
     "year": "2026",
-    "eventDate": "2026-09-19T00:00:00.000+05:30",
-    "startTime": "2026-09-19T18:30:00.000+05:30",
-    "endTime": "2026-09-19T22:30:00.000+05:30",
-    "description": "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration. Connect with observers worldwide as we look up at the Moon together.",
-    "shortDescription": "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration.",
+    "eventDate": "2026-09-21T00:00:00.000+05:30",
+    "startTime": "2026-09-21T19:00:00.000+05:30",
+    "endTime": "2026-09-21T23:00:00.000+05:30",
+    "description": "Join SEDS Sri Lanka and SEDS India for an interactive virtual celebration of International Observe the Moon Night 2026. Experience live high-definition lunar telescopic streaming provided by SEDS Celestia, guided scientific sessions, and interactive discussions.",
+    "shortDescription": "Annual global celebration of lunar science and exploration with SEDS Sri Lanka in collaboration with SEDS India, featuring live lunar telescope streaming powered by SEDS Celestia.",
     "listingImage": 6,
     "isFeatured": true,
-    "isPaid": true,
-    "ticketPrice": "1000",
-    "paymentDetails": "Bank: Bank of Ceylon (BOC)\nAccount Name: SEDS Sri Lanka\nAccount Number: 8746392011\nBranch: Corporate Branch, Colombo\nReference: OMN2026-[Your Full Name]",
+    "isPaid": false,
     "agenda": [
       {
-        "time": "06:30 PM",
-        "stage": "PHASE 01",
-        "title": "Registration & Telescope Alignment",
-        "description": "Welcome briefing, participant check-in, and optical telescope calibration under the evening sky."
+        "time": "07:00 PM",
+        "stage": "SESSION 01",
+        "title": "Inauguration & Joint Collaboration Briefing",
+        "description": "Welcome address by SEDS Sri Lanka & SEDS India leadership, live broadcast introduction, and telescope imaging overview powered by SEDS Celestia."
       },
       {
-        "time": "07:15 PM",
-        "stage": "PHASE 02",
-        "title": "Lunar Science Keynote Address",
-        "description": "Interactive lecture on lunar geology, crater formation, and upcoming human missions back to the Moon."
+        "time": "07:25 PM",
+        "stage": "SESSION 02",
+        "title": "Lunar Science Keynote: Maria Formation & Historic Landing Sites",
+        "description": "Scientific presentation on lunar basalt maria (Sea of Rains & Sea of Tranquility), impact cratering, and geology of Apollo 11 & Apollo 15 landing sites."
       },
       {
         "time": "08:00 PM",
-        "stage": "PHASE 03",
-        "title": "Guided Optical Telescope Observation",
-        "description": "Live observation of crater rim shadows along the lunar terminator line, Mare Tranquillitatis, and Tycho crater."
+        "stage": "SESSION 03",
+        "title": "Live Telescopic Observation Kickoff (Visible Sights: Plato Crater & Alpine Valley)",
+        "description": "Live telescope feed goes live! High-resolution observation of the dark lava-filled floor of Plato Crater and the dramatic lunar rift of the Alpine Valley (Vallis Alpes) slicing through the northern highlands."
       },
       {
-        "time": "09:15 PM",
-        "stage": "PHASE 04",
-        "title": "Eyepiece Astrophotography Session",
-        "description": "Capture high-resolution lunar photos directly through telescope eyepieces with expert photography assistance."
+        "time": "08:45 PM",
+        "stage": "SESSION 04",
+        "title": "Highland Peaks & Apollo Sites (Visible Sights: Apennine Mountains & Apollo 15)",
+        "description": "Close-up inspection of the towering Apennine Mountains (Montes Apenninus) rising over 5,000 meters along the terminator, plus the Hadley Rille canyon and Apollo 15 landing region."
       },
       {
-        "time": "10:00 PM",
-        "stage": "PHASE 05",
-        "title": "Astronomy Quiz & Award Distribution",
-        "description": "Live trivia competition, announcement of winners, and distribution of official digital certificates."
+        "time": "09:30 PM",
+        "stage": "SESSION 05",
+        "title": "Lunar Faults & Volcanic Vents (Visible Sights: Straight Wall & Alphonsus Crater)",
+        "description": "Telescopic exploration of the Straight Wall (Rupes Recta)—a famous 110-km lunar fault escarpment casting sharp shadows—along with Alphonsus Crater's central peak and the Catena Davy craterlet chain."
+      },
+      {
+        "time": "10:15 PM",
+        "stage": "SESSION 06",
+        "title": "Live Moon Trivia Quiz, Q&A & Certificate Wrap-Up",
+        "description": "Interactive live astronomy trivia quiz, audience Q&A with telescope operators and astrophysicists, and digital participation certificate announcements before concluding at 11:00 PM."
       }
     ],
     "locations": [
       {
-        "name": "Galle Face Green",
-        "city": "Colombo 03",
-        "latitude": 6.9237882,
-        "longitude": 79.8449324,
+        "name": "Virtual Live Stream Hub",
+        "city": "Online Broadcast via SEDS Celestia",
         "isPrimary": true
       }
     ],
     "partners": [
       {
-        "name": "Celestron Astronomy",
-        "logo": 10,
-        "partnershipType": "Equipment Partner",
-        "websiteUrl": "https://www.celestron.com"
+        "name": "SEDS India",
+        "partnershipType": "Collaboration Partner",
+        "websiteUrl": "https://sedsindia.org",
+        "logo": {
+          "url": "/images/projects/seds_india_white_logo.png",
+          "alt": "SEDS India Logo"
+        }
       },
       {
-        "name": "Arthur C. Clarke Institute",
-        "logo": 10,
-        "partnershipType": "Academic Partner",
-        "websiteUrl": "https://www.accimt.ac.lk"
+        "name": "SEDS Celestia",
+        "partnershipType": "Official Stream Provider",
+        "websiteUrl": "https://sedscelestia.org/",
+        "logo": {
+          "url": "/images/projects/seds-celestia.png",
+          "alt": "SEDS Celestia Logo"
+        }
       }
     ],
-    "feedbackUrl": "https://tally.so/r/gD604M?transparentBackground=1",
+    "registrationUrl": "https://tally.so/r/vGl0pX",
+    "isRegistrationActive": true,
+    "feedbackUrl": "https://tally.so/r/gD604M",
     "isFeedbackActive": true,
-    "feedbackFormHeight": "1850",
-    "confirmationEmailSubject": "Registration Confirmation: International Observe the Moon Night 2026",
-    "confirmationEmailBody": "Thank you for registering for International Observe the Moon Night 2026! We are excited to have you join SEDS Sri Lanka for an evening of lunar science, telescopic observation, and space exploration. Please review your registration details below and keep this email for event access.",
+    "confirmationEmailSubject": "Registration Confirmation: International Observe the Moon Night 2026 (Virtual Edition)",
+    "confirmationEmailBody": "Thank you for registering for International Observe the Moon Night 2026 (Virtual Edition)! We are excited to have you join SEDS Sri Lanka and SEDS India for an evening of lunar science, live telescopic streaming by SEDS Celestia, and interactive discussions. The official live stream access link and schedule are detailed below.",
     "status": "published"
   }
 ]

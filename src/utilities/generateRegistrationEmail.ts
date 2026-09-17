@@ -34,7 +34,7 @@ export interface FormattedEventTimeResult {
 }
 
 export function formatDateISO(dateStr?: string | null): string {
-  if (!dateStr) return "Saturday, September 19, 2026";
+  if (!dateStr) return "Monday, September 21, 2026";
   if (dateStr.includes("T") || !isNaN(Date.parse(dateStr))) {
     const d = new Date(dateStr);
     if (!isNaN(d.getTime())) {
@@ -79,15 +79,15 @@ export function formatEventStartAndEnd(
 ): FormattedEventTimeResult {
   if (!startTime && !endTime) {
     const fallbackStr =
-      formatDateISO(fallbackDate) || "Saturday, September 19, 2026";
+      formatDateISO(fallbackDate) || "Monday, September 21, 2026";
     return {
       formattedDate: fallbackStr,
-      formattedTime: "06:30 PM - 10:30 PM (SLST)",
-      fullDisplay: `${fallbackStr} · 06:30 PM - 10:30 PM (SLST)`,
+      formattedTime: "07:00 PM - 11:00 PM (SLST / IST)",
+      fullDisplay: `${fallbackStr} · 07:00 PM - 11:00 PM (SLST / IST)`,
     };
   }
 
-  // Handle case where startTime is a combined string e.g. "2026-09-19T13:00:00.000Z - 2026-09-19T17:00:00.000Z"
+  // Handle case where startTime is a combined string e.g. "2026-09-21T13:30:00.000Z - 2026-09-21T17:30:00.000Z"
   let startRaw = startTime;
   let endRaw = endTime;
   if (startTime && startTime.includes(" - ") && !endTime) {
@@ -101,11 +101,11 @@ export function formatEventStartAndEnd(
 
   if (!startDate || isNaN(startDate.getTime())) {
     const fallbackStr =
-      formatDateISO(fallbackDate) || "Saturday, September 19, 2026";
+      formatDateISO(fallbackDate) || "Monday, September 21, 2026";
     return {
       formattedDate: fallbackStr,
-      formattedTime: "06:30 PM - 10:30 PM (SLST)",
-      fullDisplay: `${fallbackStr} · 06:30 PM - 10:30 PM (SLST)`,
+      formattedTime: "07:00 PM - 11:00 PM (SLST / IST)",
+      fullDisplay: `${fallbackStr} · 07:00 PM - 11:00 PM (SLST / IST)`,
     };
   }
 

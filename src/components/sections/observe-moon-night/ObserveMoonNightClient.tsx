@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
+import Link from "next/link";
 import { ObserveMoonHero } from "./ObserveMoonHero";
 import { SriLankaDarkMap } from "./SriLankaDarkMap";
 import { EventCountdownTimer } from "./EventCountdownTimer";
+import { openMoonNightPopup } from "@/utilities/openMoonNightPopup";
 
 import {
   Moon,
@@ -35,17 +38,38 @@ export function ObserveMoonNightClient({
   year = "2026",
   eventData,
 }: ObserveMoonNightClientProps) {
+  useEffect(() => {
+    // Load Tally embed script
+    const scriptSrc = "https://tally.so/widgets/embed.js";
+    if (!document.querySelector(`script[src="${scriptSrc}"]`)) {
+      const script = document.createElement("script");
+      script.src = scriptSrc;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+
+    // Auto open popup only if explicitly requested via ?register=1 query parameter
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get("register") === "1" || params.get("register") === "true") {
+        setTimeout(() => {
+          openMoonNightPopup();
+        }, 500);
+      }
+    }
+  }, []);
+
   const title =
     eventData?.title || `International Observe the Moon Night ${year}`;
-  const eventDate = eventData?.eventDate || "Saturday, September 19, 2026";
-  const location = eventData?.location || "Galle Face Green, Colombo 03";
+  const eventDate = eventData?.eventDate || "Monday, September 21, 2026";
+  const location = eventData?.location || "Virtual Event (Online Live Stream)";
   const description =
     eventData?.description ||
-    "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration. Connect with observers worldwide as we look up at the Moon together.";
+    "Join SEDS Sri Lanka and SEDS India for an interactive virtual celebration of International Observe the Moon Night 2026. Experience live high-definition lunar telescopic streaming provided by SEDS Celestia, guided scientific sessions, and interactive discussions.";
 
   const eventTimeFormatting = formatEventStartAndEnd(
-    eventData?.startTime,
-    eventData?.endTime,
+    eventData?.startTime || "2026-09-21T19:00:00.000+05:30",
+    eventData?.endTime || "2026-09-21T23:00:00.000+05:30",
     eventDate,
   );
   const formattedDateDisplay = eventTimeFormatting.fullDisplay;
@@ -58,36 +82,38 @@ export function ObserveMoonNightClient({
         (eventData as any).locations
       : [];
 
-  const showMap = locationsList.length > 0 || Boolean(location);
+  const showMap =
+    locationsList.length > 0 &&
+    locationsList.some((l: any) => l.latitude && l.longitude);
 
   const highlights = [
     {
       icon: <Telescope className="size-8 text-primary" />,
-      title: "Lunar Telescopic Observation",
-      tag: "OPTICAL OBSERVATION",
+      title: "Live Telescopic Stream (SEDS Celestia)",
+      tag: "HD TELESCOPE FEED",
       description:
-        "Observe lunar craters, mountain ranges, and mare basins in high resolution using high-power optical telescopes guided by astronomy instructors.",
+        "Watch live, high-resolution optical telescope feeds of the lunar surface broadcast by SEDS Celestia, highlighting craters, lunar maria, and the day-night terminator line.",
     },
     {
-      icon: <Camera className="size-8 text-primary" />,
-      title: "Astrophotography Masterclass",
-      tag: "HANDS-ON WORKSHOP",
+      icon: <Handshake className="size-8 text-primary" />,
+      title: "SEDS Sri Lanka × SEDS India Panel",
+      tag: "JOINT COLLABORATION",
       description:
-        "Learn specialized lunar imaging techniques using DSLR cameras, smartphones, and eyepiece mounts to capture high-detail lunar surface photos.",
+        "A joint cross-border initiative featuring student space leaders, astronomy researchers, and guest speakers from both SEDS Sri Lanka and SEDS India.",
     },
     {
       icon: <BookOpen className="size-8 text-primary" />,
-      title: "Lunar Science Keynote Lectures",
-      tag: "RESEARCH & TALKS",
+      title: "Lunar Science Keynotes & Geology",
+      tag: "SCIENTIFIC SESSIONS",
       description:
-        "Hear from aerospace researchers and astrophysicists on lunar geology, Artemis mission landing sites, and water ice discovery at the lunar poles.",
+        "Explore lunar topography, Apollo and Artemis landing sites, water ice discoveries at the lunar South Pole, and future human space exploration.",
     },
     {
       icon: <Trophy className="size-8 text-primary" />,
-      title: "Moon Quiz & Award Certificates",
-      tag: "COMPETITIONS & REWARDS",
+      title: "Live Moon Trivia & Certificates",
+      tag: "INTERACTIVE QUIZ",
       description:
-        "Participate in live astronomy quizzes, win exclusive space merchandise, and receive digital participation certificates from SEDS Sri Lanka.",
+        "Participate in a live real-time lunar science quiz, interact during the stream Q&A, and receive an official verified digital participation certificate.",
     },
   ];
 
@@ -114,36 +140,36 @@ export function ObserveMoonNightClient({
 
   const guidelines = [
     {
-      title: "What We Provide",
+      title: "Virtual Stream Details",
       items: [
-        "High-power optical telescopes & binoculars",
-        "Astrophotography eyepiece adapters for smartphones",
-        "Guided assistance from trained SEDS astronomy staff",
-        "Event participation certificates & learning materials",
+        "Live high-definition telescope broadcast hosted online",
+        "Official stream link shared with all registered attendees",
+        "Interactive live chat for real-time questions & speaker interaction",
+        "Digital Certificate of Participation for registered attendees",
       ],
     },
     {
-      title: "What to Bring",
+      title: "What You Need",
       items: [
-        "Personal camera or smartphone for astrophotography",
-        "Personal telescope or binoculars (optional)",
-        "Red-light flashlight (to preserve night vision)",
-        "Warm clothing & notebook for recording observations",
+        "Stable broadband internet connection (laptop, phone, or tablet)",
+        "Headphones or speakers for keynote audio clarity",
+        "Notebook or sketchpad for lunar mapping & notes",
+        "Enthusiasm for lunar science and stargazing!",
       ],
     },
     {
-      title: "Observation Guidelines",
+      title: "Stream Guidelines",
       items: [
-        "Maintain respectful queues at telescope viewing stations",
-        "Handle shared optical equipment with extreme care",
-        "Avoid using white flashlight beams near telescopes",
-        "Follow safety instructions provided by event hosts",
+        "Join 5–10 minutes prior to 07:00 PM IST kickoff",
+        "Submit your questions during live Q&A via chat",
+        "Participate in the live interactive Moon trivia round",
+        "Fill out the post-event feedback to claim your certificate",
       ],
     },
   ];
 
   return (
-    <main className="flex flex-col w-full min-h-screen bg-background text-foreground font-sans selection:bg-primary/20 selection:text-primary relative overflow-hidden">
+    <div className="flex flex-col w-full min-h-screen bg-background text-foreground font-sans selection:bg-primary/20 selection:text-primary relative overflow-x-clip">
       {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
       <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl border-x border-border/80 pointer-events-none z-30" />
       <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-30 opacity-80" />
@@ -166,65 +192,63 @@ export function ObserveMoonNightClient({
 
         {/* DEDICATED FULL-WIDTH LIVE COUNTDOWN SECTION WITH EVENT DATE & TIME */}
         <EventCountdownTimer
-          targetDate={eventData?.startTime || eventDate}
+          targetDate={eventData?.startTime || "2026-09-21T19:00:00+05:30"}
           formattedDateDisplay={formattedDateDisplay}
         />
 
-        {/* SECTION 1: ABOUT THE INITIATIVE & MAP (MAP RENDERED SAFELY FOR DATABASE LOCATIONS) */}
-        <div className="w-full border-b border-border/60 py-16 bg-background">
-          <div className="max-w-7xl mx-auto px-4 md:px-8">
-            <div
-              className={`grid grid-cols-1 ${showMap ? "lg:grid-cols-12" : ""} gap-12 items-stretch`}
-            >
-              {/* Left Narrative */}
-              <div
-                className={`${showMap ? "lg:col-span-7" : "w-full"} space-y-6 flex flex-col justify-between`}
-              >
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-wider">
-                    <span>LUNAR OBSERVATION INITIATIVE</span>
-                  </div>
-                  <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-foreground font-mono">
-                    Uniting Sri Lanka Under the Lunar Sky
-                  </h2>
-                  <p className="text-base text-muted-foreground leading-relaxed">
-                    International Observe the Moon Night is an annual public
-                    engagement initiative. Every year, observers, researchers,
-                    and space enthusiasts across the planet gather to learn
-                    about lunar science, celebrate human spaceflight history,
-                    and observe our nearest celestial neighbor.
-                  </p>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    SEDS Sri Lanka brings this celebration to high school
-                    students, university researchers, and amateur astronomers
-                    across Sri Lanka, hosting optical viewing stations, live
-                    scientific lectures, and astrophotography sessions.
-                  </p>
+        {/* SECTION 1: ABOUT THE INITIATIVE & VIRTUAL COLLABORATION */}
+        <div
+          id="dark-map-section"
+          className="w-full border-b border-border/60 py-16 bg-background scroll-mt-16"
+        >
+          <div className="max-w-5xl mx-auto px-4 md:px-8">
+            <div className="space-y-6">
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-wider">
+                  <span>VIRTUAL LUNAR OBSERVATION INITIATIVE</span>
                 </div>
-
-                {/* General Astronomical & Weather Advisory Note */}
-                <div className="space-y-2 pt-2">
-                  <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-wider">
-                    <CloudSun className="size-4 text-primary" />
-                    <span>ASTRONOMICAL & WEATHER ADVISORY</span>
-                  </div>
-                  <p className="text-xs text-muted-foreground font-mono leading-relaxed">
-                    Target observation window corresponds with the Moon's First
-                    Quarter phase (~50% disk illumination), providing optimal
-                    long crater shadows along the lunar terminator line. Please
-                    note that optical telescopic viewing remains subject to
-                    local atmospheric seeing and cloud cover; unexpected weather
-                    conditions may adjust session timings or optical clarity.
-                  </p>
-                </div>
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-extrabold uppercase tracking-tight text-foreground font-mono">
+                  SEDS Sri Lanka × SEDS India Collaboration
+                </h2>
+                <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+                  International Observe the Moon Night is a worldwide public
+                  engagement initiative sanctioned by NASA. In 2026,{" "}
+                  <strong>SEDS Sri Lanka</strong> has partnered with{" "}
+                  <strong>SEDS India</strong> to deliver a joint cross-border
+                  virtual observation experience across South Asia and beyond.
+                </p>
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                  Live optical telescope feeds will be streamed directly to your
+                  screens powered by <strong>SEDS Celestia</strong> as the
+                  official stream provider. Tune in from anywhere on{" "}
+                  <strong>
+                    Monday, September 21, 2026 from 7:00 PM to 11:00 PM IST
+                  </strong>{" "}
+                  for an evening of lunar geology, live high-resolution crater
+                  observations from 8:00 PM onward, and interactive trivia.
+                </p>
               </div>
 
-              {/* Right Side: Leaflet Dark Map */}
-              {showMap && (
-                <div className="lg:col-span-5 flex items-stretch min-h-[380px]">
-                  <SriLankaDarkMap locations={locationsList} />
+              {/* Collaboration & Stream Advisory Note */}
+              <div className="p-6 border border-border/80 bg-card/40 backdrop-blur-md space-y-2">
+                <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-wider">
+                  <CloudSun className="size-4 text-primary" />
+                  <span>BROADCAST & OBSERVATION SCHEDULE</span>
                 </div>
-              )}
+                <p className="text-xs md:text-sm text-muted-foreground font-mono leading-relaxed">
+                  Broadcast inaugurates at <strong>7:00 PM IST</strong> with
+                  keynote talks, followed by live telescopic lunar observation
+                  starting from <strong>8:00 PM IST onward</strong> through{" "}
+                  <strong>11:00 PM IST</strong>. Guided telescope views will
+                  spotlight 6 premier telescopic targets along the terminator:{" "}
+                  <strong>Plato Crater</strong>, <strong>Alpine Valley</strong>,{" "}
+                  <strong>Apennine Mountains</strong>,{" "}
+                  <strong>Catena Davy</strong>,{" "}
+                  <strong>Alphonsus Crater</strong>, and the{" "}
+                  <strong>Straight Wall</strong>, alongside historic Apollo
+                  landing sites.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -240,8 +264,8 @@ export function ObserveMoonNightClient({
                 What You Will Experience
               </h2>
               <p className="text-sm md:text-base text-muted-foreground">
-                Designed for observers of all skill levels, from first-time
-                stargazers to advanced astrophotographers.
+                Designed for observers and space enthusiasts across Sri Lanka,
+                India, and the world.
               </p>
             </div>
 
@@ -355,10 +379,10 @@ export function ObserveMoonNightClient({
             <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
               <div className="text-center max-w-3xl mx-auto space-y-2">
                 <div className="flex items-center justify-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-widest">
-                  <span>EVENT PARTNERS & SPONSORS</span>
+                  <span>COLLABORATION & BROADCAST PARTNERS</span>
                 </div>
                 <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-foreground font-mono">
-                  Supported By
+                  In Collaboration With
                 </h2>
               </div>
 
@@ -385,11 +409,13 @@ export function ObserveMoonNightClient({
 
                     <div className="p-8 border border-border/60 bg-background/90 backdrop-blur-md flex flex-col items-center justify-center text-center space-y-4 relative z-10 group-hover:border-primary/40 transition-all duration-300">
                       {partner.logo?.url ? (
-                        <img
-                          src={partner.logo.url}
-                          alt={partner.name}
-                          className="max-h-12 w-auto object-contain filter opacity-85 group-hover:opacity-100 transition-all duration-300"
-                        />
+                        <div className="h-16 flex items-center justify-center">
+                          <img
+                            src={partner.logo.url}
+                            alt={partner.logo.alt || partner.name}
+                            className="max-h-14 w-auto max-w-[180px] object-contain filter brightness-100 opacity-90 group-hover:opacity-100 transition-all duration-300"
+                          />
+                        </div>
                       ) : (
                         <div className="text-base font-bold font-mono text-foreground uppercase tracking-wider">
                           {partner.name}
@@ -488,13 +514,24 @@ export function ObserveMoonNightClient({
                     Lanka.
                   </p>
                 </div>
-                <a
-                  href={`/projects/${slug || `observe-the-moon-night/${year}`}/feedback`}
-                  className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-mono text-sm font-bold uppercase tracking-wider transition-colors shrink-0"
-                >
-                  <MessageSquareHeart className="size-4" />
-                  <span>Give Feedback Now</span>
-                </a>
+                <div className="flex flex-wrap items-center gap-3 shrink-0">
+                  <Link
+                    href="/projects/observe-the-moon-night/feedback"
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-mono text-sm font-bold uppercase tracking-wider transition-colors shrink-0"
+                  >
+                    <MessageSquareHeart className="size-4" />
+                    <span>Give Feedback Now</span>
+                  </Link>
+                  <a
+                    href={eventData.feedbackUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-3 border border-blue-700 hover:bg-blue-900/50 text-blue-300 font-mono text-xs font-bold uppercase tracking-wider transition-colors"
+                  >
+                    <span>External Form</span>
+                    <ExternalLink className="size-3.5" />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -516,23 +553,33 @@ export function ObserveMoonNightClient({
 
               <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
                 Registration is officially open to all students, astronomy
-                enthusiasts, and researchers. Complete our multi-step
-                registration form to secure your pass and select your host
-                observation site.
+                enthusiasts, and researchers across the globe. Complete our
+                registration form to secure your virtual stream link and access
+                details.
               </p>
 
               <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a
-                  href={`/projects/${slug}/register`}
+                <button
+                  type="button"
+                  onClick={openMoonNightPopup}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 border border-blue-700 shadow-md transition-all cursor-pointer"
                 >
                   <span>Open Registration Form →</span>
+                </button>
+                <a
+                  href="https://tally.so/r/vGl0pX"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-mono text-sm font-bold uppercase tracking-wider px-6 py-4 border border-slate-300 transition-all cursor-pointer"
+                >
+                  <span>Direct Tally Link</span>
+                  <ExternalLink className="size-4" />
                 </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

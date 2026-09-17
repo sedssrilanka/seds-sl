@@ -8,14 +8,20 @@ interface TallyEmbedProps {
   tallyUrl: string;
   title?: string;
   className?: string;
-  height?: string;
+  height?: string | number;
+  transparentBackground?: boolean;
+  hideTitle?: boolean;
+  formEventsForwarding?: boolean;
 }
 
 export function TallyEmbed({
   tallyUrl,
-  title = "Event Feedback Form",
+  title = "International Observe the Moon Night",
   className,
-  height = "1850px",
+  height = "937",
+  transparentBackground = false,
+  hideTitle = true,
+  formEventsForwarding = true,
 }: TallyEmbedProps) {
   // Ensure the URL uses the official Tally embed format with required query parameters
   const embedUrl = React.useMemo(() => {
@@ -25,20 +31,20 @@ export function TallyEmbed({
       const processedUrl = tallyUrl.replace("tally.so/r/", "tally.so/embed/");
       const url = new URL(processedUrl);
 
-      if (!url.searchParams.has("alignLeft")) {
-        url.searchParams.set("alignLeft", "1");
-      }
-      if (!url.searchParams.has("hideTitle")) {
-        url.searchParams.set("hideTitle", "1");
-      }
-      if (!url.searchParams.has("transparentBackground")) {
-        url.searchParams.set("transparentBackground", "1");
-      }
       if (!url.searchParams.has("dynamicHeight")) {
         url.searchParams.set("dynamicHeight", "1");
       }
-      if (!url.searchParams.has("formEventsForwarding")) {
+      if (hideTitle && !url.searchParams.has("hideTitle")) {
+        url.searchParams.set("hideTitle", "1");
+      }
+      if (
+        formEventsForwarding &&
+        !url.searchParams.has("formEventsForwarding")
+      ) {
         url.searchParams.set("formEventsForwarding", "1");
+      }
+      if (transparentBackground) {
+        url.searchParams.set("transparentBackground", "1");
       }
 
       return url.toString();
@@ -46,9 +52,13 @@ export function TallyEmbed({
       // Fallback formatting if raw URL string is passed
       const raw = tallyUrl.replace("tally.so/r/", "tally.so/embed/");
       const glue = raw.includes("?") ? "&" : "?";
-      return `${raw}${glue}alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1&formEventsForwarding=1`;
+      let params = "dynamicHeight=1";
+      if (hideTitle) params += "&hideTitle=1";
+      if (formEventsForwarding) params += "&formEventsForwarding=1";
+      if (transparentBackground) params += "&transparentBackground=1";
+      return `${raw}${glue}${params}`;
     }
-  }, [tallyUrl]);
+  }, [tallyUrl, transparentBackground, hideTitle, formEventsForwarding]);
 
   React.useEffect(() => {
     const loadEmbeds = () => {
@@ -69,12 +79,12 @@ export function TallyEmbed({
     };
 
     loadEmbeds();
-  }, []);
+  }, [embedUrl]);
 
   if (!tallyUrl) {
     return (
       <div className="p-8 text-center border border-dashed border-slate-300 rounded-none bg-slate-50 text-slate-500 font-mono text-sm">
-        No feedback form URL configured for this event.
+        No form URL configured for this event.
       </div>
     );
   }
@@ -82,11 +92,12 @@ export function TallyEmbed({
   return (
     <div
       className={cn("w-full relative overflow-visible rounded-none", className)}
-      style={{ minHeight: height }}
+      style={{ minHeight: typeof height === "number" ? `${height}px` : height }}
     >
       <iframe
         data-tally-src={embedUrl}
         src={embedUrl}
+        loading="lazy"
         width="100%"
         height={height}
         frameBorder="0"
@@ -94,7 +105,10 @@ export function TallyEmbed({
         marginWidth={0}
         title={title}
         scrolling="no"
-        style={{ overflow: "hidden", minHeight: height }}
+        style={{
+          overflow: "hidden",
+          minHeight: typeof height === "number" ? `${height}px` : height,
+        }}
         className="w-full border-0"
       />
       <Script

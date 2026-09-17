@@ -28,8 +28,8 @@ export function EventCountdownTimer({
   });
 
   useEffect(() => {
-    // Default to September 19, 2026 18:30:00 IST (+05:30) if targetDate not passed
-    const defaultDateString = "2026-09-19T18:30:00+05:30";
+    // Default to September 21, 2026 19:00:00 IST (+05:30) if targetDate not passed
+    const defaultDateString = "2026-09-21T19:00:00+05:30";
     const target = new Date(targetDate || defaultDateString).getTime();
 
     const calculate = () => {

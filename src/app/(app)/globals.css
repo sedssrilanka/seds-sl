@@ -949,3 +949,36 @@ body::-webkit-scrollbar,
   transform-origin: 0% 50%;
   animation: indeterminate-progress 1.2s infinite ease-in-out;
 }
+
+/* Automatic Body Scroll Lock whenever any Tally Popup or modal is present */
+html:has(iframe[src*="tally.so"]),
+body:has(iframe[src*="tally.so"]),
+html:has(iframe[data-tally-src]),
+body:has(iframe[data-tally-src]),
+html:has([data-tally-popup]),
+body:has([data-tally-popup]),
+html:has(.tally-popup),
+body:has(.tally-popup) {
+  overflow: hidden !important;
+  touch-action: none !important;
+}
+
+/* Tally Popup & Side Drawer Mobile & Desktop Smooth Scrolling */
+.tally-popup,
+.tally-popup-container,
+.tally-modal,
+[data-tally-popup],
+iframe[data-tally-src],
+iframe[src*="tally.so"] {
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain !important;
+  touch-action: pan-y !important;
+  pointer-events: auto !important;
+}
+
+.tally-popup-container,
+.tally-popup-content {
+  overflow-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  max-height: 100vh !important;
+}

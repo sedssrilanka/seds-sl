@@ -70,9 +70,9 @@ export const fetchProjects = async (
         id: "moon-2026",
         name: "International Observe the Moon Night 2026",
         description:
-          "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observations, and planetary exploration.",
+          "Virtual lunar celebration organized in collaboration with SEDS India, featuring live telescope streaming by SEDS Celestia on Monday, September 21, 2026.",
         image: { url: "/images/projects/iotm-day-2026.png" },
-        chapterName: "SEDS Sri Lanka Flagship Event",
+        chapterName: "SEDS Sri Lanka × SEDS India Collaboration",
         createdAt: "2026-09-01T00:00:00.000Z",
         slug: "observe-the-moon-night/2026",
         customLink: "/projects/observe-the-moon-night",

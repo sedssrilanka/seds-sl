@@ -1,12 +1,12 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, MessageSquareHeart } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { motion } from "motion/react";
 
 import { SpaceScenePlaceholder } from "./moon-scene";
+import { openMoonNightPopup } from "@/utilities/openMoonNightPopup";
 
 const MoonScene = dynamic(() => import("./moon-scene"), {
   ssr: false,
@@ -39,7 +39,7 @@ export function ObserveMoonHero({
   endTime,
   locations,
   agenda,
-  description = "Join SEDS Sri Lanka for an annual global celebration of lunar science, telescopic observation, and space exploration. Connect with observers worldwide as we look up at the Moon together.",
+  description = "Join SEDS Sri Lanka and SEDS India for a live virtual celebration of International Observe the Moon Night 2026. Experience live telescopic streaming powered by SEDS Celestia, guided scientific sessions, and interactive discussions.",
   slug,
   feedbackUrl,
   isFeedbackActive = true,
@@ -58,7 +58,7 @@ export function ObserveMoonHero({
           month: "short",
           day: "numeric",
         })
-      : "Sat, Sep 19";
+      : "Mon, Sep 21";
 
   // Derive location string from locations array
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -70,7 +70,7 @@ export function ObserveMoonHero({
   const hasAgenda = Boolean(agenda && agenda.length > 0);
 
   return (
-    <section className="relative w-full min-h-[90vh] lg:min-h-screen flex items-center justify-center overflow-hidden border-b border-border/60 bg-background">
+    <section className="relative w-full min-h-[90vh] lg:min-h-screen flex items-center justify-center overflow-x-clip border-b border-border/60 bg-background">
       {/* 3D Moon & Star Field Canvas Background */}
       <MoonScene />
 
@@ -138,8 +138,15 @@ export function ObserveMoonHero({
               transition={{ duration: 0.6, delay: 0.4 }}
               className="flex flex-wrap items-center gap-4 pt-4"
             >
-              <Button asChild variant="default" size="lg" bleed={true}>
-                <a href="#dark-map-section">View Locations & Details</a>
+              <Button
+                type="button"
+                variant="default"
+                size="lg"
+                bleed={true}
+                onClick={openMoonNightPopup}
+                className="cursor-pointer"
+              >
+                Register for Moon Night
               </Button>
 
               {hasAgenda && (
@@ -155,16 +162,6 @@ export function ObserveMoonHero({
                   }}
                 >
                   Explore Event Agenda
-                </Button>
-              )}
-              {isFeedbackActive && feedbackUrl && (
-                <Button asChild variant="outline" size="lg" bleed={true}>
-                  <Link
-                    href={`/projects/${slug || `observe-the-moon-night/${year}`}/feedback`}
-                  >
-                    <MessageSquareHeart className="size-4 mr-2 text-primary" />
-                    Give Event Feedback
-                  </Link>
                 </Button>
               )}
             </motion.div>

@@ -251,37 +251,41 @@ function MoonSceneCanvas() {
   const isLight = resolvedTheme === "light";
 
   return (
-    <Canvas
-      style={{
-        position: "absolute",
-        top: 0,
-        left: 0,
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-      }}
-    >
-      <IsometricCamera />
+    <div className="absolute inset-0 w-full h-full pointer-events-none touch-pan-y z-0 select-none [&_*]:pointer-events-none [&_canvas]:touch-pan-y">
+      <Canvas
+        className="pointer-events-none touch-pan-y"
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          pointerEvents: "none",
+          touchAction: "pan-y",
+        }}
+      >
+        <IsometricCamera />
 
-      <ambientLight intensity={isLight ? 1.2 : 0.6} />
-      <directionalLight
-        position={[10, 15, 10]}
-        intensity={isLight ? 1.8 : 1.2}
-      />
+        <ambientLight intensity={isLight ? 1.2 : 0.6} />
+        <directionalLight
+          position={[10, 15, 10]}
+          intensity={isLight ? 1.8 : 1.2}
+        />
 
-      <Stars
-        radius={100}
-        depth={50}
-        count={isLight ? 1000 : 2500}
-        factor={3}
-        saturation={0}
-        fade
-        speed={1}
-      />
+        <Stars
+          radius={100}
+          depth={50}
+          count={isLight ? 1000 : 2500}
+          factor={3}
+          saturation={0}
+          fade
+          speed={1}
+        />
 
-      <InfiniteGrid />
-      <CleanEarthMoonSystem />
-    </Canvas>
+        <InfiniteGrid />
+        <CleanEarthMoonSystem />
+      </Canvas>
+    </div>
   );
 }
 
