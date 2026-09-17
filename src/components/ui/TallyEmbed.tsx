@@ -79,7 +79,7 @@ export function TallyEmbed({
     };
 
     loadEmbeds();
-  }, [embedUrl]);
+  }, []);
 
   if (!tallyUrl) {
     return (
