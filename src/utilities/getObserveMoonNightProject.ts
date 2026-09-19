@@ -70,8 +70,7 @@ export async function getObserveMoonNightProject(
     {
       time: "07:25 PM",
       stage: "SESSION 02",
-      title:
-        "Lunar Maria Keynote: Northern & Eastern Basaltic Seas (7 Maria)",
+      title: "Lunar Maria Keynote: Northern & Eastern Basaltic Seas (7 Maria)",
       description:
         "Scientific keynote on lunar basalt maria formation covering Day 1 features: Mare Frigoris (Sea of Cold), Mare Imbrium (Sea of Rains), Mare Nubium (Sea of Clouds), Mare Serenitatis (Sea of Serenity), Mare Tranquillitatis (Sea of Tranquility), Mare Fecunditatis (Sea of Fertility), and Mare Crisium (Sea of Crises).",
     },
@@ -86,8 +85,7 @@ export async function getObserveMoonNightProject(
     {
       time: "08:45 PM",
       stage: "SESSION 04",
-      title:
-        "Telescopic Target 03: Apennine Mountains (Montes Apenninus)",
+      title: "Telescopic Target 03: Apennine Mountains (Montes Apenninus)",
       description:
         "Guided telescopic exploration of the towering Apennine Mountains (Montes Apenninus, Mountain Range #03) rising over 5,000 meters along the lunar terminator bordering Mare Imbrium and Mare Serenitatis.",
     },
@@ -119,8 +117,7 @@ export async function getObserveMoonNightProject(
     {
       time: "07:25 PM",
       stage: "SESSION 02",
-      title:
-        "Lunar Maria Keynote: Central, Limb & Serpent Seas (8 Maria)",
+      title: "Lunar Maria Keynote: Central, Limb & Serpent Seas (8 Maria)",
       description:
         "Scientific presentation exploring 8 basaltic maria: Mare Vaporum (Sea of Vapors), Mare Insularum (Sea of Isles), Mare Nectaris (Sea of Nectar), Mare Humboldtianum (Humboldt’s Sea), Mare Anguis (Serpent Sea), Mare Undarum (Sea of Waves), Mare Spumans (Sea of Foam), and Mare Marginis (Border Sea).",
     },

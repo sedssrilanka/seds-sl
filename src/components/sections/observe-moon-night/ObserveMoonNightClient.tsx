@@ -298,13 +298,14 @@ export function ObserveMoonNightClient({
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                   Live optical telescope feeds will be streamed directly to your
                   screens powered by <strong>SEDS Celestia</strong> (Day 1) and{" "}
-                  <strong>SEDS Kumaraguru</strong> (Day 2) as streaming partners.
-                  Tune in on{" "}
+                  <strong>SEDS Kumaraguru</strong> (Day 2) as streaming
+                  partners. Tune in on{" "}
                   <strong>
                     September 21 & 22, 2026 from 7:00 PM to 11:00 PM IST daily
                   </strong>{" "}
-                  for in-depth lunar geology keynotes, live telescopic terminator
-                  sweeps starting at 8:00 PM onward, and interactive trivia.
+                  for in-depth lunar geology keynotes, live telescopic
+                  terminator sweeps starting at 8:00 PM onward, and interactive
+                  trivia.
                 </p>
               </div>
 
@@ -315,13 +316,15 @@ export function ObserveMoonNightClient({
                   <span>ASTRONOMICAL OBSERVATION & BROADCAST ADVISORY</span>
                 </div>
                 <p className="text-xs md:text-sm text-muted-foreground font-mono leading-relaxed">
-                  Real-time telescopic imaging across both <strong>Day 01</strong> and{" "}
-                  <strong>Day 02</strong> is inherently subject to local atmospheric seeing,
-                  cloud cover, and celestial visibility at our respective partner observatory
-                  stations. To ensure a seamless and continuous learning experience, the
-                  broadcast may dynamically transition between real-time telescope feeds,
-                  secondary observatory angles, and curated high-resolution lunar archival
-                  footage should weather variations or technical calibrations arise.
+                  Real-time telescopic imaging across both{" "}
+                  <strong>Day 01</strong> and <strong>Day 02</strong> is
+                  inherently subject to local atmospheric seeing, cloud cover,
+                  and celestial visibility at our respective partner observatory
+                  stations. To ensure a seamless and continuous learning
+                  experience, the broadcast may dynamically transition between
+                  real-time telescope feeds, secondary observatory angles, and
+                  curated high-resolution lunar archival footage should weather
+                  variations or technical calibrations arise.
                 </p>
               </div>
             </div>
@@ -343,8 +346,8 @@ export function ObserveMoonNightClient({
                   Event Agenda & Schedule
                 </h2>
                 <p className="text-sm md:text-base text-muted-foreground">
-                  Follow our 2-day live broadcast schedule from initial setup to guided observations
-                  and trivia awards.
+                  Follow our 2-day live broadcast schedule from initial setup to
+                  guided observations and trivia awards.
                 </p>
               </div>
 
@@ -371,12 +374,18 @@ export function ObserveMoonNightClient({
                           <div className="flex items-center gap-1.5">
                             <span
                               className={`inline-block size-1.5 rounded-full ${
-                                isActive ? "bg-primary animate-pulse" : "bg-muted-foreground/40"
+                                isActive
+                                  ? "bg-primary animate-pulse"
+                                  : "bg-muted-foreground/40"
                               }`}
                             />
-                            <span className="font-extrabold">{day.dayLabel}</span>
+                            <span className="font-extrabold">
+                              {day.dayLabel}
+                            </span>
                           </div>
-                          <span className="text-[11px] font-medium opacity-90">{day.shortDate}</span>
+                          <span className="text-[11px] font-medium opacity-90">
+                            {day.shortDate}
+                          </span>
                         </button>
                       );
                     })}

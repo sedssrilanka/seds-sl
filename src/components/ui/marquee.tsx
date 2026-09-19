@@ -27,7 +27,8 @@ export function Marquee({
 }: MarqueeProps) {
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
-  const useDarkFade = fadeColor === "dark" || (fadeColor !== "light" && !isLight);
+  const useDarkFade =
+    fadeColor === "dark" || (fadeColor !== "light" && !isLight);
 
   return (
     <div
