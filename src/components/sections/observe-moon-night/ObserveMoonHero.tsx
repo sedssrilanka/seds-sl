@@ -87,10 +87,6 @@ export function ObserveMoonHero({
       {/* 3D Moon & Star Field Canvas Background */}
       <MoonScene />
 
-      {/* CONTINUOUS VISIBLE VERTICAL MARGIN GUIDE LINES & GRID GUIDES */}
-      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl border-x border-border/80 pointer-events-none z-30" />
-      <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] md:w-full max-w-7xl pointer-events-none grid grid-cols-4 md:grid-cols-12 divide-x divide-border/40 z-30 opacity-80" />
-
       {/* Hero Content Overlay */}
       <div className="w-full max-w-7xl mx-auto px-4 md:px-8 relative z-40 py-16 md:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">

@@ -106,7 +106,7 @@ export function EventCountdownTimer({
                   key={idx}
                   initial={{ opacity: 0, scale: 0.95 }}
                   whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: idx * 0.08 }}
                   className="p-6 md:p-8 text-center flex flex-col items-center justify-center space-y-2 bg-background hover:bg-muted/10 transition-colors"
                 >

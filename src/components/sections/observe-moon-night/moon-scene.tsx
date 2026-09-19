@@ -21,7 +21,7 @@ function useScrollAnimation() {
       setScrollY(scrollProgress);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
@@ -67,7 +67,6 @@ function getThemeColors(isLight: boolean) {
 }
 
 // Isometric Camera positioned opposite to text with scroll-driven zoom & tilt
-// Isometric Camera setup with smooth vertical up/down movement on scroll
 function IsometricCamera() {
   const { camera, size } = useThree();
   const { scrollY } = useScrollAnimation();
@@ -188,7 +187,7 @@ function CleanEarthMoonSystem() {
     return new THREE.BufferGeometry().setFromPoints(points);
   }, []);
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const time = state.clock.getElapsedTime();
 
     // 1. Earth self-rotation accelerates as user scrolls

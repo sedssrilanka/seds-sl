@@ -355,12 +355,12 @@ export function ObserveMoonNightClient({
                 {highlights.map((h, idx) => (
                   <motion.div
                     key={idx}
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false, margin: "-40px" }}
+                    viewport={{ once: true }}
                     transition={{
-                      duration: 0.5,
-                      delay: idx * 0.1,
+                      duration: 0.4,
+                      delay: idx * 0.08,
                       ease: "easeOut",
                     }}
                     className="p-8 bg-background flex flex-col space-y-4"
