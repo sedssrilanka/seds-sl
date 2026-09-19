@@ -77,7 +77,7 @@ export function EventCountdownTimer({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-widest">
             <Timer className="size-4 text-primary animate-pulse" />
-            <span>COUNTDOWN TO LUNAR KICKOFF (SRI LANKA TIME +05:30)</span>
+            <span>COUNTDOWN TO LUNAR KICKOFF (IST +05:30)</span>
           </div>
           <div className="text-[11px] font-mono text-muted-foreground uppercase hidden sm:block border border-border/60 px-2 py-0.5 bg-background">
             OFFICIAL NASA OBSERVE MOON NIGHT
@@ -96,7 +96,7 @@ export function EventCountdownTimer({
             <div className="p-8 bg-background text-center border border-border/60 flex items-center justify-center gap-3">
               <Sparkles className="size-6 text-primary animate-spin" />
               <span className="text-xl font-mono font-extrabold uppercase text-primary tracking-wider">
-                EVENT IS LIVE NOW IN SRI LANKA!
+                EVENT IS LIVE NOW!
               </span>
             </div>
           ) : (
