@@ -44,21 +44,34 @@ export function ObserveMoonHero({
   feedbackUrl,
   isFeedbackActive = true,
 }: ObserveMoonHeroProps) {
-  const startDateObj = startTime
-    ? new Date(startTime)
-    : eventDate
-      ? new Date(eventDate)
-      : null;
+  const startDateObj = startTime ? new Date(startTime) : null;
+  const endDateObj = endTime ? new Date(endTime) : null;
 
-  const heroDateDisplay =
-    startDateObj && !isNaN(startDateObj.getTime())
-      ? startDateObj.toLocaleDateString("en-US", {
-          timeZone: "Asia/Colombo",
-          weekday: "short",
-          month: "short",
-          day: "numeric",
-        })
-      : "Mon, Sep 21";
+  let heroDateDisplay = eventDate || "Sep 21 – 22, 2026";
+  if (!eventDate && startDateObj && !isNaN(startDateObj.getTime())) {
+    if (
+      endDateObj &&
+      !isNaN(endDateObj.getTime()) &&
+      startDateObj.getDate() !== endDateObj.getDate()
+    ) {
+      heroDateDisplay = `${startDateObj.toLocaleDateString("en-US", {
+        timeZone: "Asia/Colombo",
+        month: "short",
+        day: "numeric",
+      })} – ${endDateObj.toLocaleDateString("en-US", {
+        timeZone: "Asia/Colombo",
+        month: "short",
+        day: "numeric",
+      })}`;
+    } else {
+      heroDateDisplay = startDateObj.toLocaleDateString("en-US", {
+        timeZone: "Asia/Colombo",
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+      });
+    }
+  }
 
   // Derive location string from locations array
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

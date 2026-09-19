@@ -7,14 +7,14 @@ import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
 export const metadata: Metadata = {
   title: "International Observe the Moon Night 2026 | SEDS Sri Lanka",
   description:
-    "Join SEDS Sri Lanka and SEDS India on Monday, September 21, 2026 from 7:00 PM IST onwards for an annual virtual celebration of lunar science with live telescope streaming powered by SEDS Celestia.",
+    "Join SEDS Sri Lanka and SEDS India on September 21 – 22, 2026 for a 2-day annual virtual celebration of lunar science with live telescope streaming powered by SEDS Celestia (Day 1) and SEDS Kumaraguru (Day 2).",
   alternates: {
     canonical: "/projects/observe-the-moon-night",
   },
   openGraph: mergeOpenGraph({
     title: "International Observe the Moon Night 2026 | SEDS Sri Lanka",
     description:
-      "Join SEDS Sri Lanka and SEDS India on Monday, September 21, 2026 from 7:00 PM IST onwards for an annual virtual celebration of lunar science with live telescope streaming powered by SEDS Celestia.",
+      "Join SEDS Sri Lanka and SEDS India on September 21 – 22, 2026 for a 2-day annual virtual celebration of lunar science with live telescope streaming powered by SEDS Celestia (Day 1) and SEDS Kumaraguru (Day 2).",
     url: "/projects/observe-the-moon-night",
     type: "website",
     images: [
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "International Observe the Moon Night 2026 | SEDS Sri Lanka",
     description:
-      "Join SEDS Sri Lanka and SEDS India on Monday, September 21, 2026 for a live virtual lunar observation with stream powered by SEDS Celestia.",
+      "Join SEDS Sri Lanka and SEDS India on September 21 – 22, 2026 for a 2-day live virtual lunar observation with streams powered by SEDS Celestia and SEDS Kumaraguru.",
     images: ["/images/projects/iotm-day-2026.png"],
     site: "@sedssl",
     creator: "@sedssl",

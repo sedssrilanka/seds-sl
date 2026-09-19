@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import { Marquee } from "@/components/ui/marquee";
 import { ObserveMoonHero } from "./ObserveMoonHero";
 import { SriLankaDarkMap } from "./SriLankaDarkMap";
 import { EventCountdownTimer } from "./EventCountdownTimer";
@@ -119,7 +120,7 @@ export function ObserveMoonNightClient({
 
   // Dynamic agenda from Payload CMS collection (Rendered ONLY if populated in database)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const activeAgenda =
+  const rawAgenda =
     (eventData as any)?.agenda && (eventData as any).agenda.length > 0
       ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (eventData as any).agenda.map((item: any) => ({
@@ -129,6 +130,41 @@ export function ObserveMoonNightClient({
           desc: item.description,
         }))
       : [];
+
+  // Multi-day agenda days (with tabs) or single-day fallback
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const agendaDays =
+    (eventData as any)?.agendaDays && (eventData as any).agendaDays.length > 0
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (eventData as any).agendaDays.map((day: any) => ({
+          dayId: day.dayId,
+          dayLabel: day.dayLabel,
+          date: day.date,
+          shortDate: day.shortDate,
+          partnerBadge: day.partnerBadge,
+          items: (day.items || []).map((item: any) => ({
+            time: item.time,
+            stage: item.stage || "SESSION",
+            title: item.title,
+            desc: item.description,
+          })),
+        }))
+      : rawAgenda.length > 0
+        ? [
+            {
+              dayId: "day-1",
+              dayLabel: "Day 01",
+              date: eventData?.eventDate || "Monday, September 21, 2026",
+              shortDate: "Mon, Sep 21",
+              partnerBadge: "Streamed via SEDS Celestia",
+              items: rawAgenda,
+            },
+          ]
+        : [];
+
+  const [activeDayIdx, setActiveDayIdx] = useState(0);
+  const currentDay = agendaDays[activeDayIdx] || agendaDays[0];
+  const activeDayItems = currentDay?.items || rawAgenda;
 
   // Dynamic partners list from Payload CMS collection (Rendered ONLY if populated in database)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -190,6 +226,48 @@ export function ObserveMoonNightClient({
           isFeedbackActive={eventData?.isFeedbackActive}
         />
 
+        {/* LOGO RUNNER STRIP NEXT TO / BELOW HERO */}
+        {partnersList.length > 0 && (
+          <div className="w-full border-b border-border/60 bg-background/80 backdrop-blur-md py-4 overflow-hidden relative z-30">
+            <div className="max-w-7xl mx-auto px-4 md:px-8">
+              <Marquee
+                pauseOnHover={true}
+                fade={true}
+                numberOfCopies={3}
+                className="py-1 [--duration:24s] [--gap:4.5rem]"
+              >
+                {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                {partnersList.map((partner: any, idx: number) => (
+                  <a
+                    key={idx}
+                    href={partner.websiteUrl || "#"}
+                    target={partner.websiteUrl ? "_blank" : undefined}
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center justify-center text-center gap-1.5 group opacity-85 hover:opacity-100 transition-all shrink-0 px-4"
+                  >
+                    <div className="h-10 md:h-12 flex items-center justify-center">
+                      {partner.logo?.url ? (
+                        <img
+                          src={partner.logo.url}
+                          alt={partner.name}
+                          className="max-h-9 md:max-h-11 w-auto max-w-[170px] object-contain filter brightness-100 group-hover:scale-105 transition-transform duration-200"
+                        />
+                      ) : (
+                        <span className="text-sm font-bold font-mono text-foreground uppercase tracking-wider">
+                          {partner.name}
+                        </span>
+                      )}
+                    </div>
+                    <span className="text-[10px] md:text-[11px] font-mono font-medium uppercase tracking-wider text-muted-foreground group-hover:text-primary transition-colors whitespace-nowrap">
+                      {partner.partnershipType || "Partner"}
+                    </span>
+                  </a>
+                ))}
+              </Marquee>
+            </div>
+          </div>
+        )}
+
         {/* DEDICATED FULL-WIDTH LIVE COUNTDOWN SECTION WITH EVENT DATE & TIME */}
         <EventCountdownTimer
           targetDate={eventData?.startTime || "2026-09-21T19:00:00+05:30"}
@@ -219,34 +297,31 @@ export function ObserveMoonNightClient({
                 </p>
                 <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                   Live optical telescope feeds will be streamed directly to your
-                  screens powered by <strong>SEDS Celestia</strong> as the
-                  official stream provider. Tune in from anywhere on{" "}
+                  screens powered by <strong>SEDS Celestia</strong> (Day 1) and{" "}
+                  <strong>SEDS Kumaraguru</strong> (Day 2) as streaming partners.
+                  Tune in on{" "}
                   <strong>
-                    Monday, September 21, 2026 from 7:00 PM to 11:00 PM IST
+                    September 21 & 22, 2026 from 7:00 PM to 11:00 PM IST daily
                   </strong>{" "}
-                  for an evening of lunar geology, live high-resolution crater
-                  observations from 8:00 PM onward, and interactive trivia.
+                  for in-depth lunar geology keynotes, live telescopic terminator
+                  sweeps starting at 8:00 PM onward, and interactive trivia.
                 </p>
               </div>
 
               {/* Collaboration & Stream Advisory Note */}
-              <div className="p-6 border border-border/80 bg-card/40 backdrop-blur-md space-y-2">
+              <div className="p-6 border border-border/80 bg-card/40 backdrop-blur-md space-y-2.5">
                 <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-wider">
                   <CloudSun className="size-4 text-primary" />
-                  <span>BROADCAST & OBSERVATION SCHEDULE</span>
+                  <span>ASTRONOMICAL OBSERVATION & BROADCAST ADVISORY</span>
                 </div>
                 <p className="text-xs md:text-sm text-muted-foreground font-mono leading-relaxed">
-                  Broadcast inaugurates at <strong>7:00 PM IST</strong> with
-                  keynote talks, followed by live telescopic lunar observation
-                  starting from <strong>8:00 PM IST onward</strong> through{" "}
-                  <strong>11:00 PM IST</strong>. Guided telescope views will
-                  spotlight 6 premier telescopic targets along the terminator:{" "}
-                  <strong>Plato Crater</strong>, <strong>Alpine Valley</strong>,{" "}
-                  <strong>Apennine Mountains</strong>,{" "}
-                  <strong>Catena Davy</strong>,{" "}
-                  <strong>Alphonsus Crater</strong>, and the{" "}
-                  <strong>Straight Wall</strong>, alongside historic Apollo
-                  landing sites.
+                  Real-time telescopic imaging across both <strong>Day 01</strong> and{" "}
+                  <strong>Day 02</strong> is inherently subject to local atmospheric seeing,
+                  cloud cover, and celestial visibility at our respective partner observatory
+                  stations. To ensure a seamless and continuous learning experience, the
+                  broadcast may dynamically transition between real-time telescope feeds,
+                  secondary observatory angles, and curated high-resolution lunar archival
+                  footage should weather variations or technical calibrations arise.
                 </p>
               </div>
             </div>
@@ -312,13 +387,13 @@ export function ObserveMoonNightClient({
           </div>
         </div>
 
-        {/* SECTION 3: DYNAMIC EVENT TIMELINE & AGENDA (ONLY RENDERED IF AGENDA EXISTS IN DATABASE) */}
-        {activeAgenda.length > 0 && (
+        {/* SECTION 3: DYNAMIC EVENT TIMELINE & AGENDA (WITH STICKY TABS & MOBILE OPTIMIZATION) */}
+        {agendaDays.length > 0 && (
           <div
             id="agenda-section"
-            className="w-full border-b border-border/60 py-16 bg-background"
+            className="w-full border-b border-border/60 py-16 bg-background scroll-mt-16 relative"
           >
-            <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
+            <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-8">
               <div className="text-center max-w-3xl mx-auto space-y-3">
                 <div className="text-xs font-mono font-bold uppercase text-primary tracking-wider">
                   CHRONOLOGICAL TIMELINE
@@ -327,41 +402,98 @@ export function ObserveMoonNightClient({
                   Event Agenda & Schedule
                 </h2>
                 <p className="text-sm md:text-base text-muted-foreground">
-                  Follow our schedule from initial setup to guided observations
+                  Follow our 2-day live broadcast schedule from initial setup to guided observations
                   and trivia awards.
                 </p>
               </div>
+
+              {/* Sticky Day Selection Tabs for Desktop & Mobile */}
+              {agendaDays.length > 1 && (
+                <div className="sticky top-14 md:top-16 z-30 py-3 bg-background/95 backdrop-blur-md -mx-4 px-4 sm:mx-0 sm:px-0">
+                  <div className="max-w-md mx-auto grid grid-cols-2 gap-2 bg-card/60 p-1.5 border border-border/80 shadow-md">
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    {agendaDays.map((day: any, idx: number) => {
+                      const isActive = activeDayIdx === idx;
+                      return (
+                        <button
+                          key={day.dayId || idx}
+                          type="button"
+                          onClick={() => {
+                            setActiveDayIdx(idx);
+                          }}
+                          className={`py-2.5 px-3 md:px-4 font-mono text-xs md:text-sm font-bold uppercase tracking-wider transition-all duration-200 cursor-pointer flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-2 text-center select-none ${
+                            isActive
+                              ? "bg-primary/15 text-primary border border-primary/50 shadow-xs"
+                              : "text-muted-foreground hover:text-foreground hover:bg-card/80 border border-transparent"
+                          }`}
+                        >
+                          <div className="flex items-center gap-1.5">
+                            <span
+                              className={`inline-block size-1.5 rounded-full ${
+                                isActive ? "bg-primary animate-pulse" : "bg-muted-foreground/40"
+                              }`}
+                            />
+                            <span className="font-extrabold">{day.dayLabel}</span>
+                          </div>
+                          <span className="text-[11px] font-medium opacity-90">{day.shortDate}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Day Header Info Pill */}
+              {currentDay && (
+                <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 px-4 py-2.5 border border-primary/25 bg-primary/5 text-xs font-mono text-primary">
+                  <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-center sm:text-left">
+                    <span>{currentDay.dayLabel} TIMELINE</span>
+                    {currentDay.partnerBadge && (
+                      <span className="text-muted-foreground font-normal hidden sm:inline">
+                        — {currentDay.partnerBadge}
+                      </span>
+                    )}
+                  </div>
+                  <div className="text-muted-foreground font-medium text-center sm:text-right">
+                    {currentDay.date}
+                  </div>
+                </div>
+              )}
 
               {/* Dynamic Vertical Hairline Agenda Timeline */}
               <div className="relative max-w-4xl mx-auto">
                 <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
                 <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
 
-                <div className="border border-border/60 divide-y divide-border/60 bg-background relative z-0">
+                <div
+                  key={currentDay?.dayId || activeDayIdx}
+                  className="border border-border/60 divide-y divide-border/60 bg-background relative z-0"
+                >
                   {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                  {activeAgenda.map((item: any, idx: number) => (
+                  {activeDayItems.map((item: any, idx: number) => (
                     <motion.div
                       key={idx}
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: false }}
-                      transition={{ duration: 0.4, delay: idx * 0.08 }}
-                      className="p-6 md:p-8 bg-background flex flex-col md:flex-row md:items-center gap-6"
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: idx * 0.05 }}
+                      className="p-5 md:p-8 bg-background flex flex-col md:flex-row md:items-start gap-3.5 md:gap-6 hover:bg-card/25 transition-colors"
                     >
-                      <div className="shrink-0 space-y-1 w-36">
-                        <div className="text-xs font-mono font-bold uppercase text-primary tracking-wider">
+                      {/* Mobile Header: Stage + Time */}
+                      <div className="shrink-0 flex md:flex-col items-center md:items-start justify-between md:justify-start gap-2 w-full md:w-44 border-b md:border-b-0 pb-2.5 md:pb-0 border-border/40">
+                        <span className="text-[11px] font-mono font-bold uppercase text-primary tracking-wider border border-primary/25 bg-primary/10 px-2 py-0.5">
                           {item.stage}
-                        </div>
-                        <div className="text-lg font-bold font-mono text-foreground">
+                        </span>
+                        <span className="text-base md:text-lg font-bold font-mono text-foreground">
                           {item.time}
-                        </div>
+                        </span>
                       </div>
 
-                      <div className="flex-1 space-y-1 border-t md:border-t-0 md:border-l border-border/60 pt-4 md:pt-0 md:pl-6">
-                        <h3 className="text-lg font-bold text-foreground">
+                      {/* Content: Title + Description */}
+                      <div className="flex-1 space-y-1.5 pt-0.5 md:pt-0 md:border-l border-border/60 md:pl-6">
+                        <h3 className="text-base md:text-lg font-bold text-foreground leading-snug">
                           {item.title}
                         </h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">
+                        <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
                           {item.desc}
                         </p>
                       </div>

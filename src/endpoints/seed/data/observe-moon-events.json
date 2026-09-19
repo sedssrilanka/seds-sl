@@ -21,32 +21,32 @@
       {
         "time": "07:25 PM",
         "stage": "SESSION 02",
-        "title": "Lunar Science Keynote: Maria Formation & Historic Landing Sites",
-        "description": "Scientific presentation on lunar basalt maria (Sea of Rains & Sea of Tranquility), impact cratering, and geology of Apollo 11 & Apollo 15 landing sites."
+        "title": "Lunar Maria Keynote: Northern & Eastern Basaltic Seas (7 Maria)",
+        "description": "Scientific keynote on lunar basalt maria formation covering Day 1 features: Mare Frigoris, Mare Imbrium, Mare Nubium, Mare Serenitatis, Mare Tranquillitatis, Mare Fecunditatis, and Mare Crisium."
       },
       {
         "time": "08:00 PM",
         "stage": "SESSION 03",
-        "title": "Live Telescopic Observation Kickoff (Visible Sights: Plato Crater & Alpine Valley)",
-        "description": "Live telescope feed goes live! High-resolution observation of the dark lava-filled floor of Plato Crater and the dramatic lunar rift of the Alpine Valley (Vallis Alpes) slicing through the northern highlands."
+        "title": "Telescopic Target 01: Plato Crater & Mare Frigoris / Mare Imbrium",
+        "description": "Live high-magnification telescope stream kicks off! High-resolution observation of Plato Crater (Impact Crater #01) with its dark basaltic lava-filled floor situated between Mare Frigoris and Mare Imbrium."
       },
       {
         "time": "08:45 PM",
         "stage": "SESSION 04",
-        "title": "Highland Peaks & Apollo Sites (Visible Sights: Apennine Mountains & Apollo 15)",
-        "description": "Close-up inspection of the towering Apennine Mountains (Montes Apenninus) rising over 5,000 meters along the terminator, plus the Hadley Rille canyon and Apollo 15 landing region."
+        "title": "Telescopic Target 03: Apennine Mountains (Montes Apenninus)",
+        "description": "Guided telescopic exploration of the towering Apennine Mountains (Montes Apenninus, Mountain Range #03) rising over 5,000 meters along the lunar terminator bordering Mare Imbrium and Mare Serenitatis."
       },
       {
         "time": "09:30 PM",
         "stage": "SESSION 05",
-        "title": "Lunar Faults & Volcanic Vents (Visible Sights: Straight Wall & Alphonsus Crater)",
-        "description": "Telescopic exploration of the Straight Wall (Rupes Recta)—a famous 110-km lunar fault escarpment casting sharp shadows—along with Alphonsus Crater's central peak and the Catena Davy craterlet chain."
+        "title": "Telescopic Target 05 & Apollo Sites: Alphonsus Crater, Apollo 11 & Apollo 12",
+        "description": "Close-up inspection of Alphonsus Crater (Complex Crater #05 with dark pyroclastic volcanic vents), along with historic Apollo landing sites: Apollo 11 at Mare Tranquillitatis and Apollo 12 at Oceanus Procellarum."
       },
       {
         "time": "10:15 PM",
         "stage": "SESSION 06",
-        "title": "Live Moon Trivia Quiz, Q&A & Certificate Wrap-Up",
-        "description": "Interactive live astronomy trivia quiz, audience Q&A with telescope operators and astrophysicists, and digital participation certificate announcements before concluding at 11:00 PM."
+        "title": "Live Moon Trivia Quiz, Q&A & Day 1 Wrap-Up",
+        "description": "Interactive live lunar astronomy trivia quiz, Q&A with telescope operators and astrophysicists, Day 2 preview, and digital certificate announcements before concluding at 11:00 PM."
       }
     ],
     "locations": [

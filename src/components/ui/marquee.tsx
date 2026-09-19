@@ -8,6 +8,7 @@ export type MarqueeProps = HTMLAttributes<HTMLDivElement> & {
   pauseOnHover?: boolean;
   reverse?: boolean;
   fade?: boolean;
+  fadeColor?: "light" | "dark" | "theme";
   innerClassName?: string;
   numberOfCopies?: number;
 };
@@ -18,6 +19,7 @@ export function Marquee({
   pauseOnHover = false,
   reverse = false,
   fade = false,
+  fadeColor = "theme",
   className,
   innerClassName,
   numberOfCopies = 2,
@@ -25,6 +27,8 @@ export function Marquee({
 }: MarqueeProps) {
   const { resolvedTheme } = useTheme();
   const isLight = resolvedTheme === "light";
+  const useDarkFade = fadeColor === "dark" || (fadeColor !== "light" && !isLight);
+
   return (
     <div
       {...rest}
@@ -60,16 +64,20 @@ export function Marquee({
         <>
           <div
             className={`pointer-events-none absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r ${
-              isLight
-                ? "from-white/95 to-transparent"
-                : "from-black/95 to-transparent"
+              fadeColor === "dark"
+                ? "from-black/95 to-transparent"
+                : fadeColor === "light"
+                  ? "from-white/95 to-transparent"
+                  : "from-background to-transparent"
             }`}
           />
           <div
             className={`pointer-events-none absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l ${
-              isLight
-                ? "from-white/95 to-transparent"
-                : "from-black/95 to-transparent"
+              fadeColor === "dark"
+                ? "from-black/95 to-transparent"
+                : fadeColor === "light"
+                  ? "from-white/95 to-transparent"
+                  : "from-background to-transparent"
             }`}
           />
         </>
