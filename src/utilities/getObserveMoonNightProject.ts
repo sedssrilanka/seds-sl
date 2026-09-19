@@ -117,33 +117,30 @@ export async function getObserveMoonNightProject(
     {
       time: "07:25 PM",
       stage: "SESSION 02",
-      title: "Lunar Maria Keynote: Central, Limb & Serpent Seas (8 Maria)",
+      title: "Lunar Science Keynote: Central, Limb & Serpent Seas",
       description:
-        "Scientific presentation exploring 8 basaltic maria: Mare Vaporum (Sea of Vapors), Mare Insularum (Sea of Isles), Mare Nectaris (Sea of Nectar), Mare Humboldtianum (Humboldt’s Sea), Mare Anguis (Serpent Sea), Mare Undarum (Sea of Waves), Mare Spumans (Sea of Foam), and Mare Marginis (Border Sea).",
+        "Scientific keynote presentation exploring basaltic maria formation and lunar geology across the visible face of the Moon.",
     },
     {
       time: "08:00 PM",
       stage: "SESSION 03",
-      title:
-        "Telescopic Targets 02 & 04: Alpine Valley (Vallis Alpes) & Catena Davy",
+      title: "Live Telescopic Observation Phase 01 (TBA)",
       description:
-        "Live telescope stream powered by SEDS Kumaraguru! High-resolution observation of Alpine Valley / Vallis Alpes (Lunar Rift Valley #02) slicing through Montes Alpes, and the enigmatic Catena Davy (Craterlet Chain #04).",
+        "Live telescope stream powered by SEDS Kumaraguru! Primary telescopic targets along the terminator to be confirmed based on real-time atmospheric seeing conditions (TBA).",
     },
     {
       time: "08:45 PM",
       stage: "SESSION 04",
-      title:
-        "Telescopic Target 06: Straight Wall (Rupes Recta) Fault Escarpment",
+      title: "Live Telescopic Observation Phase 02 (TBA)",
       description:
-        "Close-up telescopic sweep of the famous Straight Wall (Rupes Recta, Fault Escarpment #06)—a 110-km long tectonic fault in eastern Mare Nubium casting dramatic terminator shadows.",
+        "High-magnification lunar relief sweeps and terminator crater inspection streamed live with SEDS Kumaraguru (TBA).",
     },
     {
       time: "09:30 PM",
       stage: "SESSION 05",
-      title:
-        "Historic Apollo Landing Sites: Apollo 14, 15, 16 & 17 Exploration",
+      title: "Historic Landing Zones & Maria Sweep (TBA)",
       description:
-        "Detailed telescopic sweep of historic lunar landing zones: Apollo 14 (Fra Mauro Formation), Apollo 15 (Hadley-Apennine / Hadley Rille), Apollo 16 (Descartes Highlands), and Apollo 17 (Taurus-Littrow Valley).",
+        "Guided telescopic exploration of historic Apollo touchdown regions and lunar basaltic maria (TBA).",
     },
     {
       time: "10:15 PM",
