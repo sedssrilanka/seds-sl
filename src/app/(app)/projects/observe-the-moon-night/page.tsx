@@ -5,7 +5,7 @@ import { getObserveMoonNightProject } from "@/utilities/getObserveMoonNightProje
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
 
 export const metadata: Metadata = {
-  title: "International Observe the Moon Night 2026 | SEDS Sri Lanka",
+  title: "International Observe the Moon Night 2026",
   description:
     "Join SEDS Sri Lanka and SEDS India on September 21 – 22, 2026 for a 2-day annual virtual celebration of lunar science with live telescope streaming powered by SEDS Celestia (Day 1) and SEDS Kumaraguru (Day 2).",
   alternates: {
