@@ -90,31 +90,31 @@ export function ObserveMoonNightClient({
   const highlights = [
     {
       icon: <Telescope className="size-8 text-primary" />,
-      title: "Live Telescopic Stream (SEDS Celestia)",
-      tag: "HD TELESCOPE FEED",
+      title: "Live Telescopic Streams (SEDS Celestia & SEDS Kumaraguru)",
+      tag: "HD TELESCOPE FEEDS",
       description:
-        "Watch live, high-resolution optical telescope feeds of the lunar surface broadcast by SEDS Celestia, highlighting craters, lunar maria, and the day-night terminator line.",
+        "High-resolution live lunar surface feeds streamed across 2 nights—featuring SEDS Celestia on Day 1 and SEDS Kumaraguru on Day 2—capturing 6 premier terminator relief targets and 15 basaltic maria.",
     },
     {
       icon: <Handshake className="size-8 text-primary" />,
-      title: "SEDS Sri Lanka × SEDS India Panel",
+      title: "SEDS Sri Lanka × SEDS India Initiative",
       tag: "JOINT COLLABORATION",
       description:
-        "A joint cross-border initiative featuring student space leaders, astronomy researchers, and guest speakers from both SEDS Sri Lanka and SEDS India.",
+        "A cross-border virtual initiative sanctioned under NASA's International Observe the Moon Night, uniting space student chapters, astrophysicists, and astronomy communicators across South Asia.",
     },
     {
       icon: <BookOpen className="size-8 text-primary" />,
-      title: "Lunar Science Keynotes & Geology",
+      title: "Lunar Science Keynotes & Apollo Sites",
       tag: "SCIENTIFIC SESSIONS",
       description:
-        "Explore lunar topography, Apollo and Artemis landing sites, water ice discoveries at the lunar South Pole, and future human space exploration.",
+        "In-depth lectures on lunar geology, basaltic maria formation, Apollo 11–17 historic landing zones, impact crater morphology, and future Artemis lunar exploration architectures.",
     },
     {
       icon: <Trophy className="size-8 text-primary" />,
-      title: "Live Moon Trivia & Certificates",
+      title: "Live Moon Trivia & Verified Certificates",
       tag: "INTERACTIVE QUIZ",
       description:
-        "Participate in a live real-time lunar science quiz, interact during the stream Q&A, and receive an official verified digital participation certificate.",
+        "Participate in real-time interactive astronomy quiz rounds, live Q&A sessions with observatory telescope operators, and receive an official verified digital certificate of participation.",
     },
   ];
 
@@ -328,66 +328,7 @@ export function ObserveMoonNightClient({
           </div>
         </div>
 
-        {/* SECTION 2: EVENT HIGHLIGHTS & EXPERIENCE (2x2 SEGMENTED GRID) */}
-        <div className="w-full border-b border-border/60 py-16 bg-background/60">
-          <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
-            <div className="text-center max-w-3xl mx-auto space-y-3">
-              <div className="text-xs font-mono font-bold uppercase text-primary tracking-wider">
-                PROGRAM HIGHLIGHTS
-              </div>
-              <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-foreground font-mono">
-                What You Will Experience
-              </h2>
-              <p className="text-sm md:text-base text-muted-foreground">
-                Designed for observers and space enthusiasts across Sri Lanka,
-                India, and the world.
-              </p>
-            </div>
-
-            {/* 2x2 Segmented Grid */}
-            <div className="relative">
-              <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
-              <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
-              <div className="absolute -top-6 -bottom-6 left-0 border-l border-border/60 pointer-events-none" />
-              <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60 border border-border/60 bg-background relative z-0">
-                {highlights.map((h, idx) => (
-                  <motion.div
-                    key={idx}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{
-                      duration: 0.4,
-                      delay: idx * 0.08,
-                      ease: "easeOut",
-                    }}
-                    className="p-8 bg-background flex flex-col space-y-4"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="p-3 bg-primary/10 border border-primary/20">
-                        {h.icon}
-                      </div>
-                      <span className="text-[11px] font-mono font-bold uppercase text-primary tracking-wider border border-primary/20 px-2.5 py-1">
-                        {h.tag}
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-bold text-foreground">
-                      {h.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">
-                      {h.description}
-                    </p>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* SECTION 3: DYNAMIC EVENT TIMELINE & AGENDA (WITH STICKY TABS & MOBILE OPTIMIZATION) */}
+        {/* SECTION 2: DYNAMIC EVENT TIMELINE & AGENDA (WITH STICKY TABS & MOBILE OPTIMIZATION) */}
         {agendaDays.length > 0 && (
           <div
             id="agenda-section"
@@ -504,6 +445,62 @@ export function ObserveMoonNightClient({
             </div>
           </div>
         )}
+
+        {/* SECTION 3: EVENT HIGHLIGHTS & EXPERIENCE (2x2 SEGMENTED GRID) */}
+        <div className="w-full border-b border-border/60 py-16 bg-background/60">
+          <div className="max-w-7xl mx-auto px-4 md:px-8 space-y-12">
+            <div className="text-center max-w-3xl mx-auto space-y-3">
+              <div className="text-xs font-mono font-bold uppercase text-primary tracking-wider">
+                PROGRAM HIGHLIGHTS
+              </div>
+              <h2 className="text-3xl md:text-4xl font-extrabold uppercase tracking-tight text-foreground font-mono">
+                What You Will Experience
+              </h2>
+              <p className="text-sm md:text-base text-muted-foreground">
+                Designed for observers and space enthusiasts across Sri Lanka,
+                India, and the world.
+              </p>
+            </div>
+
+            {/* 2x2 Segmented Grid */}
+            <div className="relative">
+              <div className="absolute -left-6 -right-6 top-0 border-t border-border/60 pointer-events-none" />
+              <div className="absolute -left-6 -right-6 bottom-0 border-b border-border/60 pointer-events-none" />
+              <div className="absolute -top-6 -bottom-6 left-0 border-l border-border/60 pointer-events-none" />
+              <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
+
+              <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-border/60 border border-border/60 bg-background relative z-0">
+                {highlights.map((h, idx) => (
+                  <motion.div
+                    key={idx}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      duration: 0.4,
+                      delay: idx * 0.08,
+                      ease: "easeOut",
+                    }}
+                    className="p-8 bg-background flex flex-col space-y-4"
+                  >
+                    <div>
+                      <div className="size-fit p-3 bg-primary/10 border border-primary/20">
+                        {h.icon}
+                      </div>
+                    </div>
+
+                    <h3 className="text-xl font-bold text-foreground">
+                      {h.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed flex-1">
+                      {h.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
 
         {/* DYNAMIC PARTNERS & SPONSORS SECTION (MINIMAL APPLE-LIKE & ADAPTIVE GRID) */}
         {partnersList.length > 0 && (
