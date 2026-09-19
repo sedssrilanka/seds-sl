@@ -46,8 +46,8 @@ export function openMoonNightPopup() {
     autoClose: 5000,
     hideTitle: true,
     emoji: {
-      text: "🌚",
-      animation: "bounce",
+      text: "🌙",
+      animation: "none",
     },
     onOpen: () => {
       lockBodyScroll();
