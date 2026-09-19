@@ -92,14 +92,26 @@ export function ObserveMoonHero({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Main Hero Card Container */}
           <div className="lg:col-span-8 space-y-6">
-            {/* Clean Event Title Tag (No outline, No icon) */}
+            {/* Official InOMN & Event Tag Lockup */}
             <motion.div
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="text-xs font-mono font-bold uppercase text-primary tracking-widest"
+              className="flex items-center gap-3.5"
             >
-              <span>{title.includes(year) ? title : `${title} ${year}`}</span>
+              <img
+                src="/images/projects/iotm-logo.png"
+                alt="International Observe the Moon Night Official Logo"
+                className="h-10 md:h-12 w-auto object-contain filter brightness-100 drop-shadow-sm"
+              />
+              <div className="flex flex-col">
+                <span className="text-xs md:text-sm font-mono font-bold uppercase text-primary tracking-widest">
+                  {title.includes(year) ? title : `${title} ${year}`}
+                </span>
+                <span className="text-[10px] md:text-[11px] font-mono text-muted-foreground uppercase tracking-wider">
+                  Global Initiative Sanctioned by NASA
+                </span>
+              </div>
             </motion.div>
 
             {/* Main Headline */}
@@ -113,25 +125,13 @@ export function ObserveMoonHero({
               <span className="text-primary">Moon Together</span>
             </motion.h1>
 
-            {/* Subtitle Description */}
-            {description && (
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-base sm:text-lg md:text-xl text-muted-foreground leading-relaxed max-w-2xl font-sans"
-              >
-                {description}
-              </motion.p>
-            )}
-
-            {/* Always Visible Short Event Date Pill (e.g. Sat, Sep 19) */}
+            {/* Always Visible Short Event Date Pill (e.g. Sep 21 – 22, 2026) */}
             {heroDateDisplay && (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-                className="pt-2"
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="pt-1"
               >
                 <div className="inline-flex items-center gap-2.5 border border-border/80 bg-background/95 backdrop-blur-md px-3.5 py-2 text-xs font-mono font-bold uppercase text-foreground tracking-wider shadow-xs">
                   <Calendar className="size-3.5 text-primary shrink-0" />
@@ -144,8 +144,8 @@ export function ObserveMoonHero({
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="flex flex-wrap items-center gap-4 pt-4"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="flex flex-wrap items-center gap-4 pt-3"
             >
               <Button
                 type="button"

@@ -201,6 +201,15 @@ export async function getObserveMoonNightProject(
     agendaDays,
     partners: [
       {
+        name: "InOMN (NASA)",
+        partnershipType: "Global Initiative",
+        websiteUrl: "https://moon.nasa.gov/observe-the-moon-night/",
+        logo: {
+          url: "/images/projects/iotm-logo.png",
+          alt: "International Observe the Moon Night Official Logo",
+        },
+      },
+      {
         name: "SEDS India",
         partnershipType: "Collaboration Partner",
         websiteUrl: "https://sedsindia.org",
