@@ -10,7 +10,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { PhoneInput } from "@/components/ui/phone-input";
 import {
   Select,
@@ -110,9 +109,6 @@ const joinSchema = z.object({
   statement: z
     .string()
     .min(10, "Please share why you want to join SEDS Sri Lanka"),
-  terms: z
-    .boolean()
-    .refine((val) => val === true, "You must accept the Code of Conduct"),
 });
 
 export type JoinUsFormValues = z.infer<typeof joinSchema>;
@@ -143,7 +139,6 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({
       institution: "",
       chapter: "Independent / General Member (National / Non-Affiliated)",
       statement: "",
-      terms: false,
     },
   });
 
@@ -214,7 +209,7 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({
             </Label>
             <Input
               id="fullName"
-              placeholder="e.g. Thawshi Srikanth"
+              placeholder="e.g. Kasun Perera"
               className="w-full bg-transparent border-0 px-0 py-1 text-foreground placeholder:text-muted-foreground/50 h-9"
               {...register("fullName")}
             />
@@ -374,45 +369,32 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({
             />
           </div>
 
-          {/* Row 6: Checkbox & Submit Button */}
+          {/* Row 6: Terms Notice & Submit Button */}
           <div className="p-4 md:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-background">
-            <div className="flex items-center gap-3">
-              <Checkbox
-                id="terms"
-                checked={watch("terms")}
-                onCheckedChange={(checked) =>
-                  setValue("terms", !!checked, { shouldValidate: true })
-                }
-                className="rounded-none"
-              />
-              <Label
-                htmlFor="terms"
-                className="text-xs text-muted-foreground cursor-pointer leading-relaxed"
+            <p className="text-xs text-muted-foreground leading-relaxed max-w-md">
+              By submitting this application, you agree to adhere to the SEDS
+              Sri Lanka{" "}
+              <Link
+                href="/code-of-conduct"
+                prefetch={false}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground underline hover:text-primary transition-colors font-medium"
               >
-                I agree to adhere to the SEDS Sri Lanka{" "}
-                <Link
-                  href="/code-of-conduct"
-                  prefetch={false}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground underline hover:text-primary transition-colors font-medium"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Code of Conduct
-                </Link>{" "}
-                &amp;{" "}
-                <Link
-                  href="/terms"
-                  prefetch={false}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground underline hover:text-primary transition-colors font-medium"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  Regulations
-                </Link>
-              </Label>
-            </div>
+                Code of Conduct
+              </Link>{" "}
+              &amp;{" "}
+              <Link
+                href="/terms"
+                prefetch={false}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-foreground underline hover:text-primary transition-colors font-medium"
+              >
+                Terms and Conditions
+              </Link>
+              .
+            </p>
 
             <Button
               type="submit"
@@ -429,12 +411,6 @@ export const JoinUsFormCodeBased: React.FC<JoinUsFormProps> = ({
           </div>
         </div>
       </div>
-
-      {errors.terms && (
-        <p className="text-xs text-destructive font-mono">
-          {errors.terms.message}
-        </p>
-      )}
     </form>
   );
 };

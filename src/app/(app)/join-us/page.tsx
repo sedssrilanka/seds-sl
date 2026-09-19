@@ -44,7 +44,7 @@ export default async function JoinUsPage() {
 
           {/* Form Container */}
           <div className="mt-10 lg:mt-14 max-w-4xl mx-auto space-y-4">
-            <div className="space-y-1">
+            <div className="space-y-1 px-4 md:px-0">
               <h2 className="text-xl md:text-2xl font-bold text-foreground">
                 Apply for National or Chapter Membership
               </h2>
