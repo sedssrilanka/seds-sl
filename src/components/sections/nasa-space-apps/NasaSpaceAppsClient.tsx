@@ -21,6 +21,7 @@ import {
   Lightbulb,
   Terminal,
   Compass,
+  ArrowRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -85,6 +86,38 @@ export function NasaSpaceAppsClient({
               </span>
             </div>
           </div>
+        </div>
+
+        {/* 2026 UNIVERSAL EVENT ANNOUNCEMENT BANNER */}
+        <div className="border border-primary/40 bg-primary/5 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="px-2 py-0.5 text-[10px] font-mono font-bold uppercase bg-primary text-primary-foreground">
+                2026 PARTICIPATION
+              </span>
+              <span className="text-xs font-mono font-bold text-foreground">
+                NASA Space Apps 2026 Universal Event Guide
+              </span>
+            </div>
+            <p className="text-xs font-mono text-muted-foreground">
+              Explore our open community guide for Sri Lankan innovators
+              participating in NASA Space Apps 2026, including Universal Event
+              registration and team formation.
+            </p>
+          </div>
+
+          <Link
+            href="/nasa-space-apps-colombo-2026-guide"
+            className="shrink-0 w-full sm:w-auto"
+          >
+            <Button
+              size="sm"
+              className="w-full font-mono font-bold text-xs uppercase tracking-wider gap-1.5 cursor-pointer"
+            >
+              Read Colombo 2026 Guide
+              <ArrowRight className="size-3.5" />
+            </Button>
+          </Link>
         </div>
 
         {/* MULTI-YEAR TIMELINE SWITCHER BAR — BLEEDING EDGE SEGMENTED */}

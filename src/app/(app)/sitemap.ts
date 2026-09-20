@@ -125,6 +125,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
         changeFrequency: "weekly",
         priority: 0.9,
       },
+      {
+        url: `${baseUrl}/nasa-space-apps-colombo-2026-guide`,
+        lastModified: new Date(),
+        changeFrequency: "weekly",
+        priority: 0.9,
+      },
       ...["2025", "2024", "2023", "2022", "2021", "2020", "2019"].map(
         (year) => ({
           url: `${baseUrl}/nasa-space-apps-challenge/${year}`,
