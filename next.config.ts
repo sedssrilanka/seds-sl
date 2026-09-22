@@ -60,21 +60,6 @@ const nextConfig: NextConfig = {
         destination: "/projects/seds-sri-lanka-asteroid-search-campaign",
         permanent: true,
       },
-      {
-        source: "/nasa-space-apps-colombo",
-        destination: "/nasa-space-apps-colombo-2026-guide",
-        permanent: true,
-      },
-      {
-        source: "/space-apps-colombo",
-        destination: "/nasa-space-apps-colombo-2026-guide",
-        permanent: true,
-      },
-      {
-        source: "/nasa-space-apps-2026-guide",
-        destination: "/nasa-space-apps-colombo-2026-guide",
-        permanent: true,
-      },
     ];
   },
   outputFileTracingIncludes: {
