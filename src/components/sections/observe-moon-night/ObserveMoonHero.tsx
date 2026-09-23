@@ -164,7 +164,7 @@ export function ObserveMoonHero({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="flex flex-wrap items-center gap-4 pt-3"
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-3 w-full sm:w-auto"
             >
               {isRegistrationActive ? (
                 <Button
@@ -173,7 +173,7 @@ export function ObserveMoonHero({
                   size="lg"
                   bleed={true}
                   onClick={openMoonNightPopup}
-                  className="cursor-pointer"
+                  className="w-full sm:w-auto cursor-pointer justify-center font-mono font-bold text-xs sm:text-sm"
                 >
                   Register for Moon Night
                 </Button>
@@ -184,30 +184,34 @@ export function ObserveMoonHero({
                       href={certificateUrl}
                       target="_blank"
                       rel="noopener noreferrer"
+                      className="w-full sm:w-auto block"
                     >
                       <Button
                         type="button"
                         variant="default"
                         size="lg"
                         bleed={true}
-                        className="cursor-pointer gap-2"
+                        className="w-full sm:w-auto cursor-pointer gap-2 justify-center font-mono font-bold text-xs sm:text-sm"
                       >
-                        <Award className="size-4" />
+                        <Award className="size-4 shrink-0" />
                         <span>Claim Certificate</span>
-                        <ExternalLink className="size-3.5 opacity-80" />
+                        <ExternalLink className="size-3.5 opacity-80 shrink-0" />
                       </Button>
                     </a>
                   )}
                   {isFeedbackActive && (
-                    <Link href="/projects/observe-the-moon-night/feedback">
+                    <Link
+                      href="/projects/observe-the-moon-night/feedback"
+                      className="w-full sm:w-auto block"
+                    >
                       <Button
                         type="button"
                         variant={isCertificateActive ? "outline" : "default"}
                         size="lg"
                         bleed={true}
-                        className="cursor-pointer gap-2"
+                        className="w-full sm:w-auto cursor-pointer gap-2 justify-center font-mono font-bold text-xs sm:text-sm"
                       >
-                        <MessageSquareHeart className="size-4 text-primary" />
+                        <MessageSquareHeart className="size-4 text-primary shrink-0" />
                         <span>Give Event Feedback</span>
                       </Button>
                     </Link>
@@ -226,6 +230,7 @@ export function ObserveMoonHero({
                       .getElementById("agenda-section")
                       ?.scrollIntoView({ behavior: "smooth" });
                   }}
+                  className="w-full sm:w-auto cursor-pointer justify-center font-mono font-bold text-xs sm:text-sm"
                 >
                   Explore Event Agenda
                 </Button>

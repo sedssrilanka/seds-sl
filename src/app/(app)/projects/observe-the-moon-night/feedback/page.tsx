@@ -142,26 +142,26 @@ export default function ObserveMoonFeedbackPage() {
               even better.
             </p>
 
-            <div className="pt-2 flex flex-wrap items-center gap-3">
+            <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
               <a
                 href={tallyFeedbackDirectUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 border border-border/80 bg-background hover:bg-accent text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 border border-border/80 bg-background hover:bg-accent text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors text-center"
               >
                 <span>Open in Fullscreen Form</span>
-                <ExternalLink className="size-3.5 text-primary" />
+                <ExternalLink className="size-3.5 text-primary shrink-0" />
               </a>
 
               <a
                 href="https://cert.sedssl.org/imot"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-4 py-2 border border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary font-mono text-xs font-bold uppercase tracking-wider transition-colors"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-2.5 border border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary font-mono text-xs font-bold uppercase tracking-wider transition-colors text-center"
               >
-                <Award className="size-3.5" />
+                <Award className="size-3.5 shrink-0" />
                 <span>Claim Certificate (cert.sedssl.org/imot)</span>
-                <ExternalLink className="size-3 opacity-80" />
+                <ExternalLink className="size-3 opacity-80 shrink-0" />
               </a>
             </div>
           </div>

@@ -123,26 +123,26 @@ export function EventCountdownTimer({
                   </p>
                 </div>
               </div>
-              <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 shrink-0">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center md:justify-end gap-3 w-full md:w-auto shrink-0">
                 {certificateUrl && (
                   <a
                     href={certificateUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-xs text-center"
                   >
-                    <Award className="size-3.5" />
+                    <Award className="size-3.5 shrink-0" />
                     <span>Claim Certificate</span>
-                    <ExternalLink className="size-3 opacity-80" />
+                    <ExternalLink className="size-3 opacity-80 shrink-0" />
                   </a>
                 )}
                 <Link
                   href={
                     feedbackUrl || "/projects/observe-the-moon-night/feedback"
                   }
-                  className="inline-flex items-center gap-2 px-4 py-2.5 border border-border hover:bg-muted text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border hover:bg-muted text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-xs text-center"
                 >
-                  <MessageSquareHeart className="size-3.5 text-primary" />
+                  <MessageSquareHeart className="size-3.5 text-primary shrink-0" />
                   <span>Give Feedback</span>
                 </Link>
               </div>

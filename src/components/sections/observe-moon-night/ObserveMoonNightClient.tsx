@@ -690,7 +690,7 @@ export function ObserveMoonNightClient({
                     <div className="flex flex-col justify-between p-8 border border-blue-800/40 bg-blue-950/60 backdrop-blur-sm space-y-6">
                       <div className="space-y-2">
                         <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-blue-400 tracking-wider">
-                          <Award className="size-4 text-blue-400" />
+                          <Award className="size-4 text-blue-400 shrink-0" />
                           <span>PARTICIPATION CREDENTIALS</span>
                         </div>
                         <h3 className="text-2xl font-bold font-mono text-white">
@@ -707,11 +707,11 @@ export function ObserveMoonNightClient({
                           href={eventData.certificateUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-mono text-sm font-bold uppercase tracking-wider transition-colors shadow-sm"
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors shadow-sm text-center"
                         >
-                          <Award className="size-4" />
+                          <Award className="size-4 shrink-0" />
                           <span>Claim Certificate</span>
-                          <ExternalLink className="size-3.5 opacity-80" />
+                          <ExternalLink className="size-3.5 opacity-80 shrink-0" />
                         </a>
                       </div>
                     </div>
@@ -722,7 +722,7 @@ export function ObserveMoonNightClient({
                   <div className="flex flex-col justify-between p-8 border border-border/60 bg-card/60 backdrop-blur-sm space-y-6">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-wider">
-                        <MessageSquareHeart className="size-4 text-primary" />
+                        <MessageSquareHeart className="size-4 text-primary shrink-0" />
                         <span>EVENT FEEDBACK & SURVEY</span>
                       </div>
                       <h3 className="text-2xl font-bold font-mono text-foreground">
@@ -734,12 +734,12 @@ export function ObserveMoonNightClient({
                         Lanka.
                       </p>
                     </div>
-                    <div className="flex flex-wrap items-center gap-3">
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                       <Link
                         href="/projects/observe-the-moon-night/feedback"
-                        className="inline-flex items-center gap-2 px-6 py-3 bg-foreground hover:bg-foreground/90 text-background font-mono text-sm font-bold uppercase tracking-wider transition-colors shadow-sm"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-foreground hover:bg-foreground/90 text-background font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors shadow-sm text-center"
                       >
-                        <MessageSquareHeart className="size-4" />
+                        <MessageSquareHeart className="size-4 shrink-0" />
                         <span>Give Feedback</span>
                       </Link>
                       {eventData?.feedbackUrl && (
@@ -747,10 +747,10 @@ export function ObserveMoonNightClient({
                           href={eventData.feedbackUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 px-4 py-3 border border-border hover:bg-muted text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors"
+                          className="w-full sm:w-auto inline-flex items-center justify-center gap-1.5 px-4 py-3 border border-border hover:bg-muted text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors text-center"
                         >
                           <span>Direct Form</span>
-                          <ExternalLink className="size-3.5" />
+                          <ExternalLink className="size-3.5 shrink-0" />
                         </a>
                       )}
                     </div>
@@ -784,34 +784,34 @@ export function ObserveMoonNightClient({
                     participation and share your feedback.
                   </p>
 
-                  <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 w-full sm:max-w-2xl mx-auto">
                     {eventData?.certificateUrl && (
                       <a
                         href={eventData.certificateUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 border border-blue-700 shadow-md transition-all cursor-pointer"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 border border-blue-700 shadow-md transition-all cursor-pointer text-center"
                       >
-                        <Award className="size-4" />
-                        <span>Claim Certificate →</span>
-                        <ExternalLink className="size-3.5 opacity-80" />
+                        <Award className="size-4 shrink-0" />
+                        <span>Claim Certificate</span>
+                        <ExternalLink className="size-3.5 opacity-80 shrink-0" />
                       </a>
                     )}
                     <Link
                       href="/projects/observe-the-moon-night/feedback"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-900 font-mono text-sm font-bold uppercase tracking-wider px-6 py-4 border border-slate-300 transition-all cursor-pointer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-900 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 border border-slate-300 transition-all cursor-pointer text-center"
                     >
-                      <MessageSquareHeart className="size-4" />
+                      <MessageSquareHeart className="size-4 shrink-0" />
                       <span>Give Feedback</span>
                     </Link>
                     <a
                       href="https://moon.nasa.gov/observe-the-moon-night/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-mono text-sm font-bold uppercase tracking-wider px-6 py-4 border border-slate-300 transition-all cursor-pointer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 border border-slate-300 transition-all cursor-pointer text-center"
                     >
-                      <span>NASA InOMN Official</span>
-                      <ExternalLink className="size-4" />
+                      <span>NASA InOMN</span>
+                      <ExternalLink className="size-4 shrink-0" />
                     </a>
                   </div>
                 </>
@@ -828,11 +828,11 @@ export function ObserveMoonNightClient({
                     access details.
                   </p>
 
-                  <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                  <div className="pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 w-full sm:max-w-xl mx-auto">
                     <button
                       type="button"
                       onClick={openMoonNightPopup}
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 border border-blue-700 shadow-md transition-all cursor-pointer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 border border-blue-700 shadow-md transition-all cursor-pointer text-center"
                     >
                       <span>Open Registration Form →</span>
                     </button>
@@ -840,10 +840,10 @@ export function ObserveMoonNightClient({
                       href="https://tally.so/r/vGl0pX"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-mono text-sm font-bold uppercase tracking-wider px-6 py-4 border border-slate-300 transition-all cursor-pointer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 border border-slate-300 transition-all cursor-pointer text-center"
                     >
                       <span>Direct Tally Link</span>
-                      <ExternalLink className="size-4" />
+                      <ExternalLink className="size-4 shrink-0" />
                     </a>
                   </div>
                 </>

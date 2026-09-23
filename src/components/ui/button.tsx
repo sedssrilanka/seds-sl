@@ -73,8 +73,17 @@ function Button({
   );
 
   if (isBleed) {
+    const isFullWidth =
+      typeof className === "string" &&
+      (className.includes("w-full") || className.includes("flex-1"));
+
     return (
-      <div className="relative inline-block my-1 mx-1">
+      <div
+        className={cn(
+          "relative my-1 mx-1",
+          isFullWidth ? "w-full sm:w-auto inline-flex" : "inline-block",
+        )}
+      >
         {/* Extended Corner Bleed Lines */}
         <div className="absolute -left-2.5 -right-2.5 top-0 border-t border-border/80 pointer-events-none z-10" />
         <div className="absolute -left-2.5 -right-2.5 bottom-0 border-b border-border/80 pointer-events-none z-10" />
