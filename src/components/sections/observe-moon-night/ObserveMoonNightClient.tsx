@@ -22,6 +22,7 @@ import {
   Eye,
   MessageSquareHeart,
   MapPin,
+  Award,
 } from "lucide-react";
 
 import { motion } from "motion/react";
@@ -32,12 +33,14 @@ interface ObserveMoonNightClientProps {
   slug: string;
   year?: string;
   eventData?: ObserveMoonEventResult;
+  allYears?: string[];
 }
 
 export function ObserveMoonNightClient({
   slug,
   year = "2026",
   eventData,
+  allYears = ["2026"],
 }: ObserveMoonNightClientProps) {
   useEffect(() => {
     // Load Tally embed script
@@ -224,7 +227,45 @@ export function ObserveMoonNightClient({
           slug={slug}
           feedbackUrl={eventData?.feedbackUrl}
           isFeedbackActive={eventData?.isFeedbackActive}
+          certificateUrl={eventData?.certificateUrl}
+          isCertificateActive={eventData?.isCertificateActive}
+          isRegistrationActive={eventData?.isRegistrationActive}
+          isCompleted={eventData?.isCompleted}
         />
+
+        {/* MULTI-YEAR EDITION SELECTOR (When multi-year archive is available) */}
+        {allYears && allYears.length > 1 && (
+          <div className="w-full border-b border-border/60 bg-card/60 backdrop-blur-md py-3 px-4 md:px-8">
+            <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
+              <div className="flex items-center gap-2">
+                <span className="text-primary font-bold uppercase tracking-wider">
+                  MOON NIGHT EDITIONS:
+                </span>
+                <span className="text-muted-foreground hidden sm:inline">
+                  Select year to view past live streams and records
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                {allYears.map((yr) => {
+                  const isCurrent = yr === year;
+                  return (
+                    <Link
+                      key={yr}
+                      href={`/projects/observe-the-moon-night/${yr}`}
+                      className={`px-3.5 py-1 text-xs font-bold uppercase tracking-wider transition-colors ${
+                        isCurrent
+                          ? "bg-primary text-primary-foreground shadow-xs"
+                          : "bg-background hover:bg-muted text-muted-foreground hover:text-foreground border border-border/60"
+                      }`}
+                    >
+                      {yr}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* LOGO RUNNER STRIP NEXT TO / BELOW HERO */}
         {partnersList.length > 0 && (
@@ -272,6 +313,9 @@ export function ObserveMoonNightClient({
         <EventCountdownTimer
           targetDate={eventData?.startTime || "2026-09-21T19:00:00+05:30"}
           formattedDateDisplay={formattedDateDisplay}
+          isCompleted={eventData?.isCompleted}
+          certificateUrl={eventData?.certificateUrl}
+          feedbackUrl="/projects/observe-the-moon-night/feedback"
         />
 
         {/* SECTION 1: ABOUT THE INITIATIVE & VIRTUAL COLLABORATION */}
@@ -633,49 +677,91 @@ export function ObserveMoonNightClient({
           </div>
         </div>
 
-        {/* SECTION 4.5: EVENT FEEDBACK BANNER SECTION (IF FEEDBACK ACTIVE AND URL CONFIGURED) */}
-        {eventData?.isFeedbackActive && eventData?.feedbackUrl && (
+        {/* SECTION 4.5: POST-EVENT ACTIONS (CERTIFICATES & FEEDBACK) */}
+        {(eventData?.isCompleted ||
+          eventData?.isCertificateActive ||
+          eventData?.isFeedbackActive) && (
           <div className="w-full border-t border-b border-border/60 py-16 bg-blue-950/30">
             <div className="max-w-7xl mx-auto px-4 md:px-8">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-8 border border-blue-800/40 bg-blue-950/50 backdrop-blur-sm">
-                <div className="space-y-2 text-center md:text-left">
-                  <div className="flex items-center justify-center md:justify-start gap-2 text-xs font-mono font-bold uppercase text-blue-400 tracking-wider">
-                    <MessageSquareHeart className="size-4 text-blue-400" />
-                    <span>EVENT FEEDBACK & SURVEY</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Certificate Claim Card */}
+                {eventData?.isCertificateActive &&
+                  eventData?.certificateUrl && (
+                    <div className="flex flex-col justify-between p-8 border border-blue-800/40 bg-blue-950/60 backdrop-blur-sm space-y-6">
+                      <div className="space-y-2">
+                        <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-blue-400 tracking-wider">
+                          <Award className="size-4 text-blue-400" />
+                          <span>PARTICIPATION CREDENTIALS</span>
+                        </div>
+                        <h3 className="text-2xl font-bold font-mono text-white">
+                          Claim Your Certificate
+                        </h3>
+                        <p className="text-sm text-slate-300 leading-relaxed">
+                          Attended the live lunar sessions? Claim your official
+                          verified digital Certificate of Participation issued
+                          by SEDS Sri Lanka and SEDS India.
+                        </p>
+                      </div>
+                      <div>
+                        <a
+                          href={eventData.certificateUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-mono text-sm font-bold uppercase tracking-wider transition-colors shadow-sm"
+                        >
+                          <Award className="size-4" />
+                          <span>Claim Certificate</span>
+                          <ExternalLink className="size-3.5 opacity-80" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                {/* Event Feedback Card */}
+                {eventData?.isFeedbackActive && (
+                  <div className="flex flex-col justify-between p-8 border border-border/60 bg-card/60 backdrop-blur-sm space-y-6">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-wider">
+                        <MessageSquareHeart className="size-4 text-primary" />
+                        <span>EVENT FEEDBACK & SURVEY</span>
+                      </div>
+                      <h3 className="text-2xl font-bold font-mono text-foreground">
+                        Share Your Feedback
+                      </h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">
+                        Your feedback helps us refine future observation camps,
+                        telescope stations, and scientific workshops across Sri
+                        Lanka.
+                      </p>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Link
+                        href="/projects/observe-the-moon-night/feedback"
+                        className="inline-flex items-center gap-2 px-6 py-3 bg-foreground hover:bg-foreground/90 text-background font-mono text-sm font-bold uppercase tracking-wider transition-colors shadow-sm"
+                      >
+                        <MessageSquareHeart className="size-4" />
+                        <span>Give Feedback</span>
+                      </Link>
+                      {eventData?.feedbackUrl && (
+                        <a
+                          href={eventData.feedbackUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-4 py-3 border border-border hover:bg-muted text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors"
+                        >
+                          <span>Direct Form</span>
+                          <ExternalLink className="size-3.5" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  <h3 className="text-2xl font-bold font-mono text-white">
-                    Attended Observe the Moon Night {year}?
-                  </h3>
-                  <p className="text-sm text-slate-300 max-w-xl">
-                    Your feedback helps us refine future observation camps,
-                    telescope stations, and scientific lectures across Sri
-                    Lanka.
-                  </p>
-                </div>
-                <div className="flex flex-wrap items-center gap-3 shrink-0">
-                  <Link
-                    href="/projects/observe-the-moon-night/feedback"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-mono text-sm font-bold uppercase tracking-wider transition-colors shrink-0"
-                  >
-                    <MessageSquareHeart className="size-4" />
-                    <span>Give Feedback Now</span>
-                  </Link>
-                  <a
-                    href={eventData.feedbackUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 px-4 py-3 border border-blue-700 hover:bg-blue-900/50 text-blue-300 font-mono text-xs font-bold uppercase tracking-wider transition-colors"
-                  >
-                    <span>External Form</span>
-                    <ExternalLink className="size-3.5" />
-                  </a>
-                </div>
+                )}
               </div>
             </div>
           </div>
         )}
 
-        {/* SECTION 5: DEDICATED REGISTRATION CALL-TO-ACTION SECTION */}
+        {/* SECTION 5: DEDICATED REGISTRATION / ARCHIVE CALL-TO-ACTION SECTION */}
         <div
           id="register-section"
           className="w-full py-20 bg-white text-slate-900 border-t border-slate-200"
@@ -685,35 +771,83 @@ export function ObserveMoonNightClient({
               <div className="absolute -left-4 -right-4 top-0 border-t border-slate-300 pointer-events-none" />
               <div className="absolute -left-4 -right-4 bottom-0 border-b border-slate-300 pointer-events-none" />
 
-              <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-slate-900 font-mono">
-                Reserve Your Spot for Moon Night {year}
-              </h2>
+              {eventData?.isCompleted || !eventData?.isRegistrationActive ? (
+                <>
+                  <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-slate-900 font-mono">
+                    Observe the Moon Night {year} Wrapped Up
+                  </h2>
 
-              <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
-                Registration is officially open to all students, astronomy
-                enthusiasts, and researchers across the globe. Complete our
-                registration form to secure your virtual stream link and access
-                details.
-              </p>
+                  <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                    Thank you to thousands of observers, astronomy enthusiasts,
+                    and students who tuned in across Sri Lanka, India, and
+                    across the globe. Claim your verified digital certificate of
+                    participation and share your feedback.
+                  </p>
 
-              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button
-                  type="button"
-                  onClick={openMoonNightPopup}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 border border-blue-700 shadow-md transition-all cursor-pointer"
-                >
-                  <span>Open Registration Form →</span>
-                </button>
-                <a
-                  href="https://tally.so/r/vGl0pX"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-mono text-sm font-bold uppercase tracking-wider px-6 py-4 border border-slate-300 transition-all cursor-pointer"
-                >
-                  <span>Direct Tally Link</span>
-                  <ExternalLink className="size-4" />
-                </a>
-              </div>
+                  <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    {eventData?.certificateUrl && (
+                      <a
+                        href={eventData.certificateUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 border border-blue-700 shadow-md transition-all cursor-pointer"
+                      >
+                        <Award className="size-4" />
+                        <span>Claim Certificate →</span>
+                        <ExternalLink className="size-3.5 opacity-80" />
+                      </a>
+                    )}
+                    <Link
+                      href="/projects/observe-the-moon-night/feedback"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-900 font-mono text-sm font-bold uppercase tracking-wider px-6 py-4 border border-slate-300 transition-all cursor-pointer"
+                    >
+                      <MessageSquareHeart className="size-4" />
+                      <span>Give Feedback</span>
+                    </Link>
+                    <a
+                      href="https://moon.nasa.gov/observe-the-moon-night/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-mono text-sm font-bold uppercase tracking-wider px-6 py-4 border border-slate-300 transition-all cursor-pointer"
+                    >
+                      <span>NASA InOMN Official</span>
+                      <ExternalLink className="size-4" />
+                    </a>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <h2 className="text-3xl md:text-5xl font-extrabold uppercase tracking-tight text-slate-900 font-mono">
+                    Reserve Your Spot for Moon Night {year}
+                  </h2>
+
+                  <p className="text-sm md:text-base text-slate-600 max-w-2xl mx-auto leading-relaxed">
+                    Registration is officially open to all students, astronomy
+                    enthusiasts, and researchers across the globe. Complete our
+                    registration form to secure your virtual stream link and
+                    access details.
+                  </p>
+
+                  <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <button
+                      type="button"
+                      onClick={openMoonNightPopup}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-mono text-sm font-bold uppercase tracking-widest px-8 py-4 border border-blue-700 shadow-md transition-all cursor-pointer"
+                    >
+                      <span>Open Registration Form →</span>
+                    </button>
+                    <a
+                      href="https://tally.so/r/vGl0pX"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white hover:bg-slate-100 text-slate-900 font-mono text-sm font-bold uppercase tracking-wider px-6 py-4 border border-slate-300 transition-all cursor-pointer"
+                    >
+                      <span>Direct Tally Link</span>
+                      <ExternalLink className="size-4" />
+                    </a>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

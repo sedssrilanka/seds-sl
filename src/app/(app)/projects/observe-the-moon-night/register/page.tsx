@@ -39,5 +39,5 @@ export const metadata: Metadata = {
 };
 
 export default function ObserveMoonRegisterPage() {
-  redirect("/projects/observe-the-moon-night?register=1");
+  redirect("/projects/observe-the-moon-night/2026?register=1");
 }

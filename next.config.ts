@@ -60,6 +60,16 @@ const nextConfig: NextConfig = {
         destination: "/projects/seds-sri-lanka-asteroid-search-campaign",
         permanent: true,
       },
+      {
+        source: "/observe-the-moon-night",
+        destination: "/projects/observe-the-moon-night/2026",
+        permanent: false,
+      },
+      {
+        source: "/observe-the-moon-night/:year",
+        destination: "/projects/observe-the-moon-night/:year",
+        permanent: true,
+      },
     ];
   },
   outputFileTracingIncludes: {

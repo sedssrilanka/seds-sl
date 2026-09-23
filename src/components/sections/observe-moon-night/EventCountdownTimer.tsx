@@ -1,17 +1,30 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Timer, Sparkles, Calendar } from "lucide-react";
+import Link from "next/link";
+import {
+  Timer,
+  Sparkles,
+  MessageSquareHeart,
+  Award,
+  ExternalLink,
+} from "lucide-react";
 import { motion } from "motion/react";
 
 interface EventCountdownTimerProps {
   targetDate?: string;
   formattedDateDisplay?: string;
+  isCompleted?: boolean;
+  certificateUrl?: string;
+  feedbackUrl?: string;
 }
 
 export function EventCountdownTimer({
   targetDate,
   formattedDateDisplay,
+  isCompleted = false,
+  certificateUrl = "https://cert.sedssl.org/imot",
+  feedbackUrl = "/projects/observe-the-moon-night/feedback",
 }: EventCountdownTimerProps) {
   const [timeLeft, setTimeLeft] = useState<{
     days: number;
@@ -24,7 +37,7 @@ export function EventCountdownTimer({
     hours: 0,
     minutes: 0,
     seconds: 0,
-    isEnded: false,
+    isEnded: isCompleted,
   });
 
   useEffect(() => {
@@ -36,7 +49,7 @@ export function EventCountdownTimer({
       const now = new Date().getTime();
       const difference = target - now;
 
-      if (difference <= 0) {
+      if (difference <= 0 || isCompleted) {
         setTimeLeft({
           days: 0,
           hours: 0,
@@ -61,7 +74,7 @@ export function EventCountdownTimer({
     const interval = setInterval(calculate, 1000);
 
     return () => clearInterval(interval);
-  }, [targetDate]);
+  }, [targetDate, isCompleted]);
 
   const units = [
     { label: "DAYS", value: timeLeft.days },
@@ -77,7 +90,11 @@ export function EventCountdownTimer({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase text-primary tracking-widest">
             <Timer className="size-4 text-primary animate-pulse" />
-            <span>COUNTDOWN TO LUNAR KICKOFF (IST +05:30)</span>
+            <span>
+              {isCompleted
+                ? "LUNAR BROADCAST STATUS"
+                : "COUNTDOWN TO LUNAR KICKOFF (IST +05:30)"}
+            </span>
           </div>
           <div className="text-[11px] font-mono text-muted-foreground uppercase hidden sm:block border border-border/60 px-2 py-0.5 bg-background">
             OFFICIAL NASA OBSERVE MOON NIGHT
@@ -92,7 +109,45 @@ export function EventCountdownTimer({
           <div className="absolute -top-6 -bottom-6 left-0 border-l border-border/60 pointer-events-none" />
           <div className="absolute -top-6 -bottom-6 right-0 border-r border-border/60 pointer-events-none" />
 
-          {timeLeft.isEnded ? (
+          {isCompleted ? (
+            <div className="p-6 md:p-8 bg-background border border-border/60 flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
+              <div className="flex items-center gap-3 text-center md:text-left">
+                <Sparkles className="size-6 text-primary shrink-0 hidden sm:block" />
+                <div className="space-y-1">
+                  <div className="text-base sm:text-xl font-mono font-extrabold uppercase text-foreground tracking-wider">
+                    EVENT CONCLUDED — THANK YOU FOR OBSERVING WITH US!
+                  </div>
+                  <p className="text-xs font-mono text-muted-foreground">
+                    The 2-day live broadcast has concluded. Claim your digital
+                    certificate of participation or submit your event feedback.
+                  </p>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center justify-center md:justify-end gap-3 shrink-0">
+                {certificateUrl && (
+                  <a
+                    href={certificateUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-primary hover:bg-primary/90 text-primary-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                  >
+                    <Award className="size-3.5" />
+                    <span>Claim Certificate</span>
+                    <ExternalLink className="size-3 opacity-80" />
+                  </a>
+                )}
+                <Link
+                  href={
+                    feedbackUrl || "/projects/observe-the-moon-night/feedback"
+                  }
+                  className="inline-flex items-center gap-2 px-4 py-2.5 border border-border hover:bg-muted text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-xs"
+                >
+                  <MessageSquareHeart className="size-3.5 text-primary" />
+                  <span>Give Feedback</span>
+                </Link>
+              </div>
+            </div>
+          ) : timeLeft.isEnded ? (
             <div className="p-8 bg-background text-center border border-border/60 flex items-center justify-center gap-3">
               <Sparkles className="size-6 text-primary animate-spin" />
               <span className="text-xl font-mono font-extrabold uppercase text-primary tracking-wider">

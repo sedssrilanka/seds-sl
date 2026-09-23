@@ -1,8 +1,14 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Calendar } from "lucide-react";
+import {
+  Award,
+  Calendar,
+  ExternalLink,
+  MessageSquareHeart,
+} from "lucide-react";
 import { motion } from "motion/react";
 
 import { SpaceScenePlaceholder } from "./moon-scene";
@@ -27,6 +33,10 @@ interface ObserveMoonHeroProps {
   slug?: string;
   feedbackUrl?: string;
   isFeedbackActive?: boolean;
+  certificateUrl?: string;
+  isCertificateActive?: boolean;
+  isRegistrationActive?: boolean;
+  isCompleted?: boolean;
 }
 
 import { formatEventStartAndEnd } from "@/utilities/generateRegistrationEmail";
@@ -43,6 +53,10 @@ export function ObserveMoonHero({
   slug,
   feedbackUrl,
   isFeedbackActive = true,
+  certificateUrl = "https://cert.sedssl.org/imot",
+  isCertificateActive = true,
+  isRegistrationActive = false,
+  isCompleted = false,
 }: ObserveMoonHeroProps) {
   const startDateObj = startTime ? new Date(startTime) : null;
   const endDateObj = endTime ? new Date(endTime) : null;
@@ -136,6 +150,11 @@ export function ObserveMoonHero({
                 <div className="inline-flex items-center gap-2.5 border border-border/80 bg-background/95 backdrop-blur-md px-3.5 py-2 text-xs font-mono font-bold uppercase text-foreground tracking-wider shadow-xs">
                   <Calendar className="size-3.5 text-primary shrink-0" />
                   <span>{heroDateDisplay}</span>
+                  {isCompleted && (
+                    <span className="ml-1.5 px-1.5 py-0.5 text-[9px] bg-primary/20 text-primary uppercase font-bold tracking-wider">
+                      CONCLUDED
+                    </span>
+                  )}
                 </div>
               </motion.div>
             )}
@@ -147,16 +166,54 @@ export function ObserveMoonHero({
               transition={{ duration: 0.6, delay: 0.3 }}
               className="flex flex-wrap items-center gap-4 pt-3"
             >
-              <Button
-                type="button"
-                variant="default"
-                size="lg"
-                bleed={true}
-                onClick={openMoonNightPopup}
-                className="cursor-pointer"
-              >
-                Register for Moon Night
-              </Button>
+              {isRegistrationActive ? (
+                <Button
+                  type="button"
+                  variant="default"
+                  size="lg"
+                  bleed={true}
+                  onClick={openMoonNightPopup}
+                  className="cursor-pointer"
+                >
+                  Register for Moon Night
+                </Button>
+              ) : (
+                <>
+                  {isCertificateActive && certificateUrl && (
+                    <a
+                      href={certificateUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <Button
+                        type="button"
+                        variant="default"
+                        size="lg"
+                        bleed={true}
+                        className="cursor-pointer gap-2"
+                      >
+                        <Award className="size-4" />
+                        <span>Claim Certificate</span>
+                        <ExternalLink className="size-3.5 opacity-80" />
+                      </Button>
+                    </a>
+                  )}
+                  {isFeedbackActive && (
+                    <Link href="/projects/observe-the-moon-night/feedback">
+                      <Button
+                        type="button"
+                        variant={isCertificateActive ? "outline" : "default"}
+                        size="lg"
+                        bleed={true}
+                        className="cursor-pointer gap-2"
+                      >
+                        <MessageSquareHeart className="size-4 text-primary" />
+                        <span>Give Event Feedback</span>
+                      </Button>
+                    </Link>
+                  )}
+                </>
+              )}
 
               {hasAgenda && (
                 <Button

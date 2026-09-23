@@ -9,6 +9,7 @@ export interface ObserveMoonPartner {
   name: string;
   partnershipType?: string;
   websiteUrl?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   logo?: any;
 }
 
@@ -40,141 +41,146 @@ export interface ObserveMoonEventResult {
   endTime?: string;
   location?: string;
   locations?: ObserveMoonLocation[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   agenda?: any[];
   agendaDays?: ObserveMoonAgendaDay[];
   partners?: ObserveMoonPartner[];
   feedbackUrl?: string;
   isFeedbackActive?: boolean;
+  certificateUrl?: string;
+  isCertificateActive?: boolean;
   registrationUrl?: string;
   isRegistrationActive?: boolean;
+  isCompleted?: boolean;
   isPaid?: boolean;
   ticketPrice?: string;
   bankAccountNumber?: string;
   paymentDetails?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   listingImage?: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   heroImage?: any;
   isFeatured?: boolean;
 }
 
-export async function getObserveMoonNightProject(
-  year = "2026",
-): Promise<ObserveMoonEventResult | null> {
-  const day1Items: ObserveMoonAgendaItem[] = [
-    {
-      time: "07:00 PM",
-      stage: "SESSION 01",
-      title: "Inauguration & Joint Collaboration Briefing",
-      description:
-        "Welcome address by SEDS Sri Lanka & SEDS India leadership, live broadcast introduction, and telescope imaging overview powered by SEDS Celestia.",
-    },
-    {
-      time: "07:25 PM",
-      stage: "SESSION 02",
-      title: "Lunar Maria Keynote: Northern & Eastern Basaltic Seas (7 Maria)",
-      description:
-        "Scientific keynote on lunar basalt maria formation covering Day 1 features: Mare Frigoris (Sea of Cold), Mare Imbrium (Sea of Rains), Mare Nubium (Sea of Clouds), Mare Serenitatis (Sea of Serenity), Mare Tranquillitatis (Sea of Tranquility), Mare Fecunditatis (Sea of Fertility), and Mare Crisium (Sea of Crises).",
-    },
-    {
-      time: "08:00 PM",
-      stage: "SESSION 03",
-      title:
-        "Telescopic Target 01: Plato Crater & Mare Frigoris / Mare Imbrium",
-      description:
-        "Live high-magnification telescope stream kicks off! High-resolution observation of Plato Crater (Impact Crater #01) with its dark basaltic lava-filled floor situated between Mare Frigoris and Mare Imbrium.",
-    },
-    {
-      time: "08:45 PM",
-      stage: "SESSION 04",
-      title: "Telescopic Target 03: Apennine Mountains (Montes Apenninus)",
-      description:
-        "Guided telescopic exploration of the towering Apennine Mountains (Montes Apenninus, Mountain Range #03) rising over 5,000 meters along the lunar terminator bordering Mare Imbrium and Mare Serenitatis.",
-    },
-    {
-      time: "09:30 PM",
-      stage: "SESSION 05",
-      title:
-        "Telescopic Target 05 & Apollo Sites: Alphonsus Crater, Apollo 11 & Apollo 12",
-      description:
-        "Close-up inspection of Alphonsus Crater (Complex Crater #05 with dark pyroclastic volcanic vents), along with historic Apollo landing sites: Apollo 11 at Mare Tranquillitatis (Sea of Tranquility) and Apollo 12 at Oceanus Procellarum (Ocean of Storms).",
-    },
-    {
-      time: "10:15 PM",
-      stage: "SESSION 06",
-      title: "Live Moon Trivia Quiz, Q&A & Day 1 Wrap-Up",
-      description:
-        "Interactive live lunar astronomy trivia quiz, Q&A with telescope operators and astrophysicists, Day 2 preview, and digital certificate announcements before concluding at 11:00 PM.",
-    },
-  ];
+// 2026 Day 1 and Day 2 Agenda Items
+const day1Items2026: ObserveMoonAgendaItem[] = [
+  {
+    time: "07:00 PM",
+    stage: "SESSION 01",
+    title: "Inauguration & Joint Collaboration Briefing",
+    description:
+      "Welcome address by SEDS Sri Lanka & SEDS India leadership, live broadcast introduction, and telescope imaging overview powered by SEDS Celestia.",
+  },
+  {
+    time: "07:25 PM",
+    stage: "SESSION 02",
+    title: "Lunar Maria Keynote: Northern & Eastern Basaltic Seas (7 Maria)",
+    description:
+      "Scientific keynote on lunar basalt maria formation covering Day 1 features: Mare Frigoris (Sea of Cold), Mare Imbrium (Sea of Rains), Mare Nubium (Sea of Clouds), Mare Serenitatis (Sea of Serenity), Mare Tranquillitatis (Sea of Tranquility), Mare Fecunditatis (Sea of Fertility), and Mare Crisium (Sea of Crises).",
+  },
+  {
+    time: "08:00 PM",
+    stage: "SESSION 03",
+    title: "Telescopic Target 01: Plato Crater & Mare Frigoris / Mare Imbrium",
+    description:
+      "Live high-magnification telescope stream kicks off! High-resolution observation of Plato Crater (Impact Crater #01) with its dark basaltic lava-filled floor situated between Mare Frigoris and Mare Imbrium.",
+  },
+  {
+    time: "08:45 PM",
+    stage: "SESSION 04",
+    title: "Telescopic Target 03: Apennine Mountains (Montes Apenninus)",
+    description:
+      "Guided telescopic exploration of the towering Apennine Mountains (Montes Apenninus, Mountain Range #03) rising over 5,000 meters along the lunar terminator bordering Mare Imbrium and Mare Serenitatis.",
+  },
+  {
+    time: "09:30 PM",
+    stage: "SESSION 05",
+    title:
+      "Telescopic Target 05 & Apollo Sites: Alphonsus Crater, Apollo 11 & Apollo 12",
+    description:
+      "Close-up inspection of Alphonsus Crater (Complex Crater #05 with dark pyroclastic volcanic vents), along with historic Apollo landing sites: Apollo 11 at Mare Tranquillitatis (Sea of Tranquility) and Apollo 12 at Oceanus Procellarum (Ocean of Storms).",
+  },
+  {
+    time: "10:15 PM",
+    stage: "SESSION 06",
+    title: "Live Moon Trivia Quiz, Q&A & Day 1 Wrap-Up",
+    description:
+      "Interactive live lunar astronomy trivia quiz, Q&A with telescope operators and astrophysicists, Day 2 preview, and digital certificate announcements before concluding at 11:00 PM.",
+  },
+];
 
-  const day2Items: ObserveMoonAgendaItem[] = [
-    {
-      time: "07:00 PM",
-      stage: "SESSION 01",
-      title: "Day 2 Inauguration & Streaming Partner Briefing",
-      description:
-        "Welcome address by SEDS Sri Lanka, SEDS India & SEDS Kumaraguru teams, Day 1 recap, and introduction to the Day 2 live telescopic observation setup.",
-    },
-    {
-      time: "07:25 PM",
-      stage: "SESSION 02",
-      title: "Lunar Science Keynote: Central, Limb & Serpent Seas",
-      description:
-        "Scientific keynote presentation exploring basaltic maria formation and lunar geology across the visible face of the Moon.",
-    },
-    {
-      time: "08:00 PM",
-      stage: "SESSION 03",
-      title: "Live Telescopic Observation Phase 01 (TBA)",
-      description:
-        "Live telescope stream powered by SEDS Kumaraguru! Primary telescopic targets along the terminator to be confirmed based on real-time atmospheric seeing conditions (TBA).",
-    },
-    {
-      time: "08:45 PM",
-      stage: "SESSION 04",
-      title: "Live Telescopic Observation Phase 02 (TBA)",
-      description:
-        "High-magnification lunar relief sweeps and terminator crater inspection streamed live with SEDS Kumaraguru (TBA).",
-    },
-    {
-      time: "09:30 PM",
-      stage: "SESSION 05",
-      title: "Historic Landing Zones & Maria Sweep (TBA)",
-      description:
-        "Guided telescopic exploration of historic Apollo touchdown regions and lunar basaltic maria (TBA).",
-    },
-    {
-      time: "10:15 PM",
-      stage: "SESSION 06",
-      title: "Grand Finale Moon Trivia Quiz, Q&A & Certificate Awards",
-      description:
-        "Interactive grand finale lunar astronomy quiz competition, audience Q&A with regional chapter astronomers, and final certificate distribution announcements before concluding at 11:00 PM.",
-    },
-  ];
+const day2Items2026: ObserveMoonAgendaItem[] = [
+  {
+    time: "07:00 PM",
+    stage: "SESSION 01",
+    title: "Day 2 Inauguration & Streaming Partner Briefing",
+    description:
+      "Welcome address by SEDS Sri Lanka, SEDS India & SEDS Kumaraguru teams, Day 1 recap, and introduction to the Day 2 live telescopic observation setup.",
+  },
+  {
+    time: "07:25 PM",
+    stage: "SESSION 02",
+    title: "Lunar Science Keynote: Central, Limb & Serpent Seas",
+    description:
+      "Scientific keynote presentation exploring basaltic maria formation and lunar geology across the visible face of the Moon.",
+  },
+  {
+    time: "08:00 PM",
+    stage: "SESSION 03",
+    title: "Live Telescopic Observation Phase 01 (TBA)",
+    description:
+      "Live telescope stream powered by SEDS Kumaraguru! Primary telescopic targets along the terminator to be confirmed based on real-time atmospheric seeing conditions (TBA).",
+  },
+  {
+    time: "08:45 PM",
+    stage: "SESSION 04",
+    title: "Live Telescopic Observation Phase 02 (TBA)",
+    description:
+      "High-magnification lunar relief sweeps and terminator crater inspection streamed live with SEDS Kumaraguru (TBA).",
+  },
+  {
+    time: "09:30 PM",
+    stage: "SESSION 05",
+    title: "Historic Landing Zones & Maria Sweep (TBA)",
+    description:
+      "Guided telescopic exploration of historic Apollo touchdown regions and lunar basaltic maria (TBA).",
+  },
+  {
+    time: "10:15 PM",
+    stage: "SESSION 06",
+    title: "Grand Finale Moon Trivia Quiz, Q&A & Certificate Awards",
+    description:
+      "Interactive grand finale lunar astronomy quiz competition, audience Q&A with regional chapter astronomers, and final certificate distribution announcements before concluding at 11:00 PM.",
+  },
+];
 
-  const agendaDays: ObserveMoonAgendaDay[] = [
-    {
-      dayId: "day-1",
-      dayLabel: "Day 01",
-      date: "Monday, September 21, 2026",
-      shortDate: "Mon, Sep 21",
-      partnerBadge: "Streamed via SEDS Celestia",
-      items: day1Items,
-    },
-    {
-      dayId: "day-2",
-      dayLabel: "Day 02",
-      date: "Tuesday, September 22, 2026",
-      shortDate: "Tue, Sep 22",
-      partnerBadge: "Streamed with SEDS Kumaraguru",
-      items: day2Items,
-    },
-  ];
+const agendaDays2026: ObserveMoonAgendaDay[] = [
+  {
+    dayId: "day-1",
+    dayLabel: "Day 01",
+    date: "Monday, September 21, 2026",
+    shortDate: "Mon, Sep 21",
+    partnerBadge: "Streamed via SEDS Celestia",
+    items: day1Items2026,
+  },
+  {
+    dayId: "day-2",
+    dayLabel: "Day 02",
+    date: "Tuesday, September 22, 2026",
+    shortDate: "Tue, Sep 22",
+    partnerBadge: "Streamed with SEDS Kumaraguru",
+    items: day2Items2026,
+  },
+];
 
-  return {
-    id: `moon-${year}`,
-    slug: `observe-the-moon-night-${year}`,
-    title: `International Observe the Moon Night ${year}`,
-    year,
+// Multi-Year Observe the Moon Night Registry (2026, and extensible for 2027, 2028, etc.)
+export const observeMoonEditions: Record<string, ObserveMoonEventResult> = {
+  "2026": {
+    id: "moon-2026",
+    slug: "observe-the-moon-night-2026",
+    title: "International Observe the Moon Night 2026",
+    year: "2026",
     shortDescription:
       "Annual global celebration of lunar science and exploration with SEDS Sri Lanka in collaboration with SEDS India, featuring live 2-day lunar telescope streaming powered by SEDS Celestia and SEDS Kumaraguru.",
     description:
@@ -191,8 +197,8 @@ export async function getObserveMoonNightProject(
         isMainLocation: true,
       },
     ],
-    agenda: day1Items,
-    agendaDays,
+    agenda: day1Items2026,
+    agendaDays: agendaDays2026,
     partners: [
       {
         name: "InOMN (NASA)",
@@ -233,10 +239,47 @@ export async function getObserveMoonNightProject(
     ],
     feedbackUrl: "https://tally.so/r/gD604M",
     isFeedbackActive: true,
+    certificateUrl: "https://cert.sedssl.org/imot",
+    isCertificateActive: true,
     registrationUrl: "https://tally.so/r/vGl0pX",
-    isRegistrationActive: true,
+    isRegistrationActive: false,
+    isCompleted: true,
     listingImage: { url: "/images/projects/iotm-day-2026.png" },
     heroImage: { url: "/images/projects/iotm-day-2026.png" },
     isFeatured: true,
-  };
+  },
+};
+
+/**
+ * Returns an array of all available Observe the Moon Night edition years sorted in descending order.
+ */
+export function getAllObserveMoonNightYears(): string[] {
+  return Object.keys(observeMoonEditions).sort((a, b) => Number(b) - Number(a));
+}
+
+/**
+ * Returns the latest edition year.
+ */
+export function getLatestObserveMoonNightYear(): string {
+  const years = getAllObserveMoonNightYears();
+  return years[0] || "2026";
+}
+
+/**
+ * Returns a specific edition data by year.
+ */
+export function getObserveMoonNightEdition(
+  year: string,
+): ObserveMoonEventResult | null {
+  return observeMoonEditions[year] || null;
+}
+
+/**
+ * Async accessor for fetching event project data by year.
+ */
+export async function getObserveMoonNightProject(
+  year?: string,
+): Promise<ObserveMoonEventResult | null> {
+  const targetYear = year || getLatestObserveMoonNightYear();
+  return getObserveMoonNightEdition(targetYear);
 }

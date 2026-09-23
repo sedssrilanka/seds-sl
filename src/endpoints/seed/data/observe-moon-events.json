@@ -80,6 +80,8 @@
     "isRegistrationActive": true,
     "feedbackUrl": "https://tally.so/r/gD604M",
     "isFeedbackActive": true,
+    "certificateUrl": "https://cert.sedssl.org/imot",
+    "isCertificateActive": true,
     "confirmationEmailSubject": "Registration Confirmation: International Observe the Moon Night 2026 (Virtual Edition)",
     "confirmationEmailBody": "Thank you for registering for International Observe the Moon Night 2026 (Virtual Edition)! We are excited to have you join SEDS Sri Lanka and SEDS India for an evening of lunar science, live telescopic streaming by SEDS Celestia, and interactive discussions. The official live stream access link and schedule are detailed below.",
     "status": "published"

@@ -75,7 +75,7 @@ export const fetchProjects = async (
         chapterName: "SEDS Sri Lanka × SEDS India Collaboration",
         createdAt: "2026-09-01T00:00:00.000Z",
         slug: "observe-the-moon-night/2026",
-        customLink: "/projects/observe-the-moon-night",
+        customLink: "/projects/observe-the-moon-night/2026",
         isFeatured: true,
         isFlagship: true,
         badgeLabel: "FLAGSHIP EVENT",

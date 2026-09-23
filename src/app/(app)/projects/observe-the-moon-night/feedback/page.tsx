@@ -7,6 +7,7 @@ import {
   ExternalLink,
   MessageSquareHeart,
   ShieldCheck,
+  Award,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { TallyEmbed } from "@/components/ui/TallyEmbed";
@@ -86,7 +87,7 @@ export default function ObserveMoonFeedbackPage() {
               </Link>
               <ChevronRight className="size-3.5 opacity-60" />
               <Link
-                href="/projects/observe-the-moon-night"
+                href="/projects/observe-the-moon-night/2026"
                 prefetch={false}
                 className="hover:text-primary transition-colors"
               >
@@ -96,7 +97,7 @@ export default function ObserveMoonFeedbackPage() {
               <span className="text-primary font-bold uppercase">FEEDBACK</span>
             </nav>
 
-            <Link href="/projects/observe-the-moon-night" prefetch={false}>
+            <Link href="/projects/observe-the-moon-night/2026" prefetch={false}>
               <Button
                 variant="outline"
                 size="sm"
@@ -151,6 +152,17 @@ export default function ObserveMoonFeedbackPage() {
                 <span>Open in Fullscreen Form</span>
                 <ExternalLink className="size-3.5 text-primary" />
               </a>
+
+              <a
+                href="https://cert.sedssl.org/imot"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 border border-primary/40 bg-primary/10 hover:bg-primary/20 text-primary font-mono text-xs font-bold uppercase tracking-wider transition-colors"
+              >
+                <Award className="size-3.5" />
+                <span>Claim Certificate (cert.sedssl.org/imot)</span>
+                <ExternalLink className="size-3 opacity-80" />
+              </a>
             </div>
           </div>
         </div>
@@ -175,7 +187,7 @@ export default function ObserveMoonFeedbackPage() {
 
         {/* BOTTOM NAVIGATION */}
         <div className="pt-4 flex items-center justify-between">
-          <Link href="/projects/observe-the-moon-night" prefetch={false}>
+          <Link href="/projects/observe-the-moon-night/2026" prefetch={false}>
             <Button
               variant="outline"
               size="sm"
@@ -183,7 +195,7 @@ export default function ObserveMoonFeedbackPage() {
               className="gap-2 font-mono text-xs font-bold uppercase tracking-wider"
             >
               <ChevronLeft className="size-3.5" />
-              <span>Back to Observe the Moon Night</span>
+              <span>Back to Observe the Moon Night 2026</span>
             </Button>
           </Link>
           <a
