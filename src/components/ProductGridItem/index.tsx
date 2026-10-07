@@ -41,7 +41,7 @@ export const ProductGridItem: React.FC<Props> = ({ product }) => {
       : null;
 
   return (
-    <Link href={`/products/${slug}`} className="group block h-full">
+    <Link href={`/products/${slug}`} prefetch={false} className="group block h-full">
       <div className="relative flex flex-col h-full rounded-xl border border-border/60 bg-card overflow-hidden transition-all duration-300 hover:border-border hover:shadow-md hover:-translate-y-1">
         {/* Image Container - Full Edge-to-Edge Fill */}
         <div className="relative w-full aspect-square bg-muted border-b border-border/40 overflow-hidden flex items-center justify-center">

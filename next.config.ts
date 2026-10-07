@@ -66,8 +66,33 @@ const nextConfig: NextConfig = {
         permanent: false,
       },
       {
+        source: "/observe-the-moon-night/story",
+        destination: "/projects/observe-the-moon-night/2026/story",
+        permanent: false,
+      },
+      {
+        source: "/observe-the-moon-night/recap",
+        destination: "/projects/observe-the-moon-night/2026/story",
+        permanent: false,
+      },
+      {
+        source: "/projects/observe-the-moon-night/story",
+        destination: "/projects/observe-the-moon-night/2026/story",
+        permanent: false,
+      },
+      {
+        source: "/projects/observe-the-moon-night/recap",
+        destination: "/projects/observe-the-moon-night/2026/story",
+        permanent: false,
+      },
+      {
         source: "/observe-the-moon-night/:year",
         destination: "/projects/observe-the-moon-night/:year",
+        permanent: true,
+      },
+      {
+        source: "/observe-the-moon-night/:year/story",
+        destination: "/projects/observe-the-moon-night/:year/story",
         permanent: true,
       },
     ];

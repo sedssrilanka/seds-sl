@@ -252,6 +252,7 @@ export function ObserveMoonNightClient({
                     <Link
                       key={yr}
                       href={`/projects/observe-the-moon-night/${yr}`}
+                      prefetch={false}
                       className={`px-3.5 py-1 text-xs font-bold uppercase tracking-wider transition-colors ${
                         isCurrent
                           ? "bg-primary text-primary-foreground shadow-xs"
@@ -737,6 +738,7 @@ export function ObserveMoonNightClient({
                     <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
                       <Link
                         href="/projects/observe-the-moon-night/feedback"
+                        prefetch={false}
                         className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3 bg-foreground hover:bg-foreground/90 text-background font-mono text-xs sm:text-sm font-bold uppercase tracking-wider transition-colors shadow-sm text-center"
                       >
                         <MessageSquareHeart className="size-4 shrink-0" />
@@ -798,7 +800,16 @@ export function ObserveMoonNightClient({
                       </a>
                     )}
                     <Link
+                      href={`/projects/observe-the-moon-night/${year}/story`}
+                      prefetch={false}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-900 hover:bg-slate-800 text-white font-mono text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 border border-slate-900 transition-all cursor-pointer text-center"
+                    >
+                      <BookOpen className="size-4 shrink-0 text-blue-400" />
+                      <span>Read Event Story</span>
+                    </Link>
+                    <Link
                       href="/projects/observe-the-moon-night/feedback"
+                      prefetch={false}
                       className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-slate-200 hover:bg-slate-300 text-slate-900 font-mono text-xs sm:text-sm font-bold uppercase tracking-wider px-6 py-3.5 border border-slate-300 transition-all cursor-pointer text-center"
                     >
                       <MessageSquareHeart className="size-4 shrink-0" />

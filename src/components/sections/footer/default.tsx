@@ -30,6 +30,7 @@ export default function Footer() {
             <div className="space-y-4">
               <Link
                 href="/"
+                prefetch={false}
                 className="inline-block group"
                 aria-label="SEDS SL Home"
               >

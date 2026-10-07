@@ -90,6 +90,7 @@ export default function Navigation({
                 <NavigationMenuLink asChild>
                   <Link
                     href={item.href || ""}
+                    prefetch={false}
                     className={cn(
                       "relative inline-flex items-center justify-center px-4 py-3 text-xs font-mono font-bold uppercase tracking-wider transition-all duration-200 border-x border-y-0",
                       isActive

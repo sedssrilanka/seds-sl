@@ -104,6 +104,7 @@ const WhoWeAreSection = () => {
               >
                 <Link
                   href="/about"
+                  prefetch={false}
                   className="block h-full group bg-background p-8 flex items-center justify-center"
                 >
                   <div className="flex flex-col items-center justify-center text-center">

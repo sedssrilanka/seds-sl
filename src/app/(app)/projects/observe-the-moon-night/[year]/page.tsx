@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ObserveMoonNightClient } from "@/components/sections/observe-moon-night/ObserveMoonNightClient";
+import { ObserveMoonStoryClient } from "@/components/sections/observe-moon-night/ObserveMoonStoryClient";
 import {
-  getObserveMoonNightProject,
   getAllObserveMoonNightYears,
   getObserveMoonNightEdition,
 } from "@/utilities/getObserveMoonNightProject";
 import { mergeOpenGraph } from "@/utilities/mergeOpenGraph";
-import { getServerSideURL } from "@/utilities/getURL";
 
 interface Props {
   params: Promise<{
@@ -25,33 +23,31 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { year } = await params;
   const edition = getObserveMoonNightEdition(year);
-  const baseUrl = getServerSideURL();
 
   if (!edition) {
     return {
-      title: "Edition Not Found | Observe the Moon Night | SEDS Sri Lanka",
+      title: "Story Not Found | Observe the Moon Night | SEDS Sri Lanka",
     };
   }
 
-  const title = edition.title || `International Observe the Moon Night ${year}`;
+  const title = `Observe the Moon Night ${year} | Behind the Scenes & Event Story | SEDS Sri Lanka`;
   const description =
     edition.shortDescription ||
-    edition.description ||
-    `International Observe the Moon Night ${year} organized by SEDS Sri Lanka.`;
+    `When rain threatened Sri Lanka's skies, SEDS Sri Lanka and SEDS India built a telescope bridge across the sea for over 500 observers.`;
   const canonicalUrl = `/projects/observe-the-moon-night/${year}`;
   const image = edition.heroImage?.url || "/images/projects/iotm-day-2026.png";
 
   return {
-    title: `${title} | SEDS Sri Lanka`,
+    title,
     description,
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: mergeOpenGraph({
-      title: `${title} | SEDS Sri Lanka`,
+      title,
       description,
       url: canonicalUrl,
-      type: "website",
+      type: "article",
       images: [
         {
           url: image,
@@ -64,7 +60,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }),
     twitter: {
       card: "summary_large_image",
-      title: `${title} | SEDS Sri Lanka`,
+      title,
       description,
       images: [image],
       site: "@sedssl",
@@ -75,19 +71,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ObserveMoonNightYearPage({ params }: Props) {
   const { year } = await params;
-  const eventData = await getObserveMoonNightProject(year);
-  const allYears = getAllObserveMoonNightYears();
+  const edition = getObserveMoonNightEdition(year);
 
-  if (!eventData) {
+  if (!edition) {
     notFound();
   }
 
-  return (
-    <ObserveMoonNightClient
-      slug={eventData.slug || `observe-the-moon-night-${year}`}
-      year={eventData.year || year}
-      eventData={eventData}
-      allYears={allYears}
-    />
-  );
+  return <ObserveMoonStoryClient year={year} />;
 }
+

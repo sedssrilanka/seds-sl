@@ -145,6 +145,7 @@ export default function AboutUsPage() {
                 <div className="pt-2">
                   <Link
                     href="/projects"
+                    prefetch={false}
                     className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono font-bold text-foreground uppercase hover:text-primary transition-colors py-1"
                   >
                     <span>VIEW OUR PROJECTS &amp; RESEARCH</span>
@@ -224,6 +225,7 @@ export default function AboutUsPage() {
                 <div className="pt-2">
                   <Link
                     href="/join-us"
+                    prefetch={false}
                     className="inline-flex items-center gap-2 text-xs sm:text-sm font-mono font-bold text-foreground uppercase hover:text-primary transition-colors py-1"
                   >
                     <span>JOIN OUR COMMUNITY NETWORK</span>

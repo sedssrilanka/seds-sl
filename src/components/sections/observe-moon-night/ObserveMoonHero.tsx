@@ -8,6 +8,7 @@ import {
   Calendar,
   ExternalLink,
   MessageSquareHeart,
+  BookOpen,
 } from "lucide-react";
 import { motion } from "motion/react";
 
@@ -202,6 +203,7 @@ export function ObserveMoonHero({
                   {isFeedbackActive && (
                     <Link
                       href="/projects/observe-the-moon-night/feedback"
+                      prefetch={false}
                       className="w-full sm:w-auto block"
                     >
                       <Button
@@ -216,6 +218,22 @@ export function ObserveMoonHero({
                       </Button>
                     </Link>
                   )}
+                  <Link
+                    href={`/projects/observe-the-moon-night/${year}/story`}
+                    prefetch={false}
+                    className="w-full sm:w-auto block"
+                  >
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="lg"
+                      bleed={true}
+                      className="w-full sm:w-auto cursor-pointer gap-2 justify-center font-mono font-bold text-xs sm:text-sm"
+                    >
+                      <BookOpen className="size-4 text-primary shrink-0" />
+                      <span>Read Event Story</span>
+                    </Button>
+                  </Link>
                 </>
               )}
 

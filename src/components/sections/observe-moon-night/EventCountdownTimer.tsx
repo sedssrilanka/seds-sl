@@ -140,6 +140,7 @@ export function EventCountdownTimer({
                   href={
                     feedbackUrl || "/projects/observe-the-moon-night/feedback"
                   }
+                  prefetch={false}
                   className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 border border-border hover:bg-muted text-foreground font-mono text-xs font-bold uppercase tracking-wider transition-colors shadow-xs text-center"
                 >
                   <MessageSquareHeart className="size-3.5 text-primary shrink-0" />
