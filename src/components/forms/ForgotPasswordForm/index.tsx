@@ -149,7 +149,9 @@ export const ForgotPasswordForm: React.FC = () => {
             variant="outline"
             className="w-full rounded-xl h-12 font-medium text-base"
           >
-            <Link href="/login" prefetch={false}>Return to login</Link>
+            <Link href="/login" prefetch={false}>
+              Return to login
+            </Link>
           </Button>
         </div>
       )}

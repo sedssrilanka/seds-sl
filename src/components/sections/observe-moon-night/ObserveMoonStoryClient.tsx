@@ -55,9 +55,11 @@ const contributorsList: Contributor[] = [
     projectRole: "Campaign Lead",
     sedsRole: "Vice Chair",
     chapter: "SEDS Sri Lanka",
-    description: "Led the campaign execution and overall operational direction as Vice Chair.",
+    description:
+      "Led the campaign execution and overall operational direction as Vice Chair.",
     linkedin: "https://www.linkedin.com/in/malindu-sachinthana-79540a319",
-    image: "/images/projects/observe-moon-night/credits/malindu-sachinthana.jpeg",
+    image:
+      "/images/projects/observe-moon-night/credits/malindu-sachinthana.jpeg",
   },
   {
     name: "Aatreyee",
@@ -76,7 +78,8 @@ const contributorsList: Contributor[] = [
     description:
       "Assisted optical telescope setup for the Day 1 live feed and publicized the event across SEDS Celestia.",
     linkedin: "https://www.linkedin.com/in/avaneetsinh",
-    image: "/images/projects/observe-moon-night/credits/avaneetsinh-thakur.jpeg",
+    image:
+      "/images/projects/observe-moon-night/credits/avaneetsinh-thakur.jpeg",
   },
   {
     name: "Shorya Agarwal",
@@ -124,7 +127,8 @@ const contributorsList: Contributor[] = [
     description:
       "Authored engaging social media copy and promotional outreach content for the event.",
     linkedin: "https://www.linkedin.com/in/anjalee-sinhapruthivi-13513b3a8",
-    image: "/images/projects/observe-moon-night/credits/anjalee-sinhapruthivi.jpeg",
+    image:
+      "/images/projects/observe-moon-night/credits/anjalee-sinhapruthivi.jpeg",
   },
   {
     name: "H.P. Sithuka Sanujana",
@@ -182,9 +186,17 @@ const storyNavEntries: StorySectionEntry[] = [
   { id: "overview", title: "Story Overview", shortTag: "00" },
   { id: "the-washout", title: "The 30-Day Monsoon Washout", shortTag: "01" },
   { id: "the-lunar-clock", title: "The 7-Day Physics Dilemma", shortTag: "02" },
-  { id: "calling-india", title: "Calling Across the Palk Strait", shortTag: "03" },
+  {
+    id: "calling-india",
+    title: "Calling Across the Palk Strait",
+    shortTag: "03",
+  },
   { id: "day-1-stream", title: "Day 1: Chaos & Plato Crater", shortTag: "04" },
-  { id: "day-2-stream", title: "Day 2: Geology & Deep Craters", shortTag: "05" },
+  {
+    id: "day-2-stream",
+    title: "Day 2: Geology & Deep Craters",
+    shortTag: "05",
+  },
   { id: "the-takeaway", title: "What We Learned", shortTag: "06" },
   { id: "playlist", title: "Watch Broadcasts", shortTag: "07" },
   { id: "logos", title: "Partner Logos", shortTag: "08" },
@@ -317,14 +329,15 @@ export function ObserveMoonStoryClient({
           </div>
 
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-mono font-black tracking-tight text-foreground leading-[1.12] uppercase max-w-5xl">
-            When Rain Stole Our Skies, We Built a Telescope Bridge Across the Sea
+            When Rain Stole Our Skies, We Built a Telescope Bridge Across the
+            Sea
           </h1>
 
           <p className="text-base sm:text-xl text-muted-foreground leading-relaxed font-sans max-w-3xl">
             How thirty days of stargazing camp preparation was washed out in
-            twenty four hours, sparking a late-night cross-border collaboration with
-            SEDS India that brought live optical telescope feeds to over 500
-            registered observers.
+            twenty four hours, sparking a late-night cross-border collaboration
+            with SEDS India that brought live optical telescope feeds to over
+            500 registered observers.
           </p>
         </div>
       </header>
@@ -371,9 +384,10 @@ export function ObserveMoonStoryClient({
 
             <div className="space-y-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
               <p>
-                If you have ever organized a public astronomy night in Sri Lanka,
-                you know the familiar ritual of refreshing your weather app every
-                twenty minutes while whispering quiet bargains to the universe.
+                If you have ever organized a public astronomy night in Sri
+                Lanka, you know the familiar ritual of refreshing your weather
+                app every twenty minutes while whispering quiet bargains to the
+                universe.
               </p>
               <p>
                 For thirty straight days, our team lived and breathed
@@ -383,9 +397,7 @@ export function ObserveMoonStoryClient({
                 microfiber cloths, and volunteers ready to guide families and
                 school kids through the craters of the Moon.
               </p>
-              <p>
-                Then, right on cue, the tropical monsoon entered the chat.
-              </p>
+              <p>Then, right on cue, the tropical monsoon entered the chat.</p>
               <p>
                 It was not just a little evening shower that you could wait out
                 under a tent. A stubborn, impenetrable blanket of dark grey
@@ -411,33 +423,34 @@ export function ObserveMoonStoryClient({
 
             <div className="space-y-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
               <p>
-                Our first instinctive thought was what any normal group would do:
-                can we just push the camp to next weekend?
+                Our first instinctive thought was what any normal group would
+                do: can we just push the camp to next weekend?
               </p>
               <p>
                 Here is the funny thing about astronomy that non-stargazers
-                rarely realize: amateur astronomers actually avoid the Full
-                Moon like the plague. People assume a full moon is the best time
-                to look through a telescope. In reality, staring at a full moon
-                through a high-power optical eyepiece is like shining a high-beam
-                car headlight directly into your eyeball. Because the Sun is
-                shining straight down from directly overhead, there are zero
-                shadows. Towering lunar mountain chains and deep impact craters
-                turn into flat, blinding white circles on a washed-out plate.
+                rarely realize: amateur astronomers actually avoid the Full Moon
+                like the plague. People assume a full moon is the best time to
+                look through a telescope. In reality, staring at a full moon
+                through a high-power optical eyepiece is like shining a
+                high-beam car headlight directly into your eyeball. Because the
+                Sun is shining straight down from directly overhead, there are
+                zero shadows. Towering lunar mountain chains and deep impact
+                craters turn into flat, blinding white circles on a washed-out
+                plate.
               </p>
               <p>
                 International Observe the Moon Night is carefully chosen around
                 the first quarter moon for a very specific reason. Sunlight hits
-                the lunar surface at a sharp, grazing angle. That delicate dividing
-                line between lunar day and night, known as the terminator, casts
-                long, dramatic, razor-sharp shadows along every ridge, cliff, and
-                crater rim.
+                the lunar surface at a sharp, grazing angle. That delicate
+                dividing line between lunar day and night, known as the
+                terminator, casts long, dramatic, razor-sharp shadows along
+                every ridge, cliff, and crater rim.
               </p>
               <p>
                 If we delayed past September 22 toward September 26, the Moon
-                would turn full, ruining the view entirely. Physics had handed us
-                an uncompromising deadline: figure out a solution in seven days,
-                or pack up and wait until next year.
+                would turn full, ruining the view entirely. Physics had handed
+                us an uncompromising deadline: figure out a solution in seven
+                days, or pack up and wait until next year.
               </p>
             </div>
           </section>
@@ -466,16 +479,17 @@ export function ObserveMoonStoryClient({
               </p>
               <p>
                 Without wasting a second, we reached out to our friends at SEDS
-                India. We threw out a wild proposal: instead of letting the event
-                die in the rain, let us pool our resources and build a two-night
-                live telescope broadcast bridge between both countries.
+                India. We threw out a wild proposal: instead of letting the
+                event die in the rain, let us pool our resources and build a
+                two-night live telescope broadcast bridge between both
+                countries.
               </p>
               <p>
                 SEDS India jumped in immediately without hesitation. Within
-                forty-eight hours, they mobilized two powerhouse student telescope
-                chapters equipped with professional tracking mounts and imaging
-                sensors: SEDS Celestia to take on Day 1, and SEDS Kumaraguru to
-                lead Day 2.
+                forty-eight hours, they mobilized two powerhouse student
+                telescope chapters equipped with professional tracking mounts
+                and imaging sensors: SEDS Celestia to take on Day 1, and SEDS
+                Kumaraguru to lead Day 2.
               </p>
               <p>
                 What started as a canceled local camp in Colombo had suddenly
@@ -492,9 +506,9 @@ export function ObserveMoonStoryClient({
 
               <blockquote className="p-5 border border-border/60 bg-muted/20 space-y-2">
                 <p className="italic font-mono text-sm sm:text-base text-foreground/90">
-                  &quot;When the sky closes above your head, look for teammates who
-                  have open skies. Space exploration has always been about working
-                  together across borders.&quot;
+                  &quot;When the sky closes above your head, look for teammates
+                  who have open skies. Space exploration has always been about
+                  working together across borders.&quot;
                 </p>
                 <footer className="text-xs text-primary font-bold uppercase not-italic font-mono">
                   SEDS Sri Lanka Organizing Team
@@ -516,15 +530,13 @@ export function ObserveMoonStoryClient({
               </h2>
 
               <div className="space-y-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
-                <p>
-                  Night one was pure adrenaline and high drama.
-                </p>
+                <p>Night one was pure adrenaline and high drama.</p>
                 <p>
                   If you have ever tried running a multi-node live telescope
                   stream with video encoders, stream keys, and camera sensors
-                  syncing between two different countries on one week of prep, you
-                  know technical gremlins will inevitably show up. Ten minutes
-                  before showtime, audio feeds were echoing, latency was
+                  syncing between two different countries on one week of prep,
+                  you know technical gremlins will inevitably show up. Ten
+                  minutes before showtime, audio feeds were echoing, latency was
                   spiking, and backstage group chats were filled with frantic
                   troubleshooting.
                 </p>
@@ -600,8 +612,8 @@ export function ObserveMoonStoryClient({
 
               <div className="space-y-4 text-base sm:text-lg text-muted-foreground leading-relaxed">
                 <p>
-                  With the opening night baptism by fire behind us, night two ran
-                  with absolute precision.
+                  With the opening night baptism by fire behind us, night two
+                  ran with absolute precision.
                 </p>
                 <p>
                   The team at SEDS Kumaraguru brought out their high-resolution
@@ -610,12 +622,12 @@ export function ObserveMoonStoryClient({
                   the terraced walls of Copernicus.
                 </p>
                 <p>
-                  While the crowd was slightly smaller and more intimate than the
-                  opening night rush, the atmosphere turned into a cozy, late-night
-                  lunar masterclass. Viewers stayed on the stream for over two
-                  hours, geeking out with the hosts about ancient lava flows in
-                  Mare Tranquillitatis and permanently shadowed craters that
-                  might harbor water ice for future human bases.
+                  While the crowd was slightly smaller and more intimate than
+                  the opening night rush, the atmosphere turned into a cozy,
+                  late-night lunar masterclass. Viewers stayed on the stream for
+                  over two hours, geeking out with the hosts about ancient lava
+                  flows in Mare Tranquillitatis and permanently shadowed craters
+                  that might harbor water ice for future human bases.
                 </p>
               </div>
             </div>
@@ -683,8 +695,9 @@ export function ObserveMoonStoryClient({
                 never go strictly according to plan. Clouds roll in, software
                 crashes, and plans get turned upside down at the eleventh hour.
                 But that is the entire essence of what SEDS stands for: adapting
-                fast, reaching out across borders, and finding a way to share the
-                wonders of the universe no matter what the weather has to say.
+                fast, reaching out across borders, and finding a way to share
+                the wonders of the universe no matter what the weather has to
+                say.
               </p>
               <p>
                 What started as a canceled stargazing camp in Colombo ended up
@@ -716,9 +729,9 @@ export function ObserveMoonStoryClient({
                   Watch the Full Replay Playlist
                 </h3>
                 <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                  Access the full YouTube recordings containing both livestreamed
-                  nights, optical telescope captures, keynote presentations, and
-                  audience Q&amp;A.
+                  Access the full YouTube recordings containing both
+                  livestreamed nights, optical telescope captures, keynote
+                  presentations, and audience Q&amp;A.
                 </p>
                 <div className="pt-2">
                   <a
@@ -793,7 +806,9 @@ export function ObserveMoonStoryClient({
                 The People Who Made It Happen
               </h2>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Honoring the organizing leads, technical coordinators, demonstrators, and creatives across SEDS Sri Lanka and SEDS India.
+                Honoring the organizing leads, technical coordinators,
+                demonstrators, and creatives across SEDS Sri Lanka and SEDS
+                India.
               </p>
             </div>
 
@@ -853,12 +868,15 @@ export function ObserveMoonStoryClient({
                             </div>
                             <div className="flex items-center gap-2 text-xs font-mono text-muted-foreground">
                               <span>{person.chapter}</span>
-                              {person.sedsRole && person.sedsRole !== person.projectRole && (
-                                <>
-                                  <span className="opacity-40">•</span>
-                                  <span className="opacity-80">{person.sedsRole}</span>
-                                </>
-                              )}
+                              {person.sedsRole &&
+                                person.sedsRole !== person.projectRole && (
+                                  <>
+                                    <span className="opacity-40">•</span>
+                                    <span className="opacity-80">
+                                      {person.sedsRole}
+                                    </span>
+                                  </>
+                                )}
                             </div>
                           </div>
                         </div>
@@ -1026,7 +1044,6 @@ export function ObserveMoonStoryClient({
           </div>
         </div>
       )}
-
     </div>
   );
 }

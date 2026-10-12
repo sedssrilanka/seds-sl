@@ -79,4 +79,3 @@ export default async function ObserveMoonNightYearPage({ params }: Props) {
 
   return <ObserveMoonStoryClient year={year} />;
 }
-

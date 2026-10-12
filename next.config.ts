@@ -114,7 +114,8 @@ const nextConfig: NextConfig = {
       },
       {
         // Static public asset folders
-        source: "/(images|about|chapters|logo|section-header|docs|emails)/:path*",
+        source:
+          "/(images|about|chapters|logo|section-header|docs|emails)/:path*",
         headers: [
           {
             key: "Cache-Control",
@@ -128,7 +129,8 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800",
+            value:
+              "public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800",
           },
         ],
       },
@@ -138,7 +140,8 @@ const nextConfig: NextConfig = {
         headers: [
           {
             key: "Cache-Control",
-            value: "public, max-age=900, s-maxage=86400, stale-while-revalidate=86400",
+            value:
+              "public, max-age=900, s-maxage=86400, stale-while-revalidate=86400",
           },
           {
             key: "CDN-Cache-Control",
