@@ -100,6 +100,58 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/**": ["./src/content/**/*"],
   },
+  async headers() {
+    return [
+      {
+        // Cache static media and assets in the public directory (images, icons, fonts)
+        source: "/:all*(svg|jpg|jpeg|png|webp|avif|ico|gif|woff2)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=604800, stale-while-revalidate=2592000",
+          },
+        ],
+      },
+      {
+        // Static public asset folders
+        source: "/(images|about|chapters|logo|section-header|docs|emails)/:path*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=604800, stale-while-revalidate=2592000",
+          },
+        ],
+      },
+      {
+        // Search crawler files (robots.txt, sitemap.xml)
+        source: "/(robots.txt|sitemap.xml)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=86400, s-maxage=86400, stale-while-revalidate=604800",
+          },
+        ],
+      },
+      {
+        // Homepage caching (browser: 15 min, edge/CDN: 24h, stale-while-revalidate: 24h)
+        source: "/",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=900, s-maxage=86400, stale-while-revalidate=86400",
+          },
+          {
+            key: "CDN-Cache-Control",
+            value: "max-age=86400, stale-while-revalidate=86400",
+          },
+          {
+            key: "Vercel-CDN-Cache-Control",
+            value: "max-age=86400, stale-while-revalidate=86400",
+          },
+        ],
+      },
+    ];
+  },
 };
 
 export default nextConfig;
