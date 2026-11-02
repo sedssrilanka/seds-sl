@@ -9,7 +9,8 @@
     "binding": "ASSETS"
   },
   "vars": {
-    "NEXT_PUBLIC_SERVER_URL": "https://www.sedssl.org"
+    "NEXT_PUBLIC_SERVER_URL": "https://www.sedssl.org",
+    "NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY": "0x4AAAAAAEipZ0pJJUJx6Uyz"
   },
   "observability": {
     "enabled": true
