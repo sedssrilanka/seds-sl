@@ -21,7 +21,7 @@ You can configure the following environment variables in your hosting provider's
 
 ```env
 # Official Domain
-NEXT_PUBLIC_SERVER_URL=https://sedssl.org
+NEXT_PUBLIC_SERVER_URL=https://www.sedssl.org
 
 # Email (Resend)
 RESEND_API_KEY=re_your_api_key
@@ -71,7 +71,7 @@ The platform runs on **Cloudflare Workers** using `@opennextjs/cloudflare` with 
    - **Build Command**: `bun run build:worker`
    - **Deploy Command**: `wrangler deploy`
 4. In **Environment Variables & Secrets**, add your secrets (`RESEND_API_KEY`, `KEYSTATIC_SECRET`, etc.).
-5. Add custom domain `sedssl.org` under Worker **Settings** > **Domains & Routes**.
+5. Add custom domain `www.sedssl.org` under Worker **Settings** > **Domains & Routes** (and create a Redirect Rule to forward `sedssl.org` to `www.sedssl.org`).
 
 ## 3. GitHub Actions CI/CD Pipeline
 

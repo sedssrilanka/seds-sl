@@ -55,7 +55,7 @@ jobs:
 
       - name: Build Application
         env:
-          NEXT_PUBLIC_SERVER_URL: "https://sedssl.org"
+          NEXT_PUBLIC_SERVER_URL: "https://www.sedssl.org"
           RESEND_API_KEY: "dummy-key-for-build"
           KEYSTATIC_GITHUB_CLIENT_ID: "dummy-github-client-id"
           KEYSTATIC_GITHUB_CLIENT_SECRET: "dummy-github-client-secret"
@@ -116,7 +116,7 @@ jobs:
 
       - name: Build Cloudflare Worker
         env:
-          NEXT_PUBLIC_SERVER_URL: "https://sedssl.org"
+          NEXT_PUBLIC_SERVER_URL: "https://www.sedssl.org"
           RESEND_API_KEY: "dummy-key-for-build"
           KEYSTATIC_GITHUB_CLIENT_ID: "dummy-github-client-id"
           KEYSTATIC_GITHUB_CLIENT_SECRET: "dummy-github-client-secret"

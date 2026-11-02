@@ -9,7 +9,7 @@
     "binding": "ASSETS"
   },
   "vars": {
-    "NEXT_PUBLIC_SERVER_URL": "https://sedssl.org"
+    "NEXT_PUBLIC_SERVER_URL": "https://www.sedssl.org"
   },
   "observability": {
     "enabled": true

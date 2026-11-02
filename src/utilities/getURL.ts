@@ -8,11 +8,11 @@ export const getServerSideURL = () => {
     process.env.NODE_ENV === "production" &&
     (!url || url.includes("localhost"))
   ) {
-    return "https://sedssl.org";
+    return "https://www.sedssl.org";
   }
 
   if (!url) {
-    return "https://sedssl.org";
+    return "https://www.sedssl.org";
   }
 
   return url;
@@ -30,6 +30,6 @@ export const getClientSideURL = () => {
   return (
     process.env.NEXT_PUBLIC_SERVER_URL ||
     process.env.WEBSITE_URL ||
-    "https://sedssl.org"
+    "https://www.sedssl.org"
   );
 };
