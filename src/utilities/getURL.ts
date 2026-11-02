@@ -8,13 +8,7 @@ export const getServerSideURL = () => {
     process.env.NODE_ENV === "production" &&
     (!url || url.includes("localhost"))
   ) {
-    return process.env.VERCEL_PROJECT_PRODUCTION_URL
-      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
-      : "https://sedssl.org";
-  }
-
-  if (!url && process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
+    return "https://sedssl.org";
   }
 
   if (!url) {
@@ -31,10 +25,6 @@ export const getClientSideURL = () => {
     const port = window.location.port;
 
     return `${protocol}//${domain}${port ? `:${port}` : ""}`;
-  }
-
-  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
-    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`;
   }
 
   return (

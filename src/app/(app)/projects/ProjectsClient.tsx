@@ -40,8 +40,20 @@ export function ProjectsClient({
   };
 
   useEffect(() => {
-    if (!debouncedSearchQuery && initialProjects.length > 0) {
-      setProjects(initialProjects);
+    if (initialProjects.length > 0) {
+      if (!debouncedSearchQuery) {
+        setProjects(initialProjects);
+      } else {
+        const q = debouncedSearchQuery.toLowerCase();
+        setProjects(
+          initialProjects.filter(
+            (proj) =>
+              proj.name.toLowerCase().includes(q) ||
+              proj.description.toLowerCase().includes(q) ||
+              (proj.chapterName && proj.chapterName.toLowerCase().includes(q)),
+          ),
+        );
+      }
       setLoading(false);
       return;
     }

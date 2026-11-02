@@ -29,8 +29,20 @@ export function ChaptersClient({
   };
 
   useEffect(() => {
-    if (!debouncedSearchQuery && initialChapters.length > 0) {
-      setChapters(initialChapters);
+    if (initialChapters.length > 0) {
+      if (!debouncedSearchQuery) {
+        setChapters(initialChapters);
+      } else {
+        const q = debouncedSearchQuery.toLowerCase();
+        setChapters(
+          initialChapters.filter(
+            (ch) =>
+              ch.name.toLowerCase().includes(q) ||
+              (ch.university && ch.university.toLowerCase().includes(q)) ||
+              ch.description.toLowerCase().includes(q),
+          ),
+        );
+      }
       setLoading(false);
       return;
     }

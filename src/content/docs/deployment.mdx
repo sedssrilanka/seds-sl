@@ -37,18 +37,41 @@ KEYSTATIC_SECRET=your_random_32_character_secret
 TALLY_SIGNING_SECRET=your_tally_signing_secret
 ```
 
-## 2. Deploying to Vercel (Recommended)
+## 2. Deploying to Cloudflare Workers
 
-Vercel provides native support for Next.js App Router applications:
+The platform runs on **Cloudflare Workers** using `@opennextjs/cloudflare` with Cloudflare Static Assets.
 
-1. Push your code to the GitHub repository (`sedssrilanka/seds-sl`).
-2. Go to [Vercel](https://vercel.com) and click **"Add New Project"**.
-3. Import the repository.
-4. Set the environment variables in the project settings.
-5. In **"Build and Output Settings"**, set:
-   - Build Command: `bun run build`
-   - Install Command: `bun install`
-6. Click **Deploy**.
+### Option A: Direct Deployment via Wrangler CLI
+
+1. **Login to Cloudflare:**
+   ```bash
+   bun x wrangler login
+   ```
+
+2. **Set Environment Secrets:**
+   ```bash
+   bun x wrangler secret put RESEND_API_KEY
+   bun x wrangler secret put KEYSTATIC_SECRET
+   bun x wrangler secret put KEYSTATIC_GITHUB_CLIENT_ID
+   bun x wrangler secret put KEYSTATIC_GITHUB_CLIENT_SECRET
+   bun x wrangler secret put TALLY_SIGNING_SECRET
+   ```
+
+3. **Build and Deploy:**
+   ```bash
+   bun run deploy
+   ```
+
+### Option B: Cloudflare Dashboard (Git Integration)
+
+1. Go to the [Cloudflare Dashboard](https://dash.cloudflare.com/) and navigate to **Workers & Pages** > **Create application** > **Import from Git**.
+2. Select your `sedssrilanka/seds-sl` repository.
+3. In **Build Settings**:
+   - **Framework Preset**: None / OpenNext
+   - **Build Command**: `bun run build:worker`
+   - **Deploy Command**: `wrangler deploy`
+4. In **Environment Variables & Secrets**, add your secrets (`RESEND_API_KEY`, `KEYSTATIC_SECRET`, etc.).
+5. Add custom domain `sedssl.org` under Worker **Settings** > **Domains & Routes**.
 
 ## 3. GitHub Actions CI/CD Pipeline
 
@@ -56,4 +79,9 @@ The repository includes a built-in CI/CD workflow at `.github/workflows/ci.yml` 
 - Runs TypeScript type checking (`bun run type-check`)
 - Checks code formatting and lint rules (`bun run lint`)
 - Executes test suites (`bun run test`)
-- Verifies production builds and deploys preview/production builds to Vercel
+- Builds the Cloudflare Worker bundle (`bun run build:worker`)
+- Deploys preview environments for `dev` and production for `main` via `cloudflare/wrangler-action`
+
+Required GitHub Repository Secrets:
+- `CLOUDFLARE_API_TOKEN`: Cloudflare API Token with Workers edit permissions.
+- `CLOUDFLARE_ACCOUNT_ID`: Your Cloudflare Account ID (found on the Cloudflare Dashboard right sidebar).

@@ -60,13 +60,13 @@ jobs:
           KEYSTATIC_GITHUB_CLIENT_ID: "dummy-github-client-id"
           KEYSTATIC_GITHUB_CLIENT_SECRET: "dummy-github-client-secret"
           KEYSTATIC_SECRET: "ci-dummy-keystatic-secret-key-32chars"
-        run: bun run build
+        run: bun run build:worker
 
   # -------------------------------------------------------------
-  # Job 3: Deploy Preview to Vercel (Only for 'dev' branch)
+  # Job 3: Deploy Preview to Cloudflare Workers (Only for 'dev' branch)
   # -------------------------------------------------------------
   deploy-preview:
-    name: Deploy to Vercel (Preview)
+    name: Deploy to Cloudflare Workers (Preview)
     needs: [build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
     runs-on: ubuntu-22.04
@@ -80,21 +80,27 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
-      - name: Install Vercel CLI
-        run: bun add -g vercel
-
-      - name: Deploy Preview to Vercel
-        run: vercel deploy
+      - name: Build Cloudflare Worker
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          NEXT_PUBLIC_SERVER_URL: "https://preview.sedssl.org"
+          RESEND_API_KEY: "dummy-key-for-build"
+          KEYSTATIC_GITHUB_CLIENT_ID: "dummy-github-client-id"
+          KEYSTATIC_GITHUB_CLIENT_SECRET: "dummy-github-client-secret"
+          KEYSTATIC_SECRET: "ci-dummy-keystatic-secret-key-32chars"
+        run: bun run build:worker
+
+      - name: Deploy Preview to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
 
   # -------------------------------------------------------------
-  # Job 4: Deploy Production to Vercel (Only for 'main' branch)
+  # Job 4: Deploy Production to Cloudflare Workers (Only for 'main' branch)
   # -------------------------------------------------------------
   deploy-production:
-    name: Deploy to Vercel (Production)
+    name: Deploy to Cloudflare Workers (Production)
     needs: [build]
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-22.04
@@ -108,12 +114,18 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
-      - name: Install Vercel CLI
-        run: bun add -g vercel
-
-      - name: Deploy Production to Vercel
-        run: vercel deploy --prod
+      - name: Build Cloudflare Worker
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          NEXT_PUBLIC_SERVER_URL: "https://sedssl.org"
+          RESEND_API_KEY: "dummy-key-for-build"
+          KEYSTATIC_GITHUB_CLIENT_ID: "dummy-github-client-id"
+          KEYSTATIC_GITHUB_CLIENT_SECRET: "dummy-github-client-secret"
+          KEYSTATIC_SECRET: "ci-dummy-keystatic-secret-key-32chars"
+        run: bun run build:worker
+
+      - name: Deploy Production to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
